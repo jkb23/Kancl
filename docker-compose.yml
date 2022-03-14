@@ -1,4 +1,4 @@
-version: "3"
+version: "3.2"
 
 services:
     server:
@@ -7,6 +7,9 @@ services:
             dockerfile: server.Dockerfile
         container_name: server
         restart: unless-stopped
+
+        depends_on:
+            - db
         
         ports:
             - 8080:8080/tcp
@@ -14,6 +17,27 @@ services:
         networks:
             net:
                 ipv4_address: 10.0.0.2
+
+    db:
+        image: mariadb:10.7
+        container_name: db
+        restart: unless-stopped
+
+        networks:
+            net:
+                ipv4_address: 10.0.0.3
+
+        environment:
+            MARIADB_USER: "user"
+            MARIADB_PASSWORD: "password"
+            MARIADB_ROOT_PASSWORD: "rootpassword"
+            MARIADB_DATABASE: "kanclOnline"
+
+        volumes:
+            - type: bind
+              source: ./sql
+              target: /docker-entrypoint-initdb.d
+              read_only: true
 
 volumes:
     caddy_data:

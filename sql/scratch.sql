@@ -1,0 +1,6 @@
+CREATE TABLE testTable (
+    nKey INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    sName VARCHAR(50) NOT NULL,
+    nSize DECIMAL(10,2) NOT NULL,
+    INDEX(nKey)
+);
