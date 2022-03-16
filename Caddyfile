@@ -1,4 +1,4 @@
-kancl.online
+http://{$DOMAIN:localhost}:{$HTTP_PORT}, https://{$DOMAIN:localhost}:{$HTTPS_PORT}
 
 reverse_proxy server:8080
 

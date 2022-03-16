@@ -46,6 +46,11 @@ services:
         container_name: caddy
         restart: unless-stopped
 
+        environment:
+          HTTP_PORT: ${HTTP_PORT}
+          HTTPS_PORT: ${HTTPS_PORT}
+          DOMAIN: ${DOMAIN}
+
         volumes:
             - $PWD/Caddyfile:/etc/caddy/Caddyfilex
             - caddy_data:/data
