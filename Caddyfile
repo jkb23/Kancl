@@ -1,0 +1,5 @@
+kancl.online
+
+reverse_proxy server:8080
+
+encode zstd gzip

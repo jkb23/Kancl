@@ -1,4 +1,4 @@
-version: "3.2"
+version: "3.7"
 
 services:
     server:
@@ -10,12 +10,9 @@ services:
 
         depends_on:
             - db
-        
-        ports:
-            - 8080:8080/tcp
 
         networks:
-            net:
+          dbnet:
                 ipv4_address: 10.0.0.2
 
     db:
@@ -24,7 +21,7 @@ services:
         restart: unless-stopped
 
         networks:
-            net:
+          dbnet:
                 ipv4_address: 10.0.0.3
 
         environment:
@@ -41,28 +38,28 @@ services:
             - sql_data:/var/lib/mysql
 
 
-  #   caddy:
-  #       # https://hub.docker.com/_/caddy
-  #       image: caddy:2.4.6
-  #       container_name: caddy
-  #       restart: unless-stopped
-  #
-  #       volumes:
-  #           - caddy_data:/data
-  #           - caddy_config:/config
-  #
-  #       healthcheck:
-  #           test: ["CMD", "caddy", "version"]
-  #
-  #       depends_on:
-  #           - server
-  #
-  #       ports:
-  #           - "80:80" # For HTTP -> HTTPS redirects
-  #           - "443:443"
-  #
-  #       networks:
-  #           net: {}
+    caddy:
+        # https://hub.docker.com/_/caddy
+        build:
+            context: .
+            dockerfile: caddy.Dockerfile
+        container_name: caddy
+        restart: unless-stopped
+
+        volumes:
+            - $PWD/Caddyfile:/etc/caddy/Caddyfilex
+            - caddy_data:/data
+            - caddy_config:/config
+
+        healthcheck:
+            test: ["CMD", "caddy", "version"]
+
+        depends_on:
+            - server
+
+        ports:
+            - "${HTTP_PORT}:${HTTP_PORT}/tcp"
+            - "${HTTPS_PORT}:${HTTPS_PORT}/tcp"
 
   # https://hub.docker.com/_/mariadb
   # https://hub.docker.com/r/jenkins/jenkins
@@ -75,7 +72,7 @@ volumes:
         external: true
 
 networks:
-  net:
+  dbnet:
     driver: bridge
     ipam:
      config:
