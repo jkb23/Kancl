@@ -1,5 +1,5 @@
 http://{$DOMAIN:localhost}:{$HTTP_PORT}, https://{$DOMAIN:localhost}:{$HTTPS_PORT}
 
-reverse_proxy server:8080
+reverse_proxy http://server:8080
 
 encode zstd gzip

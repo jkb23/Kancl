@@ -11,18 +11,10 @@ services:
         depends_on:
             - db
 
-        networks:
-          dbnet:
-                ipv4_address: 10.0.0.2
-
     db:
         image: mariadb:10.7
         container_name: db
         restart: unless-stopped
-
-        networks:
-          dbnet:
-                ipv4_address: 10.0.0.3
 
         environment:
             MARIADB_USER: "user"
@@ -66,19 +58,9 @@ services:
             - "${HTTP_PORT}:${HTTP_PORT}/tcp"
             - "${HTTPS_PORT}:${HTTPS_PORT}/tcp"
 
-  # https://hub.docker.com/_/mariadb
-  # https://hub.docker.com/r/jenkins/jenkins
-
 volumes:
     caddy_data:
         external: true
     caddy_config:
     sql_data:
         external: true
-
-networks:
-  dbnet:
-    driver: bridge
-    ipam:
-     config:
-       - subnet: 10.0.0.0/29
