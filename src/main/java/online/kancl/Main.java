@@ -11,11 +11,12 @@ public class Main
 	public static void main(String[] args)
 	{
 		Spark.port(8080);
-		Spark.init();
 
-		Spark.get("/", (req, res) -> "Hello World");
+		Spark.staticFiles.location("/public");
 		Spark.get("/zoomhook", Main::zoomHook);
 		Spark.post("/zoomhook", Main::zoomHook);
+
+		Spark.init();
 
 		System.out.println("Server running");
 	}
