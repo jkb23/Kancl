@@ -12,7 +12,11 @@ function setup() {
 	createCanvas(squareSize * width, squareSize * height);
 	grid = createGrid();
 
-	socket = new WebSocket('ws://' + window.document.URL.replace("http://", "") + "websocket");
+	const webSocketProtocolAndHost = window.document.URL
+		.replace("http://", "ws://")
+		.replace("https://", "wss://");
+
+	socket = new WebSocket(webSocketProtocolAndHost + "websocket");
 	socket.onopen = () => socket.send("get");
 	socket.onmessage = updateGrid;
 }
