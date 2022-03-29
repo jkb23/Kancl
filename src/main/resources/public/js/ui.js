@@ -4,10 +4,30 @@ let height = 40;
 let width = 40;
 
 let desiredValue = null;
+let socket;
+
+const setMessageRegex = /^set (-?[0-9]+) (-?[0-9]+) = ([01])$/;
 
 function setup() {
 	createCanvas(squareSize * width, squareSize * height);
 	grid = createGrid();
+
+	socket = new WebSocket('ws://' + window.document.URL.replace("http://", "") + "websocket");
+	socket.onopen = () => socket.send("get");
+	socket.onmessage = updateGrid;
+}
+
+function updateGrid(message) {
+	for (const line of message.data.split("\n")) {
+		const match = line.match(setMessageRegex);
+		if (match) {
+			const x = parseInt(match[1], 10);
+			const y = parseInt(match[2], 10);
+			const value = parseInt(match[3], 10);
+
+			grid[x][y] = value !== 0;
+		}
+	}
 }
 
 function draw() {
@@ -19,7 +39,10 @@ function draw() {
 			desiredValue = !grid[x][y];
 		}
 
-		grid[x][y] = desiredValue;
+		if (grid[x][y] !== desiredValue) {
+			grid[x][y] = desiredValue;
+			socket.send("set " + x + " " + y + " = " + (desiredValue ? 1 : 0));
+		}
 	}
 	else {
 		desiredValue = null;
