@@ -17,9 +17,9 @@ public class ZoomHook
 
 	public void handleZoomMessage(Request request)
 	{
-		JsonObject message = Jsoner.deserialize(request.body(), new JsonObject());
-
 		System.out.println(request.body());
+		
+		JsonObject message = Jsoner.deserialize(request.body(), new JsonObject());
 
 		String event = message.getStringOrDefault(mintJsonKey("event", ""));
 		switch(event)
