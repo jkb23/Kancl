@@ -27,10 +27,11 @@
 			<artifactId>slf4j-simple</artifactId>
 			<version>1.7.32</version>
 		</dependency>
+
 		<dependency>
-			<groupId>com.google.collections</groupId>
-			<artifactId>google-collections</artifactId>
-			<version>1.0</version>
+			<groupId>com.github.cliftonlabs</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>4.0.1</version>
 		</dependency>
 	</dependencies>
 

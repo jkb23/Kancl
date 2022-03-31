@@ -29,7 +29,7 @@ public class WebServer
 	}
 
 	private String callZoomHook(Request request, Response response) {
-		zoomHook.accept(request);
+		zoomHook.handleZoomMessage(request);
 		return "OK";
 	}
 }
