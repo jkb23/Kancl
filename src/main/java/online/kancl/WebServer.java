@@ -20,7 +20,7 @@ public class WebServer
 	public void start() {
 		Spark.port(port);
 
-		Spark.staticFiles.location("/public");
+		Spark.staticFiles.externalLocation("web");
 		Spark.webSocket("/websocket", webSocketHandler);
 		Spark.get("/zoomhook", this::callZoomHook);
 		Spark.post("/zoomhook", this::callZoomHook);
