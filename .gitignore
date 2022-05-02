@@ -1,3 +1,4 @@
-.idea
-server.iml
-target
+/.idea
+/server.iml
+/target
+/test/cypress/videos
