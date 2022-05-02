@@ -14,6 +14,9 @@
 	# Forcing SQL DB to be re-created
 	sudo docker volume rm sql_data && sudo docker volume create --name=sql_data
 
+    # Running tests
+    sudo docker-compose -f docker-compose.yml -f test/docker-compose.test.yml up --build
+
 You can also set environment variables `HTTP_PORT` and `HTTPS_PORT`
 to set on which ports the server will listen. The defaults are specified in file `.env`
 

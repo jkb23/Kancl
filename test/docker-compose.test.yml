@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  cypress:
+    image: "cypress/included:9.6.0"
+    depends_on:
+      - caddy
+    environment:
+      - CYPRESS_baseUrl=http://caddy:${HTTP_PORT}
+    working_dir: /test
+    volumes:
+      - ./test:/test
