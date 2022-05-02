@@ -1,5 +1,13 @@
-it("Has correct title", () => {
-	cy.visit("/");
+import * as application from '../testrig/application';
+import * as zoom from '../testrig/zoom';
 
-	cy.get("title").should("contain", "Kancl.online")
+describe('Main page', () => {
+
+	it("reports user in meeting", () => {
+		new zoom.Meeting('topic', 1)
+			.joinParticipant(10, 'John Doe', 'john@example.com');
+
+		application.openMainPage()
+		application.showsConnectedUser('John Doe');
+	});
 });
