@@ -3,11 +3,15 @@ import * as zoom from '../testrig/zoom';
 
 describe('Main page', () => {
 
-	it("reports user in meeting", () => {
-		new zoom.Meeting('topic', 1)
-			.joinParticipant(10, 'John Doe', 'john@example.com');
+	it("shows meeting is empty", () => {
+		application.openMainPage();
+		application.showsEmptyMeeting();
+	});
 
-		application.openMainPage()
+	it("reports user's name in meeting", () => {
+		zoom.joinParticipant('John Doe');
+
+		application.openMainPage();
 		application.showsConnectedUser('John Doe');
 	});
 });
