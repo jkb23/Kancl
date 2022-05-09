@@ -1,8 +1,12 @@
 # Build the server in maven container
 FROM maven:3.8.4-jdk-11 AS build
-COPY src /usr/src/app/src
-COPY pom.xml /usr/src/app
-RUN mvn -f /usr/src/app/pom.xml clean package
+ENV HOME=/usr/app
+RUN mkdir -p $HOME
+WORKDIR $HOME
+ADD pom.xml $HOME
+RUN mvn verify --fail-never
+ADD . $HOME
+RUN mvn package
 
 # Run the server in distroless container
 # https://github.com/GoogleContainerTools/distroless
@@ -15,7 +19,7 @@ RUN mvn -f /usr/src/app/pom.xml clean package
 # sudo docker run --entrypoint=sh -ti kancl-online_server
 FROM gcr.io/distroless/java:debug
 
-COPY --from=build /usr/src/app/target/server-1.0-SNAPSHOT.jar /usr/app/server-1.0-SNAPSHOT.jar
+COPY --from=build /usr/app/target/server-1.0-SNAPSHOT.jar /usr/app/server-1.0-SNAPSHOT.jar
 COPY web /usr/app/web
 EXPOSE 8080
 WORKDIR /usr/app
