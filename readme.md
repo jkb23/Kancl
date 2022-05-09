@@ -1,21 +1,30 @@
 # How to install
 
+Install docker. In Fedora:
 
-	sudo dnf install docker docker-compose
-	sudo systemctl enable docker
-	sudo systemctl start docker
+	dnf install docker docker-compose
+	systemctl enable docker
+	systemctl start docker
 
-	sudo docker volume create --name=sql_data
-	sudo docker-compose up --build
+In Linux run [these post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/)
+to avoid using root.
 
-	# Removing images
-	sudo docker-compose down
+Usage:
 
-	# Forcing SQL DB to be re-created
-	sudo docker volume rm sql_data && sudo docker volume create --name=sql_data
+    #Create volume to store DB data:
+	docker volume create --name=sql_data
 
-    # Running tests
-    sudo docker-compose -f docker-compose.yml -f test/docker-compose.test.yml up --build --exit-code-from cypress
+    # Re-build and start:
+	docker-compose up --build
+
+	# Turn off:
+	docker-compose down
+
+	# Forcing DB to be re-created:
+	docker volume rm sql_data && docker volume create --name=sql_data
+
+    # Running end to end tests:
+    docker-compose -f docker-compose.yml -f test/docker-compose.test.yml up --build --exit-code-from cypress
 
 You can also set environment variables `HTTP_PORT` and `HTTPS_PORT`
 to set on which ports the server will listen. The defaults are specified in file `.env`
