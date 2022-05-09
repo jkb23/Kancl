@@ -20,116 +20,16 @@ public class ZoomHook
 		System.out.println(request.body());
 		
 		JsonObject message = Jsoner.deserialize(request.body(), new JsonObject());
-
-		String event = message.getStringOrDefault(mintJsonKey("event", ""));
-		switch(event)
-		{
-			case "meeting.started":
-				handleMeetingStartedMessage(message);
-				return;
-
-			case "meeting.ended":
-				handleMeetingEndedMessage(message);
-				return;
-
-			case "meeting.participant_joined":
-				handleParticipantJoinedMessage(message);
-				return;
-
-			case "meeting.participant_left":
-				handleParticipantLeftMessage(message);
-				return;
-		}
-	}
-
-	private void handleMeetingStartedMessage(JsonObject message)
-	{
-		Meeting meeting = createMeetingFromMessage(message);
-		if (meeting != null)
-			meetings.meetingStarted(meeting);
-	}
-
-	private void handleMeetingEndedMessage(JsonObject message)
-	{
-		String uniqueId = getMeetingId(message);
-
-		if (!uniqueId.isEmpty())
-		{
-			meetings.meetingEnded(uniqueId);
-		}
+		handleParticipantJoinedMessage(message);
 	}
 
 	private void handleParticipantJoinedMessage(JsonObject message)
 	{
-		Meeting meeting = createMeetingFromMessage(message);
-		Participant participant = createParticipantFromMessage(message);
-
-		if (meeting != null && participant != null)
-		{
-			meetings.participantJoined(meeting, participant);
-		}
-	}
-
-	private void handleParticipantLeftMessage(JsonObject message)
-	{
-		String meetingId = getMeetingId(message);
-		JsonObject participantObject = getParticipantObject(message);
-		String userId = participantObject.getStringOrDefault(mintJsonKey("user_id", ""));
-
-		if (!meetingId.isEmpty() && !userId.isEmpty())
-		{
-			meetings.participantLeft(meetingId, userId);
-		}
-	}
-
-	private Meeting createMeetingFromMessage(JsonObject message)
-	{
-		JsonObject meetingObject = getPayloadObject(message);
-
-		String uniqueId = meetingObject.getStringOrDefault(mintJsonKey("uuid", ""));
-		String topic = meetingObject.getStringOrDefault(mintJsonKey("topic", ""));
-
-		if (!uniqueId.isEmpty())
-		{
-			return new Meeting(uniqueId, topic);
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	private Participant createParticipantFromMessage(JsonObject message)
-	{
-		JsonObject participantObject = getParticipantObject(message);
-
-		String userId = participantObject.getStringOrDefault(mintJsonKey("user_id", ""));
-		String userName = participantObject.getStringOrDefault(mintJsonKey("user_name", ""));
-
-		if (!userId.isEmpty() && !userName.isEmpty())
-		{
-			return new Participant(userId, userName);
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	private String getMeetingId(JsonObject message)
-	{
-		return getPayloadObject(message).getStringOrDefault(mintJsonKey("uuid", ""));
-	}
-
-	private JsonObject getPayloadObject(JsonObject message)
-	{
 		JsonObject payload = message.getMapOrDefault(mintJsonKey("payload", new JsonObject()));
-		return payload.getMapOrDefault(mintJsonKey("object", new JsonObject()));
-	}
+		JsonObject meetingObject = payload.getMapOrDefault(mintJsonKey("object", new JsonObject()));
+		JsonObject participantObject = meetingObject.getMapOrDefault(mintJsonKey("participant", new JsonObject()));
+		String participantName = participantObject.getStringOrDefault(mintJsonKey("user_name", ""));
 
-	private JsonObject getParticipantObject(JsonObject message)
-	{
-		JsonObject meetingObject = getPayloadObject(message);
-		return meetingObject.getMapOrDefault(mintJsonKey("participant", new JsonObject()));
+		meetings.participantJoined(participantName);
 	}
 }
