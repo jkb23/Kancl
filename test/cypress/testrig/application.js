@@ -3,10 +3,10 @@ export function openMainPage() {
 }
 
 export function showsConnectedUser(name) {
-	cy.get("pre").should("contain", name);
+	cy.get("p").should("contain", name);
 }
 
 export function showsEmptyMeeting()
 {
-	cy.get("pre").should("contain", "No participant")
+	cy.get("p").should("contain", "No participant")
 }
