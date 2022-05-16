@@ -28,10 +28,18 @@
 			<version>1.7.32</version>
 		</dependency>
 
+		<!-- Parsing JSON -->
 		<dependency>
 			<groupId>com.github.cliftonlabs</groupId>
 			<artifactId>json-simple</artifactId>
 			<version>4.0.1</version>
+		</dependency>
+
+		<!-- Mustache templating language -->
+		<dependency>
+			<groupId>com.github.spullara.mustache.java</groupId>
+			<artifactId>compiler</artifactId>
+			<version>0.9.10</version>
 		</dependency>
 	</dependencies>
 

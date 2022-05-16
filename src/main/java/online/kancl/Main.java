@@ -1,5 +1,7 @@
 package online.kancl;
 
+import com.github.mustachejava.DefaultMustacheFactory;
+import com.github.mustachejava.MustacheFactory;
 import online.kancl.controller.MainPageController;
 
 public class Main
@@ -8,7 +10,8 @@ public class Main
 	{
 		Meetings meetings = new Meetings();
 		ZoomHook zoomHook = new ZoomHook(meetings);
-		MainPageController mainPageController = new MainPageController(meetings);
+		MustacheFactory mustacheFactory = new DefaultMustacheFactory();
+		MainPageController mainPageController = new MainPageController(mustacheFactory, meetings);
 
 		WebServer webServer = new WebServer(8080, zoomHook, mainPageController);
 		webServer.start();
