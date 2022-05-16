@@ -20,7 +20,6 @@ RUN mvn package
 FROM gcr.io/distroless/java:debug
 
 COPY --from=build /usr/app/target/server-1.0-SNAPSHOT.jar /usr/app/server-1.0-SNAPSHOT.jar
-COPY web /usr/app/web
 EXPOSE 8080
 WORKDIR /usr/app
 ENTRYPOINT ["java","-jar","/usr/app/server-1.0-SNAPSHOT.jar"]

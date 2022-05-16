@@ -11,6 +11,12 @@ services:
         depends_on:
             - db
 
+        volumes:
+            - type: bind
+              source: ./web
+              target: /usr/app/web
+              read_only: true
+
     db:
         image: mariadb:10.7
         container_name: db
