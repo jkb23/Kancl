@@ -14,10 +14,4 @@ describe('Main page', () => {
 		application.openMainPage();
 		application.showsConnectedUser('John Doe');
 	});
-
-	it("reports user's name in meeting without page reload", () => {
-		application.openMainPage();
-		zoom.joinParticipant('John Doe');
-		application.showsConnectedUser('John Doe');
-	});
 });

@@ -8,5 +8,5 @@ export function showsConnectedUser(name) {
 
 export function showsEmptyMeeting()
 {
-	cy.get("pre").should("contain", "[]")
+	cy.get("pre").should("contain", "No participant")
 }

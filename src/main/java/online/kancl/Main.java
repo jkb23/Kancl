@@ -1,19 +1,16 @@
 package online.kancl;
 
-import spark.Spark;
+import online.kancl.controller.MainPageController;
 
 public class Main
 {
 	public static void main(String[] args)
 	{
-		WebSocketHandler webSocketHandler = new WebSocketHandler();
-		Meetings meetings = new Meetings(webSocketHandler);
+		Meetings meetings = new Meetings();
 		ZoomHook zoomHook = new ZoomHook(meetings);
+		MainPageController mainPageController = new MainPageController(meetings);
 
-		WebServer webServer = new WebServer(8080, zoomHook, webSocketHandler);
-
-		Spark.exception(Exception.class, (exception, request, response) -> exception.printStackTrace());
-
+		WebServer webServer = new WebServer(8080, zoomHook, mainPageController);
 		webServer.start();
 
 		System.out.println("Server running");
