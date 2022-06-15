@@ -60,7 +60,7 @@ Defaults env_keep += "HTTP_PORT HTTPS_PORT DOMAIN"
 ### 3. Clone and set-up git hooks
 The following steps will allow the production server to automatically
 test and deploy the code whenever git repository receives a new commit
-in branch `master`.
+in branch `main`.
 
 ```
 # clone repo and copy post-receive script out of it
