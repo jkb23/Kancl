@@ -12,7 +12,7 @@ docker container prune
 echo -e ""
 echo -e "${GREEN}Running tests${NC}"
 echo -e ""
-(export HTTP_PORT=8080; export HTTPS_PORT=8081; export DOMAIN=''; docker-compose -f docker-compose.yml -f test/docker-compose.test.yml up --build --exit-code-from cypress)
+(export HTTP_PORT=8080; export HTTPS_PORT=8081; export DOMAIN=''; docker-compose -f docker-compose.yml -f test/docker-compose.test.yml up -p 'kancl-online-test' --build --exit-code-from cypress)
 
 echo -e ""
 echo -e "${GREEN}Deploying${NC}"
