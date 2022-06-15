@@ -7,8 +7,6 @@ NC='\033[0m' # No Color
 # exit script on first error
 set -e
 
-#docker container prune -f
-
 echo -e ""
 echo -e "${GREEN}Running tests${NC}"
 echo -e ""
@@ -25,4 +23,5 @@ cp -R . /opt/kancl.online/
 cd /opt/kancl.online
 
 docker-compose down
+docker container prune -f
 docker-compose up --build --detach
