@@ -12,7 +12,7 @@ BUILD_LOG='/opt/kancl.online-build-logs/0000.log'
 NUMBER=0
 NUMBER_STRING="0000"
 while [ -e "$BUILD_LOG" ]; do
-    printf -v BUILD_LOG '%04d.log' "$(( ++NUMBER ))"
+    printf -v BUILD_LOG '/opt/kancl.online-build-logs/%04d.log' "$(( ++NUMBER ))"
     printf -v NUMBER_STRING '%04d' "$(( NUMBER ))"
 done
 touch "$BUILD_LOG"
