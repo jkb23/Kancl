@@ -34,6 +34,7 @@ Usage:
 You can also set environment variables `HTTP_PORT` and `HTTPS_PORT`
 to set on which ports the server will listen. The defaults are specified in file `.env`
 
+
 ## Production server set-up
 
 ### 1. Install docker, generate key
