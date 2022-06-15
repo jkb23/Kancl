@@ -17,4 +17,12 @@ echo -e ""
 echo -e ""
 echo -e "${GREEN}Deploying${NC}"
 echo -e ""
+
+mkdir -p /opt/kancl.online
+rm -rf /opt/kancl.online
+mkdir -p /opt/kancl.online
+cp -R . /opt/kancl.online/
+cd /opt/kancl.online
+
+docker-compose down
 docker-compose up --build --detach
