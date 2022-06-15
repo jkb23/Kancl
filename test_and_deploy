@@ -10,13 +10,15 @@ set -e
 # create a file for build log
 BUILD_LOG='/opt/kancl.online-build-logs/0000.log'
 NUMBER=0
-while [ -e "$fname" ]; do
-    printf -v fname '%04d.log' "$(( ++NUMBER ))"
+NUMBER_STRING="0000"
+while [ -e "$BUILD_LOG" ]; do
+    printf -v BUILD_LOG '%04d.log' "$(( ++NUMBER ))"
+    printf -v NUMBER_STRING '%04d' "$(( NUMBER ))"
 done
 touch "$BUILD_LOG"
 
 echo -e ""
-echo -e "${GREEN}Track this build in: https://${DOMAIN}/build-logs/${NUMBER}.log${NC}"
+echo -e "${GREEN}Track this build in: https://${DOMAIN}/build-logs/${NUMBER_STRING}.log${NC}"
 
 echo -e "${GREEN}Running tests${NC}"
 {
