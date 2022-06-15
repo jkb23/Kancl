@@ -7,6 +7,8 @@ NC='\033[0m' # No Color
 # exit script on first error
 set -e
 
+docker container prune
+
 echo -e ""
 echo -e "${GREEN}Running tests${NC}"
 echo -e ""
