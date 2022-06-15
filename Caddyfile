@@ -1,5 +1,17 @@
-http://{$DOMAIN:localhost}:{$HTTP_PORT}, https://{$DOMAIN:localhost}:{$HTTPS_PORT}
+http://{$DOMAIN:localhost}:{$HTTP_PORT}, https://{$DOMAIN:localhost}:{$HTTPS_PORT} {
 
-reverse_proxy http://server:8080
+	@buildlogs {
+    	path /build-logs/*
+    }
 
-encode zstd gzip
+    @notbuildlogs {
+    	not path /build-logs/*
+    }
+
+	file_server @buildlogs browse {
+		root /var/www/build-logs
+	}
+
+	reverse_proxy @notbuildlogs http://server:8080
+	encode zstd gzip
+}

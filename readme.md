@@ -15,8 +15,12 @@ Usage:
 	docker volume create --name=sql_data
     docker volume create --name=caddy_data
 
+    # Create directory for build logs
+    sudo mkdir -p  /opt/kancl.online-build-logs
+    sudo chown $(id -u):$(id -g)  /opt/kancl.online-build-logs
+
     # Re-build and start:
-	docker-compose -f db-docker-compose.yml -f docker-compose.test.yml up --build
+	docker-compose -f db-docker-compose.yml -f docker-compose.yml up --build
 
 	# Turn off:
 	docker-compose -f docker-compose.yml -f db-docker-compose.yml down

@@ -32,6 +32,10 @@ services:
             - $PWD/Caddyfile:/etc/caddy/Caddyfilex
             - caddy_data:/data
             - caddy_config:/config
+            - type: bind
+              source: /opt/kancl.online-build-logs
+              target: /var/www/build-logs
+              read_only: true
 
         healthcheck:
             test: ["CMD", "caddy", "version"]
