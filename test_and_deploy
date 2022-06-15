@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+
+# exit script on first error
+set -e
+
+echo "Building"

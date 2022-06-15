@@ -41,12 +41,6 @@ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 Add the generated public key as
 [GitHub deploy key](https://github.com/Strix-CZ/kancl-online/settings/keys).
 
-### 2. Clone
-
-```
-git clone git@github.com:Strix-CZ/kancl-online.git
-``` 
-
 ### 2. Set-up environment variables
 
 Add the following to `/etc/environment`
@@ -62,6 +56,29 @@ when running sudo.
 ```
 Defaults env_keep += "HTTP_PORT HTTPS_PORT DOMAIN"
 ```
+
+### 3. Clone and set-up git hooks
+The following steps will allow the production server to automatically
+test and deploy the code whenever git repository receives a new commit
+in branch `master`.
+
+```
+# clone repo and copy post-receive script out of it
+cd ~
+git clone git@github.com:Strix-CZ/kancl-online.git kancl-online
+cp kancl-online/git_hooks/post-receive post-receive
+rm -rf kancl-online
+
+# clone repo as bare and move post-receive script into the hooks dir
+git clone --bare git@github.com:Strix-CZ/kancl-online.git kancl-online
+mv post-receive kancl-online/hooks/
+```
+
+To be able to push to the bare repo easily (`git push production`) add it as a new remote:
+```
+git remote add production ssh://USER@URL/~/kancl-online.git/
+```
+
 
 ## Examples of Zoom calling the web hook
 
