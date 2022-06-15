@@ -15,7 +15,7 @@ trap clean_up EXIT
 # for each received branch
 while read oldrev newrev ref
 do
-	if [[ $ref =~ .*/master$ ]];
+	if [[ $ref =~ .*/main ]];
 	then
 		echo "Received update to branch $ref. Deploying..."
 
@@ -28,6 +28,6 @@ do
 		# build it
 		./test_and_deploy
 	else
-		echo "Only branch master will be deployed on this server, received $ref."
+		echo "Only branch main will be deployed on this server, received $ref."
 	fi
 done
