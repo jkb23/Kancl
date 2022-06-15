@@ -23,6 +23,6 @@ mkdir -p /opt/kancl.online
 cp -R . /opt/kancl.online/
 cd /opt/kancl.online
 
-docker-compose down
+docker-compose -f docker-compose.yml -f db-docker-compose.yml down
 docker container prune -f
-docker-compose -f db-docker-compose.yml -f docker-compose.test.yml up --build -- detach
+docker-compose -f docker-compose.yml -f db-docker-compose.yml up --build --detach

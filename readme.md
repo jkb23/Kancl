@@ -19,7 +19,7 @@ Usage:
 	docker-compose -f db-docker-compose.yml -f docker-compose.test.yml up --build
 
 	# Turn off:
-	docker-compose down
+	docker-compose -f docker-compose.yml -f db-docker-compose.yml down
 
 	# Forcing DB to be re-created:
 	docker volume rm sql_data && docker volume create --name=sql_data
