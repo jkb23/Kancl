@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   db:
     image: mariadb:10.7
@@ -16,17 +14,8 @@ services:
         source: ./sql
         target: /docker-entrypoint-initdb.d
         read_only: true
-      - test_sql_data:/var/lib/mysql
-
-  cypress:
-    image: "cypress/included:9.6.0"
-    depends_on:
-      - caddy
-    environment:
-      - CYPRESS_baseUrl=http://caddy:${HTTP_PORT}
-    working_dir: /test
-    volumes:
-      - ./test:/test
+      - sql_data:/var/lib/mysql
 
 volumes:
-  test_sql_data:
+  sql_data:
+    external: true

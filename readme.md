@@ -15,7 +15,7 @@ Usage:
 	docker volume create --name=sql_data
 
     # Re-build and start:
-	docker-compose up --build
+	docker-compose -f db-docker-compose.yml -f docker-compose.test.yml up --build
 
 	# Turn off:
 	docker-compose down

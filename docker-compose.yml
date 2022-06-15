@@ -16,24 +16,6 @@ services:
               target: /usr/app/web
               read_only: true
 
-    db:
-        image: mariadb:10.7
-        restart: unless-stopped
-
-        environment:
-            MARIADB_USER: "user"
-            MARIADB_PASSWORD: "password"
-            MARIADB_ROOT_PASSWORD: "rootpassword"
-            MARIADB_DATABASE: "kanclOnline"
-
-        volumes:
-            - type: bind
-              source: ./sql
-              target: /docker-entrypoint-initdb.d
-              read_only: true
-            - sql_data:/var/lib/mysql
-
-
     caddy:
         # https://hub.docker.com/_/caddy
         build:
@@ -65,5 +47,3 @@ volumes:
     caddy_data:
         external: true
     caddy_config:
-    sql_data:
-        external: true
