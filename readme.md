@@ -11,8 +11,9 @@ to avoid using root.
 
 Usage:
 
-    #Create volume to store DB data:
+    # Create persistent volumes
 	docker volume create --name=sql_data
+    docker volume create --name=caddy_data
 
     # Re-build and start:
 	docker-compose -f db-docker-compose.yml -f docker-compose.test.yml up --build
