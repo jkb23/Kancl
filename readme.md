@@ -74,9 +74,11 @@ git clone --bare git@github.com:Strix-CZ/kancl-online.git kancl-online
 mv post-receive kancl-online/hooks/
 ```
 
+**TODO**: put the repo in a shared folder, create a user group with access to the repo, create users with access to the repo 
+
 To be able to push to the bare repo easily (`git push production`) add it as a new remote:
 ```
-git remote add production ssh://USER@URL/~/kancl-online.git/
+git remote add production ssh://USER@URL/~/kancl-online
 ```
 
 
