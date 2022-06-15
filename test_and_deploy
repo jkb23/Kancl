@@ -51,7 +51,9 @@ echo -e "${GREEN}Deploying${NC}"
 } >> "$BUILD_LOG" 2>&1
 
 # remove color codes
-cat "$BUILD_LOG" | sed -e 's/\x1b\[[0-9;]*m//g' > "$BUILD_LOG"
+cat "${BUILD_LOG}" | sed -e 's/\x1b\[[0-9;]*m//g' > "${BUILD_LOG}.2"
+rm "${BUILD_LOG}"
+mv "${BUILD_LOG}.2" "$BUILD_LOG"
 
 echo -e "${GREEN}Success${NC}"
 echo -e ""
