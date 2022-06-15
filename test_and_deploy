@@ -7,22 +7,46 @@ NC='\033[0m' # No Color
 # exit script on first error
 set -e
 
+# create a file for build log
+BUILD_LOG='/opt/kancl.online-build-logs/0000.log'
+NUMBER=0
+while [ -e "$fname" ]; do
+    printf -v fname '%04d.log' "$(( ++NUMBER ))"
+done
+touch "$BUILD_LOG"
+
 echo -e ""
+echo -e "${GREEN}Track this build in: https://${DOMAIN}/build-logs/${NUMBER}.log${NC}"
+
 echo -e "${GREEN}Running tests${NC}"
-echo -e ""
-(export HTTP_PORT=8080; export HTTPS_PORT=8081; export DOMAIN=''; docker-compose -f docker-compose.yml -f test/docker-compose.test.yml -p test up --build --exit-code-from cypress)
+{
+  echo "Running tests"
+  echo "-------------"
+  echo ""
+  (export HTTP_PORT=8080; export HTTPS_PORT=8081; export DOMAIN=''; docker-compose -f docker-compose.yml -f test/docker-compose.test.yml -p test up --build --exit-code-from cypress)
+} >> "$BUILD_LOG"
 
 
-echo -e ""
 echo -e "${GREEN}Deploying${NC}"
+{
+  echo ""
+  echo "Deploying"
+  echo "-------------"
+  echo ""
+  mkdir -p /opt/kancl.online
+  rm -rf /opt/kancl.online
+  mkdir -p /opt/kancl.online
+  cp -R . /opt/kancl.online/
+  cd /opt/kancl.online
+
+  docker-compose -f docker-compose.yml -f db-docker-compose.yml down
+  docker container prune -f
+  docker-compose -f docker-compose.yml -f db-docker-compose.yml up --build --detach
+
+  echo ""
+  echo "Success"
+  echo ""
+} >> "$BUILD_LOG"
+
+echo -e "${GREEN}Success${NC}"
 echo -e ""
-
-mkdir -p /opt/kancl.online
-rm -rf /opt/kancl.online
-mkdir -p /opt/kancl.online
-cp -R . /opt/kancl.online/
-cd /opt/kancl.online
-
-docker-compose -f docker-compose.yml -f db-docker-compose.yml down
-docker container prune -f
-docker-compose -f docker-compose.yml -f db-docker-compose.yml up --build --detach
