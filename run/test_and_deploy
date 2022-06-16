@@ -42,9 +42,9 @@ echo -e "${GREEN}Deploying${NC}"
   cp -R . /opt/kancl.online/
   cd /opt/kancl.online/run
 
-  docker-compose -f docker-compose.yml -f db-docker-compose.yml down
-  docker container prune -f
+  docker stop $(docker ps -q)
   docker-compose -f docker-compose.yml -f db-docker-compose.yml up --build --detach
+  docker container prune -f
 
   echo ""
   echo "Success"
