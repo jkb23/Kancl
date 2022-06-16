@@ -25,9 +25,6 @@ echo -e "${GREEN}Running tests${NC}"
   echo "Running tests"
   echo "-------------"
   echo ""
-  pwd
-  ls -lah
-  cd run
   (export HTTP_PORT=8080; export HTTPS_PORT=8081; export DOMAIN=''; docker-compose -f docker-compose.yml -f docker-compose.test.yml -p test up --build --exit-code-from cypress)
 } >> "$BUILD_LOG" 2>&1
 
