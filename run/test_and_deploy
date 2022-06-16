@@ -23,7 +23,7 @@ echo -e "${GREEN}Track this build in: https://${DOMAIN}/build-logs/${NUMBER_STRI
 function onError()
 {
   echo -e
-  echo -e "${RED}Failed{NC}"
+  echo -e "${RED}Failed${NC}"
   echo -e "Last 20 lines from the log: "
   echo -e ""
   tail -20 "$BUILD_LOG"
@@ -69,5 +69,3 @@ mv "${BUILD_LOG}.2" "$BUILD_LOG"
 
 echo -e "${GREEN}Success${NC}"
 echo -e ""
-
-cd nonexist
