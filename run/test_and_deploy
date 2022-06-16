@@ -25,7 +25,8 @@ echo -e "${GREEN}Running tests${NC}"
   echo "Running tests"
   echo "-------------"
   echo ""
-  (export HTTP_PORT=8080; export HTTPS_PORT=8081; export DOMAIN=''; docker-compose -f docker-compose.yml -f test/docker-compose.test.yml -p test up --build --exit-code-from cypress)
+  cd run
+  (export HTTP_PORT=8080; export HTTPS_PORT=8081; export DOMAIN=''; docker-compose -f docker-compose.yml -f docker-compose.test.yml -p test up --build --exit-code-from cypress)
 } >> "$BUILD_LOG" 2>&1
 
 
@@ -39,7 +40,7 @@ echo -e "${GREEN}Deploying${NC}"
   rm -rf /opt/kancl.online
   mkdir -p /opt/kancl.online
   cp -R . /opt/kancl.online/
-  cd /opt/kancl.online
+  cd /opt/kancl.online/run
 
   docker-compose -f docker-compose.yml -f db-docker-compose.yml down
   docker container prune -f
