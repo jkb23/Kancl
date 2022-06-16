@@ -1,4 +1,6 @@
 {
 	"pluginsFile": false,
-	"supportFile": false
+	"supportFile": false,
+	"pageLoadTimeout": 20000,
+	"responseTimeout": 10000
 }

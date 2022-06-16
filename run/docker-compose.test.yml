@@ -1,4 +1,4 @@
-version: "3.7"
+version: '3.7'
 
 services:
   db:
@@ -13,11 +13,16 @@ services:
 
     volumes:
       - type: bind
-        source: ./sql
+        source: ../sql
         target: /docker-entrypoint-initdb.d
         read_only: true
-      - sql_data:/var/lib/mysql
 
-volumes:
-  sql_data:
-    external: true
+  cypress:
+    image: "cypress/included:9.6.0"
+    depends_on:
+      - caddy
+    environment:
+      - CYPRESS_baseUrl=http://caddy:${HTTP_PORT}
+    working_dir: /test
+    volumes:
+      - ../test:/test

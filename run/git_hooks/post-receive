@@ -26,6 +26,7 @@ do
 		cd $TEMP_DIR
 
 		# build it
+		cd run
 		./test_and_deploy
 	else
 		echo "Only branch main will be deployed on this server, received $ref."

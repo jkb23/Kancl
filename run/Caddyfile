@@ -1,4 +1,4 @@
-http://{$DOMAIN:localhost}:{$HTTP_PORT}, https://{$DOMAIN:localhost}:{$HTTPS_PORT} {
+http://{$DOMAIN:localhost}:{$HTTP_PORT}, https://{$DOMAIN:localhost}:{$HTTPS_PORT}, http://caddy:{$HTTP_PORT} {
 	encode zstd gzip
 
 	handle {

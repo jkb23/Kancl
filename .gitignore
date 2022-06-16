@@ -2,3 +2,4 @@
 /server.iml
 /target
 /test/cypress/videos
+/test/cypress/screenshots

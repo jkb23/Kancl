@@ -29,7 +29,8 @@ Usage:
 	docker volume rm sql_data && docker volume create --name=sql_data
 
     # Running end to end tests:
-    docker-compose -f docker-compose.yml -f test/docker-compose.test.yml up --build --exit-code-from cypress
+    cd run
+    docker-compose -f docker-compose.yml -f docker-compose.test.yml up --build --exit-code-from cypress
 
 You can also set environment variables `HTTP_PORT` and `HTTPS_PORT`
 to set on which ports the server will listen. The defaults are specified in file `.env`
@@ -72,7 +73,7 @@ in branch `main`.
 # clone repo and copy post-receive script out of it
 cd ~
 git clone git@github.com:Strix-CZ/kancl-online.git kancl-online
-cp kancl-online/git_hooks/post-receive post-receive
+cp kancl-online/build/git_hooks/post-receive post-receive
 rm -rf kancl-online
 
 # clone repo as bare and move post-receive script into the hooks dir
