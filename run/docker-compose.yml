@@ -1,47 +1,19 @@
 version: "3.7"
 
 services:
-    server:
+    app:
         build:
             context: ..
-            dockerfile: run/server.Dockerfile
+            dockerfile: ./Dockerfile
         restart: unless-stopped
-
-        depends_on:
-            - db
 
         volumes:
             - type: bind
               source: ../web
               target: /usr/app/web
               read_only: true
-
-    caddy:
-        # https://hub.docker.com/_/caddy
-        build:
-            context: .
-            dockerfile: caddy.Dockerfile
-        restart: unless-stopped
-
-        environment:
-          HTTP_PORT: ${HTTP_PORT}
-          HTTPS_PORT: ${HTTPS_PORT}
-          DOMAIN: ${DOMAIN}
-
-        volumes:
-            - $PWD/Caddyfile:/etc/caddy/Caddyfilex
             - caddy_data:/data
             - caddy_config:/config
-            - type: bind
-              source: /opt/kancl.online-build-logs
-              target: /var/www/build-logs
-              read_only: true
-
-        healthcheck:
-            test: ["CMD", "caddy", "version"]
-
-        depends_on:
-            - server
 
         ports:
             - "${HTTP_PORT}:${HTTP_PORT}/tcp"

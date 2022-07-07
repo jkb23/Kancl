@@ -1,22 +1,6 @@
 version: '3.7'
 
 services:
-  db:
-    image: mariadb:10.7
-    restart: unless-stopped
-
-    environment:
-      MARIADB_USER: "user"
-      MARIADB_PASSWORD: "password"
-      MARIADB_ROOT_PASSWORD: "rootpassword"
-      MARIADB_DATABASE: "kanclOnline"
-
-    volumes:
-      - type: bind
-        source: ../sql
-        target: /docker-entrypoint-initdb.d
-        read_only: true
-
   cypress:
     image: "cypress/included:9.6.0"
     depends_on:
