@@ -15,7 +15,9 @@ variables:
 
 build:
   stage: build
-  image: jansimonek/caddy-maria-maven:0.1.2
+  image:
+    name: jansimonek/caddy-maria-maven:0.1.2
+    entrypoint: [""]
   before_script:
     - rm /etc/caddy/Caddyfile && cp run/Caddyfile /etc/caddy/Caddyfile
     - caddy reload
