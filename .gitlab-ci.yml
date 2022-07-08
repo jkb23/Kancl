@@ -22,7 +22,7 @@ build:
     - ls
     - pwd
     - rm /etc/caddy/Caddyfile && cp run/Caddyfile /etc/caddy/Caddyfile
-    - caddy reload
+    - caddy reload --config /etc/caddy/Caddyfile
   script:
     - mvn package
 
