@@ -44,7 +44,7 @@ end-to-end-tests:
       -w /e2e
       -e CYPRESS_baseUrl="$CYPRESS_baseUrl"
       cypress/included:9.6.0
-artifacts:
+  artifacts:
     untracked: false
     expire_in: 4 hours
     when: on_failure
