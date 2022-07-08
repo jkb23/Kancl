@@ -43,7 +43,7 @@ end-to-end-tests:
         - java -jar target/server-1.0-SNAPSHOT.jar
 
   image:
-    name: cypress/included:9.6.0
+    name: cypress/included:10.3.0
     entrypoint: [""]
 
   script:
