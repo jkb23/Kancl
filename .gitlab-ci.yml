@@ -11,6 +11,7 @@ variables:
   MYSQL_PASSWORD: password
   MYSQL_ROOT_PASSWORD: rootpassword
   MYSQL_DATABASE: kanclOnline
+  CYPRESS_baseUrl: http://app:$8080
 
 build:
   stage: build
@@ -26,19 +27,29 @@ build:
 
 end-to-end-tests:
   stage: end-to-end-tests
+
+  services:
+    - name: app
+      alias: app
+      command:
+        - echo "Creating Database"
+        - /scripts/prepare-maria-db.sh
+        - echo "Starting Caddy server"
+        - rm /etc/caddy/Caddyfile
+        - cp run/Caddyfile /etc/caddy/Caddyfile
+        - caddy run --config /etc/caddy/Caddyfile --adapter caddyfile &
+        - echo "Starting Java application"
+      entrypoint:
+        - java -jar target/server-1.0-SNAPSHOT.jar
+
   image:
-    name: jansimonek/caddy-maria-java:0.1.1
-  before_script:
-    - echo "Creating Database"
-    - /scripts/prepare-maria-db.sh
-    - echo "Starting Caddy server"
-    - rm /etc/caddy/Caddyfile
-    - cp run/Caddyfile /etc/caddy/Caddyfile
-    - caddy run --config /etc/caddy/Caddyfile --adapter caddyfile &
-    - echo "Starting Java application"
-    - java -jar target/server-1.0-SNAPSHOT.jar &
+    name: cypress/included:9.6.0
+    entrypoint: [""]
+
   script:
-    - echo run cypress
+    - cp -r test/* /test
+    - cd /test
+    - cypress run
 
 deploy:
   stage: deploy
