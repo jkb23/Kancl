@@ -1,5 +1,4 @@
 stages:
-  - build
   - end-to-end-tests
   - deploy
 
@@ -13,18 +12,6 @@ variables:
   MYSQL_DATABASE: kanclOnline
   CYPRESS_baseUrl: http://app:$8080
 
-build:
-  stage: build
-  image: maven:3.8.6-openjdk-11
-  script:
-    - mvn test
-    - mvn package
-  artifacts:
-    untracked: false
-    expire_in: 1 day
-    paths:
-      - target/server-1.0-SNAPSHOT.jar
-
 end-to-end-tests:
   stage: end-to-end-tests
 
@@ -34,17 +21,9 @@ end-to-end-tests:
       command:
         - /bin/bash
         - -c
-        - >
-          echo 'Creating Database' &&
+        - |
           pwd &&
-          ls &&
-          /scripts/prepare-maria-db.sh &&
-          echo 'Starting Caddy server' &&
-          rm /etc/caddy/Caddyfile &&
-          cp run/Caddyfile /etc/caddy/Caddyfile &&
-          caddy run --config /etc/caddy/Caddyfile --adapter caddyfile & &&
-          echo 'Starting Java application' &&
-          java -jar target/server-1.0-SNAPSHOT.jar &
+          ls
       entrypoint: [""]
 
   image:
