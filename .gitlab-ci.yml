@@ -33,6 +33,8 @@ end-to-end-tests:
       alias: app
       command:
         - echo "Creating Database" &&
+        - pwd &&
+        - ls &&
         - /scripts/prepare-maria-db.sh &&
         - echo "Starting Caddy server" &&
         - rm /etc/caddy/Caddyfile &&
