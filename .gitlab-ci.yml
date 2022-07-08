@@ -23,7 +23,9 @@ end-to-end-tests:
         - -c
         - |
           pwd &&
-          ls
+          echo "ahoj" &&
+          mkdir bla &&
+          ls -lah
       entrypoint: [""]
 
   image:
