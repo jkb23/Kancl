@@ -32,8 +32,10 @@ end-to-end-tests:
     - name: jansimonek/caddy-maria-java:0.1.1
       alias: app
       command:
+        - bin/bash
+        - -c
         - >
-          /bin/bash-c "echo 'Creating Database' &&
+          "echo 'Creating Database' &&
           pwd &&
           ls &&
           /scripts/prepare-maria-db.sh &&
