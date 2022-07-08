@@ -1,3 +1,7 @@
+image:
+  name: jansimonek/caddy-maria-maven:0.1.2
+  entrypoint: [""]   
+
 stages:
   - build
   - unit-tests
@@ -16,9 +20,6 @@ variables:
 
 build:
   stage: build
-  image:
-    name: jansimonek/caddy-maria-maven:0.1.2
-    entrypoint: [""]   
   script:
     - mvn package
 
