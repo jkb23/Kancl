@@ -1,11 +1,5 @@
-image:
-  name: jansimonek/caddy-maria-maven:0.1.2
-  entrypoint: [""]   
-
 stages:
   - build
-  - unit-tests
-  - start-db
   - end-to-end-tests
   - deploy
 
@@ -20,24 +14,27 @@ variables:
 
 build:
   stage: build
-  script:
-    - mvn package
-
-unit-tests:
-  stage: unit-tests
+  image: 3.8.6-openjdk-11
   script:
     - mvn test
-
-start-db:
-  stage: start-db
-  script:
-    - echo todo /scripts/run.sh
+    - mvn package
+  artifacts:
+    untracked: false
+    expire_in: 1 day
+    paths:
+      - target/server-1.0-SNAPSHOT.jar
 
 end-to-end-tests:
   stage: end-to-end-tests
+  image:
+    name: jansimonek/caddy-maria-maven:0.1.2
+    entrypoint: [""]   
   before_script:
-    - rm /etc/caddy/Caddyfile && cp run/Caddyfile /etc/caddy/Caddyfile
-    - caddy run --config /etc/caddy/Caddyfile --adapter caddyfile &
+    - ls
+    - ls target
+    - echo todo /scripts/run.sh
+    - echo rm /etc/caddy/Caddyfile && cp run/Caddyfile /etc/caddy/Caddyfile
+    - echo caddy run --config /etc/caddy/Caddyfile --adapter caddyfile &
   script:
     - echo run cypress
 
