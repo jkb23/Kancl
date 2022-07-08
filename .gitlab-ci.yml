@@ -39,8 +39,8 @@ end-to-end-tests:
         - cp run/Caddyfile /etc/caddy/Caddyfile
         - caddy run --config /etc/caddy/Caddyfile --adapter caddyfile &
         - echo "Starting Java application"
-      entrypoint:
-        - java -jar target/server-1.0-SNAPSHOT.jar
+        - java -jar target/server-1.0-SNAPSHOT.jar &
+      entrypoint: [""]
 
   image:
     name: cypress/included:10.3.0
