@@ -32,16 +32,17 @@ end-to-end-tests:
     - name: jansimonek/caddy-maria-java:0.1.1
       alias: app
       command:
-        - echo "Creating Database" &&
-        - pwd &&
-        - ls &&
-        - /scripts/prepare-maria-db.sh &&
-        - echo "Starting Caddy server" &&
-        - rm /etc/caddy/Caddyfile &&
-        - cp run/Caddyfile /etc/caddy/Caddyfile &&
-        - caddy run --config /etc/caddy/Caddyfile --adapter caddyfile & &&
-        - echo "Starting Java application" &&
-        - java -jar target/server-1.0-SNAPSHOT.jar &
+        - >
+          /bin/bash-c "echo 'Creating Database' &&
+          pwd &&
+          ls &&
+          /scripts/prepare-maria-db.sh &&
+          echo 'Starting Caddy server' &&
+          rm /etc/caddy/Caddyfile &&
+          cp run/Caddyfile /etc/caddy/Caddyfile &&
+          caddy run --config /etc/caddy/Caddyfile --adapter caddyfile & &&
+          echo 'Starting Java application' &&
+          java -jar target/server-1.0-SNAPSHOT.jar &
       entrypoint: [""]
 
   image:
