@@ -29,7 +29,7 @@ end-to-end-tests:
   stage: end-to-end-tests
 
   services:
-    - name: app
+    - name: jansimonek/caddy-maria-java:0.1.1
       alias: app
       command:
         - echo "Creating Database"
