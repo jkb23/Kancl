@@ -1,10 +1,9 @@
 stages:
+  - build
   - end-to-end-tests
   - deploy
 
 variables:
-  HTTP_PORT: 8080
-  HTTPS_PORT: 8081
   DOMAIN: ""
   MYSQL_USER: user
   MYSQL_PASSWORD: password
@@ -12,30 +11,45 @@ variables:
   MYSQL_DATABASE: kanclOnline
   CYPRESS_baseUrl: http://app:$8080
 
+build:
+  stage: build
+  image: maven:3.8.6-openjdk-11
+  script:
+    - mvn test
+    - mvn package
+  artifacts:
+    untracked: false
+    expire_in: 1 day
+    paths:
+      - target/server-1.0-SNAPSHOT.jar
+
 end-to-end-tests:
   stage: end-to-end-tests
-
+  image: docker:20.10.17
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    CYPRESS_baseUrl: http://kancl-online
   services:
-    - name: jansimonek/caddy-maria-java:0.1.1
-      alias: app
-      command:
-        - /bin/bash
-        - -c
-        - |
-          pwd &&
-          echo "ahoj" &&
-          mkdir bla &&
-          ls -lah
-      entrypoint: [""]
-
-  image:
-    name: cypress/included:10.3.0
-    entrypoint: [""]
-
+  - docker:20.10.17-dind
+  
   script:
-    - cp -r test/* /test
-    - cd /test
-    - cypress run
+    - docker build -f run/Dockerfile --tag kancl-online .
+    - docker network create --driver bridge container-net
+    - docker run -dt -p 80 --name kancl-online --network container-net kancl-online
+    - >
+      docker run
+      --network container-net
+      -t
+      -v $PWD/test:/e2e
+      -w /e2e
+      -e CYPRESS_baseUrl="$CYPRESS_baseUrl"
+      cypress/included:9.6.0
+artifacts:
+    untracked: false
+    expire_in: 4 hours
+    when: on_failure
+    paths:
+      - test/cypress/
 
 deploy:
   stage: deploy
