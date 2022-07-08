@@ -1,6 +1,7 @@
 stages:
   - build
   - unit-tests
+  - start-db
   - end-to-end-tests
   - deploy
 
@@ -17,10 +18,7 @@ build:
   stage: build
   image:
     name: jansimonek/caddy-maria-maven:0.1.2
-    entrypoint: [""]
-  before_script:
-    - rm /etc/caddy/Caddyfile && cp run/Caddyfile /etc/caddy/Caddyfile
-    - caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
+    entrypoint: [""]   
   script:
     - mvn package
 
@@ -29,13 +27,16 @@ unit-tests:
   script:
     - mvn test
 
+start-db:
+  stage: end-to-end-tests
+  before_script:
+    - echo todo /scripts/run.sh
+
 end-to-end-tests:
   stage: end-to-end-tests
-  script:
-    - echo "This job tests something, but takes more time than test-job1."
-    - echo "After the echo commands complete, it runs the sleep command for 20 seconds"
-    - echo "which simulates a test that runs 20 seconds longer than test-job1"
-    - sleep 10
+  before_script:
+    - rm /etc/caddy/Caddyfile && cp run/Caddyfile /etc/caddy/Caddyfile
+    - caddy run --config /etc/caddy/Caddyfile --adapter caddyfile &
 
 deploy:
   stage: deploy
