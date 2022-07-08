@@ -19,12 +19,8 @@ build:
     name: jansimonek/caddy-maria-maven:0.1.2
     entrypoint: [""]
   before_script:
-    - ls
-    - pwd
     - rm /etc/caddy/Caddyfile && cp run/Caddyfile /etc/caddy/Caddyfile
-    - pushd /etc/caddy
-    - caddy reload
-    - popd
+    - caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
   script:
     - mvn package
 
