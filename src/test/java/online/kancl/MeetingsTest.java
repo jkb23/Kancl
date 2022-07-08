@@ -13,7 +13,8 @@ class MeetingsTest
 		meetings.participantJoined("John Doe");
 
 		Assertions.assertThat(meetings.getJoinedParticipantName())
+				.as("Participant name")
 				.get()
-				.isEqualTo("John Doe");
+				.isEqualTo("John Doex");
 	}
 }
