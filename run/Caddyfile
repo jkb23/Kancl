@@ -1,4 +1,4 @@
-http://{$DOMAIN:localhost}:{$HTTP_PORT}, https://{$DOMAIN:localhost}:{$HTTPS_PORT}
+http://{$DOMAIN:localhost}:80, https://{$DOMAIN:localhost}:443
 
 reverse_proxy http://localhost:8080
 
