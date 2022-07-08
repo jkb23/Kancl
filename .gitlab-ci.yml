@@ -32,7 +32,7 @@ end-to-end-tests:
     - name: jansimonek/caddy-maria-java:0.1.1
       alias: app
       command:
-        - bin/bash
+        - /bin/bash
         - -c
         - >
           "echo 'Creating Database' &&
