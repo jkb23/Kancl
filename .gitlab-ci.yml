@@ -27,14 +27,16 @@ build:
 end-to-end-tests:
   stage: end-to-end-tests
   image:
-    name: jansimonek/caddy-maria-maven:0.1.2
-    entrypoint: [""]   
+    name: jansimonek/caddy-maria-java:0.1.1
   before_script:
-    - ls
-    - ls target
-    - echo todo /scripts/run.sh
-    - echo rm /etc/caddy/Caddyfile && cp run/Caddyfile /etc/caddy/Caddyfile
-    - echo caddy run --config /etc/caddy/Caddyfile --adapter caddyfile &
+    - echo "Creating Database"
+    - /scripts/prepare-maria-db.sh
+    - echo "Starting Caddy server"
+    - rm /etc/caddy/Caddyfile
+    - cp run/Caddyfile /etc/caddy/Caddyfile
+    - caddy run --config /etc/caddy/Caddyfile --adapter caddyfile &
+    - echo "Starting Java application"
+    - java -jar target/server-1.0-SNAPSHOT.jar &
   script:
     - echo run cypress
 
