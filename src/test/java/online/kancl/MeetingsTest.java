@@ -8,6 +8,13 @@ class MeetingsTest
 	private final Meetings meetings = new Meetings();
 
 	@Test
+	void initially_meetingIsEmpty()
+	{
+		Assertions.assertThat(meetings.getJoinedParticipantName())
+				.isEmpty();
+	}
+
+	@Test
 	void joinedParticipant_isInMeeting()
 	{
 		meetings.participantJoined("John Doe");
