@@ -15,6 +15,6 @@ class MeetingsTest
 		Assertions.assertThat(meetings.getJoinedParticipantName())
 				.as("Participant name")
 				.get()
-				.isEqualTo("John Doex");
+				.isEqualTo("John Doe");
 	}
 }
