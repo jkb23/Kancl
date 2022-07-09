@@ -28,21 +28,28 @@ end-to-end-tests:
   image: docker:20.10.17
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
-    CYPRESS_baseUrl: http://kancl-online
   services:
   - docker:20.10.17-dind
   
   script:
     - docker build -f run/Dockerfile --tag kancl-online .
     - docker network create --driver bridge container-net
-    - docker run -dt -p 80 --name kancl-online --network container-net kancl-online
+    - >
+      docker run
+      -dt
+      -p 80
+      -e DOMAIN="kancl-online"
+      -e AUTO_HTTPS="auto_https off"
+      --name kancl-online
+      --network container-net
+      kancl-online
     - >
       docker run
       --network container-net
       -t
       -v $PWD/test:/e2e
       -w /e2e
-      -e CYPRESS_baseUrl="$CYPRESS_baseUrl"
+      -e CYPRESS_baseUrl="http://kancl-online"
       cypress/included:9.6.0
   artifacts:
     untracked: false

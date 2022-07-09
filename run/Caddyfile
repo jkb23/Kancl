@@ -1,4 +1,8 @@
-http://{$DOMAIN:localhost}:80, https://{$DOMAIN:localhost}:443
+{
+	{$AUTO_HTTPS}
+}
+
+http://{$DOMAIN}, https://{$DOMAIN}
 
 reverse_proxy http://localhost:8080
 
