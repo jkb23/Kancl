@@ -20,5 +20,5 @@ ADD . $HOME
 # Make app available
 ENV ZOOM_VERIFICATION_TOKEN="foobar"
 EXPOSE 80
-ENTRYPOINT ["/bin/bash", "/usr/app/run/run.sh"]
+ENTRYPOINT ["/bin/bash", "/usr/app/run/container_entrypoint.sh"]
 
