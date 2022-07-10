@@ -20,6 +20,7 @@ echo "-------------"
 echo ""
 
 docker stop $(docker ps -q) | echo ""
+docker container rm kancl-online | echo ""
 docker build -f run/Dockerfile --tag kancl-online .
 
 docker run -dt -p 80 -p 443 \
