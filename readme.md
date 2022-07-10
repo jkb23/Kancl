@@ -37,21 +37,17 @@ to set on which ports the server will listen. The defaults are specified in file
 ## Production server set-up
 
 ### 1. Install docker, generate key
+Follow installation [instructions for Docker](https://docs.docker.com/engine/install/debian/).
+Enable Docker daemon:
 ```
-sudo apt install docker docker-compose git
 sudo systemctl enable docker
 sudo systemctl start docker
-ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 ```
-Add the generated public key as
-[GitHub deploy key](https://github.com/Strix-CZ/kancl-online/settings/keys).
 
 ### 2. Set-up environment variables
 
 Add the following to `/etc/environment`
 ```
-HTTP_PORT=80
-HTTPS_PORT=443
 DOMAIN=kancl.online
 ```
 
@@ -59,33 +55,32 @@ Run `sudo visudo /etc/sudoers.d/preserve_server_env_variables`
 Add the following content. This will preserve the env variables
 when running sudo.
 ```
-Defaults env_keep += "HTTP_PORT HTTPS_PORT DOMAIN"
+Defaults env_keep += "DOMAIN"
 ```
 
-### 3. Clone and set-up git hooks
-The following steps will allow the production server to automatically
-test and deploy the code whenever git repository receives a new commit
-in branch `main`.
+### 3. Create deployer user and directory for the app
 
+Generate private+public key locally using:
 ```
-# clone repo and copy post-receive script out of it
-cd ~
-git clone git@github.com:Strix-CZ/kancl-online.git kancl-online
-cp kancl-online/build/git_hooks/post-receive post-receive
-rm -rf kancl-online
-
-# clone repo as bare and move post-receive script into the hooks dir
-git clone --bare git@github.com:Strix-CZ/kancl-online.git kancl-online
-mv post-receive kancl-online/hooks/
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 ```
 
-**TODO**: put the repo in a shared folder, create a user group with access to the repo, create users with access to the repo 
-
-To be able to push to the bare repo easily (`git push production`) add it as a new remote:
 ```
-git remote add production ssh://USER@URL/~/kancl-online
+sudo mkdir -p /opt/kancl.online
+sudo adduser deployer --disabled-password
+
+sudo su - deployer
+mkdir .ssh
+chmod 700 .ssh
+touch .ssh/authorized_keys
+chmod 600 .ssh/authorized_keys
+# put the generated public key to .ssh/authorized_keys
+exit
+sudo chown deployer:deployer /opt/kancl.online
+sudo usermod -aG docker deployer
 ```
 
+Upload the private key to GitLab > Repository Settings > CI/CD > Variables with name `SSH_PRIVATE_KEY`.
 
 ## Examples of Zoom calling the web hook
 
