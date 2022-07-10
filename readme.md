@@ -81,6 +81,9 @@ sudo usermod -aG docker deployer
 
 # Install rsync
 sudo apt-get install rsync
+
+# Create persistent volume for Caddy data
+sudo docker volume create --name=caddy_data
 ```
 
 Upload the private key to GitLab > Repository Settings > CI/CD > Variables with name `SSH_PRIVATE_KEY`.

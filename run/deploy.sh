@@ -21,8 +21,13 @@ echo ""
 
 docker stop $(docker ps -q) | echo ""
 docker build -f run/Dockerfile --tag kancl-online .
-TODO: volume for caddy https
-docker run -dt -p 80 -p 443 -e DOMAIN="kancl.online" --name kancl-online kancl-online
+
+docker run -dt -p 80 -p 443 \
+  -e DOMAIN="kancl.online" \
+  --name kancl-online
+  -v caddy_data:/data \
+  kancl-online
+
 docker container prune -f
 
 echo -e ""
