@@ -1,62 +1,62 @@
 stages:
-# - build
+ - build
 # - end-to-end-tests
   - deploy
 
-# variables:
-#   DOMAIN: ""
-#   MYSQL_USER: user
-#   MYSQL_PASSWORD: password
-#   MYSQL_ROOT_PASSWORD: rootpassword
-#   MYSQL_DATABASE: kanclOnline
-#   CYPRESS_baseUrl: http://app:$8080
+variables:
+  DOMAIN: ""
+  MYSQL_USER: user
+  MYSQL_PASSWORD: password
+  MYSQL_ROOT_PASSWORD: rootpassword
+  MYSQL_DATABASE: kanclOnline
+  CYPRESS_baseUrl: http://app:$8080
 
-# build:
-#   stage: build
-#   image: maven:3.8.6-openjdk-11
-#   script:
-#     - mvn test
-#     - mvn package
-#   artifacts:
-#     untracked: false
-#     expire_in: 1 day
-#     paths:
-#       - target/server-1.0-SNAPSHOT.jar
+build:
+  stage: build
+  image: maven:3.8.6-openjdk-11
+  script:
+    - mvn test
+    - mvn package
+  artifacts:
+    untracked: false
+    expire_in: 1 day
+    paths:
+      - target/server-1.0-SNAPSHOT.jar
 
-# end-to-end-tests:
-#   stage: end-to-end-tests
-#   image: docker:20.10.17
-#   variables:
-#     DOCKER_TLS_CERTDIR: "/certs"
-#   services:
-#   - docker:20.10.17-dind
+end-to-end-tests:
+  stage: end-to-end-tests
+  image: docker:20.10.17
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  services:
+  - docker:20.10.17-dind
   
-#   script:
-#     - docker build -f run/Dockerfile --tag kancl-online .
-#     - docker network create --driver bridge container-net
-#     - >
-#       docker run
-#       -dt
-#       -p 80
-#       -e DOMAIN="kancl-online"
-#       -e AUTO_HTTPS="auto_https off"
-#       --name kancl-online
-#       --network container-net
-#       kancl-online
-#     - >
-#       docker run
-#       --network container-net
-#       -t
-#       -v $PWD/test:/e2e
-#       -w /e2e
-#       -e CYPRESS_baseUrl="http://kancl-online"
-#       cypress/included:9.6.0
-#   artifacts:
-#     untracked: false
-#     expire_in: 4 hours
-#     when: on_failure
-#     paths:
-#       - test/cypress/
+  script:
+    - docker build -f run/Dockerfile --tag kancl-online .
+    - docker network create --driver bridge container-net
+    - >
+      docker run
+      -dt
+      -p 80
+      -e DOMAIN="kancl-online"
+      -e AUTO_HTTPS="auto_https off"
+      --name kancl-online
+      --network container-net
+      kancl-online
+    - >
+      docker run
+      --network container-net
+      -t
+      -v $PWD/test:/e2e
+      -w /e2e
+      -e CYPRESS_baseUrl="http://kancl-online"
+      cypress/included:9.6.0
+  artifacts:
+    untracked: false
+    expire_in: 4 hours
+    when: on_failure
+    paths:
+      - test/cypress/
 
 deploy:
   stage: deploy
