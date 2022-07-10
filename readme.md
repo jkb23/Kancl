@@ -1,8 +1,21 @@
-# How to install
+# TODO
+
+1. Include DB in minimalist example.
+2. Figure out how to easily run the stack locally (and update readme).
+   1. Modify template and see result immediately.
+   2. Fast to start and stop.
+   3. DB in container (no need for caddy).
+   4. Run Cypress on top of it.
+   5. Use testrig/zoom.js in a CMD app to emulate zoom for local development?
+3. Refactor `controller`.
+4. More refactoring? Feedback from others.
+5. Redeploy DB on prod only when DB was changed?
+
+# How to install and use
 
 Install docker. In Fedora:
 
-	dnf install docker docker-compose
+	dnf install docker
 	systemctl enable docker
 	systemctl start docker
 
@@ -16,79 +29,15 @@ Usage:
     docker volume create --name=caddy_data
 
     # Build and start
-    maven package
-    docker build -f run/Dockerfile --tag kancl-online .
-	docker run kancl-online
-
-	# Turn off:
-	docker-compose -f docker-compose.yml -f db-docker-compose.yml down
+    TODO
 
 	# Forcing DB to be re-created:
 	docker volume rm sql_data && docker volume create --name=sql_data
 
     # Running end to end tests:
-    cd run
-    docker-compose -f docker-compose.yml -f docker-compose.test.yml up --build --exit-code-from cypress
+    TODO
 
-You can also set environment variables `HTTP_PORT` and `HTTPS_PORT`
-to set on which ports the server will listen. The defaults are specified in file `.env`
-
-
-## Production server set-up
-
-### 1. Install docker, generate key
-Follow installation [instructions for Docker](https://docs.docker.com/engine/install/debian/).
-Enable Docker daemon:
-```
-sudo systemctl enable docker
-sudo systemctl start docker
-```
-
-### 2. Set-up environment variables
-
-Add the following to `/etc/environment`
-```
-DOMAIN=kancl.online
-```
-
-Run `sudo visudo /etc/sudoers.d/preserve_server_env_variables`
-Add the following content. This will preserve the env variables
-when running sudo.
-```
-Defaults env_keep += "DOMAIN"
-```
-
-### 3. Create deployer user and directory for the app
-
-Generate private+public key locally using:
-```
-ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
-```
-
-```
-sudo mkdir -p /opt/kancl.online
-sudo adduser deployer --disabled-password
-
-sudo su - deployer
-mkdir .ssh
-chmod 700 .ssh
-touch .ssh/authorized_keys
-chmod 600 .ssh/authorized_keys
-# put the generated public key to .ssh/authorized_keys
-exit
-sudo chown deployer:deployer /opt/kancl.online
-sudo usermod -aG docker deployer
-
-# Install rsync
-sudo apt-get install rsync
-
-# Create persistent volume for Caddy data
-sudo docker volume create --name=caddy_data
-```
-
-Upload the private key to GitLab > Repository Settings > CI/CD > Variables with name `SSH_PRIVATE_KEY`.
-
-## Examples of Zoom calling the web hook
+# Examples of Zoom calling the web hook
 
 Here is the app that I tried out: [https://marketplace.zoom.us/develop/apps/xGNy_ZHYT2alQ98bgjfrGQ/information]()
 
@@ -185,3 +134,57 @@ Here is the app that I tried out: [https://marketplace.zoom.us/develop/apps/xGNy
     "event": "meeting.participant_left"
 }
 ```
+
+# Production server set-up
+
+## 1. Install docker, generate key
+Follow installation [instructions for Docker](https://docs.docker.com/engine/install/debian/).
+Enable Docker daemon:
+```
+sudo systemctl enable docker
+sudo systemctl start docker
+```
+
+## 2. Set-up environment variables
+
+Add the following to `/etc/environment`
+```
+DOMAIN=kancl.online
+```
+
+Run `sudo visudo /etc/sudoers.d/preserve_server_env_variables`
+Add the following content. This will preserve the env variables
+when running sudo.
+```
+Defaults env_keep += "DOMAIN"
+```
+
+## 3. Create deployer user and directory for the app
+
+Generate private+public key locally using:
+```
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+
+```
+sudo mkdir -p /opt/kancl.online
+sudo adduser deployer --disabled-password
+
+sudo su - deployer
+mkdir .ssh
+chmod 700 .ssh
+touch .ssh/authorized_keys
+chmod 600 .ssh/authorized_keys
+# put the generated public key to .ssh/authorized_keys
+exit
+sudo chown deployer:deployer /opt/kancl.online
+sudo usermod -aG docker deployer
+
+# Install rsync
+sudo apt-get install rsync
+
+# Create persistent volume for Caddy data
+sudo docker volume create --name=caddy_data
+```
+
+Upload the private key to GitLab > Repository Settings > CI/CD > Variables with name `SSH_PRIVATE_KEY`.
