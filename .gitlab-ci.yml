@@ -1,6 +1,6 @@
 stages:
- - build
-# - end-to-end-tests
+  - build
+  - end-to-end-tests
   - deploy
 
 variables:
