@@ -1,27 +1,27 @@
 stages:
-  - build
+# - build
 # - end-to-end-tests
   - deploy
 
-variables:
-  DOMAIN: ""
-  MYSQL_USER: user
-  MYSQL_PASSWORD: password
-  MYSQL_ROOT_PASSWORD: rootpassword
-  MYSQL_DATABASE: kanclOnline
-  CYPRESS_baseUrl: http://app:$8080
+# variables:
+#   DOMAIN: ""
+#   MYSQL_USER: user
+#   MYSQL_PASSWORD: password
+#   MYSQL_ROOT_PASSWORD: rootpassword
+#   MYSQL_DATABASE: kanclOnline
+#   CYPRESS_baseUrl: http://app:$8080
 
-build:
-  stage: build
-  image: maven:3.8.6-openjdk-11
-  script:
-    - mvn test
-    - mvn package
-  artifacts:
-    untracked: false
-    expire_in: 1 day
-    paths:
-      - target/server-1.0-SNAPSHOT.jar
+# build:
+#   stage: build
+#   image: maven:3.8.6-openjdk-11
+#   script:
+#     - mvn test
+#     - mvn package
+#   artifacts:
+#     untracked: false
+#     expire_in: 1 day
+#     paths:
+#       - target/server-1.0-SNAPSHOT.jar
 
 # end-to-end-tests:
 #   stage: end-to-end-tests
@@ -70,5 +70,5 @@ deploy:
     - chmod 700 ~/.ssh
 
   script:
-    - rsync -e "ssh -o StrictHostKeyChecking=no" -avz --delete . deployer@kancl.online:/opt/kancl.online
-    - ssh -o StrictHostKeyChecking=no deployer@kancl.online "cd /opt/kancl.online; ./run/deploy.sh"
+    - ssh -v -o StrictHostKeyChecking=no deployer@kancl.online "cd /opt/kancl.online; ./run/deploy.sh"
+#    - rsync -e "ssh -o StrictHostKeyChecking=no" -avz --delete . deployer@kancl.online:/opt/kancl.online
