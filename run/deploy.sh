@@ -24,7 +24,7 @@ docker build -f run/Dockerfile --tag kancl-online .
 
 docker run -dt -p 80 -p 443 \
   -e DOMAIN="kancl.online" \
-  --name kancl-online
+  --name kancl-online \
   -v caddy_data:/data \
   kancl-online
 
