@@ -70,5 +70,5 @@ deploy:
     - chmod 700 ~/.ssh
 
   script:
+    - rsync -e "ssh -o StrictHostKeyChecking=no" -avz --delete . deployer@kancl.online:/opt/kancl.online
     - ssh -v -o StrictHostKeyChecking=no deployer@kancl.online "cd /opt/kancl.online; ./run/deploy.sh"
-#    - rsync -e "ssh -o StrictHostKeyChecking=no" -avz --delete . deployer@kancl.online:/opt/kancl.online
