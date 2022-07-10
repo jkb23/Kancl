@@ -23,7 +23,7 @@ docker stop $(docker ps -q) | echo ""
 docker container rm kancl-online | echo ""
 docker build -f run/Dockerfile --tag kancl-online .
 
-docker run -dt -p 80 -p 443 \
+docker run -dt -p 80:80 -p 443:443 \
   -e DOMAIN="kancl.online" \
   --name kancl-online \
   -v caddy_data:/data \

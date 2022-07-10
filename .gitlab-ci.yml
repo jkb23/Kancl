@@ -37,7 +37,7 @@ end-to-end-tests:
     - >
       docker run
       -dt
-      -p 80
+      -p 80:80
       -e DOMAIN="kancl-online"
       -e AUTO_HTTPS="auto_https off"
       --name kancl-online
