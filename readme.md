@@ -78,6 +78,9 @@ chmod 600 .ssh/authorized_keys
 exit
 sudo chown deployer:deployer /opt/kancl.online
 sudo usermod -aG docker deployer
+
+# Install rsync
+sudo apt-get install rsync
 ```
 
 Upload the private key to GitLab > Repository Settings > CI/CD > Variables with name `SSH_PRIVATE_KEY`.
