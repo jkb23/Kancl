@@ -35,6 +35,8 @@ end-to-end-tests:
   services:
     - name: docker:20.10.17-dind
       alias: docker
+      entrypoint: ["env", "-u", "DOCKER_HOST"]
+      command: ["dockerd-entrypoint.sh"]
   
   script:
     - docker volume create --name=sql_data
