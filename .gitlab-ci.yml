@@ -25,11 +25,15 @@ build:
 
 end-to-end-tests:
   stage: end-to-end-tests
-  image: docker/compose:alpine-1.29.2
+  image:
+    name: docker/compose:alpine-1.29.2
+    entrypoint: ["/bin/sh", "-c"]
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
   services:
-  - docker:20.10.17-dind
+    - docker:20.10.17-dind
   
   script:
     - docker volume create --name=sql_data
