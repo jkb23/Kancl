@@ -29,17 +29,15 @@ Usage:
     docker volume create --name=caddy_data
 
     # Build and start
-    # If you want to interactivelly see what's going on,
-    # replace argument -dt with -it
-    docker build --rm -f run/Dockerfile --tag kancl-online .
-    docker run -it --rm -p 8080:80 -e AUTO_HTTPS="auto_https off" -v $PWD:/usr/app kancl-online
-
+    cd run
+    docker-compose -f docker-compose.yml up --build
 
 	# Forcing DB to be re-created:
 	docker volume rm sql_data && docker volume create --name=sql_data
 
     # Running end to end tests:
-    TODO
+    cd run
+    docker-compose -f docker-compose.yml -f docker-compose-test.yml up --build --exit-code-from cypress
 
 # Examples of Zoom calling the web hook
 
@@ -143,10 +141,11 @@ Here is the app that I tried out: [https://marketplace.zoom.us/develop/apps/xGNy
 
 ## 1. Install docker, generate key
 Follow installation [instructions for Docker](https://docs.docker.com/engine/install/debian/).
-Enable Docker daemon:
+Enable Docker daemon and install docker-compose:
 ```
 sudo systemctl enable docker
 sudo systemctl start docker
+sudo apt-get install docker-compose
 ```
 
 ## 2. Set-up environment variables

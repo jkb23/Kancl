@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  kanclonline:
+    build:
+      context: ..
+      dockerfile: run/Dockerfile
+    restart: unless-stopped
+
+    volumes:
+      - type: bind
+        source: ..
+        target: /usr/app
+        read_only: true
+      - caddy_data:/data
+      - caddy_config:/config
+      - sql_data:/var/lib/mysql
+
+    environment:
+      - CADDY_ADDRESS="http://"
+
+    ports:
+      - "8080:80/tcp"
+
+
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:
+  sql_data:
+    external: true

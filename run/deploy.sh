@@ -20,14 +20,11 @@ echo "-------------"
 echo ""
 
 docker stop $(docker ps -q) | echo ""
-docker container rm kancl-online | echo ""
-docker build -f run/Dockerfile --tag kancl-online .
 
-docker run -dt -p 80:80 -p 443:443 \
-  -e DOMAIN="kancl.online" \
-  --name kancl-online \
-  -v caddy_data:/data \
-  kancl-online
+docker volume rm sql_data | echo ""
+docker volume create --name=sql_data | echo ""
+
+docker-compose -f docker-compose.yml -f docker-compose-prod.yml up --build --exit-code-from cypress
 
 docker container prune -f
 

@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+  kanclonline:
+    environment:
+      - CADDY_ADDRESS: kancl.online
+
+    ports:
+      - "80:80/tcp"
+      - "443:443/tcp"

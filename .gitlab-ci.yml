@@ -25,39 +25,23 @@ build:
 
 end-to-end-tests:
   stage: end-to-end-tests
-  image: docker:20.10.17
+  image: docker/compose:alpine-1.29.2
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
   services:
   - docker:20.10.17-dind
   
   script:
-    - docker build -f run/Dockerfile --tag kancl-online .
-    - docker network create --driver bridge container-net
-    - >
-      docker run
-      -dt
-      -p 80:80
-      -e DOMAIN="kancl-online"
-      -e AUTO_HTTPS="auto_https off"
-      -v $PWD:/usr/app
-      --name kancl-online
-      --network container-net
-      kancl-online
-    - >
-      docker run
-      --network container-net
-      -t
-      -v $PWD/test:/e2e
-      -w /e2e
-      -e CYPRESS_baseUrl="http://kancl-online"
-      cypress/included:9.6.0
+    - docker volume create --name=sql_data
+    - docker volume create --name=caddy_data
+    - docker-compose -f docker-compose.yml -f docker-compose-test.yml up --build --exit-code-from cypress
   artifacts:
     untracked: false
     expire_in: 4 hours
     when: on_failure
     paths:
-      - test/cypress/
+      - test/cypress/screenshots
+      - test/cypress/videos
 
 deploy:
   stage: deploy
