@@ -35,7 +35,9 @@ end-to-end-tests:
     - docker volume create --name=sql_data
     - docker volume create --name=caddy_data
     - apk add docker-compose
+    - cd run
     - docker-compose -f docker-compose.yml -f docker-compose-test.yml up --build --exit-code-from cypress
+    - cd ..
   artifacts:
     untracked: false
     expire_in: 4 hours
