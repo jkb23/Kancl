@@ -33,7 +33,8 @@ end-to-end-tests:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
   services:
-    - docker:20.10.17-dind
+    - name: docker:20.10.17-dind
+      alias: docker
   
   script:
     - docker volume create --name=sql_data
