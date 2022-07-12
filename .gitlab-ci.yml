@@ -40,6 +40,7 @@ end-to-end-tests:
       -p 80:80
       -e DOMAIN="kancl-online"
       -e AUTO_HTTPS="auto_https off"
+      -v $PWD:/usr/app
       --name kancl-online
       --network container-net
       kancl-online

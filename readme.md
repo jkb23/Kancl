@@ -29,7 +29,11 @@ Usage:
     docker volume create --name=caddy_data
 
     # Build and start
-    TODO
+    # If you want to interactivelly see what's going on,
+    # replace argument -dt with -it
+    docker build --rm -f run/Dockerfile --tag kancl-online .
+    docker run -it --rm -p 8080:80 -e AUTO_HTTPS="auto_https off" -v $PWD:/usr/app kancl-online
+
 
 	# Forcing DB to be re-created:
 	docker volume rm sql_data && docker volume create --name=sql_data

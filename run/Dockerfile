@@ -15,7 +15,6 @@ RUN /scripts/prepare-maria-db.sh
 ENV HOME=/usr/app
 RUN mkdir -p $HOME
 WORKDIR $HOME
-ADD . $HOME
 
 # Make app available
 ENV ZOOM_VERIFICATION_TOKEN="foobar"
