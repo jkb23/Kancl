@@ -26,7 +26,7 @@ build:
 end-to-end-tests:
   stage: end-to-end-tests
   image:
-    name: docker/compose:alpine-1.29.2
+    name: docker/compose:1.29.2
     entrypoint: ["/bin/sh", "-c"]
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
