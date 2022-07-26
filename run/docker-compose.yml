@@ -12,12 +12,21 @@ services:
         source: ..
         target: /usr/app
         read_only: true
+      - type: bind
+        source: ../sql
+        target: /docker-entrypoint-initdb.d/
+        read_only: true
       - caddy_data:/data
       - caddy_config:/config
       - sql_data:/var/lib/mysql
 
     environment:
-      - CADDY_ADDRESS="http://"
+      CADDY_ADDRESS: "http://"
+      ZOOM_VERIFICATION_TOKEN: ${ZOOM_VERIFICATION_TOKEN}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
 
     ports:
       - "8080:80/tcp"

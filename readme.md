@@ -1,15 +1,12 @@
 # TODO
 
-1. Include DB in minimalist example.
-2. Figure out how to easily run the stack locally (and update readme).
-   1. Modify template and see result immediately.
-   2. Fast to start and stop.
-   3. DB in container (no need for caddy).
-   4. Run Cypress on top of it.
-   5. Use testrig/zoom.js in a CMD app to emulate zoom for local development?
-3. Refactor `controller`.
-4. More refactoring? Feedback from others.
-5. Redeploy DB on prod only when DB was changed?
+1. Refactor `controller`.
+2. Redeploy DB when it was changed - modify caddy-maria-java script to:
+   1. compute hash of scratch files
+   2. compare it with hash file stored in same dir as SQL data
+   3. if it's not there or it's not matching - discard all and re-create
+3. More refactoring? Feedback from others.
+4. Use testrig/zoom.js in a CMD app to emulate zoom for local development?
 
 # How to install and use
 
@@ -30,10 +27,11 @@ Usage:
 
     # Build and start
     cd run
-    docker-compose -f docker-compose.yml up --build
+    docker-compose up --build
+    # The app is now available at http://localhost:8080/
 
 	# Forcing DB to be re-created:
-	docker volume rm sql_data && docker volume create --name=sql_data
+	docker container prune && docker volume rm sql_data && docker volume create --name=sql_data
 
     # Running end to end tests:
     cd run
