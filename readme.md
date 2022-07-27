@@ -1,10 +1,6 @@
 # TODO
 
 1. Refactor `controller`.
-2. Redeploy DB when it was changed - modify caddy-maria-java script to:
-   1. compute hash of scratch files
-   2. compare it with hash file stored in same dir as SQL data
-   3. if it's not there or it's not matching - discard all and re-create
 3. More refactoring? Feedback from others.
 4. Use testrig/zoom.js in a CMD app to emulate zoom for local development?
 
