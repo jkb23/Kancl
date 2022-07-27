@@ -1,4 +1,4 @@
-FROM jansimonek/caddy-maria-java:0.1.1
+FROM jansimonek/caddy-maria-java:0.1.6
 
 # Configure Caddy
 RUN rm /etc/caddy/Caddyfile
