@@ -1,37 +1,89 @@
-# TODO
+# TODOs
 
 1. Refactor `controller`.
-3. More refactoring? Feedback from others.
-4. Use testrig/zoom.js in a CMD app to emulate zoom for local development?
+2. More refactoring? Feedback from others.
+3. Use testrig/zoom.js in a CMD app to emulate zoom for local development?
+4. GitLab instance? Repo user limit? Our own CI/CD runner?
 
-# How to install and use
+# Installing pre-requisites
 
-Install docker. In Fedora:
-
-	dnf install docker
-	systemctl enable docker
-	systemctl start docker
-
-In Linux run [these post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/)
+1. Install [Maven](https://maven.apache.org/).
+2. Install [Docker](https://docs.docker.com/engine/install/). In Fedora you can run `sudo dnf install docker && sudo systemctl enable docker && sudo systemctl start docker`
+3. On Linux run [these post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/)
 to avoid using root.
 
-Usage:
+# Usage
 
-    # Create persistent volumes
-	docker volume create --name=sql_data
-    docker volume create --name=caddy_data
+All dependencies for our application and the application itself are packaged in a Docker container.
 
-    # Build and start
-    cd run
-    docker-compose up --build
-    # The app is now available at http://localhost:8080/
+If you have never used a Docker container before, don't worry. The idea is similar to a Virtual Machine.
+We have prepared an "image" that contains a lightweight operating system and all dependencies that our app needs.
+Docker will download this image and use it to run our application in an isolated environment.
+A running image is called "container".
 
-	# Forcing DB to be re-created:
-	docker container prune && docker volume rm sql_data && docker volume create --name=sql_data
+To run the app on your computer follow these steps:
 
-    # Running end to end tests:
+1. When running it for the first time:
+   `docker volume create --name=sql_data && docker volume create --name=caddy_data`
+2. `mvn package` builds our Java application using Maven into a `.jar` file
+3. `cd run && docker-compose up --build` This will automatically:
+   - Download the docker image
+   - Copy `.jar` file into it
+   - Re-create DB as necessary (see below)
+   - Run the application
+4. The app is now available at [localhost:8080](http://localhost:8080/)
+
+### Tests
+
+To support excellent quality of the application, we expect at least two different categories of tests to be created
+and maintained as the application is developed - **unit tests** and **end-to-end tests**.
+
+Unit tests are written in Java and can be executed in the IDE or by running `mvn test`.
+You can find them in directory `src/test/java`.
+
+End-to-end tests exercise the application as a whole in its environment. We have prepared
+[Cypress](https://www.cypress.io/) testing framework for you. Cypress tests are written in
+JavaScript or TypeScript and you can find them in directory `test/cypress/e2e`
+To run them you can either install Cypress locally or you can use Docker image to run them
+from the command line:
+
     cd run
     docker-compose -f docker-compose.yml -f docker-compose-test.yml up --build --exit-code-from cypress
+
+### Continuous integration / Continuous deployment (CI/CD)
+
+To make tests useful, you need to run them often. And the best way to do that is to automate it. We have prepared
+a place that does just that - [CI/CD pipeline in GitLab](https://gitlab.com/jan.simonek/kancl-online/-/pipelines).
+**TODO: update link???** After you push to GitLab repository, the following steps are done:
+
+1. Stage `build` executed Maven builds Java, run unit tests and creates `.jar` file.
+2. Stage `end-to-end-tests` starts a container, creates a DB and executes Cypress tests.
+3. If you push to branch `main` there's also stage `deploy`. This stages updates
+   production server [kancl.online](https://kancl.online/).
+
+### Persistence in the container
+
+Whenever you re-build the container, the whole container gets re-created from the source image.
+This effectively throws away all data that were stored inside the container. This is a good
+thing, because the container starts from a clean, known state. We want to keep only a small
+portion of the data, which we define explicitly by creating "persistent volumes".
+
+A persistent volume is stored in the host computer and is mounted to a specified directory
+inside a container. Persistent volume is not re-created when a container is re-built. If you
+want to create or delete it, you can do it manually.
+
+Our application uses two persistent volumes. The first volume `sql_data` contains database files for MariaDB.
+There is a script in the container `/scripts/prepare-maria-db.sh` that initializes the DB by running sql
+scripts within the directory `sql`. Files with extension `.sql` are executed in alphabetical order. The DB is
+created whenever `sql_data` is empty. Also, the DB is destroyed and re-created when the content of directory
+`sql` changes. The script is called when starting the container.
+
+The second volume `caddy_data` is used on production environment to store data necessary for HTTPS.
+
+If you need to throw away the content of `sql_data` to force re-creation of the DB you can stop the container and execute:
+
+	docker container prune && docker volume rm sql_data && docker volume create --name=sql_data
+
 
 # Examples of Zoom calling the web hook
 
