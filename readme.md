@@ -1,9 +1,10 @@
 # TODOs
 
-1. Refactor `controller`.
-2. More refactoring? Feedback from others.
-3. Use testrig/zoom.js in a CMD app to emulate zoom for local development?
-4. GitLab instance? Repo user limit? Our own CI/CD runner?
+1. Add a way how to run DB in docker + app locally. Update readme.
+2. Refactor `controller`.
+3. More refactoring? Feedback from others.
+4. Use testrig/zoom.js in a CMD app to emulate zoom for local development?
+5. GitLab instance? Repo user limit? Our own CI/CD runner?
 
 # Installing pre-requisites
 
