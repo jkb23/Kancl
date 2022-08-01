@@ -15,14 +15,14 @@ public class Main
 		MustacheFactory mustacheFactory = new DefaultMustacheFactory();
 		MainPageController mainPageController = new MainPageController(mustacheFactory, meetings);
 
-		WebServer webServer = new WebServer(8080, zoomHook, mainPageController);
+		WebServer webServer = new WebServer(8081, zoomHook, mainPageController);
 		webServer.start();
 
 		System.out.println("Server running");
 
 		try
 		{
-			Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/kanclOnline", "user", "password");
+			Connection connection = getConnection();
 			try (PreparedStatement statement = connection.prepareStatement("SELECT testString FROM TestTable"))
 			{
 				try (ResultSet rs = statement.executeQuery())
@@ -38,5 +38,14 @@ public class Main
 		{
 			throw new RuntimeException(e);
 		}
+	}
+
+	private static Connection getConnection() throws SQLException
+	{
+		String user = System.getenv("MYSQL_USER");
+		String password = System.getenv("MYSQL_PASSWORD");
+		String database = System.getenv("MYSQL_DATABASE");
+
+		return DriverManager.getConnection("jdbc:mariadb://localhost/" + database, user, password);
 	}
 }

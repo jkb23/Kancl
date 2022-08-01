@@ -1,10 +1,9 @@
 # TODOs
 
-1. Add a way how to run DB in docker + app locally. Update readme.
-2. Refactor `controller`.
-3. More refactoring? Feedback from others.
-4. Use testrig/zoom.js in a CMD app to emulate zoom for local development?
-5. GitLab instance? Repo user limit? Our own CI/CD runner?
+1. Refactor `controller`.
+2. More refactoring? Feedback from others.
+3. Use testrig/zoom.js in a CMD app to emulate zoom for local development?
+4. GitLab instance? Repo user limit? Our own CI/CD runner?
 
 # Installing pre-requisites
 
@@ -84,6 +83,19 @@ The second volume `caddy_data` is used on production environment to store data n
 If you need to throw away the content of `sql_data` to force re-creation of the DB you can stop the container and execute:
 
 	docker container prune && docker volume rm sql_data && docker volume create --name=sql_data
+
+### Local development
+
+When you are developing you want to run the Java application from within your IDE.
+Running the app in the container would make it hard to re-run and debug.
+To be able to run the app locally, set the following environment variables which are read by the app:
+
+    ZOOM_VERIFICATION_TOKEN=foobar; MYSQL_USER=user; MYSQL_PASSWORD=password;MYSQL_DATABASE=kanclOnline
+
+And then start the DB in Docker:
+
+    cd run
+    docker-compose -f docker-compose.yml -f docker-compose-db-only.yml up --build
 
 
 # Examples of Zoom calling the web hook
