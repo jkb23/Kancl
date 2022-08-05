@@ -1,7 +1,7 @@
 # TODOs
 
-1. Refactor `controller`.
-2. More refactoring? Feedback from others.
+1. Introduce persisted form field, refactor DB access, introduce DB test, DAO
+2. Feedback from others
 3. Use testrig/zoom.js in a CMD app to emulate zoom for local development?
 4. GitLab instance? Repo user limit? Our own CI/CD runner?
 
