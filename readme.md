@@ -43,7 +43,7 @@ You can find them in directory `src/test/java`.
 
 End-to-end tests exercise the application as a whole in its environment. We have prepared
 [Cypress](https://www.cypress.io/) testing framework for you. Cypress tests are written in
-JavaScript or TypeScript and you can find them in directory `test/cypress/e2e`
+JavaScript or TypeScript and you can find them in directory `src/test/cypress/e2e`
 To run them you can either install Cypress locally or you can use Docker image to run them
 from the command line:
 

@@ -1,5 +1,5 @@
 /.idea
 /server.iml
 /target
-/test/cypress/videos
-/test/cypress/screenshots
+/src/test/cypress/videos
+/src/test/cypress/screenshots

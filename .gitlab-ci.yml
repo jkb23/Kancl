@@ -43,8 +43,8 @@ end-to-end-tests:
     expire_in: 4 hours
     when: on_failure
     paths:
-      - test/cypress/screenshots
-      - test/cypress/videos
+      - src/test/cypress/screenshots
+      - src/test/cypress/videos
 
 deploy:
   stage: deploy

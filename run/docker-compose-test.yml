@@ -9,7 +9,7 @@ services:
       - CYPRESS_baseUrl=http://kanclonline
     working_dir: /e2e
     volumes:
-      - ../test:/e2e
+      - ../src/test:/e2e
 
   # alpine:
   #   image: redis:7.0.3-alpine
