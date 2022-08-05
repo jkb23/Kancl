@@ -20,7 +20,7 @@ public class Main
 		Meetings meetings = new Meetings();
 		ZoomHook zoomHook = new ZoomHook(meetings);
 		MustacheFactory mustacheFactory = new DefaultMustacheFactory();
-		Path templateDirectory = Paths.get("web", "templates");
+		Path templateDirectory = Paths.get("src", "main", "mustache", "templates");
 		MustacheTemplateRenderer mustacheTemplateRenderer = new MustacheTemplateRenderer(templateDirectory, mustacheFactory);
 		MainPageController mainPageController = new MainPageController(mustacheTemplateRenderer, meetings);
 
