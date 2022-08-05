@@ -29,9 +29,11 @@ public class MustacheTemplateRenderer
 
 	private Mustache compileTemplate(String templateName)
 	{
-		try (FileReader fileReader = new FileReader(getTemplateFile(templateName)))
+		File templateFile = getTemplateFile(templateName);
+
+		try (FileReader fileReader = new FileReader(templateFile))
 		{
-			return mustacheFactory.compile(fileReader, templateName);
+			return mustacheFactory.compile(fileReader, templateFile.getPath());
 		}
 		catch (IOException e)
 		{

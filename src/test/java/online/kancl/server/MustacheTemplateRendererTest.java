@@ -11,16 +11,23 @@ class MustacheTemplateRendererTest
 {
 	public static final String TEST_TEMPLATE_DIRECTORY = "template";
 
+	private Object context = new Object()
+	{
+		String name = "John Doe";
+	};
+
 	@Test
 	void singleValueTest()
 	{
-		Object context = new Object()
-		{
-			String name = "John Doe";
-		};
-
 		Assertions.assertThat(renderTemplate("singleValue.mustache", context))
 				.isEqualTo("Hello John Doe!");
+	}
+
+	@Test
+	void partialValue()
+	{
+		Assertions.assertThat(renderTemplate("includePartial.mustache", context))
+				.isEqualTo("Hello John Doe! How are you?");
 	}
 
 	private String renderTemplate(String templateName, Object context)
