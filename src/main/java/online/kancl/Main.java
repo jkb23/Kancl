@@ -3,6 +3,7 @@ package online.kancl;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.MustacheFactory;
 import online.kancl.controller.MainPageController;
+import online.kancl.server.MustacheTemplateRenderer;
 
 import java.sql.*;
 
@@ -13,7 +14,8 @@ public class Main
 		Meetings meetings = new Meetings();
 		ZoomHook zoomHook = new ZoomHook(meetings);
 		MustacheFactory mustacheFactory = new DefaultMustacheFactory();
-		MainPageController mainPageController = new MainPageController(mustacheFactory, meetings);
+		MustacheTemplateRenderer mustacheTemplateRenderer = new MustacheTemplateRenderer(mustacheFactory);
+		MainPageController mainPageController = new MainPageController(mustacheTemplateRenderer, meetings);
 
 		WebServer webServer = new WebServer(8081, zoomHook, mainPageController);
 		webServer.start();
