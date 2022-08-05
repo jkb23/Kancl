@@ -12,12 +12,12 @@ import java.nio.file.Paths;
 
 public class MustacheTemplateRenderer
 {
-	public static final Path TEMPLATE_DIRECTORY = Paths.get("web", "templates");
-
+	private final Path templateDirectory;
 	private final MustacheFactory mustacheFactory;
 
-	public MustacheTemplateRenderer(MustacheFactory mustacheFactory)
+	public MustacheTemplateRenderer(Path templateDirectory, MustacheFactory mustacheFactory)
 	{
+		this.templateDirectory = templateDirectory;
 		this.mustacheFactory = mustacheFactory;
 	}
 
@@ -41,6 +41,6 @@ public class MustacheTemplateRenderer
 
 	private File getTemplateFile(String templateName)
 	{
-		return TEMPLATE_DIRECTORY.resolve(templateName).toFile();
+		return templateDirectory.resolve(templateName).toFile();
 	}
 }

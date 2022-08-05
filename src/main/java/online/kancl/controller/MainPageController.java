@@ -18,6 +18,6 @@ public class MainPageController
 
 	public String get(Request request, Response response)
 	{
-		return mustacheTemplateRenderer.renderTemplate("MainPage.mustachex", meetings);
+		return mustacheTemplateRenderer.renderTemplate("MainPage.mustache", meetings);
 	}
 }

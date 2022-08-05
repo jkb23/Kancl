@@ -5,7 +5,13 @@ import com.github.mustachejava.MustacheFactory;
 import online.kancl.controller.MainPageController;
 import online.kancl.server.MustacheTemplateRenderer;
 
-import java.sql.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Main
 {
@@ -14,7 +20,8 @@ public class Main
 		Meetings meetings = new Meetings();
 		ZoomHook zoomHook = new ZoomHook(meetings);
 		MustacheFactory mustacheFactory = new DefaultMustacheFactory();
-		MustacheTemplateRenderer mustacheTemplateRenderer = new MustacheTemplateRenderer(mustacheFactory);
+		Path templateDirectory = Paths.get("web", "templates");
+		MustacheTemplateRenderer mustacheTemplateRenderer = new MustacheTemplateRenderer(templateDirectory, mustacheFactory);
 		MainPageController mainPageController = new MainPageController(mustacheTemplateRenderer, meetings);
 
 		WebServer webServer = new WebServer(8081, zoomHook, mainPageController);
