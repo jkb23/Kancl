@@ -28,29 +28,40 @@ public class MainPageController
 
 	public String get(Request request, Response response)
 	{
-		return renderTemplate("MainPage.mustache", meetings);
+		MustacheTemplateRenderer mustacheTemplateRenderer = new MustacheTemplateRenderer(mustacheFactory);
+		return mustacheTemplateRenderer.renderTemplate("MainPage.mustache", meetings);
 	}
 
-	private String renderTemplate(String templateName, Object context)
+	private class MustacheTemplateRenderer
 	{
-		Mustache template = compileTemplate(templateName);
-		return template.execute(new StringWriter(), context).toString();
-	}
+		private final MustacheFactory mustacheFactory;
 
-	private Mustache compileTemplate(String templateName)
-	{
-		try (FileReader fileReader = new FileReader(getTemplateFile(templateName)))
+		private MustacheTemplateRenderer(MustacheFactory mustacheFactory)
 		{
-			return mustacheFactory.compile(fileReader, "MainPage");
+			this.mustacheFactory = mustacheFactory;
 		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
 
-	private File getTemplateFile(String templateName)
-	{
-		return TEMPLATE_DIRECTORY.resolve(templateName).toFile();
+		private String renderTemplate(String templateName, Object context)
+		{
+			Mustache template = compileTemplate(templateName);
+			return template.execute(new StringWriter(), context).toString();
+		}
+
+		private Mustache compileTemplate(String templateName)
+		{
+			try (FileReader fileReader = new FileReader(getTemplateFile(templateName)))
+			{
+				return mustacheFactory.compile(fileReader, "MainPage");
+			}
+			catch (IOException e)
+			{
+				throw new RuntimeException(e);
+			}
+		}
+
+		private File getTemplateFile(String templateName)
+		{
+			return TEMPLATE_DIRECTORY.resolve(templateName).toFile();
+		}
 	}
 }
