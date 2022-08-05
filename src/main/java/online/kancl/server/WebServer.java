@@ -1,7 +1,5 @@
-package online.kancl;
+package online.kancl.server;
 
-import online.kancl.server.Controller;
-import online.kancl.server.ExceptionHandler;
 import spark.Spark;
 
 public class WebServer

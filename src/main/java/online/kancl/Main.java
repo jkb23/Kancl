@@ -5,6 +5,7 @@ import com.github.mustachejava.MustacheFactory;
 import online.kancl.controller.MainPageController;
 import online.kancl.server.ExceptionHandler;
 import online.kancl.server.MustacheTemplateRenderer;
+import online.kancl.server.WebServer;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
