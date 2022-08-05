@@ -1,34 +1,26 @@
 package online.kancl;
 
-import online.kancl.controller.MainPageController;
+import online.kancl.server.Controller;
 import online.kancl.server.ExceptionHandler;
 import spark.Spark;
 
 public class WebServer
 {
-	private final int port;
-	private final ZoomHook zoomHook;
-	private final MainPageController mainPageController;
-	private final ExceptionHandler exceptionHandler;
-
-	public WebServer(int port, ZoomHook zoomHook, MainPageController mainPageController, ExceptionHandler exceptionHandler)
+	public WebServer(int port, ExceptionHandler exceptionHandler)
 	{
-		this.port = port;
-		this.zoomHook = zoomHook;
-		this.mainPageController = mainPageController;
-		this.exceptionHandler = exceptionHandler;
+		Spark.port(port);
+		Spark.staticFiles.externalLocation("web");
+		Spark.exception(Exception.class, exceptionHandler::handleException);
 	}
 
-	public void start() {
-		Spark.port(port);
+	public void addRoute(String path, Controller controller)
+	{
+		Spark.get(path, controller::get);
+		Spark.post(path, controller::post);
+	}
 
-		Spark.staticFiles.externalLocation("web");
-		Spark.get("/", mainPageController::get);
-		Spark.get("/zoomhook", zoomHook::get);
-		Spark.post("/zoomhook", zoomHook::post);
-
-		Spark.exception(Exception.class, exceptionHandler::handleException);
-
+	public void start()
+	{
 		Spark.init();
 	}
 }

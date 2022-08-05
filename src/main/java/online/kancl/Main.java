@@ -26,7 +26,9 @@ public class Main
 		MainPageController mainPageController = new MainPageController(mustacheTemplateRenderer, meetings);
 		ExceptionHandler exceptionHandler = new ExceptionHandler();
 
-		WebServer webServer = new WebServer(8081, zoomHook, mainPageController, exceptionHandler);
+		WebServer webServer = new WebServer(8081, exceptionHandler);
+		webServer.addRoute("/", mainPageController);
+		webServer.addRoute("/zoomhook", zoomHook);
 		webServer.start();
 
 		System.out.println("Server running");
