@@ -31,7 +31,7 @@ public class MustacheTemplateRenderer
 	{
 		try (FileReader fileReader = new FileReader(getTemplateFile(templateName)))
 		{
-			return mustacheFactory.compile(fileReader, "MainPage");
+			return mustacheFactory.compile(fileReader, templateName);
 		}
 		catch (IOException e)
 		{
