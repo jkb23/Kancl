@@ -9,7 +9,6 @@ import java.nio.file.Path;
 
 class MustacheTemplateRendererTest
 {
-
 	public static final String TEST_TEMPLATE_DIRECTORY = "template";
 
 	@Test
