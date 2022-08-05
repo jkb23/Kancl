@@ -28,10 +28,15 @@ public class MainPageController
 
 	public String get(Request request, Response response)
 	{
-		try (FileReader fileReader = new FileReader(getTemplateFile("MainPage.mustache")))
+		Mustache template = compileTemplate("MainPage.mustache");
+		return template.execute(new StringWriter(), meetings).toString();
+	}
+
+	private Mustache compileTemplate(String templateName)
+	{
+		try (FileReader fileReader = new FileReader(getTemplateFile(templateName)))
 		{
-			Mustache template = mustacheFactory.compile(fileReader, "MainPage");
-			return template.execute(new StringWriter(), meetings).toString();
+			return mustacheFactory.compile(fileReader, "MainPage");
 		}
 		catch (IOException e)
 		{
