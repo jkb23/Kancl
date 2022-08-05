@@ -1,6 +1,6 @@
 package online.kancl.controller;
 
-import online.kancl.Meetings;
+import online.kancl.model.Meetings;
 import online.kancl.server.Controller;
 import online.kancl.server.MustacheTemplateRenderer;
 import spark.Request;

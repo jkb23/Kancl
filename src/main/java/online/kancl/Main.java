@@ -4,6 +4,7 @@ import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.MustacheFactory;
 import online.kancl.controller.MainPageController;
 import online.kancl.controller.ZoomHookController;
+import online.kancl.model.Meetings;
 import online.kancl.server.ExceptionHandler;
 import online.kancl.server.MustacheTemplateRenderer;
 import online.kancl.server.WebServer;

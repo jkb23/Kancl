@@ -1,5 +1,6 @@
 package online.kancl;
 
+import online.kancl.model.Meetings;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

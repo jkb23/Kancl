@@ -2,7 +2,7 @@ package online.kancl.controller;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
-import online.kancl.Meetings;
+import online.kancl.model.Meetings;
 import online.kancl.server.Controller;
 import spark.Request;
 import spark.Response;
