@@ -2,8 +2,6 @@ package online.kancl;
 
 import online.kancl.controller.MainPageController;
 import online.kancl.server.ExceptionHandler;
-import spark.Request;
-import spark.Response;
 import spark.Spark;
 
 public class WebServer
@@ -26,16 +24,11 @@ public class WebServer
 
 		Spark.staticFiles.externalLocation("web");
 		Spark.get("/", mainPageController::get);
-		Spark.get("/zoomhook", this::callZoomHook);
-		Spark.post("/zoomhook", this::callZoomHook);
+		Spark.get("/zoomhook", zoomHook::get);
+		Spark.post("/zoomhook", zoomHook::post);
 
 		Spark.exception(Exception.class, exceptionHandler::handleException);
 
 		Spark.init();
-	}
-
-	private String callZoomHook(Request request, Response response) {
-		zoomHook.handleZoomMessage(request);
-		return "OK";
 	}
 }
