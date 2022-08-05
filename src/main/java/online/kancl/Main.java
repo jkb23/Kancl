@@ -3,6 +3,7 @@ package online.kancl;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.MustacheFactory;
 import online.kancl.controller.MainPageController;
+import online.kancl.controller.ZoomHookController;
 import online.kancl.server.ExceptionHandler;
 import online.kancl.server.MustacheTemplateRenderer;
 import online.kancl.server.WebServer;
@@ -20,7 +21,7 @@ public class Main
 	public static void main(String[] args)
 	{
 		Meetings meetings = new Meetings();
-		ZoomHook zoomHook = new ZoomHook(meetings);
+		ZoomHookController zoomHookController = new ZoomHookController(meetings);
 		MustacheFactory mustacheFactory = new DefaultMustacheFactory();
 		Path templateDirectory = Paths.get("src", "main", "mustache", "templates");
 		MustacheTemplateRenderer mustacheTemplateRenderer = new MustacheTemplateRenderer(templateDirectory, mustacheFactory);
@@ -29,7 +30,7 @@ public class Main
 
 		WebServer webServer = new WebServer(8081, exceptionHandler);
 		webServer.addRoute("/", mainPageController);
-		webServer.addRoute("/zoomhook", zoomHook);
+		webServer.addRoute("/zoomhook", zoomHookController);
 		webServer.start();
 
 		System.out.println("Server running");

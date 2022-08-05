@@ -1,18 +1,19 @@
-package online.kancl;
+package online.kancl.controller;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
+import online.kancl.Meetings;
 import online.kancl.server.Controller;
 import spark.Request;
 import spark.Response;
 
 import static com.github.cliftonlabs.json_simple.Jsoner.mintJsonKey;
 
-public class ZoomHook extends Controller
+public class ZoomHookController extends Controller
 {
 	private final Meetings meetings;
 
-	public ZoomHook(Meetings meetings)
+	public ZoomHookController(Meetings meetings)
 	{
 		this.meetings = meetings;
 	}
