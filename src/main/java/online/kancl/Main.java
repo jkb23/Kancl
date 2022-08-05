@@ -3,6 +3,7 @@ package online.kancl;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.MustacheFactory;
 import online.kancl.controller.MainPageController;
+import online.kancl.server.ExceptionHandler;
 import online.kancl.server.MustacheTemplateRenderer;
 
 import java.nio.file.Path;
@@ -23,8 +24,9 @@ public class Main
 		Path templateDirectory = Paths.get("src", "main", "mustache", "templates");
 		MustacheTemplateRenderer mustacheTemplateRenderer = new MustacheTemplateRenderer(templateDirectory, mustacheFactory);
 		MainPageController mainPageController = new MainPageController(mustacheTemplateRenderer, meetings);
+		ExceptionHandler exceptionHandler = new ExceptionHandler();
 
-		WebServer webServer = new WebServer(8081, zoomHook, mainPageController);
+		WebServer webServer = new WebServer(8081, zoomHook, mainPageController, exceptionHandler);
 		webServer.start();
 
 		System.out.println("Server running");
