@@ -28,8 +28,13 @@ public class MainPageController
 
 	public String get(Request request, Response response)
 	{
-		Mustache template = compileTemplate("MainPage.mustache");
-		return template.execute(new StringWriter(), meetings).toString();
+		return renderTemplate("MainPage.mustache", meetings);
+	}
+
+	private String renderTemplate(String templateName, Object context)
+	{
+		Mustache template = compileTemplate(templateName);
+		return template.execute(new StringWriter(), context).toString();
 	}
 
 	private Mustache compileTemplate(String templateName)
