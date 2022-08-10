@@ -50,6 +50,9 @@ from the command line:
     cd run
     docker-compose -f docker-compose.yml -f docker-compose-test.yml up --build --exit-code-from cypress
 
+You can inspect test failures by investigating the log, looking at screenshots and videos
+that capture what the test saw. You can also install and run Cypress locally.
+
 ### Continuous integration / Continuous deployment (CI/CD)
 
 To make tests useful, you need to run them often. And the best way to do that is to automate it. We have prepared

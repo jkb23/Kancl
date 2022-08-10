@@ -10,8 +10,3 @@ services:
     working_dir: /e2e
     volumes:
       - ../src/test:/e2e
-
-  # alpine:
-  #   image: redis:7.0.3-alpine
-  #   depends_on:
-  #     - kanclonline

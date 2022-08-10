@@ -14,4 +14,12 @@ describe('Main page', () => {
 		application.openMainPage();
 		application.showsConnectedUser('John Doe');
 	});
+
+	it("persists a test field", () => {
+		application.openMainPage();
+		application.setTestFieldValue('Foo');
+
+		application.openMainPage()
+		application.showsTestFieldWithValue('Foo');
+	});
 });
