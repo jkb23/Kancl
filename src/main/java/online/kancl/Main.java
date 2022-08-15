@@ -8,13 +8,13 @@ import online.kancl.model.Meetings;
 import online.kancl.server.ExceptionHandler;
 import online.kancl.server.PebbleTemplateRenderer;
 import online.kancl.server.WebServer;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Main
@@ -40,16 +40,11 @@ public class Main
 		try
 		{
 			Connection connection = getConnection();
-			try (PreparedStatement statement = connection.prepareStatement("SELECT testString FROM TestTable"))
-			{
-				try (ResultSet rs = statement.executeQuery())
-				{
-					if (!rs.next())
-						System.out.println("Table TestTable is empty");
-					else
-						System.out.println("TestTable contains " + rs.getString(1));
-				}
-			}
+
+			String test = new QueryRunner().query(connection,
+					"SELECT testString FROM TestTable", new ScalarHandler<>());
+
+			System.out.println("TestTable contains " + test);
 		}
 		catch (SQLException e)
 		{

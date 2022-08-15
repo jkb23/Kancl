@@ -90,7 +90,7 @@ To be able to run the app locally, you need to set environment variables to same
 In IntelliJ Idea, you can copy&paste the following into run configuration:
 
 ```
-ZOOM_VERIFICATION_TOKEN=foobar; MYSQL_USER=user; MYSQL_PASSWORD=password; MYSQL_DATABASE=kanclOnline
+MYSQL_DATABASE=kanclOnline;MYSQL_PASSWORD=password;MYSQL_USER=user;ZOOM_VERIFICATION_TOKEN=foobar
 ```
 
 And then start the DB in Docker:
