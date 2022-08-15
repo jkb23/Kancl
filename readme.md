@@ -1,9 +1,10 @@
 # TODOs
 
 1. Introduce persisted form field, refactor DB access, introduce DB test, DAO
-2. Feedback from others
-3. Use testrig/zoom.js in a CMD app to emulate zoom for local development?
-4. GitLab instance? Repo user limit? Our own CI/CD runner?
+2. Replace lib for parsing JSON
+3. Feedback from others
+4. Use testrig/zoom.js in a CMD app to emulate zoom for local development?
+5. GitLab instance? Repo user limit? Our own CI/CD runner?
 
 # Installing pre-requisites
 
