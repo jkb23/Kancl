@@ -1,12 +1,12 @@
 package online.kancl;
 
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.MustacheFactory;
+import com.mitchellbosecke.pebble.PebbleEngine;
+import com.mitchellbosecke.pebble.loader.FileLoader;
 import online.kancl.controller.MainPageController;
 import online.kancl.controller.ZoomHookController;
 import online.kancl.model.Meetings;
 import online.kancl.server.ExceptionHandler;
-import online.kancl.server.MustacheTemplateRenderer;
+import online.kancl.server.PebbleTemplateRenderer;
 import online.kancl.server.WebServer;
 
 import java.nio.file.Path;
@@ -19,14 +19,15 @@ import java.sql.SQLException;
 
 public class Main
 {
+	public static final Path TEMPLATE_DIRECTORY = Paths.get("src", "main", "pebble", "templates");
+
 	public static void main(String[] args)
 	{
+		PebbleTemplateRenderer pebbleTemplateRenderer = createPebbleTemplateRenderer();
+
 		Meetings meetings = new Meetings();
 		ZoomHookController zoomHookController = new ZoomHookController(meetings);
-		MustacheFactory mustacheFactory = new DefaultMustacheFactory();
-		Path templateDirectory = Paths.get("src", "main", "mustache", "templates");
-		MustacheTemplateRenderer mustacheTemplateRenderer = new MustacheTemplateRenderer(templateDirectory, mustacheFactory);
-		MainPageController mainPageController = new MainPageController(mustacheTemplateRenderer, meetings);
+		MainPageController mainPageController = new MainPageController(pebbleTemplateRenderer, meetings);
 		ExceptionHandler exceptionHandler = new ExceptionHandler();
 
 		WebServer webServer = new WebServer(8081, exceptionHandler);
@@ -54,6 +55,14 @@ public class Main
 		{
 			throw new RuntimeException(e);
 		}
+	}
+
+	private static PebbleTemplateRenderer createPebbleTemplateRenderer()
+	{
+		FileLoader pebbleTemplateLoader = new FileLoader();
+		pebbleTemplateLoader.setPrefix(TEMPLATE_DIRECTORY.toAbsolutePath().toString());
+		PebbleEngine pebbleEngine = new PebbleEngine.Builder().loader(pebbleTemplateLoader).build();
+		return new PebbleTemplateRenderer(pebbleEngine);
 	}
 
 	private static Connection getConnection() throws SQLException

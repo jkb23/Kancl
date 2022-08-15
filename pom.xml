@@ -42,12 +42,13 @@
 			<version>4.0.1</version>
 		</dependency>
 
-		<!-- Mustache templating language -->
+		<!-- Templating language -->
 		<dependency>
-			<groupId>com.github.spullara.mustache.java</groupId>
-			<artifactId>compiler</artifactId>
-			<version>0.9.10</version>
+			<groupId>io.pebbletemplates</groupId>
+			<artifactId>pebble</artifactId>
+			<version>3.1.5</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.assertj</groupId>

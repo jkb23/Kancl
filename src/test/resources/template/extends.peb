@@ -1,0 +1,2 @@
+{# @pebvariable name="context" type="online.kancl.server.PebbleTemplateRendererTest.Context" #}
+{% extends "base.peb" %} {% block main %}How are you, {{ context.name }}?{% endblock %}

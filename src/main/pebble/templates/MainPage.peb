@@ -1,0 +1,14 @@
+{# @pebvariable name="meetings" type="online.kancl.model.Meetings" #}
+
+    {% extends "BaseHtml.peb" %}
+
+    {% block body %}
+
+        <div class="px-4 py-5 my-5 text-center">
+            <h1 class="display-5 fw-bold">Kancl.online</h1>
+            <div class="col-lg-6 mx-auto">
+                <p>{{meetings.getJoinedParticipantName() | default("No participant 🙁") }}</p>
+            </div>
+        </div>
+
+    {% endblock %}
