@@ -1,5 +1,6 @@
 # TODOs
 
+0. mvn customCommand na spusteni e2e testu, stacku, db ...
 1. Introduce persisted form field, refactor DB access, introduce DB test, DAO
 2. Replace lib for parsing JSON
 3. Feedback from others
@@ -7,6 +8,8 @@
 5. GitLab instance? Repo user limit? Our own CI/CD runner?
 
 # Installing pre-requisites
+
+**TODO** pre-install and update accordingly
 
 1. Install [Maven](https://maven.apache.org/).
 2. Install [Docker](https://docs.docker.com/engine/install/). In Fedora you can run `sudo dnf install docker && sudo systemctl enable docker && sudo systemctl start docker`
@@ -48,8 +51,10 @@ JavaScript or TypeScript and you can find them in directory `src/test/cypress/e2
 To run them you can either install Cypress locally or you can use Docker image to run them
 from the command line:
 
-    cd run
-    docker-compose -f docker-compose.yml -f docker-compose-test.yml up --build --exit-code-from cypress
+```sh
+cd run
+docker-compose -f docker-compose.yml -f docker-compose-test.yml up --build --exit-code-from cypress
+```
 
 You can inspect test failures by investigating the log, looking at screenshots and videos
 that capture what the test saw. You can also install and run Cypress locally.
@@ -58,146 +63,142 @@ that capture what the test saw. You can also install and run Cypress locally.
 
 To make tests useful, you need to run them often. And the best way to do that is to automate it. We have prepared
 a place that does just that - [CI/CD pipeline in GitLab](https://gitlab.com/jan.simonek/kancl-online/-/pipelines).
-**TODO: update link???** After you push to GitLab repository, the following steps are done:
+After you push to GitLab repository, the following steps are done:
 
-1. Stage `build` executed Maven builds Java, run unit tests and creates `.jar` file.
+1. Stage `build` executes Maven which builds Java, runs unit tests and creates `.jar` file.
 2. Stage `end-to-end-tests` starts a container, creates a DB and executes Cypress tests.
 3. If you push to branch `main` there's also stage `deploy`. This stages updates
    production server [kancl.online](https://kancl.online/).
 
-### Persistence in the container
+### Working with DB
 
-Whenever you re-build the container, the whole container gets re-created from the source image.
-This effectively throws away all data that were stored inside the container. This is a good
-thing, because the container starts from a clean, known state. We want to keep only a small
-portion of the data, which we define explicitly by creating "persistent volumes".
+There are no production users of our application (yet? :-) so we can afford to occasionally throw away all data in the DB
+and re-create it from scratch. This is done by set of scripts in the `sql` directory. Use these scripts to create DB schema
+for your application. Scripts need to have extension `.sql` and are executed in alphabetical order.
 
-A persistent volume is stored in the host computer and is mounted to a specified directory
-inside a container. Persistent volume is not re-created when a container is re-built. If you
-want to create or delete it, you can do it manually.
+When you start the container a script `/scripts/prepare-maria-db.sh` within the container will throw away the DB
+and re-create it every time content of `sql` directory is changed.
 
-Our application uses two persistent volumes. The first volume `sql_data` contains database files for MariaDB.
-There is a script in the container `/scripts/prepare-maria-db.sh` that initializes the DB by running sql
-scripts within the directory `sql`. Files with extension `.sql` are executed in alphabetical order. The DB is
-created whenever `sql_data` is empty. Also, the DB is destroyed and re-created when the content of directory
-`sql` changes. The script is called when starting the container.
-
-The second volume `caddy_data` is used on production environment to store data necessary for HTTPS.
-
-If you need to throw away the content of `sql_data` to force re-creation of the DB you can stop the container and execute:
-
-	docker container prune && docker volume rm sql_data && docker volume create --name=sql_data
+To persist the DB between restarts of the container persistent volumes are used. That's why you had to manually create them
+before starting the container for the first time with `docker volume create`.
 
 ### Local development
 
 When you are developing you want to run the Java application from within your IDE.
 Running the app in the container would make it hard to re-run and debug.
-To be able to run the app locally, set the following environment variables which are read by the app:
+To be able to run the app locally, you need to set environment variables to same values as in file `run/.env`.
+In IntelliJ Idea, you can copy&paste the following into run configuration:
 
-    ZOOM_VERIFICATION_TOKEN=foobar; MYSQL_USER=user; MYSQL_PASSWORD=password;MYSQL_DATABASE=kanclOnline
+```
+ZOOM_VERIFICATION_TOKEN=foobar; MYSQL_USER=user; MYSQL_PASSWORD=password; MYSQL_DATABASE=kanclOnline
+```
 
 And then start the DB in Docker:
 
-    cd run
-    docker-compose -f docker-compose.yml -f docker-compose-db-only.yml up --build
+```sh
+cd run
+docker-compose -f docker-compose.yml -f docker-compose-db-only.yml up --build
+```
 
 
 # Examples of Zoom calling the web hook
 
 Here is the app that I tried out: [https://marketplace.zoom.us/develop/apps/xGNy_ZHYT2alQ98bgjfrGQ/information]()
 
-```
-{
-    "event": "meeting.started",
-    "payload": {
-        "account_id": "PX5yQAcnT5azdXF5ma2Apw",
-        "object": {
-            "duration": 0,
-            "start_time": "2022-03-23T12:33:26Z",
-            "timezone": "",
-            "topic": "Jan Šimonek's Zoom Meeting",
-            "id": "86431910364",
-            "type": 1,
-            "uuid": "hwkAADUySwyG3GyUkqc0vA==",
-            "host_id": "tUo7WohjTs6ELvl9WR3JAA"
-        }
+```json
+[
+    {
+        "event": "meeting.started",
+        "payload": {
+            "account_id": "PX5yQAcnT5azdXF5ma2Apw",
+            "object": {
+                "duration": 0,
+                "start_time": "2022-03-23T12:33:26Z",
+                "timezone": "",
+                "topic": "Jan Šimonek's Zoom Meeting",
+                "id": "86431910364",
+                "type": 1,
+                "uuid": "hwkAADUySwyG3GyUkqc0vA==",
+                "host_id": "tUo7WohjTs6ELvl9WR3JAA"
+            }
+        },
+        "event_ts": 1648038806658
     },
-    "event_ts": 1648038806658
-}
-
-{
-    "payload": {
-        "account_id": "PX5yQAcnT5azdXF5ma2Apw",
-        "object": {
-            "uuid": "hwkAADUySwyG3GyUkqc0vA==",
-            "participant": {
-                "user_id": "16778240",
-                "user_name": "Jan Šimonek",
-                "registrant_id": null,
-                "participant_user_id": "tUo7WohjTs6ELvl9WR3JAA",
-                "id": "tUo7WohjTs6ELvl9WR3JAA",
-                "join_time": "2022-03-23T12:33:26Z",
-                "email": "jan.simonek@gmail.com"
-            },
-            "id": "86431910364",
-            "type": 1,
-            "topic": "Jan Šimonek's Zoom Meeting",
-            "host_id": "tUo7WohjTs6ELvl9WR3JAA",
-            "duration": 0,
-            "start_time": "2022-03-23T12:33:26Z",
-            "timezone": ""
-        }
+    
+    {
+        "payload": {
+            "account_id": "PX5yQAcnT5azdXF5ma2Apw",
+            "object": {
+                "uuid": "hwkAADUySwyG3GyUkqc0vA==",
+                "participant": {
+                    "user_id": "16778240",
+                    "user_name": "Jan Šimonek",
+                    "registrant_id": null,
+                    "participant_user_id": "tUo7WohjTs6ELvl9WR3JAA",
+                    "id": "tUo7WohjTs6ELvl9WR3JAA",
+                    "join_time": "2022-03-23T12:33:26Z",
+                    "email": "jan.simonek@gmail.com"
+                },
+                "id": "86431910364",
+                "type": 1,
+                "topic": "Jan Šimonek's Zoom Meeting",
+                "host_id": "tUo7WohjTs6ELvl9WR3JAA",
+                "duration": 0,
+                "start_time": "2022-03-23T12:33:26Z",
+                "timezone": ""
+            }
+        },
+        "event_ts": 1648038809439,
+        "event": "meeting.participant_joined"
     },
-    "event_ts": 1648038809439,
-    "event": "meeting.participant_joined"
-}
-
-{
-    "event": "meeting.ended",
-    "payload": {
-        "account_id": "PX5yQAcnT5azdXF5ma2Apw",
-        "object": {
-            "duration": 0,
-            "start_time": "2022-03-23T12:33:26Z",
-            "timezone": "",
-            "end_time": "2022-03-23T12:33:39Z",
-            "topic": "Jan Šimonek's Zoom Meeting",
-            "id": "86431910364",
-            "type": 1,
-            "uuid": "hwkAADUySwyG3GyUkqc0vA==",
-            "host_id": "tUo7WohjTs6ELvl9WR3JAA"
-        }
+    
+    {
+        "event": "meeting.ended",
+        "payload": {
+            "account_id": "PX5yQAcnT5azdXF5ma2Apw",
+            "object": {
+                "duration": 0,
+                "start_time": "2022-03-23T12:33:26Z",
+                "timezone": "",
+                "end_time": "2022-03-23T12:33:39Z",
+                "topic": "Jan Šimonek's Zoom Meeting",
+                "id": "86431910364",
+                "type": 1,
+                "uuid": "hwkAADUySwyG3GyUkqc0vA==",
+                "host_id": "tUo7WohjTs6ELvl9WR3JAA"
+            }
+        },
+        "event_ts": 1648038819111
     },
-    "event_ts": 1648038819111
-}
-
-{
-    "payload": {
-        "account_id": "PX5yQAcnT5azdXF5ma2Apw",
-        "object": {
-            "uuid": "hwkAADUySwyG3GyUkqc0vA==",
-            "participant": {
-                "leave_time": "2022-03-23T12:33:39Z",
-                "user_id": "16778240",
-                "user_name": "Jan Šimonek",
-                "registrant_id": "",
-                "participant_user_id": "tUo7WohjTs6ELvl9WR3JAA",
-                "id": "tUo7WohjTs6ELvl9WR3JAA",
-                "leave_reason": "left the meeting. Reason : Host ended the meeting.",
-                "email": "jan.simonek@gmail.com"
-            },
-            "id": "86431910364",
-            "type": 1,
-            "topic": "Jan Šimonek's Zoom Meeting",
-            "host_id": "tUo7WohjTs6ELvl9WR3JAA",
-            "duration": 0,
-            "start_time": "2022-03-23T12:33:26Z",
-            "timezone": ""
-        }
-    },
-    "event_ts": 1648038821536,
-    "event": "meeting.participant_left"
-}
+    
+    {
+        "payload": {
+            "account_id": "PX5yQAcnT5azdXF5ma2Apw",
+            "object": {
+                "uuid": "hwkAADUySwyG3GyUkqc0vA==",
+                "participant": {
+                    "leave_time": "2022-03-23T12:33:39Z",
+                    "user_id": "16778240",
+                    "user_name": "Jan Šimonek",
+                    "registrant_id": "",
+                    "participant_user_id": "tUo7WohjTs6ELvl9WR3JAA",
+                    "id": "tUo7WohjTs6ELvl9WR3JAA",
+                    "leave_reason": "left the meeting. Reason : Host ended the meeting.",
+                    "email": "jan.simonek@gmail.com"
+                },
+                "id": "86431910364",
+                "type": 1,
+                "topic": "Jan Šimonek's Zoom Meeting",
+                "host_id": "tUo7WohjTs6ELvl9WR3JAA",
+                "duration": 0,
+                "start_time": "2022-03-23T12:33:26Z",
+                "timezone": ""
+            }
+        },
+        "event_ts": 1648038821536,
+        "event": "meeting.participant_left"
+    }
+]
 ```
 
 # Production server set-up
@@ -205,7 +206,7 @@ Here is the app that I tried out: [https://marketplace.zoom.us/develop/apps/xGNy
 ## 1. Install docker, generate key
 Follow installation [instructions for Docker](https://docs.docker.com/engine/install/debian/).
 Enable Docker daemon and install docker-compose:
-```
+```sh
 sudo systemctl enable docker
 sudo systemctl start docker
 sudo apt-get install docker-compose
@@ -228,11 +229,11 @@ Defaults env_keep += "DOMAIN"
 ## 3. Create deployer user and directory for the app
 
 Generate private+public key locally using:
-```
+```sh
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 ```
 
-```
+```sh
 sudo mkdir -p /opt/kancl.online
 sudo adduser deployer --disabled-password
 
