@@ -14,12 +14,4 @@ describe('Main page', () => {
 		application.openMainPage();
 		application.showsConnectedUser('John Doe');
 	});
-
-	it("persists a comment", () => {
-		application.openMainPage();
-		application.postComment('John Doe', 'Foo');
-
-		application.openMainPage()
-		application.showsComment('John Doe', 'Foo');
-	});
 });

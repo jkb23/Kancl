@@ -1,0 +1,23 @@
+{
+  "name": "kancl-online",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/jan.simonek/kancl-online.git"
+  },
+  "author": "",
+  "license": "",
+  "bugs": {
+    "url": "https://gitlab.com/jan.simonek/kancl-online/issues"
+  },
+  "homepage": "https://gitlab.com/jan.simonek/kancl-online#readme",
+  "devDependencies": {
+    "cypress": "^10.4.0",
+    "typescript": "^4.7.4"
+  }
+}

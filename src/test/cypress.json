@@ -1,8 +1,0 @@
-{
-	"pluginsFile": false,
-	"supportFile": false,
-	"pageLoadTimeout": 20000,
-	"responseTimeout": 10000,
-
-	"integrationFolder": "cypress/e2e"
-}
