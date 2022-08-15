@@ -64,7 +64,7 @@ To have a faster feedback loop for running tests locally it is recommended to in
 Then start the app as is described in paragraph Local development and run:
 
 ```shell
-node_modules/cypress/bin/cypress open
+npx cypress open
 ```
 
 This will open Cypress UI. Wait a bit, click on E2E Testing, choose a browser and a test 'Spec'.
