@@ -4,11 +4,8 @@
 
     {% block body %}
 
-        <div class="px-4 py-5 my-5 text-center">
-            <h1 class="display-5 fw-bold">Kancl.online</h1>
-            <div class="col-lg-6 mx-auto">
-                <p>{{meetings.getJoinedParticipantName() | orElse("No participant 🙁") }}</p>
-            </div>
+        <div class="col-lg-6 mx-auto text-center">
+            <p>{{meetings.getJoinedParticipantName() | orElse("No participant 🙁") }}</p>
         </div>
 
     {% endblock %}

@@ -15,6 +15,7 @@
 2. Install [Docker](https://docs.docker.com/engine/install/). In Fedora you can run `sudo dnf install docker && sudo systemctl enable docker && sudo systemctl start docker`
 3. On Linux run [these post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/)
 to avoid using root.
+4. Install [npm](https://www.npmjs.com/).
 
 # Usage
 
@@ -57,7 +58,18 @@ docker-compose -f docker-compose.yml -f docker-compose-test.yml up --build --exi
 ```
 
 You can inspect test failures by investigating the log, looking at screenshots and videos
-that capture what the test saw. You can also install and run Cypress locally.
+that capture what the test saw.
+
+To have a faster feedback loop for running tests locally it is recommended to install Cypress locally by running `npm install`.
+Then start the app as is described in paragraph Local development and run:
+
+```shell
+node_modules/cypress/bin/cypress open
+```
+
+This will open Cypress UI. Wait a bit, click on E2E Testing, choose a browser and a test 'Spec'.
+The test will be executed within the selected browser, you can replay individual steps and inspect failures.
+The test is executed again whenever the source file changes.
 
 ### Continuous integration / Continuous deployment (CI/CD)
 

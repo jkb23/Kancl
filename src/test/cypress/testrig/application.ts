@@ -12,17 +12,17 @@ export function showsEmptyMeeting() {
 
 export function postComment(author, message) {
 	cy.get("#author").type("{selectall}{del}" + author);
-	cy.get("#comment").type("{selectall}{del}" + message);
+	cy.get("#message").type("{selectall}{del}" + message);
+    cy.get('#submit').click()
 }
 
-export function showsComment(author, message) {
-	cy.get("#messages").should("have.value", message)
+export function showsComment(index, author, message) {
+	cy.get("#comments").children('li').eq(index).should(comment => {
+        expect(comment.children('.author')).to.contain(author);
+        expect(comment.children('.message')).to.contain(message);
+    });
 }
 
 export function openCommentPage() {
-	cy.visit("/comment");
-}
-
-export function showsNoComments() {
-	cy.get("#comments").should("have")
+	cy.visit("/comments");
 }

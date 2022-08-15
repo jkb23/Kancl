@@ -2,6 +2,7 @@ package online.kancl;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
+import online.kancl.controller.CommentsController;
 import online.kancl.controller.MainPageController;
 import online.kancl.controller.ZoomHookController;
 import online.kancl.model.Meetings;
@@ -9,8 +10,6 @@ import online.kancl.server.ExceptionHandler;
 import online.kancl.server.template.PebbleExtension;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import online.kancl.server.WebServer;
-import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,13 +26,11 @@ public class Main
 		PebbleTemplateRenderer pebbleTemplateRenderer = createPebbleTemplateRenderer();
 
 		Meetings meetings = new Meetings();
-		ZoomHookController zoomHookController = new ZoomHookController(meetings);
-		MainPageController mainPageController = new MainPageController(pebbleTemplateRenderer, meetings);
-		ExceptionHandler exceptionHandler = new ExceptionHandler();
 
-		WebServer webServer = new WebServer(8081, exceptionHandler);
-		webServer.addRoute("/", mainPageController);
-		webServer.addRoute("/zoomhook", zoomHookController);
+		WebServer webServer = new WebServer(8081, new ExceptionHandler());
+		webServer.addRoute("/", new MainPageController(pebbleTemplateRenderer, meetings));
+		webServer.addRoute("/comments", new CommentsController(pebbleTemplateRenderer));
+		webServer.addRoute("/zoomhook", new ZoomHookController(meetings));
 		webServer.start();
 
 		System.out.println("Server running");
@@ -60,12 +57,13 @@ public class Main
 		PebbleEngine pebbleEngine = new PebbleEngine.Builder()
 				.loader(pebbleTemplateLoader)
 				.extension(new PebbleExtension())
+				.cacheActive(false)
 				.build();
 
 		return new PebbleTemplateRenderer(pebbleEngine);
 	}
 
-	private static Connection getConnection() throws SQLException
+	public static Connection getConnection() throws SQLException
 	{
 		String user = System.getenv("MYSQL_USER");
 		String password = System.getenv("MYSQL_PASSWORD");

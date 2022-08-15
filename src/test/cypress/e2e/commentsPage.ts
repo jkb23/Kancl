@@ -1,18 +1,13 @@
 import * as application from '../testrig/application';
 
-describe('Comment page', () => {
-
-	it("shows no comments", () => {
-		application.openCommentPage();
-		application.showsNoComments();
-	});
+describe('Comments page', () => {
 
 	it("persists a comment", () => {
 		application.openCommentPage();
 		application.postComment('John Doe', 'Foo');
 
 		application.openCommentPage()
-		application.showsComment('John Doe', 'Foo');
+		application.showsComment(0, 'John Doe', 'Foo');
 	});
 
 	it("appends a comment", () => {
@@ -20,7 +15,7 @@ describe('Comment page', () => {
 		application.postComment('Mark Wheel', 'Bar');
 
 		application.openCommentPage()
-		application.showsComment('John Doe', 'Foo');
-		application.showsComment('Mark Wheel', 'Bar');
+		application.showsComment(0, 'John Doe', 'Foo');
+		application.showsComment(1, 'Mark Wheel', 'Bar');
 	});
 });
