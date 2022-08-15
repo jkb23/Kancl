@@ -15,11 +15,11 @@ describe('Main page', () => {
 		application.showsConnectedUser('John Doe');
 	});
 
-	it("persists a test field", () => {
+	it("persists a comment", () => {
 		application.openMainPage();
-		application.setTestFieldValue('Foo');
+		application.postComment('John Doe', 'Foo');
 
 		application.openMainPage()
-		application.showsTestFieldWithValue('Foo');
+		application.showsComment('John Doe', 'Foo');
 	});
 });

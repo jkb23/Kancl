@@ -1,10 +1,8 @@
 USE kanclOnline;
 
-CREATE TABLE TestTable (
+CREATE TABLE Comment (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    testString VARCHAR(50) NOT NULL,
+    author VARCHAR(50) NOT NULL,
+    comment VARCHAR(300) NOT NULL,
     INDEX(id)
 );
-
-INSERT INTO TestTable(id, testString) VALUES (1, 'Hello world!');
-

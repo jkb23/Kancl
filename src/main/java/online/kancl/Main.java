@@ -38,7 +38,7 @@ public class Main
 
 		System.out.println("Server running");
 
-		try
+		/*try
 		{
 			Connection connection = getConnection();
 
@@ -50,7 +50,7 @@ public class Main
 		catch (SQLException e)
 		{
 			throw new RuntimeException(e);
-		}
+		}*/
 	}
 
 	private static PebbleTemplateRenderer createPebbleTemplateRenderer()

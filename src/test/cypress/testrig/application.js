@@ -7,13 +7,14 @@ export function showsConnectedUser(name) {
 }
 
 export function showsEmptyMeeting() {
-	cy.get("p").should("contain", "No participant")
+	cy.get("p").should("contain", "No participant");
 }
 
-export function setTestFieldValue(value) {
-	cy.get("#testField").type("{selectall}{del}" + value)
+export function postComment(author, comment) {
+	cy.get("#author").type("{selectall}{del}" + author);
+	cy.get("#comment").type("{selectall}{del}" + comment);
 }
 
-export function showsTestFieldWithValue(expectedValue) {
-	cy.get("#testField").should("have.value", expectedValue)
+export function showsComment(expectedValue) {
+	cy.get("#messages").should("have.value", expectedValue)
 }
