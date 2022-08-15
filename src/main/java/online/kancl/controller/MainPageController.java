@@ -2,7 +2,7 @@ package online.kancl.controller;
 
 import online.kancl.model.Meetings;
 import online.kancl.server.Controller;
-import online.kancl.server.PebbleTemplateRenderer;
+import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
 import spark.Response;
 

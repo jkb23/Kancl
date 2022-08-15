@@ -1,2 +1,2 @@
-{# @pebvariable name="context" type="online.kancl.server.PebbleTemplateRendererTest.Context" #}
+{# @pebvariable name="context" type="online.kancl.server.template.PebbleTemplateRendererTest.Context" #}
 Hello {{context.name}}!

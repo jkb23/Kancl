@@ -6,7 +6,8 @@ import online.kancl.controller.MainPageController;
 import online.kancl.controller.ZoomHookController;
 import online.kancl.model.Meetings;
 import online.kancl.server.ExceptionHandler;
-import online.kancl.server.PebbleTemplateRenderer;
+import online.kancl.server.template.PebbleExtension;
+import online.kancl.server.template.PebbleTemplateRenderer;
 import online.kancl.server.WebServer;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
@@ -56,7 +57,11 @@ public class Main
 	{
 		FileLoader pebbleTemplateLoader = new FileLoader();
 		pebbleTemplateLoader.setPrefix(TEMPLATE_DIRECTORY.toAbsolutePath().toString());
-		PebbleEngine pebbleEngine = new PebbleEngine.Builder().loader(pebbleTemplateLoader).build();
+		PebbleEngine pebbleEngine = new PebbleEngine.Builder()
+				.loader(pebbleTemplateLoader)
+				.extension(new PebbleExtension())
+				.build();
+
 		return new PebbleTemplateRenderer(pebbleEngine);
 	}
 

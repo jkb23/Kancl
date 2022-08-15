@@ -1,4 +1,4 @@
-package online.kancl.server;
+package online.kancl.server.template;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.Optional;
 
 class PebbleTemplateRendererTest
 {
@@ -28,6 +29,13 @@ class PebbleTemplateRendererTest
 				.isEqualTo("Hello John Doe! How are you, John Doe?");
 	}
 
+	@Test
+	void emptyOptionalTest()
+	{
+		Assertions.assertThat(renderTemplate("emptyOptional.peb", context))
+				.isEqualTo("default value");
+	}
+
 	private String renderTemplate(String templateName, Object context)
 	{
 		PebbleTemplateRenderer renderer = createPebbleTemplateRenderer(templateName);
@@ -38,7 +46,10 @@ class PebbleTemplateRendererTest
 	{
 		FileLoader pebbleTemplateLoader = new FileLoader();
 		pebbleTemplateLoader.setPrefix(getTemplateDirectory(templateName).toAbsolutePath().toString());
-		PebbleEngine pebbleEngine = new PebbleEngine.Builder().loader(pebbleTemplateLoader).build();
+		PebbleEngine pebbleEngine = new PebbleEngine.Builder()
+				.loader(pebbleTemplateLoader)
+				.extension(new PebbleExtension())
+				.build();
 		return new PebbleTemplateRenderer(pebbleEngine);
 	}
 
@@ -57,5 +68,6 @@ class PebbleTemplateRendererTest
 	private static class Context
 	{
 		public String name = "John Doe";
+		public Optional<String> emptyOptional = Optional.empty();
 	}
 }

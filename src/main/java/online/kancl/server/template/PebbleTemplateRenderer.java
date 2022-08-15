@@ -1,4 +1,4 @@
-package online.kancl.server;
+package online.kancl.server.template;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.template.PebbleTemplate;
