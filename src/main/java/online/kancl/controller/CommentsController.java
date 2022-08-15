@@ -21,9 +21,8 @@ public class CommentsController extends Controller
 	}
 
 	@Override
-	public String get(Request request, Response response) throws Exception
+	public String get(Request request, Response response, Connection connection)
 	{
-		Connection connection = Main.getConnection();
 		Comments comments = new Comments();
 		comments.comments = CommentQuery.loadAllComments(connection);
 
@@ -31,14 +30,13 @@ public class CommentsController extends Controller
 	}
 
 	@Override
-	public String post(Request request, Response response) throws Exception
+	public String post(Request request, Response response, Connection connection)
 	{
 		Comment comment = new Comment(
 				null,
 				request.queryParams("author"),
 				request.queryParams("message"));
 
-		Connection connection = Main.getConnection();
 		CommentQuery.save(connection, comment);
 
 		response.redirect("/comments");

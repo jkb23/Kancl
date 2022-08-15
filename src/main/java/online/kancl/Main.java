@@ -63,12 +63,19 @@ public class Main
 		return new PebbleTemplateRenderer(pebbleEngine);
 	}
 
-	public static Connection getConnection() throws SQLException
+	public static Connection getConnection()
 	{
-		String user = System.getenv("MYSQL_USER");
-		String password = System.getenv("MYSQL_PASSWORD");
-		String database = System.getenv("MYSQL_DATABASE");
+		try
+		{
+			String user = System.getenv("MYSQL_USER");
+			String password = System.getenv("MYSQL_PASSWORD");
+			String database = System.getenv("MYSQL_DATABASE");
 
-		return DriverManager.getConnection("jdbc:mariadb://localhost/" + database, user, password);
+			return DriverManager.getConnection("jdbc:mariadb://localhost/" + database, user, password);
+		}
+		catch (SQLException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 }

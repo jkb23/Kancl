@@ -6,6 +6,8 @@ import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
 import spark.Response;
 
+import java.sql.Connection;
+
 public class MainPageController extends Controller
 {
 	private final PebbleTemplateRenderer pebbleTemplateRenderer;
@@ -18,7 +20,7 @@ public class MainPageController extends Controller
 	}
 
 	@Override
-	public String get(Request request, Response response)
+	public String get(Request request, Response response, Connection connection)
 	{
 		return pebbleTemplateRenderer.renderTemplate("MainPage.peb", meetings);
 	}

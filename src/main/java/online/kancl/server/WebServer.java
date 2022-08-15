@@ -13,8 +13,8 @@ public class WebServer
 
 	public void addRoute(String path, Controller controller)
 	{
-		Spark.get(path, controller::get);
-		Spark.post(path, controller::post);
+		Spark.get(path, controller::handleGet);
+		Spark.post(path, controller::handlePost);
 	}
 
 	public void start()

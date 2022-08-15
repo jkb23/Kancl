@@ -7,6 +7,8 @@ import online.kancl.server.Controller;
 import spark.Request;
 import spark.Response;
 
+import java.sql.Connection;
+
 import static com.github.cliftonlabs.json_simple.Jsoner.mintJsonKey;
 
 public class ZoomHookController extends Controller
@@ -19,13 +21,13 @@ public class ZoomHookController extends Controller
 	}
 
 	@Override
-	public String get(Request request, Response response)
+	public String get(Request request, Response response, Connection connection)
 	{
 		return handleZoomMessage(request);
 	}
 
 	@Override
-	public String post(Request request, Response response)
+	public String post(Request request, Response response, Connection connection)
 	{
 		return handleZoomMessage(request);
 	}
