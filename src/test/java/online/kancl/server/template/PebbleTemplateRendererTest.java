@@ -13,7 +13,7 @@ class PebbleTemplateRendererTest
 {
 	public static final String TEST_TEMPLATE_DIRECTORY = "template";
 
-	private final Object context = new Context();
+	private final Context context = new Context();
 
 	@Test
 	void singleValueTest()
@@ -32,8 +32,17 @@ class PebbleTemplateRendererTest
 	@Test
 	void emptyOptionalTest()
 	{
-		Assertions.assertThat(renderTemplate("emptyOptional.peb", context))
+		Assertions.assertThat(renderTemplate("optional.peb", context))
 				.isEqualTo("default value");
+	}
+
+	@Test
+	void filledOptionalTest()
+	{
+		context.optional = Optional.of("Foo");
+
+		Assertions.assertThat(renderTemplate("optional.peb", context))
+				.isEqualTo("Foo");
 	}
 
 	private String renderTemplate(String templateName, Object context)
@@ -68,6 +77,6 @@ class PebbleTemplateRendererTest
 	private static class Context
 	{
 		public String name = "John Doe";
-		public Optional<String> emptyOptional = Optional.empty();
+		public Optional<String> optional = Optional.empty();
 	}
 }

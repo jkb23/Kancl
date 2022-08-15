@@ -1,2 +1,2 @@
 {# @pebvariable name="context" type="online.kancl.server.template.PebbleTemplateRendererTest.Context" #}
-{{context.emptyOptional | orElse("default value")}}
+{{context.optional | orElse("default value")}}

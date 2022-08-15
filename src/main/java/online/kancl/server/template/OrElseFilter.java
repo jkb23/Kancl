@@ -8,6 +8,7 @@ import com.mitchellbosecke.pebble.template.PebbleTemplate;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class OrElseFilter implements Filter
 {
@@ -19,7 +20,21 @@ public class OrElseFilter implements Filter
 		Test emptyTest = new EmptyOptionalTest();
 		boolean isEmpty = emptyTest.apply(input, args, self, context, lineNumber);
 
-		return isEmpty ? defaultValue : input;
+		if (isEmpty)
+		{
+			return defaultValue;
+		}
+		else
+		{
+			if (input instanceof Optional)
+			{
+				return ((Optional<Object>) input).get();
+			}
+			else
+			{
+				return input;
+			}
+		}
 	}
 
 	@Override
