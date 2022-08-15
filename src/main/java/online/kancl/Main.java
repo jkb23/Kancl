@@ -7,19 +7,22 @@ import online.kancl.controller.MainPageController;
 import online.kancl.controller.ZoomHookController;
 import online.kancl.model.Meetings;
 import online.kancl.server.ExceptionHandler;
+import online.kancl.server.WebServer;
 import online.kancl.server.template.PebbleExtension;
 import online.kancl.server.template.PebbleTemplateRenderer;
-import online.kancl.server.WebServer;
+import org.apache.commons.dbcp2.BasicDataSource;
 
+import javax.sql.DataSource;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Main
 {
 	public static final Path TEMPLATE_DIRECTORY = Paths.get("src", "main", "pebble", "templates");
+
+	private static final DataSource dataSource = createDataSource();
 
 	public static void main(String[] args)
 	{
@@ -34,20 +37,6 @@ public class Main
 		webServer.start();
 
 		System.out.println("Server running");
-
-		/*try
-		{
-			Connection connection = getConnection();
-
-			String test = new QueryRunner().query(connection,
-					"SELECT testString FROM TestTable", new ScalarHandler<>());
-
-			System.out.println("TestTable contains " + test);
-		}
-		catch (SQLException e)
-		{
-			throw new RuntimeException(e);
-		}*/
 	}
 
 	private static PebbleTemplateRenderer createPebbleTemplateRenderer()
@@ -63,15 +52,27 @@ public class Main
 		return new PebbleTemplateRenderer(pebbleEngine);
 	}
 
+	private static DataSource createDataSource()
+	{
+		BasicDataSource ds = new BasicDataSource();
+
+		String user = System.getenv("MYSQL_USER");
+		String password = System.getenv("MYSQL_PASSWORD");
+		String database = System.getenv("MYSQL_DATABASE");
+
+		ds.setUrl("jdbc:mariadb://localhost/" + database);
+		ds.setUsername(user);
+		ds.setPassword(password);
+		ds.setMaxOpenPreparedStatements(100);
+
+		return ds;
+	}
+
 	public static Connection getConnection()
 	{
 		try
 		{
-			String user = System.getenv("MYSQL_USER");
-			String password = System.getenv("MYSQL_PASSWORD");
-			String database = System.getenv("MYSQL_DATABASE");
-
-			return DriverManager.getConnection("jdbc:mariadb://localhost/" + database, user, password);
+			return dataSource.getConnection();
 		}
 		catch (SQLException e)
 		{

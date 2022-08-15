@@ -11,14 +11,12 @@ public class Controller
 {
 	public String handleGet(Request request, Response response)
 	{
-		Connection connection = Main.getConnection();
-		return TransactionJobRunner.runInTransaction(connection, () -> get(request, response, connection));
+		return TransactionJobRunner.runInTransactionAndRelease((connection) -> get(request, response, connection));
 	}
 
 	public String handlePost(Request request, Response response)
 	{
-		Connection connection = Main.getConnection();
-		return TransactionJobRunner.runInTransaction(connection, () -> post(request, response, connection));
+		return TransactionJobRunner.runInTransactionAndRelease((connection) -> post(request, response, connection));
 	}
 
 	protected String get(Request request, Response response, Connection connection)
