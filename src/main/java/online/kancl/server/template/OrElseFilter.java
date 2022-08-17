@@ -28,7 +28,7 @@ public class OrElseFilter implements Filter
 		{
 			if (input instanceof Optional)
 			{
-				return ((Optional<Object>) input).get();
+				return ((Optional<?>) input).orElse(null);
 			}
 			else
 			{
