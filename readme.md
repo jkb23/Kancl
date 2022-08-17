@@ -48,28 +48,25 @@ You can find them in directory `src/test/java`.
 
 End-to-end tests exercise the application as a whole in its environment. We have prepared
 [Cypress](https://www.cypress.io/) testing framework for you. Cypress tests are written in
-JavaScript or TypeScript and you can find them in directory `src/test/cypress/e2e`
-To run them you can either install Cypress locally or you can use Docker image to run them
-from the command line:
+JavaScript or TypeScript and you can find them in directory `src/test/cypress`.
+There are two ways that you can execute them.
 
-```sh
-cd run
-docker-compose -f docker-compose.yml -f docker-compose-test.yml up --build --exit-code-from cypress
-```
+The first way is to run end-to-end tests in the terminal by running `mvn verify`. You can
+also invoke Maven phase `verify` from your IDE. You can inspect test failures by investigating
+the log, looking at screenshots and videos that capture what the test saw. You can find them
+in directories `src/test/cypress/screenshots` and `src/test/cypress/videos`.
 
-You can inspect test failures by investigating the log, looking at screenshots and videos
-that capture what the test saw.
-
-To have a faster feedback loop for running tests locally it is recommended to install Cypress locally by running `npm install`.
-Then start the app as is described in paragraph Local development and run:
+The second option is to work in Cypress UI, which will give you a faster feedback loop and
+more interactive way to investigate test failures. To install Cypress run `npm install`.
+Make sure the app is running as is described in paragraph *Local development* and run:
 
 ```shell
 npx cypress open
 ```
 
 This will open Cypress UI. Wait a bit, click on E2E Testing, choose a browser and a test 'Spec'.
-The test will be executed within the selected browser, you can replay individual steps and inspect failures.
-The test is executed again whenever the source file changes.
+The test will be executed within the selected browser, you can replay individual steps and inspect
+failures. The test is executed again whenever the source file changes.
 
 ### Continuous integration / Continuous deployment (CI/CD)
 
