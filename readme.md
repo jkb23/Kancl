@@ -51,10 +51,10 @@ End-to-end tests exercise the application as a whole in its environment. We have
 JavaScript or TypeScript and you can find them in directory `src/test/cypress`.
 There are two ways that you can execute them.
 
-The first way is to run end-to-end tests in the terminal by running `mvn verify`. You can
-also invoke Maven phase `verify` from your IDE. You can inspect test failures by investigating
-the log, looking at screenshots and videos that capture what the test saw. You can find them
-in directories `src/test/cypress/screenshots` and `src/test/cypress/videos`.
+The first way is to run end-to-end tests in the terminal by running `mvn integration-test`. You can
+also invoke Maven phase `integration-test` from your IDE (sometimes it is also called `verify`).
+You can inspect test failures by investigating the log, looking at screenshots and videos that capture
+what the test saw. You can find them in directories `src/test/cypress/screenshots` and `src/test/cypress/videos`.
 
 The second option is to work in Cypress UI, which will give you a faster feedback loop and
 more interactive way to investigate test failures. To install Cypress run `npm install`.
