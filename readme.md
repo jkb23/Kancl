@@ -1,11 +1,8 @@
 # TODOs
 
-0. mvn customCommand na spusteni e2e testu, stacku, db ...
-1. Introduce persisted form field, refactor DB access, introduce DB test, DAO
-2. Replace lib for parsing JSON
-3. Feedback from others
-4. Use testrig/zoom.js in a CMD app to emulate zoom for local development?
-5. GitLab instance? Repo user limit? Our own CI/CD runner?
+1. Replace lib for parsing JSON
+2. Our own CI/CD runner
+3. wrap command do run stack and db
 
 # Installing pre-requisites
 

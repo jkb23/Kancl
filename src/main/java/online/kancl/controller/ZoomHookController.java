@@ -1,15 +1,15 @@
 package online.kancl.controller;
 
-import com.github.cliftonlabs.json_simple.JsonObject;
-import com.github.cliftonlabs.json_simple.Jsoner;
 import online.kancl.model.Meetings;
 import online.kancl.server.Controller;
 import spark.Request;
 import spark.Response;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import java.io.StringReader;
 import java.sql.Connection;
-
-import static com.github.cliftonlabs.json_simple.Jsoner.mintJsonKey;
 
 public class ZoomHookController extends Controller
 {
@@ -35,19 +35,22 @@ public class ZoomHookController extends Controller
 	public String handleZoomMessage(Request request)
 	{
 		System.out.println(request.body());
-		
-		JsonObject message = Jsoner.deserialize(request.body(), new JsonObject());
-		handleParticipantJoinedMessage(message);
+
+		try (JsonReader jsonReader = Json.createReader(new StringReader(request.body())))
+		{
+			handleParticipantJoinedMessage(jsonReader.readObject());
+		}
 
 		return "OK";
 	}
 
 	private void handleParticipantJoinedMessage(JsonObject message)
 	{
-		JsonObject payload = message.getMapOrDefault(mintJsonKey("payload", new JsonObject()));
-		JsonObject meetingObject = payload.getMapOrDefault(mintJsonKey("object", new JsonObject()));
-		JsonObject participantObject = meetingObject.getMapOrDefault(mintJsonKey("participant", new JsonObject()));
-		String participantName = participantObject.getStringOrDefault(mintJsonKey("user_name", ""));
+		String participantName = message
+				.getJsonObject("payload")
+				.getJsonObject("object")
+				.getJsonObject("participant")
+				.getString("user_name");
 
 		meetings.participantJoined(participantName);
 	}
