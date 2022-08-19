@@ -30,7 +30,6 @@ public class TransactionJobRunner
 		finally
 		{
 			restoreAndClose(connection, originalAutoCommit);
-
 		}
 	}
 
