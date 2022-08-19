@@ -1,6 +1,5 @@
 package online.kancl.server;
 
-import online.kancl.Main;
 import online.kancl.db.TransactionJobRunner;
 import spark.Request;
 import spark.Response;
