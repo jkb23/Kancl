@@ -23,8 +23,7 @@ public class CommentsController extends Controller
 	@Override
 	public String get(Request request, Response response, Connection connection)
 	{
-		Comments comments = new Comments();
-		comments.comments = CommentQuery.loadAllComments(connection);
+		Comments comments = new Comments(CommentQuery.loadAllComments(connection));
 
 		return pebbleTemplateRenderer.renderTemplate("Comments.peb", comments);
 	}

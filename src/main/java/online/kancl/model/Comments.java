@@ -4,5 +4,10 @@ import java.util.List;
 
 public class Comments
 {
-	public List<Comment> comments;
+	public final List<Comment> comments;
+
+	public Comments(List<Comment> comments)
+	{
+		this.comments = comments;
+	}
 }
