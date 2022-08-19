@@ -3,7 +3,6 @@ package online.kancl.dao;
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.ListHandler;
 import online.kancl.model.Comment;
-import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,11 +17,10 @@ public class CommentQuery {
 				ListHandler.of(CommentQuery::handle));
 	}
 
-	public static long save(DatabaseRunner dbRunner, Comment comment) {
-			return dbRunner.insert(
-					"INSERT INTO Comment(author, message) VALUES (?, ?)",
-					new ScalarHandler<>(),
-					comment.author, comment.message);
+	public static void save(DatabaseRunner dbRunner, Comment comment) {
+		dbRunner.update(
+				"INSERT INTO Comment(author, message) VALUES (?, ?)",
+				comment.author, comment.message);
 	}
 
 	private static Optional<Comment> handle(ResultSet rs) throws SQLException {
