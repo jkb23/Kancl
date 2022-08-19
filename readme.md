@@ -7,6 +7,7 @@
 5. Our own CI/CD runner
 6. Struktura package - controller+template+model u sebe per typ nebo per byznys logika
 7. peb soubory do resource ve stejnym package
+8. Make cypress display/print stack trace on internal server error
 
 # Potencialne nachystane vidle
 

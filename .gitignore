@@ -4,3 +4,4 @@
 /src/test/cypress/videos
 /src/test/cypress/screenshots
 /node_modules
+/db

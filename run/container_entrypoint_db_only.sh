@@ -14,6 +14,3 @@ function onError()
 }
 trap onError ERR
 
-
-/scripts/prepare-maria-db.sh
-/scripts/run-maria-db.sh

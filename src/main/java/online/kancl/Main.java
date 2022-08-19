@@ -5,24 +5,24 @@ import com.mitchellbosecke.pebble.loader.FileLoader;
 import online.kancl.controller.CommentsController;
 import online.kancl.controller.MainPageController;
 import online.kancl.controller.ZoomHookController;
+import online.kancl.db.ConnectionProvider;
 import online.kancl.model.Meetings;
 import online.kancl.server.ExceptionHandler;
 import online.kancl.server.WebServer;
 import online.kancl.server.template.PebbleExtension;
 import online.kancl.server.template.PebbleTemplateRenderer;
-import org.apache.commons.dbcp2.BasicDataSource;
 
-import javax.sql.DataSource;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public class Main {
 
 	public static final Path TEMPLATE_DIRECTORY = Paths.get("src", "main", "pebble", "templates");
+	private static final Path DB_DIRECTORY = Paths.get("db");
+	private static final String DB_NAME = "data";
 
-	private static final DataSource DATA_SOURCE = createDataSource();
+	private static final ConnectionProvider CONNECTION_PROVIDER = ConnectionProvider.forDatabaseInFile(DB_DIRECTORY, DB_NAME);
 
 	public static void main(String[] args) {
 		PebbleTemplateRenderer pebbleTemplateRenderer = createPebbleTemplateRenderer();
@@ -49,27 +49,8 @@ public class Main {
 
 		return new PebbleTemplateRenderer(pebbleEngine);
 	}
-
-	private static DataSource createDataSource() {
-		var ds = new BasicDataSource();
-
-		String user = System.getenv("DB_USER");
-		String password = System.getenv("DB_PASSWORD");
-		String database = System.getenv("DB_NAME");
-
-		ds.setUrl("jdbc:mariadb://localhost/" + database);
-		ds.setUsername(user);
-		ds.setPassword(password);
-		ds.setMaxOpenPreparedStatements(100);
-
-		return ds;
-	}
-
+	
 	public static Connection getConnection() {
-		try {
-			return DATA_SOURCE.getConnection();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		return CONNECTION_PROVIDER.getConnection();
 	}
 }

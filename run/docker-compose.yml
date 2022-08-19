@@ -9,8 +9,12 @@ services:
 
     volumes:
       - type: bind
-        source: ..
-        target: /usr/app
+        source: ../target
+        target: /usr/app/target
+        read_only: true
+      - type: bind
+        source: ../web
+        target: /usr/app/web
         read_only: true
       - type: bind
         source: ../sql
@@ -18,7 +22,7 @@ services:
         read_only: true
       - caddy_data:/data
       - caddy_config:/config
-      - sql_data:/var/lib/mysql
+      - sql_data:/usr/app/db
 
     environment:
       CADDY_ADDRESS: "http://"
