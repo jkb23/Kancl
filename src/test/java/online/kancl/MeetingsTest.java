@@ -1,8 +1,9 @@
 package online.kancl;
 
 import online.kancl.model.Meetings;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class MeetingsTest
 {
@@ -11,7 +12,7 @@ class MeetingsTest
 	@Test
 	void initially_meetingIsEmpty()
 	{
-		Assertions.assertThat(meetings.getJoinedParticipantName())
+		assertThat(meetings.getJoinedParticipantName())
 				.isEmpty();
 	}
 
@@ -20,7 +21,7 @@ class MeetingsTest
 	{
 		meetings.participantJoined("John Doe");
 
-		Assertions.assertThat(meetings.getJoinedParticipantName())
+		assertThat(meetings.getJoinedParticipantName())
 				.as("Participant name")
 				.get()
 				.isEqualTo("John Doe");

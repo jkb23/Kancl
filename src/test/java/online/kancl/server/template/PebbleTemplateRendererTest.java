@@ -2,12 +2,13 @@ package online.kancl.server.template;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class PebbleTemplateRendererTest
 {
@@ -18,21 +19,21 @@ class PebbleTemplateRendererTest
 	@Test
 	void singleValueTest()
 	{
-		Assertions.assertThat(renderTemplate("singleValue.peb", context))
+		assertThat(renderTemplate("singleValue.peb", context))
 				.contains("Hello John Doe!");
 	}
 
 	@Test
 	void partialValue()
 	{
-		Assertions.assertThat(renderTemplate("extends.peb", context))
+		assertThat(renderTemplate("extends.peb", context))
 				.isEqualTo("Hello John Doe! How are you, John Doe?");
 	}
 
 	@Test
 	void emptyOptionalTest()
 	{
-		Assertions.assertThat(renderTemplate("optional.peb", context))
+		assertThat(renderTemplate("optional.peb", context))
 				.isEqualTo("default value");
 	}
 
@@ -41,7 +42,7 @@ class PebbleTemplateRendererTest
 	{
 		context.optional = Optional.of("Foo");
 
-		Assertions.assertThat(renderTemplate("optional.peb", context))
+		assertThat(renderTemplate("optional.peb", context))
 				.isEqualTo("Foo");
 	}
 
@@ -67,7 +68,7 @@ class PebbleTemplateRendererTest
 		ClassLoader classLoader = getClass().getClassLoader();
 		URL resource = classLoader.getResource(TEST_TEMPLATE_DIRECTORY + "/" + templateName);
 
-		Assertions.assertThat(resource)
+		assertThat(resource)
 				.as("Template " + templateName + " not found")
 				.isNotNull();
 
