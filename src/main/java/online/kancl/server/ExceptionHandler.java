@@ -6,17 +6,15 @@ import spark.Response;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-public class ExceptionHandler
-{
-	public void handleException(Exception exception, Request request, Response response)
-	{
+public class ExceptionHandler {
+
+	public void handleException(Exception exception, Request request, Response response) {
 		response.status(500);
 
 		response.body(renderException(exception));
 	}
 
-	private String renderException(Exception exception)
-	{
+	private String renderException(Exception exception) {
 		var stringWriter = new StringWriter();
 		var printWriter = new PrintWriter(stringWriter);
 

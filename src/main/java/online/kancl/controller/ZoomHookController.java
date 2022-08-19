@@ -11,41 +11,35 @@ import javax.json.JsonReader;
 import java.io.StringReader;
 import java.sql.Connection;
 
-public class ZoomHookController extends Controller
-{
+public class ZoomHookController extends Controller {
+
 	private final Meetings meetings;
 
-	public ZoomHookController(Meetings meetings)
-	{
+	public ZoomHookController(Meetings meetings) {
 		this.meetings = meetings;
 	}
 
 	@Override
-	public String get(Request request, Response response, Connection connection)
-	{
+	public String get(Request request, Response response, Connection connection) {
 		return handleZoomMessage(request);
 	}
 
 	@Override
-	public String post(Request request, Response response, Connection connection)
-	{
+	public String post(Request request, Response response, Connection connection) {
 		return handleZoomMessage(request);
 	}
 
-	public String handleZoomMessage(Request request)
-	{
+	public String handleZoomMessage(Request request) {
 		System.out.println(request.body());
 
-		try (JsonReader jsonReader = Json.createReader(new StringReader(request.body())))
-		{
+		try (JsonReader jsonReader = Json.createReader(new StringReader(request.body()))) {
 			handleParticipantJoinedMessage(jsonReader.readObject());
 		}
 
 		return "OK";
 	}
 
-	private void handleParticipantJoinedMessage(JsonObject message)
-	{
+	private void handleParticipantJoinedMessage(JsonObject message) {
 		String participantName = message
 				.getJsonObject("payload")
 				.getJsonObject("object")

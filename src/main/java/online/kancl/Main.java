@@ -18,14 +18,13 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class Main
-{
+public class Main {
+
 	public static final Path TEMPLATE_DIRECTORY = Paths.get("src", "main", "pebble", "templates");
 
 	private static final DataSource DATA_SOURCE = createDataSource();
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		PebbleTemplateRenderer pebbleTemplateRenderer = createPebbleTemplateRenderer();
 
 		var meetings = new Meetings();
@@ -39,8 +38,7 @@ public class Main
 		System.out.println("Server running");
 	}
 
-	private static PebbleTemplateRenderer createPebbleTemplateRenderer()
-	{
+	private static PebbleTemplateRenderer createPebbleTemplateRenderer() {
 		var pebbleTemplateLoader = new FileLoader();
 		pebbleTemplateLoader.setPrefix(TEMPLATE_DIRECTORY.toAbsolutePath().toString());
 		var pebbleEngine = new PebbleEngine.Builder()
@@ -52,8 +50,7 @@ public class Main
 		return new PebbleTemplateRenderer(pebbleEngine);
 	}
 
-	private static DataSource createDataSource()
-	{
+	private static DataSource createDataSource() {
 		var ds = new BasicDataSource();
 
 		String user = System.getenv("MYSQL_USER");
@@ -68,14 +65,10 @@ public class Main
 		return ds;
 	}
 
-	public static Connection getConnection()
-	{
-		try
-		{
+	public static Connection getConnection() {
+		try {
 			return DATA_SOURCE.getConnection();
-		}
-		catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}

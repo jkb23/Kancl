@@ -10,26 +10,23 @@ import spark.Response;
 import java.sql.Connection;
 import java.util.List;
 
-public class CommentsController extends Controller
-{
+public class CommentsController extends Controller {
+
 	private final PebbleTemplateRenderer pebbleTemplateRenderer;
 
-	public CommentsController(PebbleTemplateRenderer pebbleTemplateRenderer)
-	{
+	public CommentsController(PebbleTemplateRenderer pebbleTemplateRenderer) {
 		this.pebbleTemplateRenderer = pebbleTemplateRenderer;
 	}
 
 	@Override
-	public String get(Request request, Response response, Connection connection)
-	{
+	public String get(Request request, Response response, Connection connection) {
 		var comments = new Comments(CommentQuery.loadAllComments(connection));
 
 		return pebbleTemplateRenderer.renderTemplate("Comments.peb", comments);
 	}
 
 	@Override
-	public String post(Request request, Response response, Connection connection)
-	{
+	public String post(Request request, Response response, Connection connection) {
 		var comment = new Comment(
 				null,
 				request.queryParams("author"),
@@ -41,12 +38,11 @@ public class CommentsController extends Controller
 		return "";
 	}
 
-	public static class Comments
-	{
+	public static class Comments {
+
 		public final List<Comment> comments;
 
-		public Comments(List<Comment> comments)
-		{
+		public Comments(List<Comment> comments) {
 			this.comments = comments;
 		}
 	}

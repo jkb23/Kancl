@@ -8,20 +8,18 @@ import spark.Response;
 
 import java.sql.Connection;
 
-public class MainPageController extends Controller
-{
+public class MainPageController extends Controller {
+
 	private final PebbleTemplateRenderer pebbleTemplateRenderer;
 	private final Meetings meetings;
 
-	public MainPageController(PebbleTemplateRenderer pebbleTemplateRenderer, Meetings meetings)
-	{
+	public MainPageController(PebbleTemplateRenderer pebbleTemplateRenderer, Meetings meetings) {
 		this.pebbleTemplateRenderer = pebbleTemplateRenderer;
 		this.meetings = meetings;
 	}
 
 	@Override
-	public String get(Request request, Response response, Connection connection)
-	{
+	public String get(Request request, Response response, Connection connection) {
 		return pebbleTemplateRenderer.renderTemplate("MainPage.peb", meetings);
 	}
 }

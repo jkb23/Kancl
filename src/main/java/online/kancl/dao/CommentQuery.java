@@ -11,43 +11,33 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class CommentQuery
-{
-	public static List<Comment> loadAllComments(Connection connection)
-	{
-		try
-		{
+public class CommentQuery {
+
+	public static List<Comment> loadAllComments(Connection connection) {
+		try {
 			return new QueryRunner().query(
 					connection,
 					"SELECT * FROM Comment ORDER BY id",
 					ListHandler.of(CommentQuery::handle));
-		}
-		catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public static long save(Connection connection, Comment comment)
-	{
-		try
-		{
+	public static long save(Connection connection, Comment comment) {
+		try {
 			return new QueryRunner().insert(
 					connection,
 					"INSERT INTO Comment(author, message) VALUES (?, ?)",
 					new ScalarHandler<>(),
 					comment.author, comment.message);
-		}
-		catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private static Optional<Comment> handle(ResultSet rs) throws SQLException
-	{
-		if (!rs.next())
-		{
+	private static Optional<Comment> handle(ResultSet rs) throws SQLException {
+		if (!rs.next()) {
 			return Optional.empty();
 		}
 
