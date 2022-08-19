@@ -65,7 +65,7 @@ public class PebbleExtension extends AbstractExtension
 		@Override
 		public boolean apply(Object input, Map<String, Object> args, PebbleTemplate self, EvaluationContext context, int lineNumber) throws PebbleException
 		{
-			EmptyTest emptyTest = new EmptyTest();
+			Test emptyTest = new EmptyTest();
 			if (emptyTest.apply(input, args, self, context, lineNumber))
 			{
 				return true;

@@ -28,9 +28,9 @@ public class Main
 	{
 		PebbleTemplateRenderer pebbleTemplateRenderer = createPebbleTemplateRenderer();
 
-		Meetings meetings = new Meetings();
+		var meetings = new Meetings();
 
-		WebServer webServer = new WebServer(8081, new ExceptionHandler());
+		var webServer = new WebServer(8081, new ExceptionHandler());
 		webServer.addRoute("/", new MainPageController(pebbleTemplateRenderer, meetings));
 		webServer.addRoute("/comments", new CommentsController(pebbleTemplateRenderer));
 		webServer.addRoute("/zoomhook", new ZoomHookController(meetings));
@@ -41,9 +41,9 @@ public class Main
 
 	private static PebbleTemplateRenderer createPebbleTemplateRenderer()
 	{
-		FileLoader pebbleTemplateLoader = new FileLoader();
+		var pebbleTemplateLoader = new FileLoader();
 		pebbleTemplateLoader.setPrefix(TEMPLATE_DIRECTORY.toAbsolutePath().toString());
-		PebbleEngine pebbleEngine = new PebbleEngine.Builder()
+		var pebbleEngine = new PebbleEngine.Builder()
 				.loader(pebbleTemplateLoader)
 				.extension(new PebbleExtension())
 				.cacheActive(false)

@@ -17,8 +17,8 @@ public class ExceptionHandler
 
 	private String renderException(Exception exception)
 	{
-		StringWriter stringWriter = new StringWriter();
-		PrintWriter printWriter = new PrintWriter(stringWriter);
+		var stringWriter = new StringWriter();
+		var printWriter = new PrintWriter(stringWriter);
 
 		exception.printStackTrace(printWriter);
 

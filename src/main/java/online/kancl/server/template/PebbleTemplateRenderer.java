@@ -21,7 +21,7 @@ public class PebbleTemplateRenderer
 	{
 		try
 		{
-			StringWriter stringWriter = new StringWriter();
+			var stringWriter = new StringWriter();
 
 			PebbleTemplate compiledTemplate = pebbleEngine.getTemplate(templateName);
 			compiledTemplate.evaluate(stringWriter, Map.of(getContextName(context), context));

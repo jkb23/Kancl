@@ -22,7 +22,7 @@ public class CommentsController extends Controller
 	@Override
 	public String get(Request request, Response response, Connection connection)
 	{
-		Comments comments = new Comments(CommentQuery.loadAllComments(connection));
+		var comments = new Comments(CommentQuery.loadAllComments(connection));
 
 		return pebbleTemplateRenderer.renderTemplate("Comments.peb", comments);
 	}
@@ -30,7 +30,7 @@ public class CommentsController extends Controller
 	@Override
 	public String post(Request request, Response response, Connection connection)
 	{
-		Comment comment = new Comment(
+		var comment = new Comment(
 				null,
 				request.queryParams("author"),
 				request.queryParams("message"));

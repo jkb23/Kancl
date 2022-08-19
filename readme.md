@@ -1,6 +1,5 @@
 # TODOs
 
-1. vary u new
 2. Switch to Java 17
 3. Switch to Java SUN format conventions
 4. MYSQL_USER -> DB_USER

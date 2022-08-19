@@ -54,9 +54,9 @@ class PebbleTemplateRendererTest
 
 	private PebbleTemplateRenderer createPebbleTemplateRenderer(String templateName)
 	{
-		FileLoader pebbleTemplateLoader = new FileLoader();
+		var pebbleTemplateLoader = new FileLoader();
 		pebbleTemplateLoader.setPrefix(getTemplateDirectory(templateName).toAbsolutePath().toString());
-		PebbleEngine pebbleEngine = new PebbleEngine.Builder()
+		var pebbleEngine = new PebbleEngine.Builder()
 				.loader(pebbleTemplateLoader)
 				.extension(new PebbleExtension())
 				.build();
