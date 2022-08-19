@@ -1,6 +1,5 @@
 package online.kancl.controller;
 
-import online.kancl.Main;
 import online.kancl.dao.CommentQuery;
 import online.kancl.model.Comment;
 import online.kancl.model.Comments;
