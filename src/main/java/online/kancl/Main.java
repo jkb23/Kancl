@@ -53,9 +53,9 @@ public class Main {
 	private static DataSource createDataSource() {
 		var ds = new BasicDataSource();
 
-		String user = System.getenv("MYSQL_USER");
-		String password = System.getenv("MYSQL_PASSWORD");
-		String database = System.getenv("MYSQL_DATABASE");
+		String user = System.getenv("DB_USER");
+		String password = System.getenv("DB_PASSWORD");
+		String database = System.getenv("DB_NAME");
 
 		ds.setUrl("jdbc:mariadb://localhost/" + database);
 		ds.setUsername(user);

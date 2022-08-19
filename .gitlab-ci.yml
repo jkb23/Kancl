@@ -5,10 +5,10 @@ stages:
 
 variables:
   DOMAIN: ""
-  MYSQL_USER: user
-  MYSQL_PASSWORD: password
-  MYSQL_ROOT_PASSWORD: rootpassword
-  MYSQL_DATABASE: kanclOnline
+  DB_USER: user
+  DB_PASSWORD: password
+  DB_ROOT_PASSWORD: rootpassword
+  DB_NAME: kanclOnline
   CYPRESS_baseUrl: http://app:$8080
 
 build:

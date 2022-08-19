@@ -1,8 +1,6 @@
 # TODOs
 
 2. Switch to Java 17
-3. Switch to Java SUN format conventions
-4. MYSQL_USER -> DB_USER
 5. Switch from Maria DB to H2 DB which have in-memory implementation (or Derby DB).
 6. catch SQLException rethrow as DataAccessException - obalit QueryRunner (maji easy prilezitost zlepsit handler)
 7. DB tests
@@ -113,7 +111,7 @@ To be able to run the app locally, you need to set environment variables to same
 In IntelliJ Idea, you can copy&paste the following into run configuration:
 
 ```
-MYSQL_DATABASE=kanclOnline;MYSQL_PASSWORD=password;MYSQL_USER=user;ZOOM_VERIFICATION_TOKEN=foobar
+DB_NAME=kanclOnline;DB_PASSWORD=password;DB_USER=user;ZOOM_VERIFICATION_TOKEN=foobar
 ```
 
 And then start the DB in Docker:
