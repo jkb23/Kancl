@@ -1,22 +1,21 @@
 # TODOs
 
-2. Switch to Java 17
-5. Switch from Maria DB to H2 DB which have in-memory implementation (or Derby DB).
-6. catch SQLException rethrow as DataAccessException - obalit QueryRunner (maji easy prilezitost zlepsit handler)
-7. DB tests
-8. Wrap command to run stack and db.
-9. Our own CI/CD runner
-10. Struktura package - controller+template+model u sebe per typ nebo per byznys logika
-11. peb soubory do resource ve stejnym package
+1. Switch to Java 17
+2. Switch from Maria DB to H2 DB which have in-memory implementation (or Derby DB).
+3. DB tests
+4. Wrap command to run stack and db.
+5. Our own CI/CD runner
+6. Struktura package - controller+template+model u sebe per typ nebo per byznys logika
+7. peb soubory do resource ve stejnym package
 
 # Potencialne nachystane vidle
 
 - Extract router - page navigation + URLs in code (for redirects)
 - Form validation for /comments, display errors in form, extract form pattern?
-- var - prezenou pouziti  jenom v:
+- var - prezenou pouziti. Spravne je jenom v:
   `X x = new X();` --> `var x = new X();`
   urcite nechces: `var x = doSomeKindOfMagic();`
-- QueryRunner() - handler potrebuje resit rs.next() a vracet Optional
+- ResultSetHandler potrebuje resit rs.next() a vracet Optional
 
 
 # Installing pre-requisites
