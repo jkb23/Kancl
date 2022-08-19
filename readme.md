@@ -1,9 +1,10 @@
 # TODOs
 
-1. Wrap command to run stack and db.
-2. Our own CI/CD runner
-3. Navigation between pages.
-4. Form validation for /comments, display errors in form, extract form pattern?
+1. Switch to Java SUN format conventions
+2. Wrap command to run stack and db.
+3. Our own CI/CD runner
+4. Navigation between pages.
+5. Form validation for /comments, display errors in form, extract form pattern?
 
 # Installing pre-requisites
 

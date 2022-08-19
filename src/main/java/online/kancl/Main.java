@@ -22,7 +22,7 @@ public class Main
 {
 	public static final Path TEMPLATE_DIRECTORY = Paths.get("src", "main", "pebble", "templates");
 
-	private static final DataSource dataSource = createDataSource();
+	private static final DataSource DATA_SOURCE = createDataSource();
 
 	public static void main(String[] args)
 	{
@@ -54,7 +54,7 @@ public class Main
 
 	private static DataSource createDataSource()
 	{
-		BasicDataSource ds = new BasicDataSource();
+		var ds = new BasicDataSource();
 
 		String user = System.getenv("MYSQL_USER");
 		String password = System.getenv("MYSQL_PASSWORD");
@@ -72,7 +72,7 @@ public class Main
 	{
 		try
 		{
-			return dataSource.getConnection();
+			return DATA_SOURCE.getConnection();
 		}
 		catch (SQLException e)
 		{
