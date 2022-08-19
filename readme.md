@@ -1,8 +1,9 @@
 # TODOs
 
-1. Replace lib for parsing JSON
+1. Wrap command to run stack and db.
 2. Our own CI/CD runner
-3. wrap command do run stack and db
+3. Navigation between pages.
+4. Form validation for /comments, display errors in form, extract form pattern?
 
 # Installing pre-requisites
 
