@@ -1,13 +1,13 @@
 package online.kancl.controller;
 
 import online.kancl.dao.CommentQuery;
+import online.kancl.db.DatabaseRunner;
 import online.kancl.model.Comment;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
 import spark.Response;
 
-import java.sql.Connection;
 import java.util.List;
 
 public class CommentsController extends Controller {
@@ -19,20 +19,20 @@ public class CommentsController extends Controller {
 	}
 
 	@Override
-	public String get(Request request, Response response, Connection connection) {
-		var comments = new Comments(CommentQuery.loadAllComments(connection));
+	public String get(Request request, Response response, DatabaseRunner dbRunner) {
+		var comments = new Comments(CommentQuery.loadAllComments(dbRunner));
 
 		return pebbleTemplateRenderer.renderTemplate("Comments.peb", comments);
 	}
 
 	@Override
-	public String post(Request request, Response response, Connection connection) {
+	public String post(Request request, Response response, DatabaseRunner dbRunner) {
 		var comment = new Comment(
 				null,
 				request.queryParams("author"),
 				request.queryParams("message"));
 
-		CommentQuery.save(connection, comment);
+		CommentQuery.save(dbRunner, comment);
 
 		response.redirect("/comments");
 		return "";

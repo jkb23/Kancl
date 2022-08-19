@@ -8,13 +8,14 @@ import java.util.function.Function;
 
 public class TransactionJobRunner {
 
-	public static <T> T runInTransactionAndRelease(Function<Connection, T> job) {
+	public static <T> T runInTransactionAndRelease(Function<DatabaseRunner, T> job) {
 		Connection connection = Main.getConnection();
 		Boolean originalAutoCommit = null;
 		try {
 			originalAutoCommit = connection.getAutoCommit();
 
-			T result = job.apply(connection);
+			var databaseRunner = new DatabaseRunner(connection);
+			T result = job.apply(databaseRunner);
 
 			connection.commit();
 

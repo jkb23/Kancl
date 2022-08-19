@@ -1,26 +1,25 @@
 package online.kancl.server;
 
+import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
 import spark.Request;
 import spark.Response;
 
-import java.sql.Connection;
-
 public class Controller {
 
 	public String handleGet(Request request, Response response) {
-		return TransactionJobRunner.runInTransactionAndRelease((connection) -> get(request, response, connection));
+		return TransactionJobRunner.runInTransactionAndRelease((dbRunner) -> get(request, response, dbRunner));
 	}
 
 	public String handlePost(Request request, Response response) {
-		return TransactionJobRunner.runInTransactionAndRelease((connection) -> post(request, response, connection));
+		return TransactionJobRunner.runInTransactionAndRelease((dbRunner) -> post(request, response, dbRunner));
 	}
 
-	protected String get(Request request, Response response, Connection connection) {
+	protected String get(Request request, Response response, DatabaseRunner dbRunner) {
 		return "";
 	}
 
-	protected String post(Request request, Response response, Connection connection) {
+	protected String post(Request request, Response response, DatabaseRunner dbRunner) {
 		return "";
 	}
 }

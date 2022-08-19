@@ -1,12 +1,11 @@
 package online.kancl.controller;
 
+import online.kancl.db.DatabaseRunner;
 import online.kancl.model.Meetings;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
 import spark.Response;
-
-import java.sql.Connection;
 
 public class MainPageController extends Controller {
 
@@ -19,7 +18,7 @@ public class MainPageController extends Controller {
 	}
 
 	@Override
-	public String get(Request request, Response response, Connection connection) {
+	public String get(Request request, Response response, DatabaseRunner dbRunner) {
 		return pebbleTemplateRenderer.renderTemplate("MainPage.peb", meetings);
 	}
 }

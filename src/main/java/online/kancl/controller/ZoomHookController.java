@@ -1,5 +1,6 @@
 package online.kancl.controller;
 
+import online.kancl.db.DatabaseRunner;
 import online.kancl.model.Meetings;
 import online.kancl.server.Controller;
 import spark.Request;
@@ -9,7 +10,6 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.StringReader;
-import java.sql.Connection;
 
 public class ZoomHookController extends Controller {
 
@@ -20,12 +20,12 @@ public class ZoomHookController extends Controller {
 	}
 
 	@Override
-	public String get(Request request, Response response, Connection connection) {
+	public String get(Request request, Response response, DatabaseRunner dbRunner) {
 		return handleZoomMessage(request);
 	}
 
 	@Override
-	public String post(Request request, Response response, Connection connection) {
+	public String post(Request request, Response response, DatabaseRunner dbRunner) {
 		return handleZoomMessage(request);
 	}
 
