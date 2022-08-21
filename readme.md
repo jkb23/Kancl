@@ -1,12 +1,11 @@
 # TODOs
 
 1. Finish switching to H2 DB:
-    - re-create DB only if schema changed (store hash in the DB?)
     - update caddy-maria-java base package to caddy-java
     - remove env variables used only by Maria, remove `sql` directory
     - update readme (about DB, simplify description of local development, start container locally has no benefits now)
-2. Switch to Java 17
-3. Switch from Maria DB to H2 DB which have in-memory implementation (or Derby DB).
+2. DB test for CommentQuery
+3. Switch to Java 17
 4. DB tests
 5. Wrap command to run stack and db.
 6. Our own CI/CD runner
