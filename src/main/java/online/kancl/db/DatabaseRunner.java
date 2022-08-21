@@ -1,10 +1,13 @@
 package online.kancl.db;
 
 import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.ResultSetHandler;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class DatabaseRunner {
 	private final Connection connection;
@@ -18,12 +21,31 @@ public class DatabaseRunner {
 	/**
 	 * Execute an SQL SELECT query.
 	 */
-	public <T> T query(String sql, ResultSetHandler<T> rsh, Object... binds) {
-		return executeAndWrapSQLException(() -> queryRunner.query(connection, sql, rsh, binds));
+	public <T> Optional<T> query(String sql, RowMapper<T> rowMapper, Object... binds) {
+		return executeAndWrapSQLException(() ->
+				queryRunner.query(
+						connection,
+						sql,
+						(row) -> mapOptionalResult(rowMapper, row),
+						binds
+				)
+		);
+	}
+
+	public <T> List<T> queryAll(String sql, RowMapper<T> rowMapper, Object... binds) {
+		return executeAndWrapSQLException(() ->
+				queryRunner.query(
+						connection,
+						sql,
+						(row) -> mapListOfRows(rowMapper, row),
+						binds
+				)
+		);
 	}
 
 	/**
 	 * Execute an SQL INSERT, UPDATE, or DELETE query.
+	 *
 	 * @return The number of rows updated.
 	 */
 	public int update(String sql, Object... binds) {
@@ -32,10 +54,33 @@ public class DatabaseRunner {
 
 	/**
 	 * Executes the given INSERT SQL statement.
+	 *
 	 * @return auto-generated keys
 	 */
-	public <T> T insert(String sql, ResultSetHandler<T> rsh, Object... binds) {
-		return executeAndWrapSQLException(() -> queryRunner.insert(connection, sql, rsh, binds));
+	public <T> Optional<T> insert(String sql, RowMapper<T> rowMapper, Object... binds) {
+		return executeAndWrapSQLException(() ->
+				queryRunner.insert(
+						connection,
+						sql,
+						(row) -> mapOptionalResult(rowMapper, row),
+						binds
+				)
+		);
+	}
+
+	private <T> Optional<T> mapOptionalResult(RowMapper<T> rowMapper, ResultSet row) throws SQLException {
+		if (row.next())
+			return Optional.of(rowMapper.map(row));
+		else
+			return Optional.empty();
+	}
+
+	private <T> List<T> mapListOfRows(RowMapper<T> rowMapper, ResultSet row) throws SQLException {
+		List<T> results = new ArrayList<>();
+		while (row.next()) {
+			results.add(rowMapper.map(row));
+		}
+		return results;
 	}
 
 	private <T> T executeAndWrapSQLException(TrowingSupplier<T> supplier) {

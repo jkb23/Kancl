@@ -44,24 +44,15 @@ class SchemaCreator {
 
 	private Optional<String> getStoredSchemaHash(DatabaseRunner dbRunner) {
 
-		int tableCount = dbRunner.<Optional<Integer>>query(
+		int tableCount = dbRunner.query(
 				"SELECT count(1) FROM information_schema.Tables WHERE table_schema = 'PUBLIC'",
-				(row) -> {
-					if (row.next())
-						return Optional.of(row.getInt(1));
-					else
-						return Optional.empty();
-				}).orElse(0);
+				(row) -> row.getInt(1)
+		).orElse(0);
 
 		if (tableCount == 0)
 			return Optional.empty();
 
-		return dbRunner.query("SELECT hash FROM DatabaseSchemaHash", (row) -> {
-			if (row.next())
-				return Optional.of(row.getString(1));
-			else
-				return Optional.empty();
-		});
+		return dbRunner.query("SELECT hash FROM DatabaseSchemaHash", (row) -> row.getString(1));
 	}
 
 	private void recreateSchema(DatabaseRunner dbRunner, Connection connection, Path scratchDirectory) {
