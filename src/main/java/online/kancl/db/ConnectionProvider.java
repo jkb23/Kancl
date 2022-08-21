@@ -1,17 +1,22 @@
 package online.kancl.db;
 
-import online.kancl.util.ResourcePathResolver;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.h2.tools.RunScript;
 
 import javax.sql.DataSource;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static online.kancl.util.ResourcePathResolver.getResourcePath;
 
@@ -63,7 +68,7 @@ public class ConnectionProvider {
 			String scratchDirectoryHash = new DirectoryHashCalculator().calculateEncodedHash(scratchDirectory);
 
 			if (storedSchemaHash.isEmpty() || !storedSchemaHash.get().equals(scratchDirectoryHash)) {
-				recreateSchema(dbRunner, connection);
+				recreateSchema(dbRunner, connection, scratchDirectory);
 				storeSchemaHash(dbRunner, scratchDirectoryHash);
 				connection.commit();
 			}
@@ -94,16 +99,42 @@ public class ConnectionProvider {
 		});
 	}
 
-	private void recreateSchema(DatabaseRunner dbRunner, Connection connection) {
-		System.out.println("Recreating DB schema");
-
-		try (InputStream scratchFile = this.getClass().getClassLoader().getResourceAsStream("sql/scratch.sql")) {
+	private void recreateSchema(DatabaseRunner dbRunner, Connection connection, Path scratchDirectory) {
+		try {
+			System.out.println("Recreating DB schema");
 			dbRunner.update("DROP ALL OBJECTS");
-			RunScript.execute(connection, new InputStreamReader(scratchFile));
+
+			for (Path sqlFile : getSqlFilesInDirectory(scratchDirectory)) {
+				System.out.println("Running " + scratchDirectory.relativize(sqlFile));
+				try (var fileReader = new FileReader(sqlFile.toFile(), StandardCharsets.UTF_8)) {
+					RunScript.execute(connection, fileReader);
+				}
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} catch (SQLException e) {
 			throw new SchemaCreationException(e);
+		}
+	}
+
+	private List<Path> getSqlFilesInDirectory(Path scratchDirectory) {
+		try {
+			List<Path> files = new ArrayList<>();
+
+			Files.walkFileTree(scratchDirectory, new SimpleFileVisitor<>() {
+				@Override
+				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+					files.add(file);
+					return FileVisitResult.CONTINUE;
+				}
+			});
+
+			return files.stream()
+					.filter(file -> file.toString().endsWith(".sql"))
+					.sorted()
+					.collect(Collectors.toList());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
