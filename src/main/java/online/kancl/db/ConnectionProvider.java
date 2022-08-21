@@ -1,24 +1,11 @@
 package online.kancl.db;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.h2.tools.RunScript;
 
 import javax.sql.DataSource;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static online.kancl.util.ResourcePathResolver.getResourcePath;
 
 public class ConnectionProvider {
 
@@ -53,98 +40,8 @@ public class ConnectionProvider {
 		dataSource.setUrl("jdbc:h2:" + dbLocation);
 		dataSource.setMaxOpenPreparedStatements(100);
 
-		recreateSchemaIfNeeded(dataSource);
+		new SchemaCreator().recreateSchemaIfNeeded(dataSource, SQL_SCRATCH_DIRECTORY);
 
 		return dataSource;
-	}
-
-	private void recreateSchemaIfNeeded(BasicDataSource dataSource) {
-		try (Connection connection = dataSource.getConnection()) {
-			var dbRunner = new DatabaseRunner(connection);
-
-			Path scratchDirectory = getResourcePath(this, SQL_SCRATCH_DIRECTORY);
-
-			Optional<String> storedSchemaHash = getStoredSchemaHash(dbRunner);
-			String scratchDirectoryHash = new DirectoryHashCalculator().calculateEncodedHash(scratchDirectory);
-
-			if (storedSchemaHash.isEmpty() || !storedSchemaHash.get().equals(scratchDirectoryHash)) {
-				recreateSchema(dbRunner, connection, scratchDirectory);
-				storeSchemaHash(dbRunner, scratchDirectoryHash);
-				connection.commit();
-			}
-		} catch (SQLException e) {
-			throw new DatabaseRunner.DatabaseAccessException(e);
-		}
-	}
-
-	private Optional<String> getStoredSchemaHash(DatabaseRunner dbRunner) {
-
-		int tableCount = dbRunner.<Optional<Integer>>query(
-				"SELECT count(1) FROM information_schema.Tables WHERE table_schema = 'PUBLIC'",
-				(row) -> {
-					if (row.next())
-						return Optional.of(row.getInt(1));
-					else
-						return Optional.empty();
-				}).orElse(0);
-
-		if (tableCount == 0)
-			return Optional.empty();
-
-		return dbRunner.query("SELECT hash FROM DatabaseSchemaHash", (row) -> {
-			if (row.next())
-				return Optional.of(row.getString(1));
-			else
-				return Optional.empty();
-		});
-	}
-
-	private void recreateSchema(DatabaseRunner dbRunner, Connection connection, Path scratchDirectory) {
-		try {
-			System.out.println("Recreating DB schema");
-			dbRunner.update("DROP ALL OBJECTS");
-
-			for (Path sqlFile : getSqlFilesInDirectory(scratchDirectory)) {
-				System.out.println("Running " + scratchDirectory.relativize(sqlFile));
-				try (var fileReader = new FileReader(sqlFile.toFile(), StandardCharsets.UTF_8)) {
-					RunScript.execute(connection, fileReader);
-				}
-			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} catch (SQLException e) {
-			throw new SchemaCreationException(e);
-		}
-	}
-
-	private List<Path> getSqlFilesInDirectory(Path scratchDirectory) {
-		try {
-			List<Path> files = new ArrayList<>();
-
-			Files.walkFileTree(scratchDirectory, new SimpleFileVisitor<>() {
-				@Override
-				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
-					files.add(file);
-					return FileVisitResult.CONTINUE;
-				}
-			});
-
-			return files.stream()
-					.filter(file -> file.toString().endsWith(".sql"))
-					.sorted()
-					.collect(Collectors.toList());
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private void storeSchemaHash(DatabaseRunner dbRunner, String schemaHash) {
-		dbRunner.update("INSERT INTO DatabaseSchemaHash (hash) VALUES (?)", schemaHash);
-	}
-
-	public static class SchemaCreationException extends RuntimeException {
-		public SchemaCreationException(Throwable cause) {
-			super("Error when creating schema", cause);
-		}
 	}
 }
