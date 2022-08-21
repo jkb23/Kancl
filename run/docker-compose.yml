@@ -17,6 +17,10 @@ services:
         target: /usr/app/web
         read_only: true
       - type: bind
+        source: ../src
+        target: /usr/app/src
+        read_only: true
+      - type: bind
         source: ../sql
         target: /docker-entrypoint-initdb.d/
         read_only: true
