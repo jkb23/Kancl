@@ -4,10 +4,9 @@ import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
 import org.junit.jupiter.api.Test;
 
-import java.net.URL;
-import java.nio.file.Path;
 import java.util.Optional;
 
+import static online.kancl.testutil.ResourcePathResolver.getResourcePath;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PebbleTemplateRendererTest {
@@ -48,23 +47,12 @@ class PebbleTemplateRendererTest {
 
 	private PebbleTemplateRenderer createPebbleTemplateRenderer() {
 		var pebbleTemplateLoader = new FileLoader();
-		pebbleTemplateLoader.setPrefix(getTemplateDirectory().toAbsolutePath().toString());
+		pebbleTemplateLoader.setPrefix(getResourcePath(this, TEST_TEMPLATE_DIRECTORY).toAbsolutePath().toString());
 		var pebbleEngine = new PebbleEngine.Builder()
 				.loader(pebbleTemplateLoader)
 				.extension(new PebbleExtension())
 				.build();
 		return new PebbleTemplateRenderer(pebbleEngine);
-	}
-
-	private Path getTemplateDirectory() {
-		ClassLoader classLoader = getClass().getClassLoader();
-		URL resource = classLoader.getResource(TEST_TEMPLATE_DIRECTORY);
-
-		assertThat(resource)
-				.as("Template directory " + TEST_TEMPLATE_DIRECTORY + " not found")
-				.isNotNull();
-
-		return Path.of(resource.getPath());
 	}
 
 	private static class Context {
