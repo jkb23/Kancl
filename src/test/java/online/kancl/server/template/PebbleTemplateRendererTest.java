@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static online.kancl.testutil.ResourcePathResolver.getResourcePath;
+import static online.kancl.util.ResourcePathResolver.getResourcePath;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PebbleTemplateRendererTest {

@@ -3,7 +3,7 @@ package online.kancl.db;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static online.kancl.testutil.ResourcePathResolver.getResourcePath;
+import static online.kancl.util.ResourcePathResolver.getResourcePath;
 
 class DirectoryHashCalculatorTest {
 	private final DirectoryHashCalculator hashCalculator = new DirectoryHashCalculator();
