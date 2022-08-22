@@ -10,17 +10,26 @@ public class TransactionJobRunner {
 
 	public static <T> T runInTransactionAndRelease(Function<DatabaseRunner, T> job) {
 		try (Connection connection = Main.getConnection()) {
-			return runTransactionInConnection(job, connection);
+			return disableAutocommitAndRunTransaction(job, connection);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private static <T> T runTransactionInConnection(Function<DatabaseRunner, T> job, Connection connection) throws SQLException {
+	private static <T> T disableAutocommitAndRunTransaction(Function<DatabaseRunner, T> job, Connection connection) throws SQLException {
 		Boolean originalAutoCommit = null;
 		try {
 			originalAutoCommit = connection.getAutoCommit();
 
+			return runJobAndCommitOrRollback(job, connection);
+		}  finally {
+			if (originalAutoCommit != null)
+				connection.setAutoCommit(originalAutoCommit);
+		}
+	}
+
+	private static <T> T runJobAndCommitOrRollback(Function<DatabaseRunner, T> job, Connection connection) throws SQLException {
+		try {
 			var databaseRunner = new DatabaseRunner(connection);
 			T result = job.apply(databaseRunner);
 
@@ -28,23 +37,8 @@ public class TransactionJobRunner {
 
 			return result;
 		} catch (Exception e) {
-			rollback(connection);
-			throw e;
-		} finally {
-			restoreAutocommit(connection, originalAutoCommit);
-		}
-	}
-
-	private static void rollback(Connection connection) {
-		try {
 			connection.rollback();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw e;
 		}
-	}
-
-	private static void restoreAutocommit(Connection connection, Boolean originalAutoCommit) throws SQLException {
-		if (originalAutoCommit != null)
-			connection.setAutoCommit(originalAutoCommit);
 	}
 }
