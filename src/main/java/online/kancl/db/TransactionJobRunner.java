@@ -9,22 +9,25 @@ import java.util.function.Function;
 public class TransactionJobRunner {
 
 	public static <T> T runInTransactionAndRelease(Function<DatabaseRunner, T> job) {
-		Connection connection = Main.getConnection();
-		Boolean originalAutoCommit = null;
-		try {
-			originalAutoCommit = connection.getAutoCommit();
+		try (Connection connection = Main.getConnection()) {
+			Boolean originalAutoCommit = null;
+			try {
+				originalAutoCommit = connection.getAutoCommit();
 
-			var databaseRunner = new DatabaseRunner(connection);
-			T result = job.apply(databaseRunner);
+				var databaseRunner = new DatabaseRunner(connection);
+				T result = job.apply(databaseRunner);
 
-			connection.commit();
+				connection.commit();
 
-			return result;
+				return result;
+			} catch (Exception e) {
+				rollback(connection);
+				throw e;
+			} finally {
+				restoreAutocommit(connection, originalAutoCommit);
+			}
 		} catch (SQLException e) {
-			rollback(connection);
 			throw new RuntimeException(e);
-		} finally {
-			restoreAndClose(connection, originalAutoCommit);
 		}
 	}
 
@@ -36,14 +39,8 @@ public class TransactionJobRunner {
 		}
 	}
 
-	private static void restoreAndClose(Connection connection, Boolean originalAutoCommit) {
-		try {
-			if (originalAutoCommit != null)
-				connection.setAutoCommit(originalAutoCommit);
-
-			connection.close();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+	private static void restoreAutocommit(Connection connection, Boolean originalAutoCommit) throws SQLException {
+		if (originalAutoCommit != null)
+			connection.setAutoCommit(originalAutoCommit);
 	}
 }
