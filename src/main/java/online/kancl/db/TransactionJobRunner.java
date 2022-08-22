@@ -20,6 +20,7 @@ public class TransactionJobRunner {
 		Boolean originalAutoCommit = null;
 		try {
 			originalAutoCommit = connection.getAutoCommit();
+			connection.setAutoCommit(false);
 
 			return runJobAndCommitOrRollback(job, connection);
 		}  finally {
