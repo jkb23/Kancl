@@ -1,5 +1,6 @@
 # TODOs
 
+0. Fix running in IntelliJ, fix hardcoded schema.sql in SchemaCreator
 1. Finish switching to H2 DB:
     - update caddy-maria-java base package to caddy-java
     - remove env variables used only by Maria, remove `sql` directory

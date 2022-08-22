@@ -2,39 +2,50 @@ package online.kancl.db;
 
 import org.h2.tools.RunScript;
 
-import javax.sql.DataSource;
-import java.io.FileReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
-
-import static online.kancl.util.ResourcePathResolver.getResourcePath;
 
 public class SchemaCreator {
 	public void recreateSchemaIfNeeded(ConnectionProvider connectionProvider, String sqlScratchDirectory) {
 		try (Connection connection = connectionProvider.getConnection()) {
 			var dbRunner = new DatabaseRunner(connection);
 
-			Path scratchDirectory = getResourcePath(this, sqlScratchDirectory);
+			URI resourceUri = getClass().getResource(sqlScratchDirectory + "/scratch.sql").toURI();
 
-			String scratchDirectoryHash = new DirectoryHashCalculator().calculateEncodedHash(scratchDirectory);
-			if (shouldRecreateSchema(dbRunner, scratchDirectoryHash)) {
-				recreateSchema(dbRunner, connection, scratchDirectory);
-				storeSchemaHash(connection, scratchDirectoryHash);
+			try (FileSystem fileSystem = createFileSystemForResource(resourceUri)) {
+				Path scratchDirectory = Paths.get(resourceUri).getParent();
+				System.out.println("!!!!!!!!!!!!!!!!!!! Path: " + scratchDirectory);
+				//Path scratchDirectory = getResourcePath(this, sqlScratchDirectory);
+
+				String scratchDirectoryHash = new DirectoryHashCalculator().calculateEncodedHash(scratchDirectory);
+				if (shouldRecreateSchema(dbRunner, scratchDirectoryHash)) {
+					recreateSchema(dbRunner, connection, scratchDirectory);
+					storeSchemaHash(connection, scratchDirectoryHash);
+				}
+			} catch (IOException e) {
+				throw new RuntimeException(e);
 			}
 		} catch (SQLException e) {
 			throw new DatabaseRunner.DatabaseAccessException(e);
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
 		}
+	}
+
+	private static FileSystem createFileSystemForResource(URI resourceUri) throws IOException {
+		Map<String, String> env = new HashMap<>();
+		env.put("create", "true");
+		return FileSystems.newFileSystem(resourceUri, env);
 	}
 
 	private boolean shouldRecreateSchema(DatabaseRunner dbRunner, String scratchDirectoryHash) {
@@ -62,9 +73,11 @@ public class SchemaCreator {
 
 			for (Path sqlFile : getSqlFilesInDirectory(scratchDirectory)) {
 				System.out.println("Running " + scratchDirectory.relativize(sqlFile));
-				try (var fileReader = new FileReader(sqlFile.toFile(), StandardCharsets.UTF_8)) {
-					RunScript.execute(connection, fileReader);
-				}
+
+				byte[] fileContent = Files.readAllBytes(sqlFile);
+				var reader = new InputStreamReader(new ByteArrayInputStream(fileContent), StandardCharsets.UTF_8);
+
+				RunScript.execute(connection, reader);
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
