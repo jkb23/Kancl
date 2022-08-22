@@ -1,6 +1,5 @@
 package online.kancl.controller;
 
-import online.kancl.db.DatabaseRunner;
 import online.kancl.model.Meetings;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
@@ -18,7 +17,7 @@ public class MainPageController extends Controller {
 	}
 
 	@Override
-	public String get(Request request, Response response, DatabaseRunner dbRunner) {
+	public String get(Request request, Response response) {
 		return pebbleTemplateRenderer.renderTemplate("MainPage.peb", meetings);
 	}
 }

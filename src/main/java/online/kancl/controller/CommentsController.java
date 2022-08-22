@@ -1,7 +1,7 @@
 package online.kancl.controller;
 
 import online.kancl.dao.CommentQuery;
-import online.kancl.db.DatabaseRunner;
+import online.kancl.db.TransactionJobRunner;
 import online.kancl.model.Comment;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
@@ -19,23 +19,27 @@ public class CommentsController extends Controller {
 	}
 
 	@Override
-	public String get(Request request, Response response, DatabaseRunner dbRunner) {
-		var comments = new Comments(CommentQuery.loadAllComments(dbRunner));
+	public String get(Request request, Response response) {
+		return TransactionJobRunner.runInTransactionAndRelease((dbRunner) -> {
+			var comments = new Comments(CommentQuery.loadAllComments(dbRunner));
 
-		return pebbleTemplateRenderer.renderTemplate("Comments.peb", comments);
+			return pebbleTemplateRenderer.renderTemplate("Comments.peb", comments);
+		});
 	}
 
 	@Override
-	public String post(Request request, Response response, DatabaseRunner dbRunner) {
-		var comment = new Comment(
-				null,
-				request.queryParams("author"),
-				request.queryParams("message"));
+	public String post(Request request, Response response) {
+		return TransactionJobRunner.runInTransactionAndRelease((dbRunner) -> {
+			var comment = new Comment(
+					null,
+					request.queryParams("author"),
+					request.queryParams("message"));
 
-		CommentQuery.save(dbRunner, comment);
+			CommentQuery.save(dbRunner, comment);
 
-		response.redirect("/comments");
-		return "";
+			response.redirect("/comments");
+			return "";
+		});
 	}
 
 	public static class Comments {
