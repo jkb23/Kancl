@@ -4,7 +4,7 @@
     - update caddy-maria-java base package to caddy-java
     - remove env variables used only by Maria, remove `sql` directory
     - update readme (about DB, simplify description of local development, start container locally has no benefits now)
-2. DB test for CommentQuery
+2. DB test for CommentQuery, DatabaseRunner
 3. Switch to Java 17
 4. DB tests
 5. Wrap command to run stack and db.
