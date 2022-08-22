@@ -13,14 +13,16 @@ import java.util.List;
 public class CommentsController extends Controller {
 
 	private final PebbleTemplateRenderer pebbleTemplateRenderer;
+	private final TransactionJobRunner transactionJobRunner;
 
-	public CommentsController(PebbleTemplateRenderer pebbleTemplateRenderer) {
+	public CommentsController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner) {
 		this.pebbleTemplateRenderer = pebbleTemplateRenderer;
+		this.transactionJobRunner = transactionJobRunner;
 	}
 
 	@Override
 	public String get(Request request, Response response) {
-		return TransactionJobRunner.runInTransactionAndRelease((dbRunner) -> {
+		return transactionJobRunner.runInTransaction((dbRunner) -> {
 			var comments = new Comments(CommentQuery.loadAllComments(dbRunner));
 
 			return pebbleTemplateRenderer.renderTemplate("Comments.peb", comments);
@@ -29,7 +31,7 @@ public class CommentsController extends Controller {
 
 	@Override
 	public String post(Request request, Response response) {
-		return TransactionJobRunner.runInTransactionAndRelease((dbRunner) -> {
+		return transactionJobRunner.runInTransaction((dbRunner) -> {
 			var comment = new Comment(
 					null,
 					request.queryParams("author"),
