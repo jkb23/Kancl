@@ -8,9 +8,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class ConnectionProvider {
-
-	private static final String SQL_SCRATCH_DIRECTORY = "sql";
-
 	private final DataSource dataSource;
 
 	public static ConnectionProvider forInMemoryDatabase(String dbName) {
@@ -39,8 +36,6 @@ public class ConnectionProvider {
 
 		dataSource.setUrl("jdbc:h2:" + dbLocation);
 		dataSource.setMaxOpenPreparedStatements(100);
-
-		new SchemaCreator().recreateSchemaIfNeeded(dataSource, SQL_SCRATCH_DIRECTORY);
 
 		return dataSource;
 	}

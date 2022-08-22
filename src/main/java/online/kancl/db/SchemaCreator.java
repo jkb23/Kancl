@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 
 import static online.kancl.util.ResourcePathResolver.getResourcePath;
 
-class SchemaCreator {
-	public void recreateSchemaIfNeeded(DataSource dataSource, String sqlScratchDirectory) {
-		try (Connection connection = dataSource.getConnection()) {
+public class SchemaCreator {
+	public void recreateSchemaIfNeeded(ConnectionProvider connectionProvider, String sqlScratchDirectory) {
+		try (Connection connection = connectionProvider.getConnection()) {
 			var dbRunner = new DatabaseRunner(connection);
 
 			Path scratchDirectory = getResourcePath(this, sqlScratchDirectory);

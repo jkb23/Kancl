@@ -6,6 +6,7 @@ import online.kancl.controller.CommentsController;
 import online.kancl.controller.MainPageController;
 import online.kancl.controller.ZoomHookController;
 import online.kancl.db.ConnectionProvider;
+import online.kancl.db.SchemaCreator;
 import online.kancl.db.TransactionJobRunner;
 import online.kancl.model.Meetings;
 import online.kancl.server.ExceptionHandler;
@@ -19,12 +20,15 @@ import java.nio.file.Paths;
 public class Main {
 
 	public static final Path TEMPLATE_DIRECTORY = Paths.get("src", "main", "pebble", "templates");
+	private static final String SQL_SCRATCH_DIRECTORY = "sql";
 	private static final Path DB_DIRECTORY = Paths.get("db");
 	private static final String DB_NAME = "data";
 
 	public static void main(String[] args) {
 		PebbleTemplateRenderer pebbleTemplateRenderer = createPebbleTemplateRenderer();
+
 		ConnectionProvider connectionProvider = ConnectionProvider.forDatabaseInFile(DB_DIRECTORY, DB_NAME);
+		new SchemaCreator().recreateSchemaIfNeeded(connectionProvider, SQL_SCRATCH_DIRECTORY);
 		var transactionJobRunner = new TransactionJobRunner(connectionProvider);
 
 		var meetings = new Meetings();
