@@ -76,7 +76,7 @@ class DatabaseRunnerTest {
 
 	@Test
 	void testInsert() {
-		assertThat(insertRow("first"))
+		assertThat(insertRowAndGetId("first"))
 				.contains(1);
 	}
 
@@ -84,7 +84,7 @@ class DatabaseRunnerTest {
 	void testInsertReturnsGeneratedId() {
 		insertRow("first");
 
-		assertThat(insertRow("second"))
+		assertThat(insertRowAndGetId("second"))
 				.contains(2);
 	}
 
@@ -122,7 +122,11 @@ class DatabaseRunnerTest {
 				.contains(1);
 	}
 
-	private Optional<Integer> insertRow(String value) {
+	private void insertRow(String value) {
+		dbRunner.insert("INSERT INTO TestTable (v) VALUES (?)", value);
+	}
+
+	private Optional<Integer> insertRowAndGetId(String value) {
 		return dbRunner.insert("INSERT INTO TestTable (v) VALUES (?)", (r) -> r.getInt(1), value);
 	}
 }

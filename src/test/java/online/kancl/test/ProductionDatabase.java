@@ -18,11 +18,12 @@ public class ProductionDatabase implements
 		AfterAllCallback,
 		ParameterResolver {
 	private Connection connection;
+	private ConnectionProvider connectionProvider;
 	private DatabaseRunner dbRunner;
 
 	@Override
 	public void beforeAll(ExtensionContext extensionContext) {
-		ConnectionProvider connectionProvider = ConnectionProvider.forInMemoryDatabase("testdb");
+		connectionProvider = ConnectionProvider.forInMemoryDatabase("testdb");
 		connection = connectionProvider.getConnection();
 		dbRunner = new DatabaseRunner(connection);
 	}
@@ -39,12 +40,23 @@ public class ProductionDatabase implements
 
 	@Override
 	public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-		Class<?> parameterType = parameterContext.getParameter().getType();
-		return parameterType.equals(DatabaseRunner.class);
+		Class<?> parameterType = getParameterType(parameterContext);
+		return parameterType.equals(DatabaseRunner.class) || parameterType.equals(ConnectionProvider.class);
 	}
 
 	@Override
 	public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-		return dbRunner;
+		Class<?> parameterType = getParameterType(parameterContext);
+
+		if (parameterType.equals(DatabaseRunner.class))
+			return dbRunner;
+		else if (parameterType.equals(ConnectionProvider.class))
+			return connectionProvider;
+		else
+			throw new IllegalArgumentException("Unknown parameter type " + parameterType.getSimpleName());
+	}
+
+	private Class<?> getParameterType(ParameterContext parameterContext) {
+		return parameterContext.getParameter().getType();
 	}
 }

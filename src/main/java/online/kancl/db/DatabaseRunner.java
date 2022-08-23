@@ -59,6 +59,10 @@ public class DatabaseRunner {
 		return executeAndWrapSQLException(() -> queryRunner.update(connection, sql, binds));
 	}
 
+	public void insert(String sql, Object... binds) {
+		insert(sql, (r) -> 1, binds);
+	}
+
 	/**
 	 * Executes the given INSERT SQL statement.
 	 *
