@@ -5,14 +5,17 @@ import org.h2.tools.RunScript;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class SchemaCreator {
@@ -22,6 +25,7 @@ public class SchemaCreator {
 
 			String scratchDirectoryHash = new DirectoryHashCalculator().calculateEncodedHash(scratchDirectory);
 			if (shouldRecreateSchema(dbRunner, scratchDirectoryHash)) {
+				System.out.println("Recreating DB schema");
 				recreateSchema(dbRunner, connection, scratchDirectory);
 				storeSchemaHash(connection, scratchDirectoryHash);
 			}
@@ -49,22 +53,23 @@ public class SchemaCreator {
 	}
 
 	private void recreateSchema(DatabaseRunner dbRunner, Connection connection, Path scratchDirectory) {
+		dbRunner.update("DROP ALL OBJECTS");
+
+		for (Path sqlFile : getSqlFilesInDirectory(scratchDirectory)) {
+			runSqlFile(connection, sqlFile);
+		}
+	}
+
+	private void runSqlFile(Connection connection, Path sqlFile) {
 		try {
-			System.out.println("Recreating DB schema");
-			dbRunner.update("DROP ALL OBJECTS");
+			byte[] fileContent = Files.readAllBytes(sqlFile);
+			var reader = new InputStreamReader(new ByteArrayInputStream(fileContent), StandardCharsets.UTF_8);
 
-			for (Path sqlFile : getSqlFilesInDirectory(scratchDirectory)) {
-				System.out.println("Running " + scratchDirectory.relativize(sqlFile));
-
-				byte[] fileContent = Files.readAllBytes(sqlFile);
-				var reader = new InputStreamReader(new ByteArrayInputStream(fileContent), StandardCharsets.UTF_8);
-
-				RunScript.execute(connection, reader);
-			}
+			RunScript.execute(connection, reader);
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new IllegalArgumentException("Could not read sql file " + sqlFile, e);
 		} catch (SQLException e) {
-			throw new SchemaCreationException(e);
+			throw new InvalidSchemaScriptException("Error when executing " + sqlFile, e);
 		}
 	}
 
@@ -94,9 +99,9 @@ public class SchemaCreator {
 		connection.commit();
 	}
 
-	public static class SchemaCreationException extends RuntimeException {
-		public SchemaCreationException(Throwable cause) {
-			super("Error when creating schema", cause);
+	public static class InvalidSchemaScriptException extends RuntimeException {
+		public InvalidSchemaScriptException(String message, Throwable cause) {
+			super(message, cause);
 		}
 	}
 }
