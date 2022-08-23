@@ -72,9 +72,16 @@ class DatabaseRunnerTest {
 	}
 
 	@Test
+	void testUpdateReturnsZeroIfNoRowsAreUpdated() {
+		assertThat(dbRunner.update("UPDATE TestTable SET v = ?", "updated"))
+				.isEqualTo(0);
+	}
+
+	@Test
 	void testUpdate() {
 		insertRow("original");
-		dbRunner.update("UPDATE TestTable SET v = ?", "updated");
+		assertThat(dbRunner.update("UPDATE TestTable SET v = ?", "updated"))
+				.isEqualTo(1);
 
 		assertThat(dbRunner.select("SELECT v FROM TestTable", (r) -> r.getString(1)))
 				.contains("updated");
