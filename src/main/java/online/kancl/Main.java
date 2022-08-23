@@ -20,7 +20,7 @@ import java.nio.file.Paths;
 public class Main {
 
 	public static final Path TEMPLATE_DIRECTORY = Paths.get("src", "main", "pebble", "templates");
-	private static final Path SQL_SCRATCH_DIRECTORY = Paths.get("src", "main", "resources", "sql");
+	public static final Path SQL_SCRATCH_DIRECTORY = Paths.get("src", "main", "resources", "sql");
 	private static final Path DB_DIRECTORY = Paths.get("db");
 	private static final String DB_NAME = "data";
 

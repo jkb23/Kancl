@@ -27,16 +27,28 @@ public class SchemaCreator {
 			if (shouldRecreateSchema(dbRunner, scratchDirectoryHash)) {
 				System.out.println("Recreating DB schema");
 				recreateSchema(dbRunner, connection, scratchDirectory);
-				storeSchemaHash(connection, scratchDirectoryHash);
+
 			}
 		} catch (SQLException e) {
 			throw new DatabaseRunner.DatabaseAccessException(e);
 		}
 	}
 
+	public void recreateSchema(Connection connection, Path scratchDirectory) {
+		recreateSchema(new DatabaseRunner(connection), connection, scratchDirectory);
+	}
+
 	private boolean shouldRecreateSchema(DatabaseRunner dbRunner, String scratchDirectoryHash) {
 		Optional<String> storedSchemaHash = getStoredSchemaHash(dbRunner);
 		return storedSchemaHash.isEmpty() || !storedSchemaHash.get().equals(scratchDirectoryHash);
+	}
+
+	private void recreateSchema(DatabaseRunner dbRunner, Connection connection, Path scratchDirectory) {
+		dbRunner.update("DROP ALL OBJECTS");
+
+		for (Path sqlFile : getSqlFilesInDirectory(scratchDirectory)) {
+			runSqlFile(connection, sqlFile);
+		}
 	}
 
 	private Optional<String> getStoredSchemaHash(DatabaseRunner dbRunner) {
@@ -50,14 +62,6 @@ public class SchemaCreator {
 			return Optional.empty();
 
 		return dbRunner.query("SELECT hash FROM DatabaseSchemaHash", (row) -> row.getString(1));
-	}
-
-	private void recreateSchema(DatabaseRunner dbRunner, Connection connection, Path scratchDirectory) {
-		dbRunner.update("DROP ALL OBJECTS");
-
-		for (Path sqlFile : getSqlFilesInDirectory(scratchDirectory)) {
-			runSqlFile(connection, sqlFile);
-		}
 	}
 
 	private void runSqlFile(Connection connection, Path sqlFile) {
