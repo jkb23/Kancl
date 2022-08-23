@@ -80,6 +80,15 @@ class DatabaseRunnerTest {
 				.contains("updated");
 	}
 
+	@Test
+	void queryReturnsJustFirstRow() {
+		insertRow("first");
+		insertRow("second");
+
+		assertThat(dbRunner.query("SELECT id FROM TestTable ORDER BY id", (r) -> r.getInt(1)))
+				.contains(1);
+	}
+
 	private Optional<Integer> insertRow(String value) {
 		return dbRunner.insert("INSERT INTO TestTable (v) VALUES (?)", (r) -> r.getInt(1), value);
 	}
