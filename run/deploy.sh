@@ -21,7 +21,6 @@ echo ""
 
 docker stop $(docker ps -q) | echo ""
 
-docker volume rm sql_data | echo ""
 docker volume create --name=sql_data | echo ""
 
 cd run
