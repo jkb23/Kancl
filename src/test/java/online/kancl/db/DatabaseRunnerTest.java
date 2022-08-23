@@ -32,19 +32,19 @@ class DatabaseRunnerTest {
 
 	@Test
 	void testSingleRowQuery() {
-		assertThat(dbRunner.query("SELECT count(1) FROM TestTable", (r) -> r.getInt(1)))
+		assertThat(dbRunner.select("SELECT count(1) FROM TestTable", (r) -> r.getInt(1)))
 				.contains(0);
 	}
 
 	@Test
 	void testNoRowsQuery() {
-		assertThat(dbRunner.query("SELECT 1 FROM TestTable", (r) -> r.getInt(1)))
+		assertThat(dbRunner.select("SELECT 1 FROM TestTable", (r) -> r.getInt(1)))
 				.isEmpty();
 	}
 
 	@Test
 	void testEmptyList() {
-		assertThat(dbRunner.queryAll("SELECT 1 FROM TestTable", (r) -> r.getInt(1)))
+		assertThat(dbRunner.selectAll("SELECT 1 FROM TestTable", (r) -> r.getInt(1)))
 				.isEmpty();
 	}
 
@@ -67,7 +67,7 @@ class DatabaseRunnerTest {
 		insertRow("first");
 		insertRow("second");
 
-		assertThat(dbRunner.queryAll("SELECT v FROM TestTable ORDER BY id DESC", (r) -> r.getString(1)))
+		assertThat(dbRunner.selectAll("SELECT v FROM TestTable ORDER BY id DESC", (r) -> r.getString(1)))
 				.containsExactly("second", "first");
 	}
 
@@ -76,7 +76,7 @@ class DatabaseRunnerTest {
 		insertRow("original");
 		dbRunner.update("UPDATE TestTable SET v = ?", "updated");
 
-		assertThat(dbRunner.query("SELECT v FROM TestTable", (r) -> r.getString(1)))
+		assertThat(dbRunner.select("SELECT v FROM TestTable", (r) -> r.getString(1)))
 				.contains("updated");
 	}
 
@@ -85,7 +85,7 @@ class DatabaseRunnerTest {
 		insertRow("first");
 		insertRow("second");
 
-		assertThat(dbRunner.query("SELECT id FROM TestTable ORDER BY id", (r) -> r.getInt(1)))
+		assertThat(dbRunner.select("SELECT id FROM TestTable ORDER BY id", (r) -> r.getInt(1)))
 				.contains(1);
 	}
 

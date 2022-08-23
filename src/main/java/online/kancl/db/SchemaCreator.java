@@ -53,7 +53,7 @@ public class SchemaCreator {
 
 	private Optional<String> getStoredSchemaHash(DatabaseRunner dbRunner) {
 
-		int tableCount = dbRunner.query(
+		int tableCount = dbRunner.select(
 				"SELECT count(1) FROM information_schema.Tables WHERE table_schema = 'PUBLIC'",
 				(row) -> row.getInt(1)
 		).orElse(0);
@@ -61,7 +61,7 @@ public class SchemaCreator {
 		if (tableCount == 0)
 			return Optional.empty();
 
-		return dbRunner.query("SELECT hash FROM DatabaseSchemaHash", (row) -> row.getString(1));
+		return dbRunner.select("SELECT hash FROM DatabaseSchemaHash", (row) -> row.getString(1));
 	}
 
 	private void runSqlFile(Connection connection, Path sqlFile) {

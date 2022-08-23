@@ -10,7 +10,7 @@ import java.util.List;
 public class CommentQuery {
 
 	public static List<Comment> loadAllComments(DatabaseRunner dbRunner) {
-		return dbRunner.queryAll(
+		return dbRunner.selectAll(
 				"SELECT * FROM Comment ORDER BY id",
 				CommentQuery::handle);
 	}

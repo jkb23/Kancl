@@ -18,10 +18,7 @@ public class DatabaseRunner {
 		this.queryRunner = new QueryRunner();
 	}
 
-	/**
-	 * Execute an SQL SELECT query.
-	 */
-	public <T> Optional<T> query(String sql, RowMapper<T> rowMapper, Object... binds) {
+	public <T> Optional<T> select(String sql, RowMapper<T> rowMapper, Object... binds) {
 		return executeAndWrapSQLException(() ->
 				queryRunner.query(
 						connection,
@@ -32,7 +29,7 @@ public class DatabaseRunner {
 		);
 	}
 
-	public <T> List<T> queryAll(String sql, RowMapper<T> rowMapper, Object... binds) {
+	public <T> List<T> selectAll(String sql, RowMapper<T> rowMapper, Object... binds) {
 		return executeAndWrapSQLException(() ->
 				queryRunner.query(
 						connection,
