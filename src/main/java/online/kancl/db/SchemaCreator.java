@@ -53,10 +53,9 @@ public class SchemaCreator {
 
 	private Optional<String> getStoredSchemaHash(DatabaseRunner dbRunner) {
 
-		int tableCount = dbRunner.select(
-				"SELECT count(1) FROM information_schema.Tables WHERE table_schema = 'PUBLIC'",
-				(row) -> row.getInt(1)
-		).orElse(0);
+		int tableCount = dbRunner.selectInt(
+				"SELECT count(1) FROM information_schema.Tables WHERE table_schema = 'PUBLIC'"
+		);
 
 		if (tableCount == 0)
 			return Optional.empty();

@@ -29,6 +29,16 @@ public class DatabaseRunner {
 		);
 	}
 
+	public int selectInt(String sql, Object... binds) {
+		return select(sql, (r) -> r.getInt(1), binds)
+				.orElseThrow(NoRowSelectedException::new);
+	}
+
+	public String selectString(String sql, Object... binds) {
+		return select(sql, (r) -> r.getString(1), binds)
+				.orElseThrow(NoRowSelectedException::new);
+	}
+
 	public <T> List<T> selectAll(String sql, RowMapper<T> rowMapper, Object... binds) {
 		return executeAndWrapSQLException(() ->
 				queryRunner.query(
@@ -95,6 +105,12 @@ public class DatabaseRunner {
 	public static class DatabaseAccessException extends RuntimeException {
 		public DatabaseAccessException(Throwable cause) {
 			super("Error when accessing database", cause);
+		}
+	}
+
+	public static class NoRowSelectedException extends RuntimeException {
+		public NoRowSelectedException() {
+			super("No row was selected");
 		}
 	}
 }

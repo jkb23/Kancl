@@ -1,6 +1,8 @@
 package online.kancl.db;
 
+import online.kancl.db.DatabaseRunner.NoRowSelectedException;
 import online.kancl.test.ProductionDatabase;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,6 +36,30 @@ class DatabaseRunnerTest {
 	void testSingleRowQuery() {
 		assertThat(dbRunner.select("SELECT count(1) FROM TestTable", (r) -> r.getInt(1)))
 				.contains(0);
+	}
+
+	@Test
+	void testSelectInt() {
+		assertThat(dbRunner.selectInt("SELECT 1 FROM Dual"))
+				.isEqualTo(1);
+	}
+
+	@Test
+	void testSelectIntThrowsOnNoData() {
+		Assertions.assertThatThrownBy(() -> dbRunner.selectInt("SELECT 1 FROM TestTable"))
+				.isInstanceOf(NoRowSelectedException.class);
+	}
+
+	@Test
+	void testSelectString() {
+		assertThat(dbRunner.selectString("SELECT 'value' FROM Dual"))
+				.isEqualTo("value");
+	}
+
+	@Test
+	void testSelectStringThrowsOnNoData() {
+		Assertions.assertThatThrownBy(() -> dbRunner.selectInt("SELECT v FROM TestTable"))
+				.isInstanceOf(NoRowSelectedException.class);
 	}
 
 	@Test
