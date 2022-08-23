@@ -16,36 +16,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class SchemaCreator {
-	public void recreateSchemaIfNeeded(ConnectionProvider connectionProvider, String sqlScratchDirectory) {
+	public void recreateSchemaIfNeeded(ConnectionProvider connectionProvider, Path scratchDirectory) {
 		try (Connection connection = connectionProvider.getConnection()) {
 			var dbRunner = new DatabaseRunner(connection);
 
-			URI resourceUri = getClass().getResource(sqlScratchDirectory + "/scratch.sql").toURI();
-
-			try (FileSystem fileSystem = createFileSystemForResource(resourceUri)) {
-				Path scratchDirectory = Paths.get(resourceUri).getParent();
-				System.out.println("!!!!!!!!!!!!!!!!!!! Path: " + scratchDirectory);
-				//Path scratchDirectory = getResourcePath(this, sqlScratchDirectory);
-
-				String scratchDirectoryHash = new DirectoryHashCalculator().calculateEncodedHash(scratchDirectory);
-				if (shouldRecreateSchema(dbRunner, scratchDirectoryHash)) {
-					recreateSchema(dbRunner, connection, scratchDirectory);
-					storeSchemaHash(connection, scratchDirectoryHash);
-				}
-			} catch (IOException e) {
-				throw new RuntimeException(e);
+			String scratchDirectoryHash = new DirectoryHashCalculator().calculateEncodedHash(scratchDirectory);
+			if (shouldRecreateSchema(dbRunner, scratchDirectoryHash)) {
+				recreateSchema(dbRunner, connection, scratchDirectory);
+				storeSchemaHash(connection, scratchDirectoryHash);
 			}
 		} catch (SQLException e) {
 			throw new DatabaseRunner.DatabaseAccessException(e);
-		} catch (URISyntaxException e) {
-			throw new RuntimeException(e);
 		}
-	}
-
-	private static FileSystem createFileSystemForResource(URI resourceUri) throws IOException {
-		Map<String, String> env = new HashMap<>();
-		env.put("create", "true");
-		return FileSystems.newFileSystem(resourceUri, env);
 	}
 
 	private boolean shouldRecreateSchema(DatabaseRunner dbRunner, String scratchDirectoryHash) {

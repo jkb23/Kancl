@@ -42,7 +42,6 @@ class DirectoryHashCalculator {
 
 		@Override
 		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-
 			String relativeFile = startDirectory.relativize(file).toString();
 			hashCalculator.update(relativeFile.getBytes(StandardCharsets.UTF_8));
 			hashCalculator.update(Files.readAllBytes(file));
