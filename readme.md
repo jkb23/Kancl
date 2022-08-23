@@ -1,13 +1,11 @@
 # TODOs
 
-0. Fix running in IntelliJ, fix hardcoded schema.sql in SchemaCreator
-2. DB test for CommentQuery, DatabaseRunner
-3. DB tests
-4. Wrap command to run stack and db.
-5. Our own CI/CD runner
-6. Struktura package - controller+template+model u sebe per typ nebo per byznys logika
-7. peb soubory do resource ve stejnym package
-8. Make cypress display/print stack trace on internal server error
+- DB test for CommentQuery, DatabaseRunner
+- DB tests
+- Our own CI/CD runner
+- Struktura package - controller+template+model u sebe per typ nebo per byznys logika
+- peb soubory do resource ve stejnym package
+- Make cypress display/print stack trace on internal server error
 
 # Potencialne nachystane vidle
 
@@ -32,9 +30,10 @@ to avoid using root.
 # Usage
 
 To use the application on your local computer, the app doesn't need any external program. The database
-is also embedded into it. To run the application, just run method `main` in class `Main` from within your IDE.
-Without an IDE, you can build it with `mvn package` and run it `java -jar target/server-1.0-SNAPSHOT.jar`.
-The app is then available at [localhost:8081](http://localhost:8081/).
+is also embedded into it. To run the application, use working directory as the root directory of the project 
+and then just run method `main` in class `Main` from within your IDE. Without an IDE, you can build the app
+with `mvn package` and run it `java -jar target/server-1.0-SNAPSHOT.jar`. The running app is available
+at [localhost:8081](http://localhost:8081/).
 
 In production, there is also an HTTP server running alongside our Java app - [Caddy](https://caddyserver.com/).
 Caddy translates HTTP traffic to and from our app into HTTPS (it acts like a reverse proxy).
