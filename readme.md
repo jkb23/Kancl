@@ -1,10 +1,6 @@
 # TODOs
 
 0. Fix running in IntelliJ, fix hardcoded schema.sql in SchemaCreator
-1. Finish switching to H2 DB:
-    - update caddy-maria-java base package to caddy-java
-    - remove env variables used only by Maria, remove `sql` directory
-    - update readme (about DB, simplify description of local development, start container locally has no benefits now)
 2. DB test for CommentQuery, DatabaseRunner
 3. DB tests
 4. Wrap command to run stack and db.
@@ -27,32 +23,22 @@
 
 **TODO** pre-install and update accordingly
 
-1. Install [Maven](https://maven.apache.org/).
-2. Install [Docker](https://docs.docker.com/engine/install/). In Fedora you can run `sudo dnf install docker && sudo systemctl enable docker && sudo systemctl start docker`
-3. On Linux run [these post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/)
+2. Install [Maven](https://maven.apache.org/).
+3. Install [Docker](https://docs.docker.com/engine/install/). In Fedora you can run `sudo dnf install docker && sudo systemctl enable docker && sudo systemctl start docker`
+4. On Linux run [these post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/)
 to avoid using root.
-4. Install [npm](https://www.npmjs.com/).
+5. Install [npm](https://www.npmjs.com/).
 
 # Usage
 
-All dependencies for our application and the application itself are packaged in a Docker container.
+To use the application on your local computer, the app doesn't need any external program. The database
+is also embedded into it. To run the application, just run method `main` in class `Main` from within your IDE.
+Without an IDE, you can build it with `mvn package` and run it `java -jar target/server-1.0-SNAPSHOT.jar`.
+The app is then available at [localhost:8081](http://localhost:8081/).
 
-If you have never used a Docker container before, don't worry. The idea is similar to a Virtual Machine.
-We have prepared an "image" that contains a lightweight operating system and all dependencies that our app needs.
-Docker will download this image and use it to run our application in an isolated environment.
-A running image is called "container".
-
-To run the app on your computer follow these steps:
-
-1. When running it for the first time:
-   `docker volume create --name=sql_data && docker volume create --name=caddy_data`
-2. `mvn package` builds our Java application using Maven into a `.jar` file
-3. `cd run && docker-compose up --build` This will automatically:
-   - Download the docker image
-   - Copy `.jar` file into it
-   - Re-create DB as necessary (see below)
-   - Run the application
-4. The app is now available at [localhost:8080](http://localhost:8080/)
+In production, there is also an HTTP server running alongside our Java app - [Caddy](https://caddyserver.com/).
+Caddy translates HTTP traffic to and from our app into HTTPS (it acts like a reverse proxy).
+In production, our Java app and Caddy are configured to run inside Docker containers.
 
 ### Tests
 
@@ -62,7 +48,7 @@ and maintained as the application is developed - **unit tests** and **end-to-end
 Unit tests are written in Java and can be executed in the IDE or by running `mvn test`.
 You can find them in directory `src/test/java`.
 
-End-to-end tests exercise the application as a whole in its environment. We have prepared
+End-to-end tests exercise the application as a whole in its Docker containers. We have prepared
 [Cypress](https://www.cypress.io/) testing framework for you. Cypress tests are written in
 JavaScript or TypeScript and you can find them in directory `src/test/cypress`.
 There are two ways that you can execute them.
@@ -91,39 +77,27 @@ a place that does just that - [CI/CD pipeline in GitLab](https://gitlab.com/jan.
 After you push to GitLab repository, the following steps are done:
 
 1. Stage `build` executes Maven which builds Java, runs unit tests and creates `.jar` file.
-2. Stage `end-to-end-tests` starts a container, creates a DB and executes Cypress tests.
+2. Stage `end-to-end-tests` starts a container, runs our Java app and Caddy and executes Cypress tests.
 3. If you push to branch `main` there's also stage `deploy`. This stages updates
    production server [kancl.online](https://kancl.online/).
 
+The CI/CD pipeline is configured in file `.gitlab-ci.yml`.
+
 ### Working with DB
 
+We have prepared [H2 Database](http://h2database.com). H2 is a native to Java and can run "embedded" into another
+Java program (as opposed to running it in "server" mode as a standalone process).
+
 There are no production users of our application (yet? :-) so we can afford to occasionally throw away all data in the DB
-and re-create it from scratch. This is done by set of scripts in the `sql` directory. Use these scripts to create DB schema
-for your application. Scripts need to have extension `.sql` and are executed in alphabetical order.
+and re-create it from scratch. This is done by set of scripts in directory `src/main/resources/sql`. Use these scripts
+to create DB schema for your application. Scripts need to have extension `.sql` and are executed in alphabetical order.
 
-When you start the container a script `/scripts/prepare-maria-db.sh` within the container will throw away the DB
-and re-create it every time content of `sql` directory is changed.
+When you start the application a class `SchemaCreator` within the container will throw away the DB
+and re-create it every time content of directory `src/main/resources/sql` is changed.
 
-To persist the DB between restarts of the container persistent volumes are used. That's why you had to manually create them
-before starting the container for the first time with `docker volume create`.
-
-### Local development
-
-When you are developing you want to run the Java application from within your IDE.
-Running the app in the container would make it hard to re-run and debug.
-To be able to run the app locally, you need to set environment variables to same values as in file `run/.env`.
-In IntelliJ Idea, you can copy&paste the following into run configuration:
-
-```
-DB_NAME=kanclOnline;DB_PASSWORD=password;DB_USER=user;ZOOM_VERIFICATION_TOKEN=foobar
-```
-
-And then start the DB in Docker:
-
-```sh
-cd run
-docker-compose -f docker-compose.yml -f docker-compose-db-only.yml up --build
-```
+The DB content is stored in directory `db`. You can use your IDE or other database tools to inspect the content of the DB,
+but please note only a single process can access the DB at any time. This means you will not be able to connect your
+when our Java app is running and vice versa.
 
 
 # Examples of Zoom calling the web hook
