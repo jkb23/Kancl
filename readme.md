@@ -1,7 +1,5 @@
 # TODOs
 
-- DB test for CommentQuery, DatabaseRunner
-- DB tests
 - Our own CI/CD runner
 - Struktura package - controller+template+model u sebe per typ nebo per byznys logika
 - peb soubory do resource ve stejnym package
