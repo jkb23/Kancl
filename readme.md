@@ -6,13 +6,12 @@
     - remove env variables used only by Maria, remove `sql` directory
     - update readme (about DB, simplify description of local development, start container locally has no benefits now)
 2. DB test for CommentQuery, DatabaseRunner
-3. Switch to Java 17
-4. DB tests
-5. Wrap command to run stack and db.
-6. Our own CI/CD runner
-7. Struktura package - controller+template+model u sebe per typ nebo per byznys logika
-8. peb soubory do resource ve stejnym package
-9. Make cypress display/print stack trace on internal server error
+3. DB tests
+4. Wrap command to run stack and db.
+5. Our own CI/CD runner
+6. Struktura package - controller+template+model u sebe per typ nebo per byznys logika
+7. peb soubory do resource ve stejnym package
+8. Make cypress display/print stack trace on internal server error
 
 # Potencialne nachystane vidle
 

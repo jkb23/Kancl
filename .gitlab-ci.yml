@@ -13,7 +13,7 @@ variables:
 
 build:
   stage: build
-  image: maven:3.8.6-openjdk-11
+  image: maven:3.8.6-amazoncorretto-17
   script:
     - mvn test
     - mvn package
