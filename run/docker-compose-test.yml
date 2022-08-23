@@ -5,8 +5,9 @@ services:
     image: "cypress/included:10.6.0"
     depends_on:
       - kanclonline
+      - caddy
     environment:
-      - CYPRESS_baseUrl=http://kanclonline
+      - CYPRESS_baseUrl=http://caddy
     working_dir: /e2e
     volumes:
       - ..:/e2e

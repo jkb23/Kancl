@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  kanclonline:
+  caddy:
     environment:
       - CADDY_ADDRESS="kancl.online"
 

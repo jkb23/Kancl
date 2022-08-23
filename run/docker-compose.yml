@@ -1,10 +1,26 @@
 version: "3.7"
 
 services:
+  caddy:
+    image: caddy:2.5.2-alpine
+    restart: unless-stopped
+
+    depends_on:
+      - kanclonline
+
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+      - ./Caddyfile:/etc/caddy/Caddyfile
+
+    environment:
+      CADDY_ADDRESS: "http://"
+
+    ports:
+      - "8080:80/tcp"
+
   kanclonline:
-    build:
-      context: ..
-      dockerfile: run/Dockerfile
+    image: amazoncorretto:17.0.4-alpine3.15
     restart: unless-stopped
 
     volumes:
@@ -20,36 +36,13 @@ services:
         source: ../src
         target: /usr/app/src
         read_only: true
-      - type: bind
-        source: ../sql
-        target: /docker-entrypoint-initdb.d/
-        read_only: true
-      - caddy_data:/data
-      - caddy_config:/config
       - sql_data:/usr/app/db
 
     environment:
-      CADDY_ADDRESS: "http://"
       ZOOM_VERIFICATION_TOKEN: ${ZOOM_VERIFICATION_TOKEN}
-      # environment variables read by kancl.online Java app:
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_NAME: ${DB_NAME}
-      # environment variables ready by DB:
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
 
-    ulimits:
-      nproc: 65535
-      nofile:
-        soft: 26677
-        hard: 46677
-
-    ports:
-      - "8080:80/tcp"
-
+    entrypoint: ["java", "-jar", "/usr/app/target/server-1.0-SNAPSHOT.jar"]
+    working_dir: /usr/app
 
 volumes:
   caddy_data:

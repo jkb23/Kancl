@@ -1,5 +1,11 @@
+{
+    log {
+        level ERROR
+    }
+}
+
 {$CADDY_ADDRESS}
 
-reverse_proxy http://localhost:8081
+reverse_proxy http://kanclonline:8081
 
 encode zstd gzip
