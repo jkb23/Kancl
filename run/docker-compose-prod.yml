@@ -5,6 +5,19 @@ services:
     environment:
       - CADDY_ADDRESS="kancl.online"
 
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
     ports:
       - "80:80/tcp"
       - "443:443/tcp"
+
+  kanclonline:
+    volumes:
+      - sql_data:/usr/app/db
+
+volumes:
+  caddy_data:
+  caddy_config:
+  sql_data:

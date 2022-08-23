@@ -9,8 +9,6 @@ services:
       - kanclonline
 
     volumes:
-      - caddy_data:/data
-      - caddy_config:/config
       - ./Caddyfile:/etc/caddy/Caddyfile
 
     environment:
@@ -36,7 +34,6 @@ services:
         source: ../src
         target: /usr/app/src
         read_only: true
-      - sql_data:/usr/app/db
 
     environment:
       ZOOM_VERIFICATION_TOKEN: ${ZOOM_VERIFICATION_TOKEN}
