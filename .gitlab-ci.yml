@@ -29,7 +29,7 @@ end-to-end-tests:
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
   services:
-    - docker:20.10.17-dind
+    - docker:20.10.17-dind-rootless
   
   script:
     - docker volume create --name=sql_data
