@@ -1,22 +1,20 @@
+This project contains a working skeleton and infrastructure for a 1-week simulation
+of real-life software development for college students - "Summer camp".
+Participants will contribute to this repo when developing the product.
+The project contains a GitLab CI/CD pipeline that automates builds, unit tests,
+end-to-end tests, and deployment to a production server [kancl.online](https://kancl.online).
+
+The project uses Maven to build a Java server, H2 database embedded into the server,
+Cypress framework for end-to-end tests, and Docker for easy deployment. 
+
 # TODOs
 
 - Our own CI/CD runner
-- Struktura package - controller+template+model u sebe per typ nebo per byznys logika
-- peb soubory do resource ve stejnym package
-
-# Potencialne nachystane vidle
-
-- Extract router - page navigation + URLs in code (for redirects)
-- Form validation for /comments, display errors in form, extract form pattern?
-- var - prezenou pouziti. Spravne je jenom v:
-  `X x = new X();` --> `var x = new X();`
-  urcite nechces: `var x = doSomeKindOfMagic();`
-- ResultSetHandler potrebuje resit rs.next() a vracet Optional
-
+- Package structure - controller+template+model next to each other per business logic
+- Put .peb file to resource dir in same package as controller
+- Pre-install pre-requisites and update section below accordingly.
 
 # Installing pre-requisites
-
-**TODO** pre-install and update accordingly
 
 2. Install [Maven](https://maven.apache.org/).
 3. Install [Docker](https://docs.docker.com/engine/install/). In Fedora you can run `sudo dnf install docker && sudo systemctl enable docker && sudo systemctl start docker`
@@ -250,3 +248,10 @@ sudo docker volume create --name=caddy_data
 ```
 
 Upload the private key to GitLab > Repository Settings > CI/CD > Variables with name `SSH_PRIVATE_KEY`.
+
+
+# Parts that participants may struggle with
+
+- Missing `Router`. URLs everywhere
+- Form validation
+- Misuse of `var`
