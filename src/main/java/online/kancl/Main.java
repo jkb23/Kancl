@@ -2,7 +2,7 @@ package online.kancl;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
-import online.kancl.controller.CommentsController;
+import online.kancl.page.comments.CommentsController;
 import online.kancl.controller.MainPageController;
 import online.kancl.controller.ZoomHookController;
 import online.kancl.db.ConnectionProvider;

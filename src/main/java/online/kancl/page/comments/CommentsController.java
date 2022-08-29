@@ -1,8 +1,6 @@
-package online.kancl.controller;
+package online.kancl.page.comments;
 
-import online.kancl.dao.CommentQuery;
 import online.kancl.db.TransactionJobRunner;
-import online.kancl.model.Comment;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;

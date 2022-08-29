@@ -1,7 +1,6 @@
-package online.kancl.dao;
+package online.kancl.page.comments;
 
 import online.kancl.db.DatabaseRunner;
-import online.kancl.model.Comment;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

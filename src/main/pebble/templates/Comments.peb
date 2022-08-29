@@ -1,4 +1,4 @@
-{# @pebvariable name="comments" type="online.kancl.controller.CommentsController.Comments" #}
+{# @pebvariable name="comments" type="online.kancl.page.comments.CommentsController.Comments" #}
 
     {% extends "BaseHtml.peb" %}
 

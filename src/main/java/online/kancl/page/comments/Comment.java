@@ -1,4 +1,4 @@
-package online.kancl.model;
+package online.kancl.page.comments;
 
 import java.util.Objects;
 
