@@ -4,6 +4,7 @@ import online.kancl.Main;
 import online.kancl.db.ConnectionProvider;
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.SchemaCreator;
+import online.kancl.util.DirectoryHashCalculator;
 import org.junit.jupiter.api.extension.*;
 
 import java.sql.Connection;
@@ -30,7 +31,9 @@ public class ProductionDatabase implements
 
 	@Override
 	public void beforeEach(ExtensionContext context) {
-		new SchemaCreator().recreateSchema(connection, Main.SQL_SCRATCH_DIRECTORY);
+		var directoryHashCalculator = new DirectoryHashCalculator();
+		new SchemaCreator(directoryHashCalculator, connectionProvider, Main.SQL_SCRATCH_DIRECTORY)
+				.recreateSchema();
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import online.kancl.server.ExceptionHandler;
 import online.kancl.server.WebServer;
 import online.kancl.server.template.PebbleExtension;
 import online.kancl.server.template.PebbleTemplateRenderer;
+import online.kancl.util.DirectoryHashCalculator;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,7 +29,10 @@ public class Main {
 		PebbleTemplateRenderer pebbleTemplateRenderer = createPebbleTemplateRenderer(TEMPLATE_DIRECTORY);
 
 		ConnectionProvider connectionProvider = ConnectionProvider.forDatabaseInFile(DB_DIRECTORY, DB_NAME);
-		new SchemaCreator().recreateSchemaIfNeeded(connectionProvider, SQL_SCRATCH_DIRECTORY);
+		var directoryHashCalculator = new DirectoryHashCalculator();
+		var schemaCreator = new SchemaCreator(directoryHashCalculator, connectionProvider, SQL_SCRATCH_DIRECTORY);
+		schemaCreator.recreateSchemaIfNeeded();
+
 		var transactionJobRunner = new TransactionJobRunner(connectionProvider);
 
 		var meetings = new Meetings();

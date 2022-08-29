@@ -20,28 +20,44 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class SchemaCreator {
-	public void recreateSchemaIfNeeded(ConnectionProvider connectionProvider, Path scratchDirectory) {
-		try (Connection connection = connectionProvider.getConnection()) {
-			var dbRunner = new DatabaseRunner(connection);
+	private final DirectoryHashCalculator directoryHashCalculator;
+	private final ConnectionProvider connectionProvider;
+	private final Path scratchDirectory;
 
-			String scratchDirectoryHash = new DirectoryHashCalculator().calculateEncodedHash(scratchDirectory);
-			if (shouldRecreateSchema(dbRunner, scratchDirectoryHash)) {
-				System.out.println("Recreating DB schema");
-				recreateSchema(dbRunner, connection, scratchDirectory);
-				storeSchemaHash(connection, scratchDirectoryHash);
-			}
+	public SchemaCreator(DirectoryHashCalculator directoryHashCalculator, ConnectionProvider connectionProvider, Path scratchDirectory) {
+		this.directoryHashCalculator = directoryHashCalculator;
+		this.connectionProvider = connectionProvider;
+		this.scratchDirectory = scratchDirectory;
+	}
+
+	public void recreateSchemaIfNeeded() {
+		if (shouldRecreateSchema()) {
+			System.out.println("Recreating DB schema");
+			recreateSchema();
+		}
+	}
+
+	public void recreateSchema() {
+		try (Connection connection = connectionProvider.getConnection()) {
+			DatabaseRunner dbRunner = new DatabaseRunner(connection);
+			recreateSchema(dbRunner, connection, scratchDirectory);
 		} catch (SQLException e) {
 			throw new DatabaseRunner.DatabaseAccessException(e);
 		}
 	}
 
-	public void recreateSchema(Connection connection, Path scratchDirectory) {
-		recreateSchema(new DatabaseRunner(connection), connection, scratchDirectory);
-	}
+	private boolean shouldRecreateSchema() {
+		try (Connection connection = connectionProvider.getConnection()) {
+			var dbRunner = new DatabaseRunner(connection);
 
-	private boolean shouldRecreateSchema(DatabaseRunner dbRunner, String scratchDirectoryHash) {
-		Optional<String> storedSchemaHash = getStoredSchemaHash(dbRunner);
-		return storedSchemaHash.isEmpty() || !storedSchemaHash.get().equals(scratchDirectoryHash);
+			String scratchDirectoryHash = directoryHashCalculator.calculateEncodedHash(scratchDirectory);
+
+			Optional<String> storedSchemaHash = getStoredSchemaHash(dbRunner);
+
+			return storedSchemaHash.isEmpty() || !storedSchemaHash.get().equals(scratchDirectoryHash);
+		} catch (SQLException e) {
+			throw new DatabaseRunner.DatabaseAccessException(e);
+		}
 	}
 
 	private void recreateSchema(DatabaseRunner dbRunner, Connection connection, Path scratchDirectory) {
@@ -50,6 +66,9 @@ public class SchemaCreator {
 		for (Path sqlFile : getSqlFilesInDirectory(scratchDirectory)) {
 			runSqlFile(connection, sqlFile);
 		}
+
+		String schemaHash = directoryHashCalculator.calculateEncodedHash(scratchDirectory);
+		storeSchemaHash(dbRunner, schemaHash);
 	}
 
 	private Optional<String> getStoredSchemaHash(DatabaseRunner dbRunner) {
@@ -98,9 +117,8 @@ public class SchemaCreator {
 		}
 	}
 
-	private void storeSchemaHash(Connection connection, String schemaHash) throws SQLException {
-		new DatabaseRunner(connection).update("INSERT INTO DatabaseSchemaHash (hash) VALUES (?)", schemaHash);
-		connection.commit();
+	private void storeSchemaHash(DatabaseRunner dbRunner, String schemaHash) {
+		dbRunner.update("INSERT INTO DatabaseSchemaHash (hash) VALUES (?)", schemaHash);
 	}
 
 	public static class InvalidSchemaScriptException extends RuntimeException {
