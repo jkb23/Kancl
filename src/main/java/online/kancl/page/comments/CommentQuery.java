@@ -17,7 +17,7 @@ public class CommentQuery {
 	public static void save(DatabaseRunner dbRunner, Comment comment) {
 		dbRunner.update(
 				"INSERT INTO Comment(author, message) VALUES (?, ?)",
-				comment.author, comment.message);
+				comment.author(), comment.message());
 	}
 
 	private static Comment handle(ResultSet rs) throws SQLException {

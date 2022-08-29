@@ -10,8 +10,8 @@
         <div class="col-lg-6 mx-auto">
             <ul id='comments'>{% for comment in comments.comments %}
                 <li>
-                    <span class='author'>{{comment.author}}</span> -
-                    <span class='message'>{{comment.message}}</span>
+                    <span class='author'>{{comment.author()}}</span> -
+                    <span class='message'>{{comment.message()}}</span>
                 </li>
             {% endfor %}</ul>
 
