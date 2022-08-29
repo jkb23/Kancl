@@ -40,10 +40,3 @@ services:
 
     entrypoint: ["java", "-jar", "/usr/app/target/server-1.0-SNAPSHOT.jar"]
     working_dir: /usr/app
-
-volumes:
-  caddy_data:
-    external: true
-  caddy_config:
-  sql_data:
-    external: true
