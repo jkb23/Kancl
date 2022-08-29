@@ -26,7 +26,7 @@ class CommentQueryTest {
 	}
 
 	@Test
-	void insertAndRetreiveCommentTest() {
+	void insertAndRetrieveCommentTest() {
 		saveComment("John", "message");
 
 		assertThat(CommentQuery.loadAllComments(dbRunner))
