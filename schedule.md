@@ -28,7 +28,7 @@
                 demo uloha?
 - 11:30 - 12:00 ??? Obed
 - Vsichni - Rozchozeni repa, prvni pokusy
-- Planning meeting 13:00 - 13:30
+- 13:00 - 13:30 Planning meeting
 - coding
 - 16:30 - 17:00 demo, retro, uzavreni dne
 
