@@ -17,6 +17,6 @@ public class MainPageController extends Controller {
 
 	@Override
 	public String get(Request request, Response response) {
-		return pebbleTemplateRenderer.renderTemplate("MainPage.peb", meetings);
+		return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, meetings);
 	}
 }

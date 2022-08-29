@@ -2,6 +2,8 @@ package online.kancl.server.template;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
+import online.kancl.server.Controller;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -13,6 +15,12 @@ class PebbleTemplateRendererTest {
 	public static final String TEST_TEMPLATE_DIRECTORY = "template";
 
 	private final Context context = new Context();
+	private PebbleTemplateRenderer renderer;
+
+	@BeforeEach
+	void setUp() {
+		renderer = createPebbleTemplateRenderer();
+	}
 
 	@Test
 	void singleValueTest() {
@@ -40,8 +48,14 @@ class PebbleTemplateRendererTest {
 				.isEqualTo("Foo");
 	}
 
+	@Test
+	void testDefaultControllerName() {
+		String templateName = renderer.getDefaultControllerTemplateName(new TestController());
+		assertThat(templateName)
+				.isEqualTo("online/kancl/server/template/PebbleTemplateRendererTest/Test.peb");
+	}
+
 	private String renderTemplate(String templateName, Object context) {
-		PebbleTemplateRenderer renderer = createPebbleTemplateRenderer();
 		return renderer.renderTemplate(templateName, context);
 	}
 
@@ -58,5 +72,8 @@ class PebbleTemplateRendererTest {
 	private static class Context {
 		public String name = "John Doe";
 		public Optional<String> optional = Optional.empty();
+	}
+
+	private static class TestController extends Controller {
 	}
 }

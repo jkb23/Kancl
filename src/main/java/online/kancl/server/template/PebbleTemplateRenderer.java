@@ -2,6 +2,7 @@ package online.kancl.server.template;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.template.PebbleTemplate;
+import online.kancl.server.Controller;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -16,6 +17,11 @@ public class PebbleTemplateRenderer {
 		this.pebbleEngine = pebbleEngine;
 	}
 
+	public String renderDefaultControllerTemplate(Controller controller, Object context) {
+		String templateName = getDefaultControllerTemplateName(controller);
+		return renderTemplate(templateName, context);
+	}
+
 	public String renderTemplate(String templateName, Object context) {
 		try {
 			var stringWriter = new StringWriter();
@@ -27,6 +33,18 @@ public class PebbleTemplateRenderer {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	String getDefaultControllerTemplateName(Controller controller) {
+		String className = controller.getClass().getCanonicalName();
+		String controllerSuffix = Controller.class.getSimpleName();
+
+		if (!className.endsWith(controllerSuffix))
+			throw new IllegalArgumentException("Expected class " + className + " to end with " + controllerSuffix);
+
+		String classNameWithoutSuffix = className.substring(0, className.length() - controllerSuffix.length());
+		String filePath = classNameWithoutSuffix.replace('.', '/');
+		return filePath + ".peb";
 	}
 
 	private String getContextName(Object context) {

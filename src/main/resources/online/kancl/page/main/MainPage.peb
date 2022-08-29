@@ -1,6 +1,6 @@
 {# @pebvariable name="meetings" type="online.kancl.page.main.Meetings" #}
 
-    {% extends "BaseHtml.peb" %}
+    {% extends "../BaseHtml.peb" %}
 
     {% block body %}
 

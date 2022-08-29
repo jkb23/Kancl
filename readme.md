@@ -10,8 +10,6 @@ Cypress framework for end-to-end tests, and Docker for easy deployment.
 # TODOs
 
 - Our own CI/CD runner
-- Package structure - controller+template+model next to each other per business logic
-- Put .peb file to resource dir in same package as controller
 - Pre-install pre-requisites and update section below accordingly.
 
 # Installing pre-requisites

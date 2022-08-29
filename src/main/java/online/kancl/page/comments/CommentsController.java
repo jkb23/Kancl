@@ -23,7 +23,7 @@ public class CommentsController extends Controller {
 		return transactionJobRunner.runInTransaction((dbRunner) -> {
 			var comments = new Comments(CommentQuery.loadAllComments(dbRunner));
 
-			return pebbleTemplateRenderer.renderTemplate("Comments.peb", comments);
+			return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, comments);
 		});
 	}
 
