@@ -2,7 +2,7 @@
 
 ## Pondeli
 
-- 9:00 - 10:XX Intro
+- 9:00 - 9:45 Intro
     - Honza - Pravidla:
         - Tykat.
         - Tyden je pro vas, abyste se naucili co nejvic.
@@ -23,14 +23,14 @@
       Honza - Scrum Master (bekovka)
       - DevOps (ksiltovka)
       - SW Engineer (bez cepice)
-    - PM - Predstaveni vize
-    - Honza SWEng - Predstaveni obsahu repa
-      demo uloha?
-    - Rozchozeni repa u ucastniku
-    - Obed
-    - Planning meeting 13:00 - 13:30
-    - coding
-    - 16:30 - 17:00 demo, retro, uzavreni dne
+- 10:00 - 10:30 PM - Predstaveni vize
+- 10:30 - 11:30 Honza SWEng - Predstaveni obsahu repa
+                demo uloha?
+- 11:30 - 12:00 ??? Obed
+- Vsichni - Rozchozeni repa, prvni pokusy
+- Planning meeting 13:00 - 13:30
+- coding
+- 16:30 - 17:00 demo, retro, uzavreni dne
 
 ## Utery - ctvrtek
 
