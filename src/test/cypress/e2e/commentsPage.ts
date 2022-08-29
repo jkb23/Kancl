@@ -15,9 +15,9 @@ describe('Comments page', () => {
 
 	it("appends a comment", () => {
 		application.openCommentPage();
+		application.postComment('John Doe', 'Foo');
 		application.postComment('Mark Wheel', 'Bar');
 
-		application.openCommentPage()
 		application.showsComment(0, 'John Doe', 'Foo');
 		application.showsComment(1, 'Mark Wheel', 'Bar');
 	});
