@@ -16,6 +16,12 @@ export function postComment(author, message) {
     cy.get('#submit').click()
 }
 
+export function showsNoComments() {
+	cy.get("#comments").children().should(comments => {
+		expect(comments.length).to.equal(0);
+	})
+}
+
 export function showsComment(index, author, message) {
 	cy.get("#comments").children('li').eq(index).should(comment => {
         expect(comment.children('.author')).to.contain(author);
@@ -25,4 +31,8 @@ export function showsComment(index, author, message) {
 
 export function openCommentPage() {
 	cy.visit("/comments");
+}
+
+export function recreateDatabase() {
+	cy.visit("/recreateDb");
 }

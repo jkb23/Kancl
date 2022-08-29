@@ -1,6 +1,9 @@
 import * as application from '../testrig/application';
 
 describe('Comments page', () => {
+	beforeEach(() => {
+		application.recreateDatabase();
+	})
 
 	it("persists a comment", () => {
 		application.openCommentPage();

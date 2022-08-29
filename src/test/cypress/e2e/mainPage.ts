@@ -2,6 +2,9 @@ import * as application from '../testrig/application';
 import * as zoom from '../testrig/zoom';
 
 describe('Main page', () => {
+	beforeEach(() => {
+		application.recreateDatabase();
+	})
 
 	it("shows meeting is empty", () => {
 		application.openMainPage();
