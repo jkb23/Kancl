@@ -1,5 +1,6 @@
 package online.kancl.db;
 
+import online.kancl.util.DirectoryHashCalculator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -1,5 +1,6 @@
 package online.kancl.db;
 
+import online.kancl.util.DirectoryHashCalculator;
 import org.h2.tools.RunScript;
 
 import java.io.ByteArrayInputStream;

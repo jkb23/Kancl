@@ -1,4 +1,4 @@
-package online.kancl.db;
+package online.kancl.util;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -11,7 +11,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
-class DirectoryHashCalculator {
+public class DirectoryHashCalculator {
 	public String calculateEncodedHash(Path directory) {
 		try {
 			byte[] hash = calculateHashBytes(directory);
