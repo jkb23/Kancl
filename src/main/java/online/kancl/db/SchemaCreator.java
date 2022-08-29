@@ -28,7 +28,7 @@ public class SchemaCreator {
 			if (shouldRecreateSchema(dbRunner, scratchDirectoryHash)) {
 				System.out.println("Recreating DB schema");
 				recreateSchema(dbRunner, connection, scratchDirectory);
-
+				storeSchemaHash(connection, scratchDirectoryHash);
 			}
 		} catch (SQLException e) {
 			throw new DatabaseRunner.DatabaseAccessException(e);
