@@ -5,6 +5,7 @@ import online.kancl.db.DatabaseRunner;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class CommentQuery {
 
@@ -22,7 +23,7 @@ public class CommentQuery {
 
 	private static Comment handle(ResultSet rs) throws SQLException {
 		return new Comment(
-				rs.getLong("id"),
+				Optional.of(rs.getLong("id")),
 				rs.getString("author"),
 				rs.getString("message")
 		);

@@ -7,6 +7,8 @@ import online.kancl.test.ProductionDatabase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(ProductionDatabase.class)
@@ -28,7 +30,7 @@ class CommentQueryTest {
 		saveComment("John", "message");
 
 		assertThat(CommentQuery.loadAllComments(dbRunner))
-				.containsExactly(new Comment(1L, "John", "message"));
+				.containsExactly(new Comment(Optional.of(1L), "John", "message"));
 	}
 
 	@Test
@@ -38,8 +40,8 @@ class CommentQueryTest {
 
 		assertThat(CommentQuery.loadAllComments(dbRunner))
 				.containsExactlyInAnyOrder(
-						new Comment(1L, "John", "first"),
-						new Comment(2L, "David", "second")
+						new Comment(Optional.of(1L), "John", "first"),
+						new Comment(Optional.of(2L), "David", "second")
 				);
 	}
 

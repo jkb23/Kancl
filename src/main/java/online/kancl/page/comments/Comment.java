@@ -1,7 +1,9 @@
 package online.kancl.page.comments;
 
+import java.util.Optional;
+
 public record Comment(
-		Long id,
+		Optional<Long> id,
 		String author,
 		String message
 ) {
