@@ -25,7 +25,7 @@ public class Main {
 	private static final String DB_NAME = "data";
 
 	public static void main(String[] args) {
-		PebbleTemplateRenderer pebbleTemplateRenderer = createPebbleTemplateRenderer();
+		PebbleTemplateRenderer pebbleTemplateRenderer = createPebbleTemplateRenderer(TEMPLATE_DIRECTORY);
 
 		ConnectionProvider connectionProvider = ConnectionProvider.forDatabaseInFile(DB_DIRECTORY, DB_NAME);
 		new SchemaCreator().recreateSchemaIfNeeded(connectionProvider, SQL_SCRATCH_DIRECTORY);
@@ -42,9 +42,9 @@ public class Main {
 		System.out.println("Server running");
 	}
 
-	private static PebbleTemplateRenderer createPebbleTemplateRenderer() {
+	public static PebbleTemplateRenderer createPebbleTemplateRenderer(Path templateDirectory) {
 		var pebbleTemplateLoader = new FileLoader();
-		pebbleTemplateLoader.setPrefix(TEMPLATE_DIRECTORY.toAbsolutePath().toString());
+		pebbleTemplateLoader.setPrefix(templateDirectory.toAbsolutePath().toString());
 		var pebbleEngine = new PebbleEngine.Builder()
 				.loader(pebbleTemplateLoader)
 				.extension(new PebbleExtension())

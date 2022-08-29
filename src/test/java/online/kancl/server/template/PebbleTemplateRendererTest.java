@@ -1,25 +1,25 @@
 package online.kancl.server.template;
 
-import com.mitchellbosecke.pebble.PebbleEngine;
-import com.mitchellbosecke.pebble.loader.FileLoader;
+import online.kancl.Main;
 import online.kancl.server.Controller;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
-import static online.kancl.util.ResourcePathResolver.getResourcePath;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PebbleTemplateRendererTest {
-	public static final String TEST_TEMPLATE_DIRECTORY = "template";
+	public static final Path TEST_TEMPLATE_DIRECTORY = Paths.get("src", "test", "resources", "template");
 
 	private final Context context = new Context();
 	private PebbleTemplateRenderer renderer;
 
 	@BeforeEach
 	void setUp() {
-		renderer = createPebbleTemplateRenderer();
+		renderer = Main.createPebbleTemplateRenderer(TEST_TEMPLATE_DIRECTORY);
 	}
 
 	@Test
@@ -57,16 +57,6 @@ class PebbleTemplateRendererTest {
 
 	private String renderTemplate(String templateName, Object context) {
 		return renderer.renderTemplate(templateName, context);
-	}
-
-	private PebbleTemplateRenderer createPebbleTemplateRenderer() {
-		var pebbleTemplateLoader = new FileLoader();
-		pebbleTemplateLoader.setPrefix(getResourcePath(this, TEST_TEMPLATE_DIRECTORY).toAbsolutePath().toString());
-		var pebbleEngine = new PebbleEngine.Builder()
-				.loader(pebbleTemplateLoader)
-				.extension(new PebbleExtension())
-				.build();
-		return new PebbleTemplateRenderer(pebbleEngine);
 	}
 
 	private static class Context {

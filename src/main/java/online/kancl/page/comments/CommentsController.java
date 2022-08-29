@@ -42,12 +42,8 @@ public class CommentsController extends Controller {
 		});
 	}
 
-	public static class Comments {
-
-		public final List<Comment> comments;
-
-		public Comments(List<Comment> comments) {
-			this.comments = comments;
-		}
+	public record Comments(
+			List<Comment> comments
+	) {
 	}
 }
