@@ -1,4 +1,4 @@
-package online.kancl.model;
+package online.kancl.page.main;
 
 import java.util.Optional;
 

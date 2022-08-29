@@ -1,6 +1,6 @@
-package online.kancl.controller;
+package online.kancl.page.zoomhook;
 
-import online.kancl.model.Meetings;
+import online.kancl.page.main.Meetings;
 import online.kancl.server.Controller;
 import spark.Request;
 import spark.Response;

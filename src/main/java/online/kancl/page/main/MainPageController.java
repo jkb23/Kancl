@@ -1,6 +1,5 @@
-package online.kancl.controller;
+package online.kancl.page.main;
 
-import online.kancl.model.Meetings;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
