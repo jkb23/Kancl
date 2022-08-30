@@ -18,14 +18,14 @@
         - Simulace vyvoje SW ve skutecne firme.
     - Vsichni - Predstavme se
     - Honza, Matej - Role:
-      Matej - PM
-      - SW Engineer
-      Honza - Scrum Master (bekovka)
-      - DevOps (ksiltovka)
-      - SW Engineer (bez cepice)
+        - Matej - PM
+        - Matej - SW Engineer
+        - Honza - Scrum Master (bekovka)
+        - Honza DevOps (ksiltovka)
+        - Honza SW Engineer (bez cepice)
 - 10:00 - 10:30 PM - Predstaveni vize
 - 10:30 - 11:30 Honza SWEng - Predstaveni obsahu repa
-                demo uloha?
+  demo uloha?
 - 11:30 - 12:00 ??? Obed
 - Vsichni - Rozchozeni repa, prvni pokusy
 - 13:00 - 13:30 Planning meeting
@@ -48,12 +48,12 @@
 - 13:00 - 13:30 Big demo
 - 13:30 - 15:00 Technical review by Paul + Refactoring demo by Paul???
 - 15:15 - 16:15 Retro
-- 16:15 - 16:30 Wrap-up 
-
+- 16:15 - 16:30 Wrap-up
 
 # Veci co je potreba zajistit
 
 Honza vezme:
+
 - name tags
 - bekovka
 - cepice

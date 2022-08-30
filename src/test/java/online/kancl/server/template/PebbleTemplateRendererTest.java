@@ -13,58 +13,58 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class PebbleTemplateRendererTest {
 
-	public static final Path TEST_TEMPLATE_DIRECTORY = Paths.get("src", "test", "resources", "template");
+    public static final Path TEST_TEMPLATE_DIRECTORY = Paths.get("src", "test", "resources", "template");
 
-	private final Context context = new Context();
-	private PebbleTemplateRenderer renderer;
+    private final Context context = new Context();
+    private PebbleTemplateRenderer renderer;
 
-	@BeforeEach
-	void setUp() {
-		renderer = Main.createPebbleTemplateRenderer(TEST_TEMPLATE_DIRECTORY);
-	}
+    @BeforeEach
+    void setUp() {
+        renderer = Main.createPebbleTemplateRenderer(TEST_TEMPLATE_DIRECTORY);
+    }
 
-	@Test
-	void singleValue() {
-		assertThat(renderTemplate("singleValue.peb", context))
-				.contains("Hello John Doe!");
-	}
+    @Test
+    void singleValue() {
+        assertThat(renderTemplate("singleValue.peb", context))
+                .contains("Hello John Doe!");
+    }
 
-	@Test
-	void partialValue() {
-		assertThat(renderTemplate("extends.peb", context))
-				.isEqualTo("Hello John Doe! How are you, John Doe?");
-	}
+    @Test
+    void partialValue() {
+        assertThat(renderTemplate("extends.peb", context))
+                .isEqualTo("Hello John Doe! How are you, John Doe?");
+    }
 
-	@Test
-	void emptyOptional() {
-		assertThat(renderTemplate("optional.peb", context))
-				.isEqualTo("default value");
-	}
+    @Test
+    void emptyOptional() {
+        assertThat(renderTemplate("optional.peb", context))
+                .isEqualTo("default value");
+    }
 
-	@Test
-	void filledOptional() {
-		context.optional = Optional.of("Foo");
+    @Test
+    void filledOptional() {
+        context.optional = Optional.of("Foo");
 
-		assertThat(renderTemplate("optional.peb", context))
-				.isEqualTo("Foo");
-	}
+        assertThat(renderTemplate("optional.peb", context))
+                .isEqualTo("Foo");
+    }
 
-	@Test
-	void defaultControllerName() {
-		String templateName = renderer.getDefaultControllerTemplateName(new TestController());
-		assertThat(templateName)
-				.isEqualTo("online/kancl/server/template/PebbleTemplateRendererTest/Test.peb");
-	}
+    @Test
+    void defaultControllerName() {
+        String templateName = renderer.getDefaultControllerTemplateName(new TestController());
+        assertThat(templateName)
+                .isEqualTo("online/kancl/server/template/PebbleTemplateRendererTest/Test.peb");
+    }
 
-	private String renderTemplate(String templateName, Object context) {
-		return renderer.renderTemplate(templateName, context);
-	}
+    private String renderTemplate(String templateName, Object context) {
+        return renderer.renderTemplate(templateName, context);
+    }
 
-	private static class Context {
-		public String name = "John Doe";
-		public Optional<String> optional = Optional.empty();
-	}
+    private static class Context {
+        public String name = "John Doe";
+        public Optional<String> optional = Optional.empty();
+    }
 
-	private static class TestController extends Controller {
-	}
+    private static class TestController extends Controller {
+    }
 }

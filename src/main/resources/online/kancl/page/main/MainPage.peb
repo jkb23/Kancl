@@ -2,10 +2,10 @@
 
     {% extends "../BaseHtml.peb" %}
 
-    {% block body %}
+{% block body %}
 
-        <div class="col-lg-6 mx-auto text-center">
-            <p>{{meetings.getJoinedParticipantName() | orElse("No participant 🙁") }}</p>
-        </div>
+    <div class="col-lg-6 mx-auto text-center">
+        <p>{{meetings.getJoinedParticipantName() | orElse("No participant 🙁") }}</p>
+    </div>
 
-    {% endblock %}
+{% endblock %}

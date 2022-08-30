@@ -7,15 +7,15 @@ import spark.Response;
 
 public class RecreateDbController extends Controller {
 
-	private final SchemaCreator schemaCreator;
+    private final SchemaCreator schemaCreator;
 
-	public RecreateDbController(SchemaCreator schemaCreator) {
-		this.schemaCreator = schemaCreator;
-	}
+    public RecreateDbController(SchemaCreator schemaCreator) {
+        this.schemaCreator = schemaCreator;
+    }
 
-	@Override
-	public String get(Request request, Response response) {
-		schemaCreator.recreateSchema();
-		return "DB Recreated";
-	}
+    @Override
+    public String get(Request request, Response response) {
+        schemaCreator.recreateSchema();
+        return "DB Recreated";
+    }
 }

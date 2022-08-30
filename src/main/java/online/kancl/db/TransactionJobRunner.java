@@ -6,44 +6,44 @@ import java.util.function.Function;
 
 public class TransactionJobRunner {
 
-	private final ConnectionProvider connectionProvider;
+    private final ConnectionProvider connectionProvider;
 
-	public TransactionJobRunner(ConnectionProvider connectionProvider) {
-		this.connectionProvider = connectionProvider;
-	}
+    public TransactionJobRunner(ConnectionProvider connectionProvider) {
+        this.connectionProvider = connectionProvider;
+    }
 
-	public <T> T runInTransaction(Function<DatabaseRunner, T> job) {
-		try (Connection connection = connectionProvider.getConnection()) {
-			return disableAutocommitAndRunTransaction(job, connection);
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public <T> T runInTransaction(Function<DatabaseRunner, T> job) {
+        try (Connection connection = connectionProvider.getConnection()) {
+            return disableAutocommitAndRunTransaction(job, connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	private <T> T disableAutocommitAndRunTransaction(Function<DatabaseRunner, T> job, Connection connection) throws SQLException {
-		Boolean originalAutoCommit = null;
-		try {
-			originalAutoCommit = connection.getAutoCommit();
-			connection.setAutoCommit(false);
+    private <T> T disableAutocommitAndRunTransaction(Function<DatabaseRunner, T> job, Connection connection) throws SQLException {
+        Boolean originalAutoCommit = null;
+        try {
+            originalAutoCommit = connection.getAutoCommit();
+            connection.setAutoCommit(false);
 
-			return runJobAndCommitOrRollback(job, connection);
-		} finally {
-			if (originalAutoCommit != null)
-				connection.setAutoCommit(originalAutoCommit);
-		}
-	}
+            return runJobAndCommitOrRollback(job, connection);
+        } finally {
+            if (originalAutoCommit != null)
+                connection.setAutoCommit(originalAutoCommit);
+        }
+    }
 
-	private <T> T runJobAndCommitOrRollback(Function<DatabaseRunner, T> job, Connection connection) throws SQLException {
-		try {
-			var databaseRunner = new DatabaseRunner(connection);
-			T result = job.apply(databaseRunner);
+    private <T> T runJobAndCommitOrRollback(Function<DatabaseRunner, T> job, Connection connection) throws SQLException {
+        try {
+            var databaseRunner = new DatabaseRunner(connection);
+            T result = job.apply(databaseRunner);
 
-			connection.commit();
+            connection.commit();
 
-			return result;
-		} catch (Exception e) {
-			connection.rollback();
-			throw e;
-		}
-	}
+            return result;
+        } catch (Exception e) {
+            connection.rollback();
+            throw e;
+        }
+    }
 }

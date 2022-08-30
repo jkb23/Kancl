@@ -1,140 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>online.kancl</groupId>
-	<artifactId>server</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
+    <groupId>online.kancl</groupId>
+    <artifactId>server</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
-	<properties>
-		<maven.compiler.source>17</maven.compiler.source>
-		<maven.compiler.target>17</maven.compiler.target>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-	<dependencies>
-		<!-- Java HTTP server -->
-		<dependency>
-			<groupId>com.sparkjava</groupId>
-			<artifactId>spark-core</artifactId>
-			<version>2.9.3</version>
-		</dependency>
+    <dependencies>
+        <!-- Java HTTP server -->
+        <dependency>
+            <groupId>com.sparkjava</groupId>
+            <artifactId>spark-core</artifactId>
+            <version>2.9.3</version>
+        </dependency>
 
-		<!-- This controls logging of the server, see http://www.slf4j.org/codes.html#StaticLoggerBinder -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.32</version>
-		</dependency>
+        <!-- This controls logging of the server, see http://www.slf4j.org/codes.html#StaticLoggerBinder -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.32</version>
+        </dependency>
 
-		<!-- DB dependencies -->
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>2.1.214</version>
-		</dependency>
+        <!-- DB dependencies -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.1.214</version>
+        </dependency>
 
-		<dependency>
-			<groupId>commons-dbutils</groupId>
-			<artifactId>commons-dbutils</artifactId>
-			<version>1.7</version>
-		</dependency>
+        <dependency>
+            <groupId>commons-dbutils</groupId>
+            <artifactId>commons-dbutils</artifactId>
+            <version>1.7</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-dbcp2</artifactId>
-			<version>2.9.0</version>
-		</dependency>
-
-
-		<!-- Parsing JSON -->
-		<dependency>
-			<groupId>javax.json</groupId>
-			<artifactId>javax.json-api</artifactId>
-			<version>1.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.glassfish</groupId>
-			<artifactId>javax.json</artifactId>
-			<version>1.1</version>
-		</dependency>
-
-		<!-- Templating language -->
-		<dependency>
-			<groupId>io.pebbletemplates</groupId>
-			<artifactId>pebble</artifactId>
-			<version>3.1.5</version>
-		</dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>2.9.0</version>
+        </dependency>
 
 
-		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-			<version>3.23.1</version>
-			<scope>test</scope>
-		</dependency>
+        <!-- Parsing JSON -->
+        <dependency>
+            <groupId>javax.json</groupId>
+            <artifactId>javax.json-api</artifactId>
+            <version>1.1</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<version>5.8.2</version>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.1</version>
+        </dependency>
 
-	</dependencies>
+        <!-- Templating language -->
+        <dependency>
+            <groupId>io.pebbletemplates</groupId>
+            <artifactId>pebble</artifactId>
+            <version>3.1.5</version>
+        </dependency>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.2.4</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<transformers>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>online.kancl.Main</mainClass>
-								</transformer>
-							</transformers>
-							<createDependencyReducedPom>false</createDependencyReducedPom>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M7</version>
-			</plugin>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.23.1</version>
+            <scope>test</scope>
+        </dependency>
 
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.6.0</version>
-				<executions>
-					<execution>
-						<id>default-cli</id>
-						<phase>integration-test</phase>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<executable>docker-compose</executable>
-							<commandlineArgs>-f docker-compose.yml -f docker-compose-test.yml up --build --exit-code-from cypress</commandlineArgs>
-							<workingDirectory>run</workingDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>online.kancl.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M7</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>docker-compose</executable>
+                            <commandlineArgs>-f docker-compose.yml -f docker-compose-test.yml up --build --exit-code-from cypress</commandlineArgs>
+                            <workingDirectory>run</workingDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

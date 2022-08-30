@@ -21,42 +21,42 @@ import java.nio.file.Paths;
 
 public class Main {
 
-	public static final Path TEMPLATE_DIRECTORY = Paths.get("src", "main", "resources");
-	public static final Path SQL_SCRATCH_DIRECTORY = Paths.get("src", "main", "resources", "sql");
-	private static final Path DB_DIRECTORY = Paths.get("db");
-	private static final String DB_NAME = "data";
+    public static final Path TEMPLATE_DIRECTORY = Paths.get("src", "main", "resources");
+    public static final Path SQL_SCRATCH_DIRECTORY = Paths.get("src", "main", "resources", "sql");
+    private static final Path DB_DIRECTORY = Paths.get("db");
+    private static final String DB_NAME = "data";
 
-	public static void main(String[] args) {
-		PebbleTemplateRenderer pebbleTemplateRenderer = createPebbleTemplateRenderer(TEMPLATE_DIRECTORY);
+    public static void main(String[] args) {
+        PebbleTemplateRenderer pebbleTemplateRenderer = createPebbleTemplateRenderer(TEMPLATE_DIRECTORY);
 
-		ConnectionProvider connectionProvider = ConnectionProvider.forDatabaseInFile(DB_DIRECTORY, DB_NAME);
-		var directoryHashCalculator = new DirectoryHashCalculator();
-		var schemaCreator = new SchemaCreator(directoryHashCalculator, connectionProvider, SQL_SCRATCH_DIRECTORY);
-		schemaCreator.recreateSchemaIfNeeded();
+        ConnectionProvider connectionProvider = ConnectionProvider.forDatabaseInFile(DB_DIRECTORY, DB_NAME);
+        var directoryHashCalculator = new DirectoryHashCalculator();
+        var schemaCreator = new SchemaCreator(directoryHashCalculator, connectionProvider, SQL_SCRATCH_DIRECTORY);
+        schemaCreator.recreateSchemaIfNeeded();
 
-		var transactionJobRunner = new TransactionJobRunner(connectionProvider);
+        var transactionJobRunner = new TransactionJobRunner(connectionProvider);
 
-		var meetings = new Meetings();
+        var meetings = new Meetings();
 
-		var webServer = new WebServer(8081, new ExceptionHandler());
-		webServer.addRoute("/", new MainPageController(pebbleTemplateRenderer, meetings));
-		webServer.addRoute("/comments", new CommentsController(pebbleTemplateRenderer, transactionJobRunner));
-		webServer.addRoute("/zoomhook", new ZoomHookController(meetings));
-		webServer.addRoute("/recreateDb", new RecreateDbController(schemaCreator));
-		webServer.start();
+        var webServer = new WebServer(8081, new ExceptionHandler());
+        webServer.addRoute("/", new MainPageController(pebbleTemplateRenderer, meetings));
+        webServer.addRoute("/comments", new CommentsController(pebbleTemplateRenderer, transactionJobRunner));
+        webServer.addRoute("/zoomhook", new ZoomHookController(meetings));
+        webServer.addRoute("/recreateDb", new RecreateDbController(schemaCreator));
+        webServer.start();
 
-		System.out.println("Server running");
-	}
+        System.out.println("Server running");
+    }
 
-	public static PebbleTemplateRenderer createPebbleTemplateRenderer(Path templateDirectory) {
-		var pebbleTemplateLoader = new FileLoader();
-		pebbleTemplateLoader.setPrefix(templateDirectory.toAbsolutePath().toString());
-		var pebbleEngine = new PebbleEngine.Builder()
-				.loader(pebbleTemplateLoader)
-				.extension(new PebbleExtension())
-				.cacheActive(false)
-				.build();
+    public static PebbleTemplateRenderer createPebbleTemplateRenderer(Path templateDirectory) {
+        var pebbleTemplateLoader = new FileLoader();
+        pebbleTemplateLoader.setPrefix(templateDirectory.toAbsolutePath().toString());
+        var pebbleEngine = new PebbleEngine.Builder()
+                .loader(pebbleTemplateLoader)
+                .extension(new PebbleExtension())
+                .cacheActive(false)
+                .build();
 
-		return new PebbleTemplateRenderer(pebbleEngine);
-	}
+        return new PebbleTemplateRenderer(pebbleEngine);
+    }
 }

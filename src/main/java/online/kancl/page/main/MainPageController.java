@@ -7,16 +7,16 @@ import spark.Response;
 
 public class MainPageController extends Controller {
 
-	private final PebbleTemplateRenderer pebbleTemplateRenderer;
-	private final Meetings meetings;
+    private final PebbleTemplateRenderer pebbleTemplateRenderer;
+    private final Meetings meetings;
 
-	public MainPageController(PebbleTemplateRenderer pebbleTemplateRenderer, Meetings meetings) {
-		this.pebbleTemplateRenderer = pebbleTemplateRenderer;
-		this.meetings = meetings;
-	}
+    public MainPageController(PebbleTemplateRenderer pebbleTemplateRenderer, Meetings meetings) {
+        this.pebbleTemplateRenderer = pebbleTemplateRenderer;
+        this.meetings = meetings;
+    }
 
-	@Override
-	public String get(Request request, Response response) {
-		return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, meetings);
-	}
+    @Override
+    public String get(Request request, Response response) {
+        return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, meetings);
+    }
 }

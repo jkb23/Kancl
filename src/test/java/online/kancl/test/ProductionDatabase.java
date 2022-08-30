@@ -14,53 +14,53 @@ import java.sql.Connection;
  * With this extension, you can use {@link DatabaseRunner} as a parameter.
  */
 public class ProductionDatabase implements
-		BeforeAllCallback,
-		BeforeEachCallback,
-		AfterAllCallback,
-		ParameterResolver {
+        BeforeAllCallback,
+        BeforeEachCallback,
+        AfterAllCallback,
+        ParameterResolver {
 
-	private Connection connection;
-	private ConnectionProvider connectionProvider;
-	private DatabaseRunner dbRunner;
+    private Connection connection;
+    private ConnectionProvider connectionProvider;
+    private DatabaseRunner dbRunner;
 
-	@Override
-	public void beforeAll(ExtensionContext extensionContext) {
-		connectionProvider = ConnectionProvider.forInMemoryDatabase("testdb");
-		connection = connectionProvider.getConnection();
-		dbRunner = new DatabaseRunner(connection);
-	}
+    @Override
+    public void beforeAll(ExtensionContext extensionContext) {
+        connectionProvider = ConnectionProvider.forInMemoryDatabase("testdb");
+        connection = connectionProvider.getConnection();
+        dbRunner = new DatabaseRunner(connection);
+    }
 
-	@Override
-	public void beforeEach(ExtensionContext context) {
-		var directoryHashCalculator = new DirectoryHashCalculator();
-		new SchemaCreator(directoryHashCalculator, connectionProvider, Main.SQL_SCRATCH_DIRECTORY)
-				.recreateSchema();
-	}
+    @Override
+    public void beforeEach(ExtensionContext context) {
+        var directoryHashCalculator = new DirectoryHashCalculator();
+        new SchemaCreator(directoryHashCalculator, connectionProvider, Main.SQL_SCRATCH_DIRECTORY)
+                .recreateSchema();
+    }
 
-	@Override
-	public void afterAll(ExtensionContext extensionContext) throws Exception {
-		connection.close();
-	}
+    @Override
+    public void afterAll(ExtensionContext extensionContext) throws Exception {
+        connection.close();
+    }
 
-	@Override
-	public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-		Class<?> parameterType = getParameterType(parameterContext);
-		return parameterType.equals(DatabaseRunner.class) || parameterType.equals(ConnectionProvider.class);
-	}
+    @Override
+    public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+        Class<?> parameterType = getParameterType(parameterContext);
+        return parameterType.equals(DatabaseRunner.class) || parameterType.equals(ConnectionProvider.class);
+    }
 
-	@Override
-	public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-		Class<?> parameterType = getParameterType(parameterContext);
+    @Override
+    public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+        Class<?> parameterType = getParameterType(parameterContext);
 
-		if (parameterType.equals(DatabaseRunner.class))
-			return dbRunner;
-		else if (parameterType.equals(ConnectionProvider.class))
-			return connectionProvider;
-		else
-			throw new IllegalArgumentException("Unknown parameter type " + parameterType.getSimpleName());
-	}
+        if (parameterType.equals(DatabaseRunner.class))
+            return dbRunner;
+        else if (parameterType.equals(ConnectionProvider.class))
+            return connectionProvider;
+        else
+            throw new IllegalArgumentException("Unknown parameter type " + parameterType.getSimpleName());
+    }
 
-	private Class<?> getParameterType(ParameterContext parameterContext) {
-		return parameterContext.getParameter().getType();
-	}
+    private Class<?> getParameterType(ParameterContext parameterContext) {
+        return parameterContext.getParameter().getType();
+    }
 }

@@ -7,30 +7,30 @@ import java.nio.file.Path;
 
 class DirectoryHashCalculatorTest {
 
-	private final static Path HASH_CALCULATOR_TEST_RESOURCE_DIRECTORY = Path.of("src", "test", "resources", "hashCalculator");
+    private final static Path HASH_CALCULATOR_TEST_RESOURCE_DIRECTORY = Path.of("src", "test", "resources", "hashCalculator");
 
-	private final DirectoryHashCalculator hashCalculator = new DirectoryHashCalculator();
+    private final DirectoryHashCalculator hashCalculator = new DirectoryHashCalculator();
 
-	@Test
-	void sameFileNameSameContent_sameHash() {
-		Assertions.assertThat(hashForDirectory("dirWithFileAContentBar"))
-				.isEqualTo(hashForDirectory("anotherDirWithFileAContentBar"));
-	}
+    @Test
+    void sameFileNameSameContent_sameHash() {
+        Assertions.assertThat(hashForDirectory("dirWithFileAContentBar"))
+                .isEqualTo(hashForDirectory("anotherDirWithFileAContentBar"));
+    }
 
-	@Test
-	void sameFileNameDifferentContent_differentHash() {
-		Assertions.assertThat(hashForDirectory("dirWithFileAContentBar"))
-				.isNotEqualTo(hashForDirectory("dirWithFileAContentFoo"));
-	}
+    @Test
+    void sameFileNameDifferentContent_differentHash() {
+        Assertions.assertThat(hashForDirectory("dirWithFileAContentBar"))
+                .isNotEqualTo(hashForDirectory("dirWithFileAContentFoo"));
+    }
 
-	@Test
-	void differentFileNameSameContent_differentHash() {
-		Assertions.assertThat(hashForDirectory("dirWithFileAContentBar"))
-				.isNotEqualTo(hashForDirectory("dirWithFileBContentBar"));
-	}
+    @Test
+    void differentFileNameSameContent_differentHash() {
+        Assertions.assertThat(hashForDirectory("dirWithFileAContentBar"))
+                .isNotEqualTo(hashForDirectory("dirWithFileBContentBar"));
+    }
 
-	private String hashForDirectory(String directoryName) {
-		Path directoryPath = HASH_CALCULATOR_TEST_RESOURCE_DIRECTORY.resolve(directoryName);
-		return hashCalculator.calculateEncodedHash(directoryPath);
-	}
+    private String hashForDirectory(String directoryName) {
+        Path directoryPath = HASH_CALCULATOR_TEST_RESOURCE_DIRECTORY.resolve(directoryName);
+        return hashCalculator.calculateEncodedHash(directoryPath);
+    }
 }

@@ -9,23 +9,23 @@ import java.util.Optional;
 
 public class CommentQuery {
 
-	public static List<Comment> loadAllComments(DatabaseRunner dbRunner) {
-		return dbRunner.selectAll(
-				"SELECT * FROM Comment ORDER BY id",
-				CommentQuery::handle);
-	}
+    public static List<Comment> loadAllComments(DatabaseRunner dbRunner) {
+        return dbRunner.selectAll(
+                "SELECT * FROM Comment ORDER BY id",
+                CommentQuery::handle);
+    }
 
-	public static void add(DatabaseRunner dbRunner, Comment comment) {
-		dbRunner.update(
-				"INSERT INTO Comment(author, message) VALUES (?, ?)",
-				comment.author(), comment.message());
-	}
+    public static void add(DatabaseRunner dbRunner, Comment comment) {
+        dbRunner.update(
+                "INSERT INTO Comment(author, message) VALUES (?, ?)",
+                comment.author(), comment.message());
+    }
 
-	private static Comment handle(ResultSet rs) throws SQLException {
-		return new Comment(
-				Optional.of(rs.getLong("id")),
-				rs.getString("author"),
-				rs.getString("message")
-		);
-	}
+    private static Comment handle(ResultSet rs) throws SQLException {
+        return new Comment(
+                Optional.of(rs.getLong("id")),
+                rs.getString("author"),
+                rs.getString("message")
+        );
+    }
 }

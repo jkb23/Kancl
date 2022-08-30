@@ -12,39 +12,39 @@ import java.io.StringReader;
 
 public class ZoomHookController extends Controller {
 
-	private final Meetings meetings;
+    private final Meetings meetings;
 
-	public ZoomHookController(Meetings meetings) {
-		this.meetings = meetings;
-	}
+    public ZoomHookController(Meetings meetings) {
+        this.meetings = meetings;
+    }
 
-	@Override
-	public String get(Request request, Response response) {
-		return handleZoomMessage(request);
-	}
+    @Override
+    public String get(Request request, Response response) {
+        return handleZoomMessage(request);
+    }
 
-	@Override
-	public String post(Request request, Response response) {
-		return handleZoomMessage(request);
-	}
+    @Override
+    public String post(Request request, Response response) {
+        return handleZoomMessage(request);
+    }
 
-	public String handleZoomMessage(Request request) {
-		System.out.println(request.body());
+    public String handleZoomMessage(Request request) {
+        System.out.println(request.body());
 
-		try (JsonReader jsonReader = Json.createReader(new StringReader(request.body()))) {
-			handleParticipantJoinedMessage(jsonReader.readObject());
-		}
+        try (JsonReader jsonReader = Json.createReader(new StringReader(request.body()))) {
+            handleParticipantJoinedMessage(jsonReader.readObject());
+        }
 
-		return "OK";
-	}
+        return "OK";
+    }
 
-	private void handleParticipantJoinedMessage(JsonObject message) {
-		String participantName = message
-				.getJsonObject("payload")
-				.getJsonObject("object")
-				.getJsonObject("participant")
-				.getString("user_name");
+    private void handleParticipantJoinedMessage(JsonObject message) {
+        String participantName = message
+                .getJsonObject("payload")
+                .getJsonObject("object")
+                .getJsonObject("participant")
+                .getString("user_name");
 
-		meetings.participantJoined(participantName);
-	}
+        meetings.participantJoined(participantName);
+    }
 }
