@@ -6,6 +6,7 @@ import spark.Request;
 import spark.Response;
 
 public class RecreateDbController extends Controller {
+
 	private final SchemaCreator schemaCreator;
 
 	public RecreateDbController(SchemaCreator schemaCreator) {

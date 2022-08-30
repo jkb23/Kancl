@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class DatabaseRunner {
+
 	private final Connection connection;
 	private final QueryRunner queryRunner;
 

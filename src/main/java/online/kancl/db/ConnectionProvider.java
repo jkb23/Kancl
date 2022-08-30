@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class ConnectionProvider {
+
 	private final DataSource dataSource;
 
 	public static ConnectionProvider forInMemoryDatabase(String dbName) {

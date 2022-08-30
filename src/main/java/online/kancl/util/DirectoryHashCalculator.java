@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 public class DirectoryHashCalculator {
+
 	public String calculateEncodedHash(Path directory) {
 		try {
 			byte[] hash = calculateHashBytes(directory);

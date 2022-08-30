@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class SchemaCreator {
+
 	private final DirectoryHashCalculator directoryHashCalculator;
 	private final ConnectionProvider connectionProvider;
 	private final Path scratchDirectory;
