@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(ProductionDatabase.class)
 class TransactionJobRunnerTest {
+
 	private final DatabaseRunner runnerOutsideTransaction;
 	private final TransactionJobRunner transactionRunner;
 
@@ -18,13 +19,12 @@ class TransactionJobRunnerTest {
 
 	@BeforeEach
 	void beforeEach() {
-		runnerOutsideTransaction.update(
+		runnerOutsideTransaction.update("""
+				CREATE TABLE TestTable
+				(
+					v VARCHAR(50) NOT NULL
+				)
 				"""
-						CREATE TABLE TestTable
-						(
-							v VARCHAR(50) NOT NULL
-						)
-						"""
 		);
 	}
 
@@ -58,8 +58,7 @@ class TransactionJobRunnerTest {
 				insertRow(runnerInTransaction);
 				throw new ExpectedException();
 			});
-		}
-		catch (ExpectedException expected) {
+		} catch (ExpectedException expected) {
 		}
 
 		Assertions.assertThat(runnerOutsideTransaction.selectInt("SELECT count(1) FROM TestTable"))
