@@ -12,6 +12,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PebbleTemplateRendererTest {
+
 	public static final Path TEST_TEMPLATE_DIRECTORY = Paths.get("src", "test", "resources", "template");
 
 	private final Context context = new Context();
@@ -23,7 +24,7 @@ class PebbleTemplateRendererTest {
 	}
 
 	@Test
-	void singleValueTest() {
+	void singleValue() {
 		assertThat(renderTemplate("singleValue.peb", context))
 				.contains("Hello John Doe!");
 	}
@@ -35,13 +36,13 @@ class PebbleTemplateRendererTest {
 	}
 
 	@Test
-	void emptyOptionalTest() {
+	void emptyOptional() {
 		assertThat(renderTemplate("optional.peb", context))
 				.isEqualTo("default value");
 	}
 
 	@Test
-	void filledOptionalTest() {
+	void filledOptional() {
 		context.optional = Optional.of("Foo");
 
 		assertThat(renderTemplate("optional.peb", context))
@@ -49,7 +50,7 @@ class PebbleTemplateRendererTest {
 	}
 
 	@Test
-	void testDefaultControllerName() {
+	void defaultControllerName() {
 		String templateName = renderer.getDefaultControllerTemplateName(new TestController());
 		assertThat(templateName)
 				.isEqualTo("online/kancl/server/template/PebbleTemplateRendererTest/Test.peb");

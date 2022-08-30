@@ -1,12 +1,12 @@
 package online.kancl.util;
 
-import online.kancl.util.DirectoryHashCalculator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 
 class DirectoryHashCalculatorTest {
+
 	private final static Path HASH_CALCULATOR_TEST_RESOURCE_DIRECTORY = Path.of("src", "test", "resources", "hashCalculator");
 
 	private final DirectoryHashCalculator hashCalculator = new DirectoryHashCalculator();

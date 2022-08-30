@@ -1,8 +1,6 @@
 package online.kancl.page.comments;
 
-import online.kancl.page.comments.CommentQuery;
 import online.kancl.db.DatabaseRunner;
-import online.kancl.page.comments.Comment;
 import online.kancl.test.ProductionDatabase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

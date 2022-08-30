@@ -13,6 +13,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @ExtendWith(ProductionDatabase.class)
 class DatabaseRunnerTest {
+
 	private final DatabaseRunner dbRunner;
 
 	DatabaseRunnerTest(DatabaseRunner dbRunner) {
@@ -32,43 +33,43 @@ class DatabaseRunnerTest {
 	}
 
 	@Test
-	void testSingleRowQuery() {
+	void singleRowQuery() {
 		assertThat(dbRunner.select("SELECT count(1) FROM TestTable", (r) -> r.getInt(1)))
 				.contains(0);
 	}
 
 	@Test
-	void testSelectInt() {
+	void selectInt() {
 		assertThat(dbRunner.selectInt("SELECT 123 FROM Dual"))
 				.isEqualTo(123);
 	}
 
 	@Test
-	void testSelectIntThrowsOnNoData() {
+	void selectIntThrowsOnNoData() {
 		assertThatExceptionOfType(NoRowSelectedException.class)
 				.isThrownBy(() -> dbRunner.selectInt("SELECT id FROM TestTable"));
 	}
 
 	@Test
-	void testSelectString() {
+	void selectString() {
 		assertThat(dbRunner.selectString("SELECT 'value' FROM Dual"))
 				.isEqualTo("value");
 	}
 
 	@Test
-	void testSelectStringThrowsOnNoData() {
+	void selectStringThrowsOnNoData() {
 		assertThatExceptionOfType(NoRowSelectedException.class)
 				.isThrownBy(() -> dbRunner.selectString("SELECT v FROM TestTable"));
 	}
 
 	@Test
-	void testNoRowsQuery() {
+	void noRowsQuery() {
 		assertThat(dbRunner.select("SELECT * FROM TestTable", (r) -> r.getInt("id")))
 				.isEmpty();
 	}
 
 	@Test
-	void testEmptyList() {
+	void emptyList() {
 		assertThat(dbRunner.selectAll("SELECT * FROM TestTable", (r) -> r.getInt("id")))
 				.isEmpty();
 	}
@@ -97,13 +98,13 @@ class DatabaseRunnerTest {
 	}
 
 	@Test
-	void testUpdateReturnsZeroIfNoRowsAreUpdated() {
+	void updateReturnsZeroIfNoRowsAreUpdated() {
 		assertThat(dbRunner.update("UPDATE TestTable SET v = ?", "updated"))
 				.isEqualTo(0);
 	}
 
 	@Test
-	void testUpdate() {
+	void update() {
 		insertRow("original");
 		assertThat(dbRunner.update("UPDATE TestTable SET v = ?", "updated"))
 				.isEqualTo(1);
