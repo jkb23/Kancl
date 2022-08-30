@@ -7,12 +7,12 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class CommentQuery {
+public class CommentStorage {
 
     public static List<Comment> loadAllComments(DatabaseRunner dbRunner) {
         return dbRunner.selectAll(
                 "SELECT * FROM Comment ORDER BY id",
-                CommentQuery::handle);
+                CommentStorage::handle);
     }
 
     public static void add(DatabaseRunner dbRunner, Comment comment) {

@@ -21,7 +21,7 @@ public class CommentsController extends Controller {
     @Override
     public String get(Request request, Response response) {
         return transactionJobRunner.runInTransaction((dbRunner) -> {
-            var comments = new Comments(CommentQuery.loadAllComments(dbRunner));
+            var comments = new Comments(CommentStorage.loadAllComments(dbRunner));
 
             return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, comments);
         });
@@ -35,7 +35,7 @@ public class CommentsController extends Controller {
                     request.queryParams("author"),
                     request.queryParams("message"));
 
-            CommentQuery.add(dbRunner, comment);
+            CommentStorage.add(dbRunner, comment);
 
             response.redirect("/comments");
             return "";

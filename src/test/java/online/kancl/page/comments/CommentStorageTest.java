@@ -10,17 +10,17 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(ProductionDatabase.class)
-class CommentQueryTest {
+class CommentStorageTest {
 
     private final DatabaseRunner dbRunner;
 
-    CommentQueryTest(DatabaseRunner dbRunner) {
+    CommentStorageTest(DatabaseRunner dbRunner) {
         this.dbRunner = dbRunner;
     }
 
     @Test
     void noComments() {
-        assertThat(CommentQuery.loadAllComments(dbRunner))
+        assertThat(CommentStorage.loadAllComments(dbRunner))
                 .isEmpty();
     }
 
@@ -28,7 +28,7 @@ class CommentQueryTest {
     void insertAndRetrieveComment() {
         addComment("John", "message");
 
-        assertThat(CommentQuery.loadAllComments(dbRunner))
+        assertThat(CommentStorage.loadAllComments(dbRunner))
                 .containsExactly(new Comment(Optional.of(1L), "John", "message"));
     }
 
@@ -37,7 +37,7 @@ class CommentQueryTest {
         addComment("John", "first");
         addComment("David", "second");
 
-        assertThat(CommentQuery.loadAllComments(dbRunner))
+        assertThat(CommentStorage.loadAllComments(dbRunner))
                 .containsExactlyInAnyOrder(
                         new Comment(Optional.of(1L), "John", "first"),
                         new Comment(Optional.of(2L), "David", "second")
@@ -45,6 +45,6 @@ class CommentQueryTest {
     }
 
     private void addComment(String author, String message) {
-        CommentQuery.add(dbRunner, new Comment(Optional.empty(), author, message));
+        CommentStorage.add(dbRunner, new Comment(Optional.empty(), author, message));
     }
 }
