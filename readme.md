@@ -82,7 +82,7 @@ when our Java app is running and vice versa.
 
 # Examples of Zoom calling the web hook
 
-Here is the app that I tried out: [https://marketplace.zoom.us/develop/apps/xGNy_ZHYT2alQ98bgjfrGQ/information]()
+Here is the app that I tried out: [https://marketplace.zoom.us/develop/apps/xGNy_ZHYT2alQ98bgjfrGQ/information](https://marketplace.zoom.us/develop/apps/xGNy_ZHYT2alQ98bgjfrGQ/information)
 
 ```json
 [
