@@ -27,6 +27,9 @@ end-to-end-tests:
   stage: end-to-end-tests
   dependencies: ["build"]
   image: docker:20.10.17
+  # Uncomment variables and services sections for a GitLab shared runner.
+  #  On our runner, Docker on the host is mounted into the container using a Unix socket.
+  #
   #variables:
   #  DOCKER_TLS_CERTDIR: "/certs"
   #services:
@@ -34,13 +37,8 @@ end-to-end-tests:
   
   script:
     - apk add docker-compose
-    - pwd
-    - ls
-    - ls target || echo "no directory target"
-    - ls /builds
     - cd run
-    - docker-compose -f docker-compose.yml -f docker-compose-test.yml up --build --exit-code-from cypress
-    - cd ..
+    - docker-compose -f docker-compose.yml -f docker-compose-test.yml up --build --exit-code-from cypress && cd ..
   artifacts:
     untracked: false
     expire_in: 4 hours
