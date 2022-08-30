@@ -27,10 +27,10 @@ end-to-end-tests:
   stage: end-to-end-tests
   dependencies: ["build"]
   image: docker:20.10.17
-  variables:
-    DOCKER_TLS_CERTDIR: "/certs"
-  services:
-    - docker:20.10.17-dind
+  #variables:
+  #  DOCKER_TLS_CERTDIR: "/certs"
+  #services:
+  #  - docker:20.10.17-dind
   
   script:
     - apk add docker-compose
