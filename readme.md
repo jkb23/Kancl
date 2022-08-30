@@ -7,19 +7,6 @@ end-to-end tests, and deployment to a production server [kancl.online](https://k
 The project uses Maven to build a Java server, H2 database embedded into the server,
 Cypress framework for end-to-end tests, and Docker for easy deployment.
 
-# TODOs
-
-- Pre-install pre-requisites and update section below accordingly.
-
-# Installing pre-requisites
-
-2. Install [Maven](https://maven.apache.org/).
-3. Install [Docker](https://docs.docker.com/engine/install/). In Fedora you can
-   run `sudo dnf install docker && sudo systemctl enable docker && sudo systemctl start docker`
-4. On Linux run [these post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/)
-   to avoid using root.
-5. Install [npm](https://www.npmjs.com/).
-
 # Usage
 
 To use the application on your local computer, the app doesn't need any external program. The database
@@ -52,7 +39,7 @@ what the test saw. You can find them in directories `src/test/cypress/screenshot
 
 The second option is to work in Cypress UI, which will give you a faster feedback loop and
 more interactive way to investigate test failures. To install Cypress run `npm install && npx cypress install`.
-Make sure the app is running as is described in paragraph *Local development* and run:
+Make sure the app is running and run:
 
 ```shell
 npx cypress open
