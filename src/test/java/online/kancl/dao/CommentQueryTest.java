@@ -13,6 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(ProductionDatabase.class)
 class CommentQueryTest {
+
 	private final DatabaseRunner dbRunner;
 
 	CommentQueryTest(DatabaseRunner dbRunner) {
@@ -20,23 +21,23 @@ class CommentQueryTest {
 	}
 
 	@Test
-	void noCommentsTest() {
+	void noComments() {
 		assertThat(CommentQuery.loadAllComments(dbRunner))
 				.isEmpty();
 	}
 
 	@Test
-	void insertAndRetrieveCommentTest() {
-		saveComment("John", "message");
+	void insertAndRetrieveComment() {
+		addComment("John", "message");
 
 		assertThat(CommentQuery.loadAllComments(dbRunner))
 				.containsExactly(new Comment(Optional.of(1L), "John", "message"));
 	}
 
 	@Test
-	void queryMultipleTest() {
-		saveComment("John", "first");
-		saveComment("David", "second");
+	void queryMultiple() {
+		addComment("John", "first");
+		addComment("David", "second");
 
 		assertThat(CommentQuery.loadAllComments(dbRunner))
 				.containsExactlyInAnyOrder(
@@ -45,7 +46,7 @@ class CommentQueryTest {
 				);
 	}
 
-	private void saveComment(String author, String message) {
-		CommentQuery.save(dbRunner, new Comment(null, author, message));
+	private void addComment(String author, String message) {
+		CommentQuery.add(dbRunner, new Comment(Optional.empty(), author, message));
 	}
 }

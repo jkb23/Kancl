@@ -35,7 +35,7 @@ public class CommentsController extends Controller {
 					request.queryParams("author"),
 					request.queryParams("message"));
 
-			CommentQuery.save(dbRunner, comment);
+			CommentQuery.add(dbRunner, comment);
 
 			response.redirect("/comments");
 			return "";

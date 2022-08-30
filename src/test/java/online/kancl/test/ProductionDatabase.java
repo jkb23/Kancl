@@ -18,6 +18,7 @@ public class ProductionDatabase implements
 		BeforeEachCallback,
 		AfterAllCallback,
 		ParameterResolver {
+
 	private Connection connection;
 	private ConnectionProvider connectionProvider;
 	private DatabaseRunner dbRunner;

@@ -2,7 +2,6 @@ package online.kancl.db;
 
 import online.kancl.db.DatabaseRunner.NoRowSelectedException;
 import online.kancl.test.ProductionDatabase;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @ExtendWith(ProductionDatabase.class)
 class DatabaseRunnerTest {
@@ -21,14 +21,13 @@ class DatabaseRunnerTest {
 
 	@BeforeEach
 	public void createCustomTable() {
-		dbRunner.update(
+		dbRunner.update("""
+				CREATE TABLE TestTable
+				(
+					id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+					v VARCHAR(50) NOT NULL
+				)
 				"""
-						CREATE TABLE TestTable
-						(
-							id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-							v VARCHAR(50) NOT NULL
-						)
-						"""
 		);
 	}
 
@@ -40,14 +39,14 @@ class DatabaseRunnerTest {
 
 	@Test
 	void testSelectInt() {
-		assertThat(dbRunner.selectInt("SELECT 1 FROM Dual"))
-				.isEqualTo(1);
+		assertThat(dbRunner.selectInt("SELECT 123 FROM Dual"))
+				.isEqualTo(123);
 	}
 
 	@Test
 	void testSelectIntThrowsOnNoData() {
-		Assertions.assertThatThrownBy(() -> dbRunner.selectInt("SELECT 1 FROM TestTable"))
-				.isInstanceOf(NoRowSelectedException.class);
+		assertThatExceptionOfType(NoRowSelectedException.class)
+				.isThrownBy(() -> dbRunner.selectInt("SELECT id FROM TestTable"));
 	}
 
 	@Test
@@ -58,30 +57,30 @@ class DatabaseRunnerTest {
 
 	@Test
 	void testSelectStringThrowsOnNoData() {
-		Assertions.assertThatThrownBy(() -> dbRunner.selectInt("SELECT v FROM TestTable"))
-				.isInstanceOf(NoRowSelectedException.class);
+		assertThatExceptionOfType(NoRowSelectedException.class)
+				.isThrownBy(() -> dbRunner.selectString("SELECT v FROM TestTable"));
 	}
 
 	@Test
 	void testNoRowsQuery() {
-		assertThat(dbRunner.select("SELECT 1 FROM TestTable", (r) -> r.getInt(1)))
+		assertThat(dbRunner.select("SELECT * FROM TestTable", (r) -> r.getInt("id")))
 				.isEmpty();
 	}
 
 	@Test
 	void testEmptyList() {
-		assertThat(dbRunner.selectAll("SELECT 1 FROM TestTable", (r) -> r.getInt(1)))
+		assertThat(dbRunner.selectAll("SELECT * FROM TestTable", (r) -> r.getInt("id")))
 				.isEmpty();
 	}
 
 	@Test
-	void testInsert() {
+	void firstInsertedId() {
 		assertThat(insertRowAndGetId("first"))
 				.contains(1);
 	}
 
 	@Test
-	void testInsertReturnsGeneratedId() {
+	void secondInsertedId() {
 		insertRow("first");
 
 		assertThat(insertRowAndGetId("second"))
@@ -118,8 +117,8 @@ class DatabaseRunnerTest {
 		insertRow("first");
 		insertRow("second");
 
-		assertThat(dbRunner.select("SELECT id FROM TestTable ORDER BY id", (r) -> r.getInt(1)))
-				.contains(1);
+		assertThat(dbRunner.select("SELECT v FROM TestTable ORDER BY id", (r) -> r.getString(1)))
+				.contains("first");
 	}
 
 	private void insertRow(String value) {

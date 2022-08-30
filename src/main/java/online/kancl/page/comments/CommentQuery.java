@@ -15,7 +15,7 @@ public class CommentQuery {
 				CommentQuery::handle);
 	}
 
-	public static void save(DatabaseRunner dbRunner, Comment comment) {
+	public static void add(DatabaseRunner dbRunner, Comment comment) {
 		dbRunner.update(
 				"INSERT INTO Comment(author, message) VALUES (?, ?)",
 				comment.author(), comment.message());
