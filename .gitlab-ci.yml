@@ -25,6 +25,7 @@ build:
 
 end-to-end-tests:
   stage: end-to-end-tests
+  dependencies: ["build"]
   image: docker:20.10.17
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
@@ -48,6 +49,7 @@ end-to-end-tests:
 
 deploy:
   stage: deploy
+  dependencies: ["build"]
   only: ["main"]
   image: alpine
   before_script:
