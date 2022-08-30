@@ -37,6 +37,7 @@ end-to-end-tests:
     - pwd
     - ls
     - ls target || echo "no directory target"
+    - ls /builds
     - cd run
     - docker-compose -f docker-compose.yml -f docker-compose-test.yml up --build --exit-code-from cypress
     - cd ..
