@@ -1,4 +1,4 @@
-package online.kancl.db;
+package online.kancl.util;
 
 import online.kancl.util.DirectoryHashCalculator;
 import org.assertj.core.api.Assertions;

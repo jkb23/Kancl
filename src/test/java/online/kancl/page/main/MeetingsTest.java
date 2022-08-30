@@ -1,4 +1,4 @@
-package online.kancl;
+package online.kancl.page.main;
 
 import online.kancl.page.main.Meetings;
 import org.junit.jupiter.api.Test;

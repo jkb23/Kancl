@@ -1,4 +1,4 @@
-package online.kancl.dao;
+package online.kancl.page.comments;
 
 import online.kancl.page.comments.CommentQuery;
 import online.kancl.db.DatabaseRunner;
