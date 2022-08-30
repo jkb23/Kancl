@@ -1,3 +1,5 @@
+# Kancl.online
+
 This project contains a working skeleton and infrastructure for a 1-week simulation
 of real-life software development for college students - "Summer camp".
 Participants will contribute to this repo when developing the product.
