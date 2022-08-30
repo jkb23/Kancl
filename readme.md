@@ -9,7 +9,6 @@ Cypress framework for end-to-end tests, and Docker for easy deployment.
 
 # TODOs
 
-- Our own CI/CD runner
 - Pre-install pre-requisites and update section below accordingly.
 
 # Installing pre-requisites
@@ -52,7 +51,7 @@ You can inspect test failures by investigating the log, looking at screenshots a
 what the test saw. You can find them in directories `src/test/cypress/screenshots` and `src/test/cypress/videos`.
 
 The second option is to work in Cypress UI, which will give you a faster feedback loop and
-more interactive way to investigate test failures. To install Cypress run `npm install`.
+more interactive way to investigate test failures. To install Cypress run `npm install && npx cypress install`.
 Make sure the app is running as is described in paragraph *Local development* and run:
 
 ```shell
