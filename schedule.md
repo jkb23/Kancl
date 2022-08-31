@@ -57,9 +57,12 @@ Honza vezme:
 - name tags
 - bekovka
 - cepice
-- propisky
 - papiry
 - post-it notes male + velke
 - pravitko
 - paska
 - whiteboard fixy + harda + sprej
+
+Matej vezme:
+
+- propisky, fixy

@@ -244,3 +244,4 @@ Upload the private key to GitLab > Repository Settings > CI/CD > Variables with 
 - Missing `Router`. URLs everywhere
 - Form validation
 - Misuse of `var`
+- Bloated cypress testrig
