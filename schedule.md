@@ -10,7 +10,7 @@
     - Honza - Pravidla:
         - Tykat.
         - Tyden je pro vas, abyste se naucili co nejvic.
-        - Nejsme skola!
+        - Nejsme skola!!!!
             - Spolupracujte!
             - Ptejte se!
             - Nevedet je OK!
