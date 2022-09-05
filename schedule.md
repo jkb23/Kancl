@@ -3,6 +3,10 @@
 ## Pondeli
 
 - 9:00 - 9:45 Intro
+    - Petra - predstaveni Oracle NetSuite
+    - Organizace
+        - Kuchynka...
+        - 7. patro
     - Honza - Pravidla:
         - Tykat.
         - Tyden je pro vas, abyste se naucili co nejvic.
