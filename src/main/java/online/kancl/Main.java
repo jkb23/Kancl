@@ -3,6 +3,7 @@ package online.kancl;
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
 import online.kancl.page.comments.CommentsController;
+import online.kancl.page.hello.HelloController;
 import online.kancl.page.main.MainPageController;
 import online.kancl.page.recreatedb.RecreateDbController;
 import online.kancl.page.zoomhook.ZoomHookController;
@@ -43,6 +44,7 @@ public class Main {
         webServer.addRoute("/comments", new CommentsController(pebbleTemplateRenderer, transactionJobRunner));
         webServer.addRoute("/zoomhook", new ZoomHookController(meetings));
         webServer.addRoute("/recreateDb", new RecreateDbController(schemaCreator));
+        webServer.addRoute("/hello", new HelloController(pebbleTemplateRenderer));
         webServer.start();
 
         System.out.println("Server running");
