@@ -1,5 +1,7 @@
 package online.kancl.auth;
 
+import online.kancl.page.users.UserStorage;
+
 public class Auth {
     public int checkCredentials(String username, String password)
     {
@@ -7,15 +9,16 @@ public class Auth {
         {
             return 2;
         }
-        if(checkCredentialsFromDb(username,password))
+        //TODO hash
+        if(UserStorage.findUser(username,password))
         {
-            setBadLoginCount(username, 0);
+            UserStorage.setBadLoginCnt(username, 0);
             return 0;
         }
         else
         {
-            setBadLoginCount(username, 1);
-            if (getBadLoginCount(username) >= 5) {
+            UserStorage.setBadLoginCnt(username, UserStorage.getBadLoginCnt(username) + 1);
+            if (UserStorage.getBadLoginCnt(username) >= 5) {
                 blockUser(username);
             }
             return 1;
