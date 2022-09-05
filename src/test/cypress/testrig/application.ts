@@ -33,6 +33,14 @@ export function openCommentPage() {
     cy.visit("/comments");
 }
 
+export function openHelloPage() {
+    cy.visit("/hello");
+}
+
+export function showsHello() {
+    cy.get("h2").contains("Hello world");
+}
+
 export function recreateDatabase() {
     cy.visit("/recreateDb");
 }
