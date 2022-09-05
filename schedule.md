@@ -55,3 +55,6 @@
 - 13:30 - 15:00 Technical review by Paul + Refactoring demo by Paul???
 - 15:15 - 16:15 Retro
 - 16:15 - 16:30 Wrap-up
+
+# Obedy
+https://docs.google.com/spreadsheets/d/142Ms9uFQa7XM-JsyLqx50gWpCMIH4m7g-Riva6aZTKk/edit?usp=sharing
