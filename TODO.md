@@ -1,4 +1,4 @@
-1. Zpracovani POST req: 
+Zpracovani POST req: 
    Check username a heslo
     Pokud heslo je spatne zadane
         BadLogin counter ++
