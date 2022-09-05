@@ -1,5 +1,7 @@
 package online.kancl.util;
 
+import com.google.common.hash.Hashing;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
