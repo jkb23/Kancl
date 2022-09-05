@@ -1,16 +1,17 @@
-package online.kancl.page.main;
+package online.kancl.page.another;
 
+import online.kancl.page.main.Meetings;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
 import spark.Response;
 
-public class MainPageController extends Controller {
-
+public class AnotherController extends Controller
+{
     private final PebbleTemplateRenderer pebbleTemplateRenderer;
     private final Meetings meetings;
 
-    public MainPageController(PebbleTemplateRenderer pebbleTemplateRenderer, Meetings meetings) {
+    public AnotherController(PebbleTemplateRenderer pebbleTemplateRenderer, Meetings meetings) {
         this.pebbleTemplateRenderer = pebbleTemplateRenderer;
         this.meetings = meetings;
     }
