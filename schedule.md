@@ -17,8 +17,11 @@
               prinosnejsi aktivitu.)
         - Simulace vyvoje SW ve skutecne firme.
     - Vsichni - Predstavme se
+      - Jmeno
+      - Co delam
+      - Co si chci odnest?
     - Honza, Matej - Role:
-        - Matej - PM
+        - Matej - PM (s hrneckem)
         - Matej - SW Engineer
         - Honza - Scrum Master (bekovka)
         - Honza DevOps (ksiltovka)
@@ -30,7 +33,7 @@
 - Vsichni - Rozchozeni repa, prvni pokusy
 - 13:00 - 13:30 Planning meeting
 - coding
-- 16:30 - 17:00 demo, retro, uzavreni dne
+- 16:15 - 17:00 demo, retro, uzavreni dne
 
 ## Utery - ctvrtek
 
@@ -38,8 +41,7 @@
 - 11:30 - 12:00 ??? Obed
 - 13:00 - 13:15 Stand-up
 - Tech talk ???
-- 16:15 - 16:30 Demo
-- 16:30 - 17:00 Retro, uzavreni dne
+- 16:15 - 17:00 demo, retro, uzavreni dne
 
 ## Patek
 
@@ -49,20 +51,3 @@
 - 13:30 - 15:00 Technical review by Paul + Refactoring demo by Paul???
 - 15:15 - 16:15 Retro
 - 16:15 - 16:30 Wrap-up
-
-# Veci co je potreba zajistit
-
-Honza vezme:
-
-- name tags
-- bekovka
-- cepice
-- papiry
-- post-it notes male + velke
-- pravitko
-- paska
-- whiteboard fixy + harda + sprej
-
-Matej vezme:
-
-- propisky, fixy
