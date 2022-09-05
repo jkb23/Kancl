@@ -25,6 +25,6 @@ public class UserStorage {
     }
 
     public static Timestamp getBadLoginTimestamp(String username) {
-        return null;
+        return new Timestamp(0);
     }
 }
