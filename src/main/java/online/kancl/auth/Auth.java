@@ -2,6 +2,9 @@ package online.kancl.auth;
 
 import online.kancl.page.users.UserStorage;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 public class Auth {
     public int checkCredentials(String username, String password)
     {
@@ -23,5 +26,25 @@ public class Auth {
             }
             return 1;
         }
+    }
+
+    private void blockUser(String username) {
+        Timestamp timestampPlus5min = new Timestamp(System.currentTimeMillis());
+        UserStorage.setBadLoginTimestamp(username, timestampPlus5min);
+    }
+
+    public boolean isBlocked(String username){
+        boolean blocked = false;
+        Timestamp badLoginTimestamp = UserStorage.getBadLoginTimestamp(username);
+        //Get current date, add 300000 ms (5m) and check if the time has passed
+        Date date = new Date(System.currentTimeMillis() + 300000);
+        Integer i = badLoginTimestamp.compareTo(date);
+        if(i >= 0){
+            //minulost, 5 min ubehlo
+            blocked = false;
+        }else{
+            blocked = true;
+        }
+        return blocked;
     }
 }
