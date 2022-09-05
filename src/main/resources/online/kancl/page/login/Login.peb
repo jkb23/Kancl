@@ -1,0 +1,25 @@
+{# @pebvariable name="comments" type="online.kancl.page.comments.CommentsController.Comments" #}
+
+    {% extends "../BaseHtml.peb" %}
+
+    {% block title %} Login {% endblock %}
+
+
+{% block body %}
+
+    <div class="col-lg-6 mx-auto">
+<!--        <ul id='comments'>{% for comment in comments.comments() %}-->
+<!--            <li>-->
+<!--                <span class='username'>{{comment.author()}}</span> - -->
+<!--                <span class='password'>{{comment.message()}}</span>-->
+<!--            </li>-->
+<!--        {% endfor %}</ul>-->
+
+        <form method='post'>
+            <input type='text' name='username' id='username' placeholder='Your username'/>
+            <input type='password' name='password' id='password' placeholder='Your password'/>
+            <input type='submit' id='submit' value='Login'/>
+        </form>
+    </div>
+
+{% endblock %}
