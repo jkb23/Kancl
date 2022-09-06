@@ -1,7 +1,5 @@
 package online.kancl.util;
 
-import com.google.common.hash.Hashing;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
@@ -25,7 +23,7 @@ public class DirectoryHashCalculator {
     }
 
     private byte[] calculateHashBytes(Path directory) throws NoSuchAlgorithmException, IOException {
-        MessageDigest hashCalculator = MessageDigest.getInstance("SHA-1");
+        MessageDigest hashCalculator = MessageDigest.getInstance("SHA-256");
         Files.walkFileTree(directory, new HashFileVisitor(directory, hashCalculator));
         return hashCalculator.digest();
     }

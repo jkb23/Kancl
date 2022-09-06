@@ -1,12 +1,9 @@
 package online.kancl.util;
 
-import com.google.common.hash.Hashing;
-
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 
 public final class HashUtils {
 
