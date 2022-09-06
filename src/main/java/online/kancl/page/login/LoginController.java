@@ -45,6 +45,7 @@ public class LoginController extends Controller {
                     return pebbleTemplateRenderer.renderDefaultControllerTemplate(new HelloController(pebbleTemplateRenderer), new Object());
                 case BLOCKED_USER:
                     loginInfo = new LoginInfo(BlockUser);
+                    break;
                 case BAD_CREDENTIALS:
                     loginInfo = new LoginInfo(InvalidCredentials);
             }
