@@ -12,6 +12,10 @@ public class Auth {
     public static final int BLOCKED_DURATION_IN_MILLISECONDS = 5 * 60 * 1000;
 
     public AuthReturnCode checkCredentialsWithBruteForcePrevention(String username, String password) {
+        if (username == null || password == null){
+            return BAD_CREDENTIALS;
+        }
+
         if (isBlocked(username)) {
             return BLOCKED_USER;
         }

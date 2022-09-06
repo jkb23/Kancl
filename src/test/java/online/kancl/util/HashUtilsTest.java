@@ -2,14 +2,12 @@ package online.kancl.util;
 
 import org.junit.jupiter.api.Test;
 
-import java.security.NoSuchAlgorithmException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 class HashUtilsTest {
 
     @Test
-    void sha256HashTest() throws NoSuchAlgorithmException {
+    void sha256HashTest(){
         assertThat(HashUtils.sha256Hash("qwerty"))
                 .isEqualTo("65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5");
 

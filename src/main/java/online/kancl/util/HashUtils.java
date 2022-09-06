@@ -16,13 +16,11 @@ public final class HashUtils {
         }
     }
 
-    public static String toHexString(byte[] hash)
-    {
+    public static String toHexString(byte[] hash) {
         BigInteger number = new BigInteger(1, hash);
         StringBuilder hexString = new StringBuilder(number.toString(16));
 
-        while (hexString.length() < 64)
-        {
+        while (hexString.length() < 64) {
             hexString.insert(0, '0');
         }
 
