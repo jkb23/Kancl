@@ -5,17 +5,63 @@ describe('Login page', () => {
         application.recreateDatabase();
     })
 
-    it("Unsuccessful login", () => {
+    it("enters correct credentials", () => {
         application.openLoginPage();
-        application.loginUser("correct", "incorrect")
+        application.enterCredentials('correct', 'correct');
+        application.clickSubmit()
+
     });
 
-    it("appends a comment", () => {
-        application.openCommentPage();
-        application.postComment('John Doe', 'Foo');
-        application.postComment('Mark Wheel', 'Bar');
+    it("enters incorrect username", () => {
+        application.openLoginPage();
+        application.enterCredentials('incorrect', 'correct');
+        application.clickSubmit()
+        application.checkNotificationCredentials()
 
-        application.showsComment(0, 'John Doe', 'Foo');
-        application.showsComment(1, 'Mark Wheel', 'Bar');
     });
+
+    it("enters incorrect password", () => {
+        application.openLoginPage();
+        application.enterCredentials('correct', 'incorrect');
+        application.clickSubmit()
+        application.checkNotificationCredentials()
+    });
+
+    it("leaves username empty", () => {
+        application.openLoginPage();
+        application.enterCredentials('', 'correct');
+        application.checkVisibility()
+    });
+
+    it("leaves password empty", () => {
+        application.openLoginPage();
+        application.enterCredentials('user', '');
+        application.checkVisibility()
+    });
+
+    it("enters incorrect credentials 5 times", () => {
+        application.openLoginPage();
+
+        for(let i = 0; i < 5; i++){
+            application.enterCredentials('user', 'password');
+            application.clickSubmit()
+        }
+
+        application.checkLockoutCredentialsTrue()
+    });
+
+    it("check if user can sign in after 5 minute lock-out ", () => {
+        application.openLoginPage();
+
+        for(let i = 0; i < 5; i++){
+            application.enterCredentials('user', 'password');
+            application.clickSubmit()
+        }
+
+        application.checkLockoutCredentialsTrue()
+        application.timelapse()
+        application.checkLockoutCredentialsFalse()
+
+    });
+
 });

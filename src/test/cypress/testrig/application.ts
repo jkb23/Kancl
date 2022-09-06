@@ -41,7 +41,6 @@ export function showsHello() {
     cy.get("h2").contains("Hello world");
 }
 
-
 export function recreateDatabase() {
     cy.visit("/recreateDb");
 }
@@ -50,12 +49,34 @@ export function openLoginPage() {
     cy.visit("/login");
 }
 
-export function loginUser(username, password) {
+export function enterCredentials(username, password) {
     cy.get("#username").type("{selectall}{del}" + username);
     cy.get("#password").type("{selectall}{del}" + password);
-    cy.get('#submit').click()
 }
 
-export function showsInvalidCredentials() {
-    cy.get("h2").contains("Invalid credentials");
+export function clickSubmit() {
+    cy.get('#submit').click();
+}
+
+export function checkVisibility() {
+    cy.get('#submit').should('be.disabled')
+}
+
+export function checkNotificationCredentials() {
+    cy.get('.invalid_credentials').contains('Invalid credentials')
+    //FIXME
+}
+
+export function checkLockoutCredentialsTrue() {
+    cy.get('.invalid_credentials').contains('Invalid credentials')
+    //FIXME
+}
+
+export function checkLockoutCredentialsFalse() {
+    cy.get('.invalid_credentials').should('not.exist')
+}
+
+export function timelapse() {
+    cy.clock()
+    cy.tick(300000)
 }
