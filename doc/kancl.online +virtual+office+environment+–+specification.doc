@@ -1,0 +1,423 @@
+Date: Tue, 6 Sep 2022 06:33:52 +0000 (GMT)
+Message-ID: <1087615996.250195.1662446032891@oci-ash-confluence-prod01.corp.netledger.com>
+Subject: Exported From Confluence
+MIME-Version: 1.0
+Content-Type: multipart/related; 
+	boundary="----=_Part_250194_1411694652.1662446032889"
+
+------=_Part_250194_1411694652.1662446032889
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Content-Location: file:///C:/exported.html
+
+<html xmlns:o=3D'urn:schemas-microsoft-com:office:office'
+      xmlns:w=3D'urn:schemas-microsoft-com:office:word'
+      xmlns:v=3D'urn:schemas-microsoft-com:vml'
+      xmlns=3D'urn:w3-org-ns:HTML'>
+<head>
+    <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8=
+">
+    <title>kancl.online: virtual office environment =E2=80=93 specification=
+</title>
+    <!--[if gte mso 9]>
+    <xml>
+        <o:OfficeDocumentSettings>
+            <o:TargetScreenSize>1024x640</o:TargetScreenSize>
+            <o:PixelsPerInch>72</o:PixelsPerInch>
+            <o:AllowPNG/>
+        </o:OfficeDocumentSettings>
+        <w:WordDocument>
+            <w:View>Print</w:View>
+            <w:Zoom>90</w:Zoom>
+            <w:DoNotOptimizeForBrowser/>
+        </w:WordDocument>
+    </xml>
+    <![endif]-->
+    <style>
+                <!--
+        @page Section1 {
+            size: 8.5in 11.0in;
+            margin: 1.0in;
+            mso-header-margin: .5in;
+            mso-footer-margin: .5in;
+            mso-paper-source: 0;
+        }
+
+        table {
+            border: solid 1px;
+            border-collapse: collapse;
+        }
+
+        table td, table th {
+            border: solid 1px;
+            padding: 5px;
+        }
+
+        td {
+            page-break-inside: avoid;
+        }
+
+        tr {
+            page-break-after: avoid;
+        }
+
+        div.Section1 {
+            page: Section1;
+        }
+
+        /* Confluence print stylesheet. Common to all themes for print medi=
+a */
+/* Full of !important until we improve batching for print CSS */
+
+@media print {
+    #main {
+        padding-bottom: 1em !important; /* The default padding of 6em is to=
+o much for printouts */
+    }
+
+    body {
+        font-family: Arial, Helvetica, FreeSans, sans-serif;
+        font-size: 10pt;
+        line-height: 1.2;
+    }
+
+    body, #full-height-container, #main, #page, #content, .has-personal-sid=
+ebar #content {
+        background: #fff !important;
+        color: #000 !important;
+        border: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+    }
+
+    a, a:link, a:visited, a:focus, a:hover, a:active {
+        color: #000;
+    }
+
+    #content h1,
+    #content h2,
+    #content h3,
+    #content h4,
+    #content h5,
+    #content h6 {
+        font-family: Arial, Helvetica, FreeSans, sans-serif;
+        page-break-after: avoid;
+    }
+
+    pre {
+        font-family: Monaco, "Courier New", monospace;
+    }
+
+    #header,
+    .aui-header-inner,
+    #navigation,
+    #sidebar,
+    .sidebar,
+    #personal-info-sidebar,
+    .ia-fixed-sidebar,
+    .page-actions,
+    .navmenu,
+    .ajs-menu-bar,
+    .noprint,
+    .inline-control-link,
+    .inline-control-link a,
+    a.show-labels-editor,
+    .global-comment-actions,
+    .comment-actions,
+    .quick-comment-container,
+    #addcomment {
+        display: none !important;
+    }
+
+    /* CONF-28544 cannot print multiple pages in IE */
+    #splitter-content {
+        position: relative !important;
+    }
+
+    .comment .date::before {
+        content: none !important; /* remove middot for print view */
+    }
+
+    h1.pagetitle img {
+        height: auto;
+        width: auto;
+    }
+
+    .print-only {
+        display: block;
+    }
+
+    #footer {
+        position: relative !important; /* CONF-17506 Place the footer at en=
+d of the content */
+        margin: 0;
+        padding: 0;
+        background: none;
+        clear: both;
+    }
+
+    #poweredby {
+        border-top: none;
+        background: none;
+    }
+
+    #poweredby li.print-only {
+        display: list-item;
+        font-style: italic;
+    }
+
+    #poweredby li.noprint {
+        display: none;
+    }
+
+    /* no width controls in print */
+    .wiki-content .table-wrap,
+    .wiki-content p,
+    .panel .codeContent,
+    .panel .codeContent pre,
+    .image-wrap {
+        overflow: visible !important;
+    }
+
+    /* TODO - should this work? */
+    #children-section,
+    #comments-section .comment,
+    #comments-section .comment .comment-body,
+    #comments-section .comment .comment-content,
+    #comments-section .comment p {
+        page-break-inside: avoid;
+    }
+
+    #page-children a {
+        text-decoration: none;
+    }
+
+    /**
+     hide twixies
+
+     the specificity here is a hack because print styles
+     are getting loaded before the base styles. */
+    #comments-section.pageSection .section-header,
+    #comments-section.pageSection .section-title,
+    #children-section.pageSection .section-header,
+    #children-section.pageSection .section-title,
+    .children-show-hide {
+        padding-left: 0;
+        margin-left: 0;
+    }
+
+    .children-show-hide.icon {
+        display: none;
+    }
+
+    /* personal sidebar */
+    .has-personal-sidebar #content {
+        margin-right: 0px;
+    }
+
+    .has-personal-sidebar #content .pageSection {
+        margin-right: 0px;
+    }
+
+    .no-print, .no-print * {
+        display: none !important;
+    }
+}
+-->
+    </style>
+</head>
+<body>
+    <h1>kancl.online: virtual office environment =E2=80=93 specification</h=
+1>
+    <div class=3D"Section1">
+        <div class=3D"contentLayout2">=20
+<div class=3D"columnLayout single" data-layout=3D"single">=20
+<div class=3D"cell normal" data-type=3D"normal">=20
+<div class=3D"innerCell">=20
+<h1 id=3D"kancl.online:virtualofficeenvironment=E2=80=93specification-Overv=
+iew"><span>Overview</span></h1>
+<p><span>The application kancl.online provides the possibility to emulate t=
+he real office environment in the online world. Users are able to meet othe=
+rs and interact with them. The whole concept should help to engage users an=
+d help them to communicate remotely. Therefore we need to cover the main fu=
+nctionality which allows users to feel good in this online world. The world=
+ where they are is the 2D visualization of the office viewed from the top. =
+This idea is based on this reference application <a href=3D"https://www.rct=
+ogether.com/" class=3D"external-link" rel=3D"nofollow">https://www.rctogeth=
+er.com/</a>.<br></span></p>
+<p><span>This is why we need following functionality to be delivered:</span=
+></p>
+<div class=3D"table-wrap">
+<table class=3D"wrapped confluenceTable">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<th colspan=3D"1" class=3D"confluenceTh">ID</th>
+<th class=3D"confluenceTh">User Story</th>
+<th class=3D"confluenceTh">Priority</th>
+<th class=3D"confluenceTh">Notes</th>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">US5</td>
+<td colspan=3D"1" class=3D"confluenceTd">As a user I am displayed in the 2D=
+ world of the office.</td>
+<td colspan=3D"1" class=3D"confluenceTd">MUST</td>
+<td colspan=3D"1" class=3D"confluenceTd"><br></td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">US6</td>
+<td colspan=3D"1" class=3D"confluenceTd">As a user I can walk with my avata=
+r in the office.</td>
+<td colspan=3D"1" class=3D"confluenceTd">MUST</td>
+<td colspan=3D"1" class=3D"confluenceTd"><br></td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">US7</td>
+<td colspan=3D"1" class=3D"confluenceTd">As a user with additional rights I=
+ can modify the structure of the online office.</td>
+<td colspan=3D"1" class=3D"confluenceTd">SHOULD</td>
+<td colspan=3D"1" class=3D"confluenceTd">Is not completely defined</td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">US8</td>
+<td colspan=3D"1" class=3D"confluenceTd">As a user I am able to see special=
+ object of Zoom meeting and I can interact with it.</td>
+<td colspan=3D"1" class=3D"confluenceTd">SHOULD</td>
+<td colspan=3D"1" class=3D"confluenceTd"><br></td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">US9</td>
+<td colspan=3D"1" class=3D"confluenceTd">As a user, when I start the Zoom m=
+eeting from any place in the map, I will be automatically moved to the plac=
+e of particular Zoom object.</td>
+<td colspan=3D"1" class=3D"confluenceTd">COULD</td>
+<td colspan=3D"1" class=3D"confluenceTd">Is not completely defined</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>=20
+</div>=20
+</div>=20
+<div class=3D"columnLayout single" data-layout=3D"single">=20
+<div class=3D"cell normal" data-type=3D"normal">=20
+<div class=3D"innerCell">=20
+<h1 id=3D"kancl.online:virtualofficeenvironment=E2=80=93specification-UserS=
+tories">User Stories</h1>
+<h2 id=3D"kancl.online:virtualofficeenvironment=E2=80=93specification-US5">=
+US5</h2>
+<p><em>As a user I am displayed in the 2D world of the office.</em></p>
+<p>User is represented in the world as a walking avatar with a picture they=
+ uploaded to the system. The default avatar shows the first letter of the n=
+ickname of the user until the avatar is uploaded for the first time.</p>
+<p>Additional requirements:</p>
+<ul>
+<li>There should be an option how to show extra information about the user:=
+ Name, status. Display it on mouse hover should be ideal.</li>
+<li>Avatar has a boarder of automatically generated color.</li>
+<li>Avatar has a circled shape and size 40x40px.</li>
+</ul>
+<p>Won't do:</p>
+<ul>
+<li>There is no need to check if two users has the same avatar.</li>
+</ul>
+<h2 id=3D"kancl.online:virtualofficeenvironment=E2=80=93specification-US6">=
+US6</h2>
+<p><em>As a user I can walk with my avatar in the office.</em></p>
+<p>User is able to move around the office using the following keys:</p>
+<ul>
+<li>Up: upper arrow or W</li>
+<li>Down: bottom arrow or S</li>
+<li>Left: left arrow or A</li>
+<li>Right: right arrow or D</li>
+</ul>
+<p>Additional requirements:</p>
+<ul>
+<li>User is not able to go through walls or other solid objects (desks, Zoo=
+m objects, ...).</li>
+<li>User is able to move through the other users.</li>
+<li>User will move 5px per key press.</li>
+</ul>
+<p>Won't do:</p>
+<ul>
+<li>It is not possible to adjust the speed of movement.</li>
+<li>It is not required to move diagonally.</li>
+</ul>
+<h2 id=3D"kancl.online:virtualofficeenvironment=E2=80=93specification-US7">=
+US7</h2>
+<p><em>As a user with additional rights I can modify the structure of the o=
+nline office.</em></p>
+<p>User with special privileges is able to open the map in the edit mode an=
+d add/move/remove objects on it.</p>
+<p>Open points:</p>
+<ul>
+<li>How we add the privileges?</li>
+<li>How the environment for editing will look like?</li>
+<li>How the current wold will be available to users during the editing?</li=
+>
+<li>How do we replace the previous version of the world with the new one wi=
+th the smallest possible impact to the online users?</li>
+</ul>
+<p>Won't do:</p>
+<ul>
+<li>There is no need to keep the history of previous versions of the office=
+.</li>
+</ul>
+<h2 id=3D"kancl.online:virtualofficeenvironment=E2=80=93specification-US8">=
+US8</h2>
+<p><em>As a user I am able to see special object of Zoom meeting and I can =
+interact with it.</em></p>
+<p>There will be objects (avatars) for Zoom meetings. Every Zoom meeting wi=
+ll have the same icon, the difference will be shown on hover. The participa=
+nt will be added to the particular Zoom meeting when its avatar collide wit=
+h this type of object.</p>
+<p>Additional requirements:</p>
+<ul>
+<li>There should be an option how to show extra information about the meeti=
+ng: Meeting name, weblink, time, number of participants. Display it on mous=
+e hover should be ideal.</li>
+<li>Object has a boarder of black color.</li>
+<li>Object has a circled shape and size 40x40px.</li>
+</ul>
+<h2 id=3D"kancl.online:virtualofficeenvironment=E2=80=93specification-US9">=
+US9</h2>
+<p><em>As a user, when I start the Zoom meeting from any place in the map, =
+I will be automatically moved to the place of particular Zoom object.</em><=
+/p>
+<p>User will be automatically and immediately moved to the Zoom object, whe=
+n they join the meeting.</p>
+<p>Open points:</p>
+<ul>
+<li>User will jump there or "walk there"?</li>
+<li>What will happen after the meeting end with the user's avatar?</li>
+</ul>
+</div>=20
+</div>=20
+</div>=20
+<div class=3D"columnLayout single" data-layout=3D"single">=20
+<div class=3D"cell normal" data-type=3D"normal">=20
+<div class=3D"innerCell">=20
+<h1 id=3D"kancl.online:virtualofficeenvironment=E2=80=93specification-Relat=
+edLinks">Related Links</h1>
+<p>Reference application overview: <a href=3D"https://www.rctogether.com/" =
+class=3D"external-link" rel=3D"nofollow">https://www.rctogether.com/</a></p=
+>
+<p>Video for inspiration: <a href=3D"https://www.youtube.com/watch?v=3DQv80=
+1wYJoXQ" class=3D"external-link" rel=3D"nofollow">YouTube video</a></p>
+</div>=20
+</div>=20
+</div>=20
+</div>
+    </div>
+</body>
+</html>
+------=_Part_250194_1411694652.1662446032889--

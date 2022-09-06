@@ -39,12 +39,28 @@
 - coding
 - 16:15 - 17:00 demo, retro, uzavreni dne
 
-## Utery - ctvrtek
+## Utery
 
 - 9:00 - 9:30 Check-in, planning
 - 11:30 - 12:00 ??? Obed
 - 13:00 - 13:15 Stand-up
-- Tech talk ???
+- 13:30 - 14:30 **Tech talk - Reviews**
+- 16:15 - 17:00 demo, retro, uzavreni dne
+
+## Streda
+
+- 9:00 - 9:30 Check-in, planning
+- 10:30 - 11:30 **Tech talk - Tests Writing**
+- 11:30 - 12:00 ??? Obed
+- 13:00 - 13:15 Stand-up
+- 16:15 - 17:00 demo, retro, uzavreni dne
+
+## Ctvrtek
+
+- 9:00 - 9:30 Check-in, planning
+- 11:30 - 12:00 ??? Obed
+- 12:45 - 13:00 ??? Stand-up
+- 13:00 - 14:00 **Tech talk - Best Practices**
 - 16:15 - 17:00 demo, retro, uzavreni dne
 
 ## Patek

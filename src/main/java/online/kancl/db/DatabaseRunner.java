@@ -108,8 +108,11 @@ public class DatabaseRunner {
     }
 
     public static class DatabaseAccessException extends RuntimeException {
-        public DatabaseAccessException(Throwable cause) {
-            super("Error when accessing database", cause);
+        public final int sqlErrorCode;
+
+        public DatabaseAccessException(SQLException cause) {
+            super(cause.getMessage(), cause);
+            sqlErrorCode = cause.getErrorCode();
         }
     }
 
