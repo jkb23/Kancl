@@ -17,7 +17,7 @@ public class LoginController extends Controller {
 
     private final Auth auth;
     private final String InvalidCredentials = "Invalid credentials, try again";
-    private final String BlockUser = "You was blocked, try again later";
+    private final String BlockUser = "You were blocked, try again later";
 
 
     public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner) {
