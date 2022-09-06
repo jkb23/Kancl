@@ -6,6 +6,8 @@ import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
 import spark.Response;
+import online.kancl.auth.Auth;
+import online.kancl.auth.AuthReturnCode;
 
 public class LoginController extends Controller {
 
@@ -24,7 +26,6 @@ public class LoginController extends Controller {
     @Override
     public String get(Request request, Response response) {
         loginInfo = new LoginInfo("");
-
         return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
     }
 
@@ -37,12 +38,17 @@ public class LoginController extends Controller {
 
             assert !isNotNull(user);
 
-            //TODO here authenticate user
-            loginInfo = new LoginInfo(InvalidCredentials);
-            loginInfo = new LoginInfo(BlockUser);
+            var auth = new Auth();
+            AuthReturnCode returnCode = auth.checkCredentials(user.username(), user.password());
+            switch(returnCode) {
+                case CORRECT:
+                    return pebbleTemplateRenderer.renderDefaultControllerTemplate(new HelloController(pebbleTemplateRenderer), new Object());
+                case BLOCKED_USER:
+                    loginInfo = new LoginInfo(BlockUser);
+                case BAD_CREDENTIALS:
+                    loginInfo = new LoginInfo(InvalidCredentials);
+            }
             return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
-
-            //return pebbleTemplateRenderer.renderDefaultControllerTemplate(new HelloController(pebbleTemplateRenderer), new Object());
         });
     }
 
