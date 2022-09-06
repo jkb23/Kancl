@@ -2,7 +2,8 @@ package online.kancl.login;
 
 import online.kancl.auth.AuthReturnCode;
 import static online.kancl.auth.AuthReturnCode.*;
-import static online.kancl.login.loginTestEnum.*;
+import static online.kancl.loginTestEnum.*;
+
 
 public class MockAuth {
     public AuthReturnCode checkCredentials(String username, String password){

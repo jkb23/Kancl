@@ -3,7 +3,7 @@ package online.kancl.login;
 import org.junit.jupiter.api.Test;
 
 import static online.kancl.auth.AuthReturnCode.*;
-import static online.kancl.login.loginTestEnum.*;
+import static online.kancl.loginTestEnum.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 //TODO not finished yet - do mocks

@@ -44,3 +44,9 @@ export function showsHello() {
 export function recreateDatabase() {
     cy.visit("/recreateDb");
 }
+
+export function loginUser(username, password) {
+    cy.get("#username").type("{selectall}{del}" + username);
+    cy.get("#password").type("{selectall}{del}" + password);
+    cy.get('#submit').click()
+}
