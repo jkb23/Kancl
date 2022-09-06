@@ -49,7 +49,7 @@ public class Auth {
         //Get current date, add 300000 ms (5m) and check if the time has passed
         Date date = new Date(System.currentTimeMillis() + 300000);
         int i = badLoginTimestamp.compareTo(date);
-        //minulost, 5 min ubehlo
+        //minulost, 5 min ubehlo.
         blocked = i >= 0;
         return blocked;
     }
