@@ -7,26 +7,28 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import static online.kancl.auth.AuthReturnCode.*;
+
 public class Auth {
-    public int checkCredentials(String username, String password){
+    public AuthReturnCode checkCredentials(String username, String password){
         String hashedPassword;
 
         if(isBlocked(username))
         {
-            return 2;
+            return BLOCKED_USER;
         }
 
         try {
             hashedPassword = HashUtils.sha256Hash(password);
         }
         catch (NoSuchAlgorithmException e){
-            return 3;
+            return OTHER_ERROR;
         }
 
         if(UserStorage.findUser(username,hashedPassword))
         {
             UserStorage.setBadLoginCnt(username, 0);
-            return 0;
+            return CORRECT;
         }
         else
         {
@@ -34,7 +36,7 @@ public class Auth {
             if (UserStorage.getBadLoginCnt(username) >= 5) {
                 blockUser(username);
             }
-            return 1;
+            return BAD_CREDENTIALS;
         }
     }
 
