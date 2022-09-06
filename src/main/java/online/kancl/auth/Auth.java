@@ -22,12 +22,14 @@ public class Auth {
 
         if(UserStorage.findUser(username,hashedPassword))
         {
+            //clears count on successful login
             UserStorage.setBadLoginCnt(username, 0);
             return CORRECT;
         }
         else
         {
             UserStorage.setBadLoginCnt(username, UserStorage.getBadLoginCnt(username) + 1);
+            //user gets blocked for a while after failing to log in 5 times
             if (UserStorage.getBadLoginCnt(username) >= 5) {
                 blockUser(username);
             }
