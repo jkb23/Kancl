@@ -36,10 +36,8 @@ public class LoginController extends Controller {
                     request.queryParams("username"),
                     request.queryParams("password"));
 
-            assert !isNotNull(user);
-
             var auth = new Auth();
-            AuthReturnCode returnCode = auth.checkCredentials(user.username(), user.password());
+            AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(user.username(), user.password());
             switch(returnCode) {
                 case CORRECT:
                     return pebbleTemplateRenderer.renderDefaultControllerTemplate(new HelloController(pebbleTemplateRenderer), new Object());
@@ -51,9 +49,5 @@ public class LoginController extends Controller {
             }
             return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
         });
-    }
-
-    private boolean isNotNull(Login user){
-        return !user.password().isEmpty() && !user.username().isEmpty();
     }
 }
