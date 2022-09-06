@@ -28,16 +28,14 @@
                 <p class="lead fw-normal mb-2 me-3">Sign in</p>
               </div>
 
-              <!-- Email input -->
               <div class="form-outline mb-4">
-                <input type="text" id="username" class="form-control form-control-lg"
+                <input type="text" id="username" name="username" class="form-control form-control-lg"
                   placeholder="Enter a valid username" />
                 <label class="form-label" for="username">Username</label>
               </div>
 
-              <!-- Password input -->
               <div class="form-outline mb-3">
-                <input type="password" id="password" class="form-control form-control-lg"
+                <input type="password" id="password" name="password" class="form-control form-control-lg"
                   placeholder="Enter password" />
                 <label class="form-label" for="password">Password</label>
               </div>
