@@ -1,27 +1,25 @@
-package online.kancl.page.users;
-
-import online.kancl.db.DatabaseRunner;
-import online.kancl.db.RowMapper;
+package online.kancl.db;
 
 import java.sql.Timestamp;
 
 public class UserStorage {
 
     public boolean findUser(DatabaseRunner dbRunner, String username, String hash) {
-        return dbRunner.selectInt(
+         int isFound = dbRunner.selectInt(
                 "SELECT COUNT(*) FROM User WHERE username= ? AND password = ?",
                 username, hash);
+        return isFound == 1;
     }
 
     public void createUser(String username, String hash) {
 
     }
 
-    public void setBadLoginCnt(String username, int cnt) {
+    public void setBadLoginCount(String username, int cnt) {
 
     }
 
-    public int getBadLoginCnt(String username){
+    public int getBadLoginCount(String username){
         return 1;
     }
 

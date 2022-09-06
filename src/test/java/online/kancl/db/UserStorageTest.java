@@ -1,11 +1,6 @@
-package online.kancl.page.users;
-
-import online.kancl.db.DatabaseRunner;
-
-import java.util.ArrayList;
+package online.kancl.db;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class UserStorageTest {
 
