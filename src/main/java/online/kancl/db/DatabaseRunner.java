@@ -82,7 +82,7 @@ public class DatabaseRunner {
 
     private <T> Optional<T> mapOptionalResult(RowMapper<T> rowMapper, ResultSet row) throws SQLException {
         if (row.next())
-            return Optional.of(rowMapper.map(row));
+            return Optional.ofNullable(rowMapper.map(row));
         else
             return Optional.empty();
     }
