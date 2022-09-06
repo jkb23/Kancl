@@ -1,7 +1,5 @@
 package online.kancl.auth;
 
-import online.kancl.auth.Auth;
-import online.kancl.auth.AuthReturnCode;
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.UserStorage;
 import online.kancl.test.ProductionDatabase;
