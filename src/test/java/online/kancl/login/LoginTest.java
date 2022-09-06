@@ -1,10 +1,9 @@
 package online.kancl.login;
 
-import online.kancl.auth.AuthReturnCode;
-import static online.kancl.auth.AuthReturnCode.*;
-import static online.kancl.login.loginTestEnum.*;
 import org.junit.jupiter.api.Test;
 
+import static online.kancl.auth.AuthReturnCode.*;
+import static online.kancl.login.loginTestEnum.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 //TODO not finished yet - do mocks
@@ -26,6 +25,5 @@ public class LoginTest {
         var mockAuth = new MockAuth();
         assertThat(mockAuth.checkCredentials(blocked_username,correct_password)).isEqualTo(BLOCKED_USER);
     }
-
 
 }
