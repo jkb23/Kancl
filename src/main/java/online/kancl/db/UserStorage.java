@@ -6,7 +6,7 @@ import java.util.Optional;
 public class UserStorage {
 
     public static boolean findUser(DatabaseRunner dbRunner, String username, String hash) {
-         int isFound = dbRunner.selectInt(
+        int isFound = dbRunner.selectInt(
                 "SELECT COUNT(*) FROM AppUser WHERE username= ? AND password = ?",
                 username, hash);
         return isFound == 1;
@@ -22,8 +22,6 @@ public class UserStorage {
             } else {
                 throw e;
             }
-
-
         }
     }
 

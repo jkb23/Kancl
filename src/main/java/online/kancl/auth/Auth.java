@@ -16,7 +16,7 @@ public class Auth {
 
     public AuthReturnCode checkCredentialsWithBruteForcePrevention(DatabaseRunner dbRunner,
                                                                    String username, String password) {
-        if (username == null || password == null){
+        if (username == null || password == null) {
             return BAD_CREDENTIALS;
         }
 
@@ -55,12 +55,9 @@ public class Auth {
     private boolean isBlocked(DatabaseRunner dbRunner, String username) {
         Optional<Timestamp> badLoginTimestamp = UserStorage.getBadLoginTimestamp(dbRunner, username);
 
-        if(badLoginTimestamp.isEmpty())
-        {
+        if (badLoginTimestamp.isEmpty()) {
             return false;
-        }
-        else
-        {
+        } else {
             Timestamp check = new Timestamp(badLoginTimestamp.get().getTime() + BLOCKED_DURATION_IN_MILLISECONDS);
 
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
