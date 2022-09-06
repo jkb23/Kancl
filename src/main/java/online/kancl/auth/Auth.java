@@ -18,12 +18,7 @@ public class Auth {
             return BLOCKED_USER;
         }
 
-        try {
-            hashedPassword = HashUtils.sha256Hash(password);
-        }
-        catch (NoSuchAlgorithmException e){
-            return OTHER_ERROR;
-        }
+        hashedPassword = HashUtils.sha256Hash(password);
 
         if(UserStorage.findUser(username,hashedPassword))
         {
