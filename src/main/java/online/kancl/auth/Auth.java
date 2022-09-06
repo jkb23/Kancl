@@ -3,13 +3,22 @@ package online.kancl.auth;
 import online.kancl.page.users.UserStorage;
 import online.kancl.util.HashUtils;
 
-import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
-import java.util.Date;
 
 import static online.kancl.auth.AuthReturnCode.*;
 
 public class Auth {
+
+    public static final int FIVE_MINUTES = 5 * 60 * 1000;
+
+    /**
+     * checks whether the user is able to log in and if he's using the correct credentials.
+     * If the credentials of a particular user were incorrect 5 times in a row, the user is blocked from logging in
+     * for 5 minutes
+     * @param username username specified in login
+     * @param password password specified in login
+     * @return enum describing the return code
+     */
     public AuthReturnCode checkCredentials(String username, String password){
         String hashedPassword;
 
@@ -20,36 +29,42 @@ public class Auth {
 
         hashedPassword = HashUtils.sha256Hash(password);
 
-        if(UserStorage.findUser(username,hashedPassword))
-        {
-            //clears count on successful login
-            UserStorage.setBadLoginCnt(username, 0);
-            return CORRECT;
-        }
-        else
+        if(!UserStorage.findUser(username,hashedPassword))
         {
             UserStorage.setBadLoginCnt(username, UserStorage.getBadLoginCnt(username) + 1);
-            //user gets blocked for a while after failing to log in 5 times
-            if (UserStorage.getBadLoginCnt(username) >= 5) {
+            if (UserStorage.getBadLoginCnt(username) >= 5)
+            {
                 blockUser(username);
             }
+
             return BAD_CREDENTIALS;
         }
+        //if the login is successful, clears the bad login count
+        UserStorage.setBadLoginCnt(username, 0);
+
+        return CORRECT;
     }
 
-    private static void blockUser(String username) {
-        Timestamp timestampPlus5min = new Timestamp(System.currentTimeMillis());
-        UserStorage.setBadLoginTimestamp(username, timestampPlus5min);
+    /**
+     * Sets the timestamp of when the user was blocked from logging in
+     * @param username user to block
+     */
+    private static void blockUser(String username)
+    {
+        UserStorage.setBadLoginTimestamp(username, new Timestamp(System.currentTimeMillis()));
     }
 
-    public static boolean isBlocked(String username){
-        boolean blocked;
-        Timestamp badLoginTimestamp = UserStorage.getBadLoginTimestamp(username);
-        //Get current date, add 300000 ms (5m) and check if the time has passed
-        Date date = new Date(System.currentTimeMillis() + 300000);
-        int i = badLoginTimestamp.compareTo(date);
-        //minulost, 5 min ubehlo.
-        blocked = i >= 0;
-        return blocked;
+    /**
+     * Checks if the user were blocked from logging in within the last 5 minutes
+     * @param username the user being checked
+     * @return true if the user was blocked, false otherwise
+     */
+    public static boolean isBlocked(String username)
+    {
+        Timestamp badLogin = UserStorage.getBadLoginTimestamp(username);
+        badLogin.setTime(badLogin.getTime() + FIVE_MINUTES);
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+
+        return currentTime.before(badLogin);
     }
 }
