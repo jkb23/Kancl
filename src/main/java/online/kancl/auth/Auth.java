@@ -1,19 +1,29 @@
 package online.kancl.auth;
 
 import online.kancl.page.users.UserStorage;
+import online.kancl.util.HashUtils;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.Date;
 
 public class Auth {
-    public int checkCredentials(String username, String password)
-    {
+    public int checkCredentials(String username, String password){
+        String hashedPassword;
+
         if(isBlocked(username))
         {
             return 2;
         }
-        //TODO hash
-        if(UserStorage.findUser(username,password))
+
+        try {
+            hashedPassword = HashUtils.sha256Hash(password);
+        }
+        catch (NoSuchAlgorithmException e){
+            return 3;
+        }
+
+        if(UserStorage.findUser(username,hashedPassword))
         {
             UserStorage.setBadLoginCnt(username, 0);
             return 0;
@@ -34,17 +44,13 @@ public class Auth {
     }
 
     public static boolean isBlocked(String username){
-        boolean blocked = false;
+        boolean blocked;
         Timestamp badLoginTimestamp = UserStorage.getBadLoginTimestamp(username);
         //Get current date, add 300000 ms (5m) and check if the time has passed
         Date date = new Date(System.currentTimeMillis() + 300000);
-        Integer i = badLoginTimestamp.compareTo(date);
-        if(i >= 0){
-            blocked = true;
-        }else{
-            //minulost, 5 min ubehlo
-            blocked = false;
-        }
+        int i = badLoginTimestamp.compareTo(date);
+        //minulost, 5 min ubehlo
+        blocked = i >= 0;
         return blocked;
     }
 }
