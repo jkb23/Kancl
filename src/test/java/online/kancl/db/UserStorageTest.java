@@ -53,11 +53,11 @@ class UserStorageTest {
     }
 
     @Test
-    public void setBadLoginTimestamp_whenTimeStampPassed_thenCorrenctTimestampIsRetrievedFromDB() {
+    public void setBadLoginTimestamp_whenTimeStampPassed_thenCorrectTimestampIsRetrievedFromDB() {
         Timestamp actualTimeStamp = new Timestamp(System.currentTimeMillis());
         UserStorage.setBadLoginTimestamp(dbRunner, "john@gmail.com", actualTimeStamp);
         assertThat(UserStorage.getBadLoginTimestamp(dbRunner, "john@gmail.com"))
-                .isEqualTo(actualTimeStamp);
+                .contains(actualTimeStamp);
     }
 
     @Test
