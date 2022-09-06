@@ -19,7 +19,7 @@ build:
     - mvn package
   artifacts:
     untracked: false
-    expire_in: 1 day
+    expire_in: 1 hour
     paths:
       - target/server-1.0-SNAPSHOT.jar
 
@@ -41,7 +41,7 @@ end-to-end-tests:
     - docker-compose -f docker-compose.yml -f docker-compose-test.yml up --build --exit-code-from cypress && cd ..
   artifacts:
     untracked: false
-    expire_in: 4 hours
+    expire_in: 1 hour
     when: on_failure
     paths:
       - src/test/cypress/screenshots
