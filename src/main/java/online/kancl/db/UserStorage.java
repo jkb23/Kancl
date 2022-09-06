@@ -6,7 +6,7 @@ public class UserStorage {
 
     public boolean findUser(DatabaseRunner dbRunner, String username, String hash) {
          int isFound = dbRunner.selectInt(
-                "SELECT COUNT(*) FROM User WHERE username= ? AND password = ?",
+                "SELECT COUNT(*) FROM AppUser WHERE username= ? AND password = ?",
                 username, hash);
         return isFound == 1;
     }
