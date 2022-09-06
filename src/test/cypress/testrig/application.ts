@@ -41,12 +41,21 @@ export function showsHello() {
     cy.get("h2").contains("Hello world");
 }
 
+
 export function recreateDatabase() {
     cy.visit("/recreateDb");
+}
+
+export function openLoginPage() {
+    cy.visit("/login");
 }
 
 export function loginUser(username, password) {
     cy.get("#username").type("{selectall}{del}" + username);
     cy.get("#password").type("{selectall}{del}" + password);
     cy.get('#submit').click()
+}
+
+export function showsInvalidCredentials() {
+    cy.get("h2").contains("Invalid credentials");
 }
