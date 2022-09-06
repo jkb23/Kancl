@@ -33,10 +33,10 @@ public class UserStorage {
     }
 
     public static void incrementBadLoginCount(DatabaseRunner dbRunner, String username) {
-        int BadLoginCount = dbRunner.selectInt("SELECT bad_login_count FROM AppUser WHERE username= ?",
+        int badLoginCount = dbRunner.selectInt("SELECT bad_login_count FROM AppUser WHERE username= ?",
                 username);
         dbRunner.update("UPDATE AppUser SET bad_login_count = ? WHERE username= ?",
-                BadLoginCount + 1, username);
+                badLoginCount + 1, username);
     }
 
     public static void nullBadLoginCount(DatabaseRunner dbRunner, String username) {
