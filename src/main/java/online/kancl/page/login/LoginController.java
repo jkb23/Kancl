@@ -9,6 +9,8 @@ import spark.Response;
 import online.kancl.auth.Auth;
 import online.kancl.auth.AuthReturnCode;
 
+import static online.kancl.auth.AuthReturnCode.CORRECT;
+
 public class LoginController extends Controller {
 
     private final PebbleTemplateRenderer pebbleTemplateRenderer;
@@ -16,9 +18,6 @@ public class LoginController extends Controller {
     private LoginInfo loginInfo;
 
     private final Auth auth;
-    private final String InvalidCredentials = "Invalid credentials, try again";
-    private final String BlockUser = "You were blocked, try again later";
-
 
     public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner) {
         this.pebbleTemplateRenderer = pebbleTemplateRenderer;
@@ -39,15 +38,10 @@ public class LoginController extends Controller {
                     request.queryParams("username"),
                     request.queryParams("password"));
             AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(dbRunner, user.username(), user.password());
-            switch(returnCode) {
-                case CORRECT:
-                    return pebbleTemplateRenderer.renderDefaultControllerTemplate(new HelloController(pebbleTemplateRenderer), new Object());
-                case BLOCKED_USER:
-                    loginInfo = new LoginInfo(BlockUser);
-                    break;
-                case BAD_CREDENTIALS:
-                    loginInfo = new LoginInfo(InvalidCredentials);
+            if (returnCode == CORRECT) {
+                return pebbleTemplateRenderer.renderDefaultControllerTemplate(new HelloController(pebbleTemplateRenderer), new Object());
             }
+            loginInfo = new LoginInfo(returnCode.message);
             return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
         });
     }
