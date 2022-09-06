@@ -10,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.sql.Timestamp;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(ProductionDatabase.class)
 class UserStorageTest {
@@ -25,7 +24,7 @@ class UserStorageTest {
 
     @BeforeEach
     public void initialize(DatabaseRunner dbRunner) {
-        dbRunner.insert("INSERT INTO AppUser (username, password, nickname, avatar, avatar_color, bad_login_count, time_timestamp)" +
+        dbRunner.insert("INSERT INTO AppUser (username, password, nickname, avatar, avatar_color, bad_login_count, bad_login_timestamp)" +
                 " VALUES('john@gmail.com', 12345, null, null, null, null, null)");
     }
 
@@ -55,15 +54,14 @@ class UserStorageTest {
 
     }
 
-    /*
-    *@Test
-    public void setBadLoginTimestamp_whenWrongOrNoneTimestamp_thenFalse() {
-        userStorage.setBadLoginTimestamp(dbRunner, "john@doe.com", new Timestamp());
-        assertThat(userStorage.getBadLoginTimestamp(dbRunner, "john@doe.com"))
-                .isEqualTo(true);
-        }
+    @Test
+    public void setBadLoginTimestamp_whenTimeStampPassed_thenCorrenctTimestampIsRetrievedFromDB() {
+        Timestamp actualTimeStamp = new Timestamp(System.currentTimeMillis());
+        userStorage.setBadLoginTimestamp(dbRunner, "john@gmail.com", actualTimeStamp);
+        assertThat(userStorage.getBadLoginTimestamp(dbRunner, "john@gmail.com"))
+                .isEqualTo(actualTimeStamp);
+    }
 
-     */
     @Test
     public void incrementBadLoginCount_counter_then_default() {
         assertThat(userStorage.getBadLoginCount(dbRunner,"john@gmail.com")).isEqualTo(0);

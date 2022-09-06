@@ -13,7 +13,7 @@ public class UserStorage {
 
     public void createUser(DatabaseRunner dbRunner, String username, String hash) {
         try {
-            dbRunner.insert("INSERT INTO AppUser (username, password, nickname, avatar, avatar_color, bad_login_count, time_timestamp)" +
+            dbRunner.insert("INSERT INTO AppUser (username, password, nickname, avatar, avatar_color, bad_login_count, bad_login_timestamp)" +
                     " VALUES(?, ?, null, null, null, null, null)", username, hash);
         } catch (DatabaseRunner.DatabaseAccessException e) {
             if (e.sqlErrorCode == 23505) {
@@ -44,11 +44,14 @@ public class UserStorage {
     }
 
     public void setBadLoginTimestamp(DatabaseRunner dbRunner, String username, Timestamp timestamp) {
-
+        dbRunner.update("UPDATE AppUser SET bad_login_timestamp = ? WHERE username= ?",
+                timestamp, username);
     }
 
     public Timestamp getBadLoginTimestamp(DatabaseRunner dbRunner, String username) {
-        return null;
+        return dbRunner.select("SELECT bad_login_timestamp FROM AppUser WHERE username= ?",
+                (r) -> r.getTimestamp(1),
+                username).orElseThrow();
     }
 
     public static class DuplicateUserException extends RuntimeException {
