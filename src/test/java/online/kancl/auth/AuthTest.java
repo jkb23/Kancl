@@ -4,6 +4,7 @@ import online.kancl.db.DatabaseRunner;
 import online.kancl.db.UserStorage;
 import online.kancl.test.ProductionDatabase;
 import online.kancl.util.HashUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -17,18 +18,22 @@ class AuthTest {
         this.dbRunner = dbRunner;
     }
 
+    @BeforeEach
+    void setUp() {
+        UserStorage.createUser(dbRunner, "username", HashUtils.sha256Hash("password"));
+    }
+
     @Test
     void credentialsTest() {
         Auth auth = new Auth();
-        UserStorage.createUser(dbRunner, "correct", HashUtils.sha256Hash("correct"));
 
-        assertThat(auth.checkCredentialsWithBruteForcePrevention(dbRunner, "correct", "correct"))
+        assertThat(auth.checkCredentialsWithBruteForcePrevention(dbRunner, "username", "password"))
                 .isEqualTo(AuthReturnCode.CORRECT);
 
-        assertThat(auth.checkCredentialsWithBruteForcePrevention(dbRunner, "incorrect", "correct"))
+        assertThat(auth.checkCredentialsWithBruteForcePrevention(dbRunner, "incorrect", "password"))
               .isEqualTo(AuthReturnCode.BAD_CREDENTIALS);
 
-        assertThat(auth.checkCredentialsWithBruteForcePrevention(dbRunner, "correct", "incorrect"))
+        assertThat(auth.checkCredentialsWithBruteForcePrevention(dbRunner, "username", "incorrect"))
                .isEqualTo(AuthReturnCode.BAD_CREDENTIALS);
 
         assertThat(auth.checkCredentialsWithBruteForcePrevention(dbRunner, "incorrect", "incorrect"))

@@ -5,7 +5,7 @@ import online.kancl.db.UserStorage;
 import online.kancl.util.HashUtils;
 
 import java.sql.Timestamp;
-import java.util.Objects;
+import java.util.Optional;
 
 import static online.kancl.auth.AuthReturnCode.*;
 
@@ -53,15 +53,15 @@ public class Auth {
     }
 
     private boolean isBlocked(DatabaseRunner dbRunner, String username) {
-        if(UserStorage.getBadLoginTimestamp(dbRunner, username) == null)
+        Optional<Timestamp> badLoginTimestamp = UserStorage.getBadLoginTimestamp(dbRunner, username);
+
+        if(badLoginTimestamp.isEmpty())
         {
             return false;
         }
         else
         {
-            Timestamp badLogin = UserStorage.getBadLoginTimestamp(dbRunner, username);
-
-            Timestamp check = new Timestamp(badLogin.getTime() + BLOCKED_DURATION_IN_MILLISECONDS);
+            Timestamp check = new Timestamp(badLoginTimestamp.get().getTime() + BLOCKED_DURATION_IN_MILLISECONDS);
 
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 

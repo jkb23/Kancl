@@ -1,6 +1,7 @@
 package online.kancl.db;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 
 public class UserStorage {
 
@@ -48,10 +49,10 @@ public class UserStorage {
                 timestamp, username);
     }
 
-    public static Timestamp getBadLoginTimestamp(DatabaseRunner dbRunner, String username) {
+    public static Optional<Timestamp> getBadLoginTimestamp(DatabaseRunner dbRunner, String username) {
         return dbRunner.select("SELECT bad_login_timestamp FROM AppUser WHERE username= ?",
                 (r) -> r.getTimestamp(1),
-                username).orElseThrow();
+                username);
     }
 
     public static class DuplicateUserException extends RuntimeException {
