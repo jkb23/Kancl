@@ -1,6 +1,7 @@
 package online.kancl.page.login;
 
 import online.kancl.db.TransactionJobRunner;
+import online.kancl.page.hello.HelloController;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
@@ -10,6 +11,10 @@ public class LoginController extends Controller {
 
     private final PebbleTemplateRenderer pebbleTemplateRenderer;
     private final TransactionJobRunner transactionJobRunner;
+    private LoginInfo loginInfo;
+
+    private final String InvalidCredentials = "Invalid credentials, try again";
+    private final String BlockUser = "You was blocked, try again later";
 
     public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner) {
         this.pebbleTemplateRenderer = pebbleTemplateRenderer;
@@ -18,7 +23,9 @@ public class LoginController extends Controller {
 
     @Override
     public String get(Request request, Response response) {
-        return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, new Object());
+        loginInfo = new LoginInfo("");
+
+        return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
     }
 
     @Override
@@ -28,12 +35,14 @@ public class LoginController extends Controller {
                     request.queryParams("username"),
                     request.queryParams("password"));
 
-            if (!isNotNull(user))
-            {
-                //TODO show error massage
-            }
+            assert !isNotNull(user);
+
             //TODO here authenticate user
-            return "";
+            loginInfo = new LoginInfo(InvalidCredentials);
+            loginInfo = new LoginInfo(BlockUser);
+            return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
+
+            //return pebbleTemplateRenderer.renderDefaultControllerTemplate(new HelloController(pebbleTemplateRenderer), new Object());
         });
     }
 

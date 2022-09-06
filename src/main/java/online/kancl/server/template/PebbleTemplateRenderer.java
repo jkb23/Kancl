@@ -22,6 +22,10 @@ public class PebbleTemplateRenderer {
         return renderTemplate(templateName, context);
     }
 
+    /**
+     * @param context The context name (key of the HashMap) is the name of the given class with the first
+     *                letter lowercase (e.g. class: LoginInfo -> context name: loginInfo)
+     */
     public String renderTemplate(String templateName, Object context) {
         try {
             var stringWriter = new StringWriter();

@@ -1,4 +1,4 @@
-{# @pebvariable name="comments" type="online.kancl.page.comments.CommentsController.Comments" #}
+{# @pebvariable name="loginInfo" type="online.kancl.page.login.LoginInfo" #}
 
 {% extends "../BaseHtml.peb" %}
 
@@ -52,10 +52,12 @@
               <div class="text-center text-lg-start mt-4 pt-2">
                 <button type="submit" id="submit" class="btn btn-primary btn-lg"
                   style="padding-left: 2.5rem; padding-right: 2.5rem;" disabled>Login</button>
+
+                <p class="invalid_credentials small fw-bold mt-2 pt-1 mb-0">{{loginInfo.getErrorMessage()}}</p>
+
                 <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
                     class="link-danger">Register</a></p>
               </div>
-
             </form>
           </div>
         </div>
