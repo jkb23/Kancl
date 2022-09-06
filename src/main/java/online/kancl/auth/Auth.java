@@ -42,8 +42,8 @@ public class Auth {
 
     private void preventBruteForce(DatabaseRunner databaseRunner, String username) {
         UserStorage.incrementBadLoginCount(databaseRunner, username);
-        int badLoginCount = UserStorage.getBadLoginCount(databaseRunner, username);
-        if (badLoginCount >= 5) {
+        Optional<Integer> badLoginCount = UserStorage.getBadLoginCount(databaseRunner, username);
+        if (badLoginCount.isPresent() && badLoginCount.get() >= 5) {
             blockUser(databaseRunner, username);
         }
     }

@@ -62,13 +62,13 @@ class UserStorageTest {
 
     @Test
     public void incrementBadLoginCount_counter_then_default() {
-        assertThat(UserStorage.getBadLoginCount(dbRunner,"john@gmail.com")).isEqualTo(0);
+        assertThat(UserStorage.getBadLoginCount(dbRunner,"john@gmail.com")).contains(0);
     }
 
     @Test
     public void incrementBadLoginCount_to_one() {
         UserStorage.incrementBadLoginCount(dbRunner,"john@gmail.com");
-        assertThat(UserStorage.getBadLoginCount(dbRunner,"john@gmail.com")).isEqualTo(1);
+        assertThat(UserStorage.getBadLoginCount(dbRunner,"john@gmail.com")).contains(1);
     }
 
     @Test
@@ -76,13 +76,13 @@ class UserStorageTest {
         for (int i = 0; i < 5; i++) {
             UserStorage.incrementBadLoginCount(dbRunner,"john@gmail.com");
         }
-        assertThat(UserStorage.getBadLoginCount(dbRunner,"john@gmail.com")).isEqualTo(5);
+        assertThat(UserStorage.getBadLoginCount(dbRunner,"john@gmail.com")).contains(5);
     }
 
     @Test
     public void nullBadLoginCount_equal_null() {
         UserStorage.nullBadLoginCount(dbRunner, "john@gmail.com");
-        assertThat(UserStorage.getBadLoginCount(dbRunner,"john@gmail.com")).isEqualTo(0);
+        assertThat(UserStorage.getBadLoginCount(dbRunner,"john@gmail.com")).contains(0);
     }
 
 }
