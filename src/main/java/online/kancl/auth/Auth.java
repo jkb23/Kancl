@@ -31,7 +31,7 @@ public class Auth {
             clearBadLoginCount(dbRunner, username);
             return CORRECT;
         } else {
-            //preventBruteForce(dbRunner, username);
+            preventBruteForce(dbRunner, username);
             return BAD_CREDENTIALS;
         }
     }
