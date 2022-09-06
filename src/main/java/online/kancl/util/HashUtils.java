@@ -7,9 +7,13 @@ import java.security.NoSuchAlgorithmException;
 
 public final class HashUtils {
 
-    public static String sha256Hash(String original) throws NoSuchAlgorithmException {
-        MessageDigest hashCalculator = MessageDigest.getInstance("SHA-256");
-        return toHexString(hashCalculator.digest(original.getBytes(StandardCharsets.UTF_8)));
+    public static String sha256Hash(String original) {
+        try {
+            MessageDigest hashCalculator = MessageDigest.getInstance("SHA-256");
+            return toHexString(hashCalculator.digest(original.getBytes(StandardCharsets.UTF_8)));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static String toHexString(byte[] hash)
