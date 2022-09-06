@@ -15,6 +15,7 @@ public class LoginController extends Controller {
     private final TransactionJobRunner transactionJobRunner;
     private LoginInfo loginInfo;
 
+    private Auth auth;
     private final String InvalidCredentials = "Invalid credentials, try again";
     private final String BlockUser = "You was blocked, try again later";
 
@@ -22,6 +23,7 @@ public class LoginController extends Controller {
     public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner) {
         this.pebbleTemplateRenderer = pebbleTemplateRenderer;
         this.transactionJobRunner = transactionJobRunner;
+        this.auth = new Auth();
     }
 
     @Override
@@ -37,8 +39,8 @@ public class LoginController extends Controller {
                     request.queryParams("username"),
                     request.queryParams("password"));
 
-            var auth = new Auth();
-            AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(transactionJobRunner.runInTransaction((dbRunner), user.username(), user.password());
+            //TODO check after merge
+            AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(transactionJobRunner.runInTransaction(dbRunner, user.username(), user.password());
             switch(returnCode) {
                 case CORRECT:
                     return pebbleTemplateRenderer.renderDefaultControllerTemplate(new HelloController(pebbleTemplateRenderer), new Object());

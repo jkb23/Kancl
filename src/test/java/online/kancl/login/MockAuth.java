@@ -1,21 +1,16 @@
 package online.kancl.login;
 
 import online.kancl.auth.AuthReturnCode;
-import online.kancl.page.users.UserStorage;
-import online.kancl.util.HashUtils;
-
-
-import java.sql.Timestamp;
-
 import static online.kancl.auth.AuthReturnCode.*;
+import static online.kancl.login.loginTestEnum.*;
 
 public class MockAuth {
     public AuthReturnCode checkCredentials(String username, String password){
-        if (username == "username" && password == "password") {
+        if (username.equals(correct_username) && password.equals(correct_password)) {
             return CORRECT;
-        } else if (username == "blocked_username" && password == "password") {
+        } else if (username.equals(blocked_username) && password.equals(correct_password)) {
             return BLOCKED_USER;
-        } else if (username == username && password == "wrong_password") {
+        } else if (username.equals(correct_username) && password.equals(wrong_password)) {
             return BAD_CREDENTIALS;
         }
         assert false;
