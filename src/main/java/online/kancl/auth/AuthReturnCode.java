@@ -1,7 +1,13 @@
 package online.kancl.auth;
 
 public enum AuthReturnCode {
-    CORRECT,
-    BAD_CREDENTIALS,
-    BLOCKED_USER,
+    CORRECT("Login successful"),
+    BAD_CREDENTIALS("Invalid credentials"),
+    BLOCKED_USER("Too many unsuccessful attempts. Try again later.");
+
+    public final String message;
+
+    AuthReturnCode(String message) {
+        this.message = message;
+    }
 }
