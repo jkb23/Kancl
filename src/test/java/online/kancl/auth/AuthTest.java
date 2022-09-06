@@ -44,13 +44,12 @@ class AuthTest {
     void blockTest() {
         Auth auth = new Auth();
 
-        for (int i = 0; i < 5; i++){
-            assertThat(auth.checkCredentialsWithBruteForcePrevention(dbRunner, "block", "block"))
+        for (int i = 0; i < 5; i++) {
+            assertThat(auth.checkCredentialsWithBruteForcePrevention(dbRunner, "username", "block"))
                     .isEqualTo(AuthReturnCode.BAD_CREDENTIALS);
         }
 
-        assertThat(auth.checkCredentialsWithBruteForcePrevention(dbRunner, "block", "block"))
+        assertThat(auth.checkCredentialsWithBruteForcePrevention(dbRunner, "username", "block"))
                 .isEqualTo(AuthReturnCode.BLOCKED_USER);
     }
-
 }
