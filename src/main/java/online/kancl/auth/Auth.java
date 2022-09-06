@@ -33,12 +33,16 @@ public class Auth {
     }
 
     private void preventBruteForce(String username) {
-        int badLoginCount = UserStorage.getBadLoginCnt(username) + 1;
-
-        UserStorage.setBadLoginCnt(username, badLoginCount);
+        int badLoginCount = icrementBadLoginCount(username);
         if (badLoginCount >= 5) {
             blockUser(username);
         }
+    }
+
+    private static int icrementBadLoginCount(String username) {
+        int badLoginCount = UserStorage.getBadLoginCnt(username) + 1;
+        UserStorage.setBadLoginCnt(username, badLoginCount);
+        return badLoginCount;
     }
 
     private void blockUser(String username) {
