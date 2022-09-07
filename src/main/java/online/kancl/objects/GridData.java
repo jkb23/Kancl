@@ -8,6 +8,7 @@ public class GridData {
     List<Wall> walls;
 
     public GridData() {
+        this.walls = new ArrayList<>();
         this.users = new ArrayList<>();
     }
 
