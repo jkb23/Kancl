@@ -3,7 +3,7 @@ const container = document.getElementById('container');
 let user = document.getElementById("user");
 const array = [];
 obstacles = [][2];
-let gridData;
+let tableData;
 
 function check_obstacles(x,y)
 {
@@ -91,5 +91,5 @@ function fetchOfficeState() {
 
 function refreshOfficeState(data) {
     console.log(data);
-    gridData = JSON.parse(data);
+    tableData = JSON.parse(data);
 }
