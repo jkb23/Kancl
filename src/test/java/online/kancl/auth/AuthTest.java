@@ -40,7 +40,7 @@ class AuthTest {
                 .isEqualTo(AuthReturnCode.BAD_CREDENTIALS);
     }
 
-    @Test
+   @Test
     void blockTest() {
         Auth auth = new Auth();
 
