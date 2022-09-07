@@ -30,12 +30,12 @@ function iterateOverGrid(fn) {
 function createGrid() {
     iterateOverGrid((x, y) => {
         const square = document.createElement('div');
-        square.classList.add("item");
-        container.appendChild(square);
+        square.classList.add("item");       
+        container.appendChild(square);  
 
         if (y == 0)
             grid.push([]);
-
+        
         grid[x].push(square);
     });
 }
@@ -45,13 +45,21 @@ createGrid();
 function addUserToDefaultCoordinates() {
     const defaultCoordinates =  grid[12][17]
     const user = document.createElement('div');
-    user.classList.add("user");
+    user.classList.add("user"); 
     user.id = "user";
-    defaultCoordinates.appendChild(user);
+    defaultCoordinates.appendChild(user);  
 }
 
 console.log(grid);
 
+function addWalls(wall) {
+    console.log(wall.length)
+    for(let i = 0; i < wall.length; i++) {
+        console.log(wall[i]);
+    }
+}
+
 window.addEventListener('load', () => {
     addUserToDefaultCoordinates()
+    addWalls([[4,0][4,1]])
 })
