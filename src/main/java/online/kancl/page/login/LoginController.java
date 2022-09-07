@@ -43,16 +43,9 @@ public class LoginController extends Controller {
     String authenticate(Response response, DatabaseRunner dbRunner, Login user) {
         AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(dbRunner, user.username(), user.password());
         if (returnCode == CORRECT) {
-            response.redirect("/");
+            response.redirect("/app");
         }
         loginInfo.setErrorMessage(returnCode.message);
         return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
-            AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(dbRunner, user.username(), user.password());
-            if (returnCode == CORRECT) {
-                response.redirect("/app");
-            }
-            loginInfo = new LoginInfo(returnCode.message);
-            return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
-        });
     }
 }

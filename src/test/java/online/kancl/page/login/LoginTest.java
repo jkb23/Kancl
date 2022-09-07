@@ -45,7 +45,7 @@ public class LoginTest {
         tested.authenticate(response, databaseRunner, new Login(correct_username, correct_password ));
 
         new Verifications() {{
-            response.redirect("/");
+            response.redirect("/app");
             times = 1;
         }};
     }

@@ -4,7 +4,6 @@ import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
 import online.kancl.auth.Auth;
 import online.kancl.objects.GridData;
-import online.kancl.objects.User;
 import online.kancl.page.app.AppController;
 import online.kancl.page.comments.CommentsController;
 import online.kancl.page.hello.HelloController;
@@ -53,7 +52,6 @@ public class Main {
         webServer.addRoute("/recreateDb", new RecreateDbController(schemaCreator));
         webServer.addRoute("/hello", new HelloController(pebbleTemplateRenderer));
         webServer.addRoute("/login", new LoginController(pebbleTemplateRenderer, transactionJobRunner, new Auth(), new LoginInfo()));
-        webServer.addRoute("/login", new LoginController(pebbleTemplateRenderer, transactionJobRunner));
         webServer.addRoute("/app", new AppController(gridData));
         webServer.start();
 
