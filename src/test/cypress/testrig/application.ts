@@ -64,12 +64,10 @@ export function checkVisibility() {
 
 export function checkNotificationCredentials() {
     cy.get('.invalid_credentials').contains('Invalid credentials')
-    //FIXME
 }
 
 export function checkLockoutCredentials() {
     cy.get('.invalid_credentials').contains('Too many unsuccessful attempts. Try again later.')
-    //FIXME
 }
 
 export function checkInvalidCredentialsFalse() {
