@@ -14,13 +14,18 @@ public class Auth {
 
     public static final int BLOCKED_DURATION_IN_MILLISECONDS = 5 * 60 * 1000;
 
-    public AuthReturnCode checkCredentialsWithBruteForcePrevention(DatabaseRunner dbRunner,
-                                                                   String username, String password) {
+    private final DatabaseRunner dbRunner;
+
+    public Auth(DatabaseRunner dbRunner) {
+        this.dbRunner = dbRunner;
+    }
+
+    public AuthReturnCode checkCredentialsWithBruteForcePrevention(String username, String password) {
         if (username == null || password == null) {
             return BAD_CREDENTIALS;
         }
 
-        if (isBlocked(dbRunner, username)) {
+        if (isBlocked(username)) {
             return BLOCKED_USER;
         }
 
@@ -28,31 +33,31 @@ public class Auth {
         boolean validCredentials = UserStorage.findUser(dbRunner, username, hashedPassword);
 
         if (validCredentials) {
-            clearBadLoginCount(dbRunner, username);
+            clearBadLoginCount(username);
             return CORRECT;
         } else {
-            preventBruteForce(dbRunner, username);
+            preventBruteForce(username);
             return BAD_CREDENTIALS;
         }
     }
 
-    private void clearBadLoginCount(DatabaseRunner dbRunner, String username) {
+    private void clearBadLoginCount(String username) {
         UserStorage.nullBadLoginCount(dbRunner, username);
     }
 
-    private void preventBruteForce(DatabaseRunner databaseRunner, String username) {
-        UserStorage.incrementBadLoginCount(databaseRunner, username);
-        Optional<Integer> badLoginCount = UserStorage.getBadLoginCount(databaseRunner, username);
+    private void preventBruteForce(String username) {
+        UserStorage.incrementBadLoginCount(dbRunner, username);
+        Optional<Integer> badLoginCount = UserStorage.getBadLoginCount(dbRunner, username);
         if (badLoginCount.isPresent() && badLoginCount.get() >= 5) {
-            blockUser(databaseRunner, username);
+            blockUser(username);
         }
     }
 
-    private void blockUser(DatabaseRunner dbRunner, String username) {
+    private void blockUser(String username) {
         UserStorage.setBadLoginTimestamp(dbRunner, username, new Timestamp(System.currentTimeMillis()));
     }
 
-    private boolean isBlocked(DatabaseRunner dbRunner, String username) {
+    private boolean isBlocked(String username) {
         Optional<Timestamp> badLoginTimestamp = UserStorage.getBadLoginTimestamp(dbRunner, username);
 
         if (badLoginTimestamp.isEmpty()) {
@@ -64,6 +69,5 @@ public class Auth {
 
             return currentTime.before(check);
         }
-
     }
 }

@@ -13,9 +13,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(ProductionDatabase.class)
 class AuthTest {
     private final DatabaseRunner dbRunner;
+    private final Auth auth;
 
     public AuthTest(DatabaseRunner dbRunner) {
         this.dbRunner = dbRunner;
+        this.auth = new Auth(dbRunner);
     }
 
     @BeforeEach
@@ -25,31 +27,27 @@ class AuthTest {
 
     @Test
     void credentialsTest() {
-        Auth auth = new Auth();
-
-        assertThat(auth.checkCredentialsWithBruteForcePrevention(dbRunner, "username", "password"))
+        assertThat(auth.checkCredentialsWithBruteForcePrevention("username", "password"))
                 .isEqualTo(AuthReturnCode.CORRECT);
 
-        assertThat(auth.checkCredentialsWithBruteForcePrevention(dbRunner, "incorrect", "password"))
+        assertThat(auth.checkCredentialsWithBruteForcePrevention("incorrect", "password"))
               .isEqualTo(AuthReturnCode.BAD_CREDENTIALS);
 
-        assertThat(auth.checkCredentialsWithBruteForcePrevention(dbRunner, "username", "incorrect"))
+        assertThat(auth.checkCredentialsWithBruteForcePrevention("username", "incorrect"))
                .isEqualTo(AuthReturnCode.BAD_CREDENTIALS);
 
-        assertThat(auth.checkCredentialsWithBruteForcePrevention(dbRunner, "incorrect", "incorrect"))
+        assertThat(auth.checkCredentialsWithBruteForcePrevention("incorrect", "incorrect"))
                 .isEqualTo(AuthReturnCode.BAD_CREDENTIALS);
     }
 
    @Test
     void blockTest() {
-        Auth auth = new Auth();
-
         for (int i = 0; i < 5; i++) {
-            assertThat(auth.checkCredentialsWithBruteForcePrevention(dbRunner, "username", "block"))
+            assertThat(auth.checkCredentialsWithBruteForcePrevention("username", "block"))
                     .isEqualTo(AuthReturnCode.BAD_CREDENTIALS);
         }
 
-        assertThat(auth.checkCredentialsWithBruteForcePrevention(dbRunner, "username", "block"))
+        assertThat(auth.checkCredentialsWithBruteForcePrevention("username", "block"))
                 .isEqualTo(AuthReturnCode.BLOCKED_USER);
     }
 }

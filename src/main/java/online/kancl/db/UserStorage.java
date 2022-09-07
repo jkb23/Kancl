@@ -5,6 +5,10 @@ import java.util.Optional;
 
 public class UserStorage {
 
+    private UserStorage() {
+        throw new AssertionError("You shall not pass!!");
+    }
+
     public static boolean findUser(DatabaseRunner dbRunner, String username, String hash) {
         int isFound = dbRunner.selectInt(
                 "SELECT COUNT(*) FROM AppUser WHERE username= ? AND password = ?",
