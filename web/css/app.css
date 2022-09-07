@@ -31,3 +31,7 @@ body {
     position: absolute;
     margin: 5px;
 }
+
+.wall {
+    background-color: brown;
+}
