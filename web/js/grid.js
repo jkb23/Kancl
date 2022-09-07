@@ -1,3 +1,5 @@
+const grid = [];
+const container = document.getElementById('container');
 let user = document.getElementById("user");
 const array = [];
 obstacles = [][2];
@@ -17,17 +19,39 @@ function check_obstacles(x,y)
     return true;
 }
 
-let container = document.getElementById('container');
-for (let i = 0; i < 468; i++) {
-    var square = {};
-    square.x = i%26;
-    square.y = i%18;
-    array.push(square);
-    let element = document.createElement('div');
-    element.classList.add("item");       
-    container.appendChild(element);
-  
-};
+function iterateOverGrid(fn) {
+    for (let y = 0; y < 18; y++) {
+        for (let x = 0; x < 26; x++) {
+            fn(x, y);
+        }
+    }
+}
 
+function createGrid() {
+    iterateOverGrid((x, y) => {
+        const square = document.createElement('div');
+        square.classList.add("item");
+        container.appendChild(square);
 
-console.log(array)
+        if (y == 0)
+            grid.push([]);
+
+        grid[x].push(square);
+    });
+}
+
+createGrid();
+
+function addUserToDefaultCoordinates() {
+    const defaultCoordinates =  grid[12][17]
+    const user = document.createElement('div');
+    user.classList.add("user");
+    user.id = "user";
+    defaultCoordinates.appendChild(user);
+}
+
+console.log(grid);
+
+window.addEventListener('load', () => {
+    addUserToDefaultCoordinates()
+})
