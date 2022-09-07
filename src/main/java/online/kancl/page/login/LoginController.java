@@ -17,12 +17,9 @@ public class LoginController extends Controller {
     private final TransactionJobRunner transactionJobRunner;
     private LoginInfo loginInfo;
 
-    private final Auth auth;
-
     public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner) {
         this.pebbleTemplateRenderer = pebbleTemplateRenderer;
         this.transactionJobRunner = transactionJobRunner;
-        this.auth = new Auth();
     }
 
     @Override
@@ -37,7 +34,8 @@ public class LoginController extends Controller {
             var user = new Login(
                     request.queryParams("username"),
                     request.queryParams("password"));
-            AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(dbRunner, user.username(), user.password());
+            var auth = new Auth(dbRunner);
+            AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(user.username(), user.password());
             if (returnCode == CORRECT) {
                 response.redirect("/");
                 request.session(true);
