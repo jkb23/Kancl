@@ -15,7 +15,7 @@ public class LoginController extends Controller {
 
     private final PebbleTemplateRenderer pebbleTemplateRenderer;
     private final TransactionJobRunner transactionJobRunner;
-    private final LoginInfo loginInfo;
+    private LoginInfo loginInfo;
     private final Auth auth;
 
     public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner, Auth auth, LoginInfo loginInfo) {
@@ -27,7 +27,7 @@ public class LoginController extends Controller {
 
     @Override
     public String get(Request request, Response response) {
-        loginInfo = new LoginInfo("");
+        loginInfo = new LoginInfo();
         return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
     }
 
