@@ -6,9 +6,10 @@ import online.kancl.server.Controller;
 import spark.Request;
 import spark.Response;
 
+import javax.json.Json;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
 
-import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 
 public class AppController extends Controller {
@@ -29,14 +30,18 @@ public class AppController extends Controller {
     }
 
     private JsonArrayBuilder createUsersJsonArray() {
-        JsonArrayBuilder usersBuilder = createArrayBuilder();
+
+        JsonArrayBuilder users = Json.createArrayBuilder();
 
         for (User user : gridData.getUsers()) {
-            usersBuilder.add(user.username);
-            usersBuilder.add(user.getX());
+            JsonObjectBuilder userBuilder = Json.createObjectBuilder();
+            userBuilder.add("username", user.getUsername());
+            userBuilder.add("x", user.getX());
+            userBuilder.add("y", user.getY());
+            users.add(userBuilder);
         }
 
-        return usersBuilder;
+        return users;
     }
 
     @Override

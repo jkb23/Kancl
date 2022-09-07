@@ -4,12 +4,12 @@ import online.kancl.objects.GridData;
 import online.kancl.objects.User;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class AppControllerTest {
 
     @Test
-    void jsonTest(){
+    void correctJsonEncapsulation(){
         var gridData = new GridData();
 
         User user1 = new User("Jozko");
@@ -20,7 +20,8 @@ class AppControllerTest {
         gridData.addUser(user2);
 
         AppController appController = new AppController(gridData);
-        System.out.println(appController.get(null, null));
+        assertThat(appController.get(null, null))
+                .isEqualTo("{\"users\":[{\"username\":\"Jozko\",\"x\":795,\"y\":800}" +
+                        ",{\"username\":\"Ferko\",\"x\":800,\"y\":805}]}");
     }
-
 }

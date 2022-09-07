@@ -19,6 +19,10 @@ public class User {
         return y;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public void moveRight(){
         this.x += 5;
     }
