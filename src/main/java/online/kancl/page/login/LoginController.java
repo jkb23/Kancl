@@ -38,7 +38,7 @@ public class LoginController extends Controller {
                     request.queryParams("password"));
             AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(dbRunner, user.username(), user.password());
             if (returnCode == CORRECT) {
-                response.redirect("/");
+                response.redirect("/app");
             }
             loginInfo = new LoginInfo(returnCode.message);
             return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
