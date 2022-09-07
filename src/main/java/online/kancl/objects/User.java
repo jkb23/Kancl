@@ -1,19 +1,22 @@
 package online.kancl.objects;
 
-import online.kancl.db.DatabaseRunner;
-import online.kancl.db.UserStorage;
-
 public class User {
     private int x;
     private int y;
-    public final int id;
     public final String username;
 
-    public User(DatabaseRunner dbRunner, String username) {
+    public User(String username) {
         this.y = 800;
         this.x = 800;
         this.username = username;
-        this.id = UserStorage.getUserIdFromUsername(dbRunner, username);
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     public void moveRight(){

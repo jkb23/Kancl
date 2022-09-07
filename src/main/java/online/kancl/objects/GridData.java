@@ -18,4 +18,7 @@ public class GridData {
         users.removeIf(user -> user.username.equals(username));
     }
 
+    public List<User> getUsers() {
+        return users;
+    }
 }
