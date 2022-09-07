@@ -2,6 +2,7 @@ package online.kancl;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
+import online.kancl.auth.Auth;
 import online.kancl.page.comments.CommentsController;
 import online.kancl.page.hello.HelloController;
 import online.kancl.page.login.LoginController;
@@ -46,7 +47,7 @@ public class Main {
         webServer.addRoute("/zoomhook", new ZoomHookController(meetings));
         webServer.addRoute("/recreateDb", new RecreateDbController(schemaCreator));
         webServer.addRoute("/hello", new HelloController(pebbleTemplateRenderer));
-        webServer.addRoute("/login", new LoginController(pebbleTemplateRenderer, transactionJobRunner));
+        webServer.addRoute("/login", new LoginController(pebbleTemplateRenderer, transactionJobRunner, new Auth()));
         webServer.start();
 
         System.out.println("Server running");

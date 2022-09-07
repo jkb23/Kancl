@@ -1,5 +1,6 @@
 package online.kancl.page.login;
 
+import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
@@ -18,10 +19,10 @@ public class LoginController extends Controller {
 
     private final Auth auth;
 
-    public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner) {
+    public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner, Auth auth) {
         this.pebbleTemplateRenderer = pebbleTemplateRenderer;
         this.transactionJobRunner = transactionJobRunner;
-        this.auth = new Auth();
+        this.auth = auth;
     }
 
     @Override
@@ -36,12 +37,16 @@ public class LoginController extends Controller {
             var user = new Login(
                     request.queryParams("username"),
                     request.queryParams("password"));
-            AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(dbRunner, user.username(), user.password());
-            if (returnCode == CORRECT) {
-                response.redirect("/");
-            }
-            loginInfo = new LoginInfo(returnCode.message);
-            return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
+            return authenticate(response, dbRunner, user);
         });
+    }
+
+    String authenticate(Response response, DatabaseRunner dbRunner, Login user) {
+        AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(dbRunner, user.username(), user.password());
+        if (returnCode == CORRECT) {
+            response.redirect("/");
+        }
+        loginInfo = new LoginInfo(returnCode.message);
+        return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
     }
 }
