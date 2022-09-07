@@ -1,6 +1,5 @@
 package online.kancl.auth;
 
-import online.kancl.db.DatabaseRunner;
 import online.kancl.db.UserStorage;
 import online.kancl.util.HashUtils;
 
@@ -15,10 +14,8 @@ public class Auth {
     public static final int BLOCKED_DURATION_IN_MILLISECONDS = 5 * 60 * 1000;
     private UserStorage userStorage;
 
-    private final DatabaseRunner dbRunner;
-
-    public Auth(DatabaseRunner dbRunner) {
-        this.dbRunner = dbRunner;
+    public Auth(UserStorage userStorage) {
+        this.userStorage = userStorage;
     }
 
     public AuthReturnCode checkCredentialsWithBruteForcePrevention(String username, String password) {
@@ -31,7 +28,7 @@ public class Auth {
         }
 
         String hashedPassword = HashUtils.sha256Hash(password);
-        boolean validCredentials = userStorage.findUser(dbRunner, username, hashedPassword);
+        boolean validCredentials = userStorage.findUser(username, hashedPassword);
 
         if (validCredentials) {
             clearBadLoginCount(username);
@@ -43,23 +40,23 @@ public class Auth {
     }
 
     private void clearBadLoginCount(String username) {
-        userStorage.nullBadLoginCount(dbRunner, username);
+        userStorage.nullBadLoginCount(username);
     }
 
     private void preventBruteForce(String username) {
-        userStorage.incrementBadLoginCount(dbRunner, username);
-        Optional<Integer> badLoginCount = userStorage.getBadLoginCount(dbRunner, username);
+        userStorage.incrementBadLoginCount(username);
+        Optional<Integer> badLoginCount = userStorage.getBadLoginCount(username);
         if (badLoginCount.isPresent() && badLoginCount.get() >= 5) {
             blockUser(username);
         }
     }
 
     private void blockUser(String username) {
-        userStorage.setBadLoginTimestamp(dbRunner, username, new Timestamp(System.currentTimeMillis()));
+        userStorage.setBadLoginTimestamp(username, new Timestamp(System.currentTimeMillis()));
     }
 
     private boolean isBlocked(String username) {
-        Optional<Timestamp> badLoginTimestamp = userStorage.getBadLoginTimestamp(dbRunner, username);
+        Optional<Timestamp> badLoginTimestamp = userStorage.getBadLoginTimestamp(username);
 
         if (badLoginTimestamp.isEmpty()) {
             return false;

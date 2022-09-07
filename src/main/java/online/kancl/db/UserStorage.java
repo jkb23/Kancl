@@ -5,11 +5,13 @@ import java.util.Optional;
 
 public class UserStorage {
 
-    public UserStorage(DatabaseRunner dbRunner) {
+    private final DatabaseRunner dbRunner;
 
+    public UserStorage(DatabaseRunner dbRunner) {
+        this.dbRunner = dbRunner;
     }
 
-    public boolean findUser(DatabaseRunner dbRunner, String username, String hash) {
+    public boolean findUser(String username, String hash) {
         int isFound = dbRunner.selectInt(
                 "SELECT COUNT(*) FROM AppUser WHERE username= ? AND password = ?",
                 username, hash);
@@ -29,27 +31,27 @@ public class UserStorage {
         }
     }
 
-    public Optional<Integer> getBadLoginCount(DatabaseRunner dbRunner, String username) {
+    public Optional<Integer> getBadLoginCount(String username) {
         return dbRunner.select("SELECT bad_login_count FROM AppUser WHERE username= ?",
                 (r) -> r.getInt(1),
                 username);
     }
 
-    public void incrementBadLoginCount(DatabaseRunner dbRunner, String username) {
+    public void incrementBadLoginCount(String username) {
         dbRunner.update("UPDATE AppUser SET bad_login_count = nvl(bad_login_count, 0) + 1 WHERE username= ?", username);
     }
 
-    public void nullBadLoginCount(DatabaseRunner dbRunner, String username) {
+    public void nullBadLoginCount(String username) {
         dbRunner.update("UPDATE AppUser SET bad_login_count = 0 WHERE username= ?",
                 username);
     }
 
-    public void setBadLoginTimestamp(DatabaseRunner dbRunner, String username, Timestamp timestamp) {
+    public void setBadLoginTimestamp(String username, Timestamp timestamp) {
         dbRunner.update("UPDATE AppUser SET bad_login_timestamp = ? WHERE username= ?",
                 timestamp, username);
     }
 
-    public Optional<Timestamp> getBadLoginTimestamp(DatabaseRunner dbRunner, String username) {
+    public Optional<Timestamp> getBadLoginTimestamp(String username) {
         return dbRunner.select("SELECT bad_login_timestamp FROM AppUser WHERE username= ?",
                 (r) -> r.getTimestamp(1),
                 username);

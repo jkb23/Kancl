@@ -30,20 +30,20 @@ class UserStorageTest {
 
     @Test
     public void findUser_whenNonExistingUser_thenFalse() {
-        assertThat(userStorage.findUser(dbRunner, "bhjawbd@dabd.cy", "hgdhgawvd"))
+        assertThat(userStorage.findUser("bhjawbd@dabd.cy", "hgdhgawvd"))
                 .isEqualTo(false);
     }
 
     @Test
     public void findUser_whenExistingUser_thenTrue() {
-        assertThat(userStorage.findUser(dbRunner, "john@gmail.com", "12345"))
+        assertThat(userStorage.findUser("john@gmail.com", "12345"))
                 .isEqualTo(true);
     }
 
     @Test
     public void createUser_whenNonExistingUser_thenUserIsCreated() {
         userStorage.createUser(dbRunner, "daniel@gmail.com", "11111");
-        assertThat(userStorage.findUser(dbRunner, "daniel@gmail.com", "11111"))
+        assertThat(userStorage.findUser("daniel@gmail.com", "11111"))
                 .isEqualTo(true);
     }
 
@@ -57,34 +57,34 @@ class UserStorageTest {
     @Test
     public void setBadLoginTimestamp_whenTimeStampPassed_thenCorrectTimestampIsRetrievedFromDB() {
         Timestamp actualTimeStamp = new Timestamp(System.currentTimeMillis());
-        userStorage.setBadLoginTimestamp(dbRunner, "john@gmail.com", actualTimeStamp);
-        assertThat(userStorage.getBadLoginTimestamp(dbRunner, "john@gmail.com"))
+        userStorage.setBadLoginTimestamp("john@gmail.com", actualTimeStamp);
+        assertThat(userStorage.getBadLoginTimestamp("john@gmail.com"))
                 .contains(actualTimeStamp);
     }
 
     @Test
     public void incrementBadLoginCount_counter_then_default() {
-        assertThat(userStorage.getBadLoginCount(dbRunner,"john@gmail.com")).contains(0);
+        assertThat(userStorage.getBadLoginCount("john@gmail.com")).contains(0);
     }
 
     @Test
     public void incrementBadLoginCount_to_one() {
-        userStorage.incrementBadLoginCount(dbRunner,"john@gmail.com");
-        assertThat(userStorage.getBadLoginCount(dbRunner,"john@gmail.com")).contains(1);
+        userStorage.incrementBadLoginCount("john@gmail.com");
+        assertThat(userStorage.getBadLoginCount("john@gmail.com")).contains(1);
     }
 
     @Test
     public void  incrementBadLoginCount_to_five() {
         for (int i = 0; i < 5; i++) {
-            userStorage.incrementBadLoginCount(dbRunner,"john@gmail.com");
+            userStorage.incrementBadLoginCount("john@gmail.com");
         }
-        assertThat(userStorage.getBadLoginCount(dbRunner,"john@gmail.com")).contains(5);
+        assertThat(userStorage.getBadLoginCount("john@gmail.com")).contains(5);
     }
 
     @Test
     public void nullBadLoginCount_equal_null() {
-        userStorage.nullBadLoginCount(dbRunner, "john@gmail.com");
-        assertThat(userStorage.getBadLoginCount(dbRunner,"john@gmail.com")).contains(0);
+        userStorage.nullBadLoginCount("john@gmail.com");
+        assertThat(userStorage.getBadLoginCount("john@gmail.com")).contains(0);
     }
 
 }

@@ -1,6 +1,7 @@
 package online.kancl.page.login;
 
 import online.kancl.db.TransactionJobRunner;
+import online.kancl.db.UserStorage;
 import online.kancl.page.hello.HelloController;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
@@ -34,7 +35,7 @@ public class LoginController extends Controller {
             var user = new Login(
                     request.queryParams("username"),
                     request.queryParams("password"));
-            var auth = new Auth(dbRunner);
+            var auth = new Auth(new UserStorage(dbRunner));
             AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(user.username(), user.password());
             if (returnCode == CORRECT) {
                 response.redirect("/");

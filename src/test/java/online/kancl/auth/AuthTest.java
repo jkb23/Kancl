@@ -14,15 +14,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AuthTest {
     private final DatabaseRunner dbRunner;
     private final Auth auth;
+    private final UserStorage userStorage;
 
     public AuthTest(DatabaseRunner dbRunner) {
         this.dbRunner = dbRunner;
-        this.auth = new Auth(dbRunner);
+        this.userStorage = new UserStorage(dbRunner);
+        this.auth = new Auth(userStorage);
     }
 
     @BeforeEach
     void setUp() {
-        new UserStorage(dbRunner).createUser(dbRunner, "username", HashUtils.sha256Hash("password"));
+        userStorage.createUser(dbRunner, "username", HashUtils.sha256Hash("password"));
     }
 
     @Test
