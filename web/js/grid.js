@@ -3,6 +3,7 @@ const container = document.getElementById('container');
 let user = document.getElementById("user");
 const array = [];
 obstacles = [][2];
+let gridData;
 
 function check_obstacles(x,y)
 {
@@ -42,6 +43,7 @@ function createGrid() {
 
 createGrid();
 
+
 function addUserToDefaultCoordinates() {
     const defaultCoordinates =  grid[12][17]
     const user = document.createElement('div');
@@ -62,4 +64,25 @@ function addWalls(wall) {
 window.addEventListener('load', () => {
     addUserToDefaultCoordinates()
     addWalls([[4,0][4,1]])
+    var fetchInterval = 1000;
+    setInterval(fetchOfficeState, fetchInterval);
+
 })
+
+function fetchOfficeState() {
+  fetch('https://jsonplaceholder.typicode.com/todos/1')
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      refreshOfficeState(data);
+    })
+    .catch(function (err) {
+      console.log('error: ' + err);
+    });
+}
+
+function refreshOfficeState(data) {
+    console.log(data);
+    gridData = JSON.parse(data);
+}
