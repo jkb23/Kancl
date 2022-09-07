@@ -1,19 +1,18 @@
 {# @pebvariable name="loginInfo" type="online.kancl.page.login.LoginInfo" #}
 
-    {% extends "../BaseHtml.peb" %}
+{% extends "../BaseHtml.peb" %}
 
-    {% block style %}
+{% block style %}
     <link href='css/app.css' rel='stylesheet'/>
 {% endblock %}
 
-    {% block javascript %}
+{% block javascript %}
   <script src='js/grid.js' type="text/javascript"></script>
 {% endblock %}
 
 {% block body %}
-    <section class="vh-100">
+    <div class="container">
         <div class="user" id="user">
-            hhhh
         </div>
-    </section>
+    </div>
 {% endblock %}
