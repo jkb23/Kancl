@@ -2,23 +2,15 @@ package online.kancl.page.login;
 
 import mockit.*;
 import online.kancl.auth.Auth;
-import online.kancl.auth.AuthReturnCode;
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
-import online.kancl.login.MockAuth;
-import online.kancl.page.login.LoginController;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import org.junit.jupiter.api.Test;
 import spark.Response;
 
-import javax.xml.crypto.Data;
-
 import static online.kancl.auth.AuthReturnCode.*;
 import static online.kancl.loginTestEnum.*;
-import static org.assertj.core.api.Assertions.assertThat;
 
-
-//TODO not finished yet - do mocks
 public class LoginTest {
 
     @Tested
@@ -38,17 +30,19 @@ public class LoginTest {
     Response response;
 
     @Injectable
+    LoginInfo loginInfo;
+
+    @Injectable
     DatabaseRunner databaseRunner;
 
-
     @Test
-    void doOperationAbc() {
+    void checkIfCorrectCredentialsRedirect() {
         new Expectations() {{
-            auth.checkCredentialsWithBruteForcePrevention((DatabaseRunner) any, "John Doe", "password");
+            auth.checkCredentialsWithBruteForcePrevention((DatabaseRunner) any, correct_username, correct_password);
             result = CORRECT;
         }};
 
-        tested.authenticate(response, databaseRunner, new Login("John Doe", "password" ));
+        tested.authenticate(response, databaseRunner, new Login(correct_username, correct_password ));
 
         new Verifications() {{
             response.redirect("/");
@@ -57,21 +51,35 @@ public class LoginTest {
     }
 
     @Test
-    void CheckIfUserCanLoginWthValidCredentials() {
-        var mockAuth = new MockAuth();
-        assertThat(mockAuth.checkCredentials(correct_username, correct_password)).isEqualTo(CORRECT);
+    void checkIfInCorrectCredentialsRedirect() {
+        new Expectations() {{
+            auth.checkCredentialsWithBruteForcePrevention((DatabaseRunner) any, correct_username, wrong_password);
+            result = BAD_CREDENTIALS;
+        }};
+
+        tested.authenticate(response, databaseRunner, new Login(correct_username, wrong_password));
+
+        new Verifications() {{
+            loginInfo.setErrorMessage(BAD_CREDENTIALS.message);
+            pebbleTemplateRenderer.renderDefaultControllerTemplate(tested, loginInfo);
+            times = 1;
+        }};
     }
 
     @Test
-    void CheckIfUserCannotLoginWthValidCredentials() {
-        var mockAuth = new MockAuth();
-        assertThat(mockAuth.checkCredentials(correct_username, wrong_password)).isEqualTo(BAD_CREDENTIALS);
-    }
+    void checkIfUserIsBlocked() {
+        new Expectations() {{
+            auth.checkCredentialsWithBruteForcePrevention((DatabaseRunner) any, blocked_username, wrong_password);
+            result = BLOCKED_USER;
+        }};
 
-    @Test
-    void CheckIfUserCannotLoginAfterBlock() {
-        var mockAuth = new MockAuth();
-        assertThat(mockAuth.checkCredentials(blocked_username, correct_password)).isEqualTo(BLOCKED_USER);
+        tested.authenticate(response, databaseRunner, new Login(blocked_username, wrong_password));
+
+        new Verifications() {{
+            loginInfo.setErrorMessage(BLOCKED_USER.message);
+            pebbleTemplateRenderer.renderDefaultControllerTemplate(tested, loginInfo);
+            times = 1;
+        }};
     }
 
 }

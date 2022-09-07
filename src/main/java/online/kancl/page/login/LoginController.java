@@ -15,19 +15,18 @@ public class LoginController extends Controller {
 
     private final PebbleTemplateRenderer pebbleTemplateRenderer;
     private final TransactionJobRunner transactionJobRunner;
-    private LoginInfo loginInfo;
-
+    private final LoginInfo loginInfo;
     private final Auth auth;
 
-    public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner, Auth auth) {
+    public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner, Auth auth, LoginInfo loginInfo) {
         this.pebbleTemplateRenderer = pebbleTemplateRenderer;
         this.transactionJobRunner = transactionJobRunner;
         this.auth = auth;
+        this.loginInfo = loginInfo;
     }
 
     @Override
     public String get(Request request, Response response) {
-        loginInfo = new LoginInfo("");
         return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
     }
 
@@ -46,7 +45,7 @@ public class LoginController extends Controller {
         if (returnCode == CORRECT) {
             response.redirect("/");
         }
-        loginInfo = new LoginInfo(returnCode.message);
+        loginInfo.setErrorMessage(returnCode.message);
         return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
     }
 }
