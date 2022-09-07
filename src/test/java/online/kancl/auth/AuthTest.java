@@ -20,7 +20,7 @@ class AuthTest {
 
     @BeforeEach
     void setUp() {
-        UserStorage.createUser(dbRunner, "username", HashUtils.sha256Hash("password"));
+        new UserStorage(dbRunner).createUser(dbRunner, "username", HashUtils.sha256Hash("password"));
     }
 
     @Test
