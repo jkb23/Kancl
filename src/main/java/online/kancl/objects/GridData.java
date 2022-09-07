@@ -11,6 +11,12 @@ public class GridData {
     }
 
     public void addUser(User user){
+        for (User currUser : users){
+            if (currUser.username.equals(user.username)){
+                return;
+            }
+        }
+
         users.add(user);
     }
 
