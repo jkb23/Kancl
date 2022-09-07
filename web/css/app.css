@@ -7,12 +7,18 @@ body {
     display: grid;
     grid-template-columns: repeat(26, 50px);
     grid-template-rows: repeat(18, 50px);
+    grid-auto-rows: 50px;
+    grid-auto-columns: 50px;
     width: 1650px;
     height: 920px;
     margin: 0 auto;
     border: 10px solid black;
     padding: 0;
 }    
+
+.container > div {
+    border: 1px solid black;
+}
 
 .user {
     width: 40px;
@@ -23,4 +29,5 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     position: absolute;
+    margin: 5px;
 }
