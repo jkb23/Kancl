@@ -1,3 +1,5 @@
+{# @pebvariable name="pageContext" type="online.kancl.page.PageContext" #}
+
 <!DOCTYPE html>
 <html lang='en'>
     <head>
@@ -9,6 +11,9 @@
         {% block style %}{% endblock %}
     </head>
     <body>
+        <div class="user-info">{{pageContext.getUsername()}}</div>
+
+
         <div class="px-4 py-5">
             <h1 class="display-5 fw-bold text-center">{% block title %} {% endblock %}</h1>
             {% block body %}{% endblock %}

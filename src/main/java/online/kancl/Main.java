@@ -42,7 +42,7 @@ public class Main {
         var meetings = new Meetings();
 
         var webServer = new WebServer(8081, new ExceptionHandler());
-        webServer.addRoute("/", new MainPageController(pebbleTemplateRenderer, meetings));
+        webServer.addRoute("/", new MainPageController(pebbleTemplateRenderer));
         webServer.addRoute("/comments", new CommentsController(pebbleTemplateRenderer, transactionJobRunner));
         webServer.addRoute("/zoomhook", new ZoomHookController(meetings));
         webServer.addRoute("/recreateDb", new RecreateDbController(schemaCreator));
