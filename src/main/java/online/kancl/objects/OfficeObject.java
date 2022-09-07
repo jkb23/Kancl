@@ -9,6 +9,11 @@ public class OfficeObject {
         this.y = 0;
     }
 
+    public OfficeObject(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public int getX() {
         return x;
     }

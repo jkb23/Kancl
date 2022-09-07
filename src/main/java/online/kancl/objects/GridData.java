@@ -7,8 +7,6 @@ public class GridData {
     List<User> users;
     List<Wall> walls;
 
-    List<OfficeObject> officeObjects;
-
     public GridData() {
         this.users = new ArrayList<>();
     }
@@ -33,9 +31,4 @@ public class GridData {
     {
         return walls;
     }
-
-//    public  List<OfficeObject> getOfficeObjects()
-//    {
-//        return officeObjects;
-//    }
 }

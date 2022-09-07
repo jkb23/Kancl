@@ -4,6 +4,7 @@ import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
 import online.kancl.auth.Auth;
 import online.kancl.objects.GridData;
+import online.kancl.objects.Wall;
 import online.kancl.page.app.AppController;
 import online.kancl.page.comments.CommentsController;
 import online.kancl.page.hello.HelloController;
@@ -46,6 +47,7 @@ public class Main {
 
         var meetings = new Meetings();
         var gridData = new GridData();
+        addStartingWalls(gridData);
 
         var webServer = new WebServer(8081, new ExceptionHandler());
         webServer.addRoute("/", new MainPageController(pebbleTemplateRenderer, meetings));
@@ -74,5 +76,14 @@ public class Main {
                 .build();
 
         return new PebbleTemplateRenderer(pebbleEngine);
+    }
+
+    private static void addStartingWalls(GridData gridData){
+        Wall wall1 = new Wall(0, 4);
+        Wall wall2 = new Wall(1, 4);
+        //TODO add another starting walls
+
+        gridData.addWall(wall1);
+        gridData.addWall(wall2);
     }
 }

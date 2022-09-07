@@ -1,9 +1,8 @@
 package online.kancl.objects;
 
 public class Wall extends OfficeObject {
-    private String color;
 
-    public Wall(String color) {
-        this.color = color;
+    public Wall(int x, int y) {
+        super(x, y);
     }
 }
