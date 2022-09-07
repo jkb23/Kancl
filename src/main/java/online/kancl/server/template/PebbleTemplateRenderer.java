@@ -6,6 +6,7 @@ import online.kancl.server.Controller;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -17,30 +18,36 @@ public class PebbleTemplateRenderer {
         this.pebbleEngine = pebbleEngine;
     }
 
-    public String renderDefaultControllerTemplate(Controller controller, Object context) {
+    public String renderDefaultControllerTemplate(Controller controller, Object... contexts) {
         String templateName = getDefaultControllerTemplateName(controller);
-        return renderTemplate(templateName, context);
+        return renderTemplate(templateName, contexts);
     }
 
     /**
-     * @param context The context name (key of the HashMap) is the name of the given class with the first
-     *                letter lowercase (e.g. class: LoginInfo -> context name: loginInfo)
+     * @param contexts The contexts name (key of the HashMap) is the name of the given class with the first
+     *                letter lowercase (e.g. class: LoginInfo -> contexts name: loginInfo)
      */
-    public String renderTemplate(String templateName, Object context) {
+    public String renderTemplate(String templateName, Object... contexts) {
         try {
             var stringWriter = new StringWriter();
 
             PebbleTemplate compiledTemplate = pebbleEngine.getTemplate(templateName);
-            if(context!=null){
-                compiledTemplate.evaluate(stringWriter, Map.of(getContextName(context), context));
-            }else{
-                compiledTemplate.evaluate(stringWriter);
-            }
+            compiledTemplate.evaluate(stringWriter, createContextMap(contexts));
 
             return stringWriter.toString();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Map<String, Object> createContextMap(Object[] contexts) {
+        var contextMap = new HashMap<String, Object>();
+
+        for (Object context : contexts) {
+            contextMap.put(getContextName(context), context);
+        }
+
+        return contextMap;
     }
 
     String getDefaultControllerTemplateName(Controller controller) {

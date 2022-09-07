@@ -13,6 +13,6 @@ public class HelloController extends Controller {
     }
     @Override
     public String get(Request request, Response response) {
-        return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, null);
+        return pebbleTemplateRenderer.renderDefaultControllerTemplate(this);
     }
 }

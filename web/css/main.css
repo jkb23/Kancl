@@ -9,3 +9,7 @@ h1 {
     color: #34cf50;
     border-bottom: 4px solid #0099e6;
 }
+.user-info {
+    text-align: right;
+    padding: 5px;
+}
