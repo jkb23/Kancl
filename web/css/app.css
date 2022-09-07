@@ -1,0 +1,33 @@
+body {
+    margin: 0;
+    padding: 0;
+}    
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(26, 50px);
+    grid-template-rows: repeat(18, 50px);
+    grid-auto-rows: 50px;
+    grid-auto-columns: 50px;
+    width: 1650px;
+    height: 920px;
+    margin: 0 auto;
+    border: 10px solid black;
+    padding: 0;
+}    
+
+.container > div {
+    border: 1px solid black;
+}
+
+.user {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-image: url("https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fG1hbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    margin: 5px;
+}
