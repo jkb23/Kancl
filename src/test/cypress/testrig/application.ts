@@ -6,6 +6,10 @@ export function showsConnectedUser(name) {
     cy.get("p").should("contain", name);
 }
 
+export function showsLoggedUser(name) {
+    cy.get(".user-info").should("contain", name);
+}
+
 export function showsEmptyMeeting() {
     cy.get("p").should("contain", "No participant");
 }
