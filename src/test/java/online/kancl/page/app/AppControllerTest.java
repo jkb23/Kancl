@@ -15,13 +15,13 @@ class AppControllerTest {
         User user1 = new User("Jozko");
         User user2 = new User("Ferko");
         user2.moveDown();
-        user1.moveLeft();
+        user1.moveRight();
         gridData.addUser(user1);
         gridData.addUser(user2);
 
         AppController appController = new AppController(gridData);
         assertThat(appController.get(null, null))
-                .isEqualTo("{\"users\":[{\"username\":\"Jozko\",\"x\":795,\"y\":800}" +
-                        ",{\"username\":\"Ferko\",\"x\":800,\"y\":805}]}");
+                .isEqualTo("{\"users\":[{\"username\":\"Jozko\",\"x\":1,\"y\":0}" +
+                        ",{\"username\":\"Ferko\",\"x\":0,\"y\":1}]}");
     }
 }

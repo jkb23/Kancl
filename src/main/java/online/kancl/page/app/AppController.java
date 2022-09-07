@@ -44,8 +44,4 @@ public class AppController extends Controller {
         return users;
     }
 
-    @Override
-    public String post(Request request, Response response) {
-        return super.post(request, response);
-    }
 }
