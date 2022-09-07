@@ -77,10 +77,10 @@ export function checkInvalidCredentialsFalse() {
 }
 
 export function redirect() {
-    cy.url().should('eq', 'http://localhost:8081/')
+    cy.url().should('not.contains', '/login')
 }
 
 export function notRedirected() {
-    cy.url().should('eq', 'http://localhost:8081/login')
+    cy.url().should('contains', '/login')
 }
 
