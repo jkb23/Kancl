@@ -2,6 +2,7 @@ package online.kancl.page.login;
 
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
+import online.kancl.page.PageContext;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
@@ -9,6 +10,7 @@ import spark.Response;
 import online.kancl.auth.Auth;
 import online.kancl.auth.AuthReturnCode;
 
+import static online.kancl.auth.AuthReturnCode.BAD_CREDENTIALS;
 import static online.kancl.auth.AuthReturnCode.CORRECT;
 
 public class LoginController extends Controller {
@@ -27,8 +29,14 @@ public class LoginController extends Controller {
 
     @Override
     public String get(Request request, Response response) {
-        loginInfo = new LoginInfo();
-        return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
+        PageContext pageContext = new PageContext(request);
+        if ("".equals(pageContext.getUsername())) {
+            loginInfo = new LoginInfo();
+            return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
+        } else {
+            response.redirect("/");
+            return "";
+        }
     }
 
     @Override
