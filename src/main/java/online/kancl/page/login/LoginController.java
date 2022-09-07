@@ -40,7 +40,7 @@ public class LoginController extends Controller {
             if (returnCode == CORRECT) {
                 request.session(true);
                 request.session().attribute("user", user.username());
-                response.redirect("/");
+                response.redirect("/user");
                 return "";
             }
             loginInfo = new LoginInfo(returnCode.message);

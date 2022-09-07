@@ -8,6 +8,7 @@ import online.kancl.page.login.LoginController;
 import online.kancl.page.logout.LogoutController;
 import online.kancl.page.main.MainPageController;
 import online.kancl.page.recreatedb.RecreateDbController;
+import online.kancl.page.userpage.UserPageController;
 import online.kancl.page.zoomhook.ZoomHookController;
 import online.kancl.db.ConnectionProvider;
 import online.kancl.db.SchemaCreator;
@@ -48,6 +49,7 @@ public class Main {
         webServer.addRoute("/recreateDb", new RecreateDbController(schemaCreator));
         webServer.addRoute("/hello", new HelloController(pebbleTemplateRenderer));
         webServer.addRoute("/login", new LoginController(pebbleTemplateRenderer, transactionJobRunner));
+        webServer.addRoute("/user", new UserPageController(pebbleTemplateRenderer, transactionJobRunner));
         webServer.addRoute("/logout", new LogoutController());
 
         webServer.start();
