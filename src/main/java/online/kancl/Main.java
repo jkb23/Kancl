@@ -9,8 +9,10 @@ import online.kancl.page.comments.CommentsController;
 import online.kancl.page.hello.HelloController;
 import online.kancl.page.login.LoginController;
 import online.kancl.page.login.LoginInfo;
+import online.kancl.page.logout.LogoutController;
 import online.kancl.page.main.MainPageController;
 import online.kancl.page.recreatedb.RecreateDbController;
+import online.kancl.page.userpage.UserPageController;
 import online.kancl.page.zoomhook.ZoomHookController;
 import online.kancl.db.ConnectionProvider;
 import online.kancl.db.SchemaCreator;
@@ -53,6 +55,9 @@ public class Main {
         webServer.addRoute("/hello", new HelloController(pebbleTemplateRenderer));
         webServer.addRoute("/login", new LoginController(pebbleTemplateRenderer, transactionJobRunner, new Auth(),
                 new LoginInfo(), gridData));
+        webServer.addRoute("/user", new UserPageController(pebbleTemplateRenderer, transactionJobRunner));
+        webServer.addRoute("/logout", new LogoutController());
+
         webServer.addRoute("/app", new AppController(gridData));
         webServer.start();
 

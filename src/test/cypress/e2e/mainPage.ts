@@ -17,4 +17,12 @@ describe('Main page', () => {
         application.openMainPage();
         application.showsConnectedUser('John Doe');
     });
+
+    it("shows username when logged", () => {
+        application.openLoginPage();
+        application.enterCredentials('correct', 'correct');
+        application.clickSubmit();
+        application.openMainPage();
+        application.showsLoggedUser('correct');
+    });
 });

@@ -6,6 +6,7 @@ import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import org.junit.jupiter.api.Test;
+import spark.Request;
 import spark.Response;
 
 import static online.kancl.auth.AuthReturnCode.*;
@@ -27,6 +28,8 @@ public class LoginTest {
     TransactionJobRunner transactionJobRunner;
 
     @Injectable
+    Request request;
+    @Injectable
     Response response;
 
     @Injectable
@@ -42,7 +45,7 @@ public class LoginTest {
             result = CORRECT;
         }};
 
-        tested.authenticate(response, databaseRunner, new Login(correct_username, correct_password ));
+        tested.authenticate(request, response, databaseRunner, new Login(correct_username, correct_password ));
 
         new Verifications() {{
             response.redirect("/app");
@@ -57,7 +60,7 @@ public class LoginTest {
             result = BAD_CREDENTIALS;
         }};
 
-        tested.authenticate(response, databaseRunner, new Login(correct_username, wrong_password));
+        tested.authenticate(request, response, databaseRunner, new Login(correct_username, wrong_password));
 
         new Verifications() {{
             loginInfo.setErrorMessage(BAD_CREDENTIALS.message);
@@ -73,7 +76,7 @@ public class LoginTest {
             result = BLOCKED_USER;
         }};
 
-        tested.authenticate(response, databaseRunner, new Login(blocked_username, wrong_password));
+        tested.authenticate(request, response, databaseRunner, new Login(blocked_username, wrong_password));
 
         new Verifications() {{
             loginInfo.setErrorMessage(BLOCKED_USER.message);

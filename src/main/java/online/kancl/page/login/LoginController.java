@@ -17,7 +17,7 @@ public class LoginController extends Controller {
 
     private final PebbleTemplateRenderer pebbleTemplateRenderer;
     private final TransactionJobRunner transactionJobRunner;
-    private final LoginInfo loginInfo;
+    private LoginInfo loginInfo;
     private final Auth auth;
     private GridData gridData;
 
@@ -32,6 +32,7 @@ public class LoginController extends Controller {
 
     @Override
     public String get(Request request, Response response) {
+        loginInfo = new LoginInfo();
         return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
     }
 
@@ -41,16 +42,19 @@ public class LoginController extends Controller {
             var user = new Login(
                     request.queryParams("username"),
                     request.queryParams("password"));
-            return authenticate(response, dbRunner, user);
+            return authenticate(request, response, dbRunner, user);
         });
     }
 
-    String authenticate(Response response, DatabaseRunner dbRunner, Login user) {
+    String authenticate(Request request, Response response, DatabaseRunner dbRunner, Login user) {
         AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(dbRunner, user.username(), user.password());
         if (returnCode == CORRECT) {
             User userObject = new User(user.username());
             gridData.addUser(userObject);
+            request.session(true);
+            request.session().attribute("user", user.username());
             response.redirect("/app");
+            return "";
         }
         loginInfo.setErrorMessage(returnCode.message);
         return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
