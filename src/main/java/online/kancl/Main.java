@@ -51,7 +51,8 @@ public class Main {
         webServer.addRoute("/zoomhook", new ZoomHookController(meetings));
         webServer.addRoute("/recreateDb", new RecreateDbController(schemaCreator));
         webServer.addRoute("/hello", new HelloController(pebbleTemplateRenderer));
-        webServer.addRoute("/login", new LoginController(pebbleTemplateRenderer, transactionJobRunner, new Auth(), new LoginInfo()));
+        webServer.addRoute("/login", new LoginController(pebbleTemplateRenderer, transactionJobRunner, new Auth(),
+                new LoginInfo(), gridData));
         webServer.addRoute("/app", new AppController(gridData));
         webServer.start();
 
