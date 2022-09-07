@@ -51,6 +51,10 @@ public class UserStorage {
                 username);
     }
 
+    public static int getUserIdFromUsername(DatabaseRunner dbRunner, String username) {
+        return dbRunner.selectInt("SELECT id FROM AppUser WHERE username = ?", username);
+    }
+
     public static class DuplicateUserException extends RuntimeException {
         public DuplicateUserException(Throwable cause) {
             super(cause);
