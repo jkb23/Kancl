@@ -27,6 +27,7 @@ public class LoginController extends Controller {
 
     @Override
     public String get(Request request, Response response) {
+        loginInfo = new LoginInfo("");
         return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
     }
 
