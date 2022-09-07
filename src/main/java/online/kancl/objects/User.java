@@ -1,22 +1,13 @@
 package online.kancl.objects;
 
-public class User {
+public class User extends OfficeObject {
     private int x;
     private int y;
     public final String username;
 
     public User(String username) {
-        this.y = 0;
-        this.x = 0;
+        super();
         this.username = username;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
     }
 
     public String getUsername() {

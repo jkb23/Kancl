@@ -5,19 +5,20 @@ import java.util.List;
 
 public class GridData {
     List<User> users;
+    List<Wall> walls;
+
+    List<OfficeObject> officeObjects;
 
     public GridData() {
         this.users = new ArrayList<>();
     }
 
     public void addUser(User user){
-        for (User currUser : users){
-            if (currUser.username.equals(user.username)){
-                return;
-            }
-        }
-
         users.add(user);
+    }
+
+    public void addWall(Wall wall){
+        walls.add(wall);
     }
 
     public void removeUser(String username){
@@ -27,4 +28,14 @@ public class GridData {
     public List<User> getUsers() {
         return users;
     }
+
+    public List<Wall> getWalls()
+    {
+        return walls;
+    }
+
+//    public  List<OfficeObject> getOfficeObjects()
+//    {
+//        return officeObjects;
+//    }
 }
