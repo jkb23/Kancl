@@ -26,16 +26,25 @@ class AuthTest {
     }
 
     @Test
-    void credentialsTest() {
+    void successfulLogin() {
         assertThat(auth.checkCredentialsWithBruteForcePrevention("username", "password"))
                 .isEqualTo(AuthReturnCode.CORRECT);
+    }
 
+    @Test
+    void unknownUserWithPasswordKnownForDifferentUser() {
         assertThat(auth.checkCredentialsWithBruteForcePrevention("incorrect", "password"))
-              .isEqualTo(AuthReturnCode.BAD_CREDENTIALS);
+                .isEqualTo(AuthReturnCode.BAD_CREDENTIALS);
+    }
 
+    @Test
+    void incorrectPassword() {
         assertThat(auth.checkCredentialsWithBruteForcePrevention("username", "incorrect"))
-               .isEqualTo(AuthReturnCode.BAD_CREDENTIALS);
+                .isEqualTo(AuthReturnCode.BAD_CREDENTIALS);
+    }
 
+    @Test
+    void unknownUserWithUnknownPassword() {
         assertThat(auth.checkCredentialsWithBruteForcePrevention("incorrect", "incorrect"))
                 .isEqualTo(AuthReturnCode.BAD_CREDENTIALS);
     }
