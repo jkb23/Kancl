@@ -67,16 +67,20 @@ export function checkNotificationCredentials() {
     //FIXME
 }
 
-export function checkLockoutCredentialsTrue() {
-    cy.get('.invalid_credentials').contains('Invalid credentials')
+export function checkLockoutCredentials() {
+    cy.get('.invalid_credentials').contains('Too many unsuccessful attempts. Try again later.')
     //FIXME
 }
 
-export function checkLockoutCredentialsFalse() {
+export function checkInvalidCredentialsFalse() {
     cy.get('.invalid_credentials').should('not.exist')
 }
 
-export function timelapse() {
-    cy.clock()
-    cy.tick(300000)
+export function redirect() {
+    cy.url().should('not.contains', '/login')
 }
+
+export function notRedirected() {
+    cy.url().should('contains', '/login')
+}
+
