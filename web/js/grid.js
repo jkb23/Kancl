@@ -43,22 +43,29 @@ function createGrid() {
 
 createGrid();
 
-
-function addUserToDefaultCoordinates() {
-    const defaultCoordinates =  grid[12][17]
-    const user = document.createElement('div');
-    user.classList.add("user"); 
-    user.id = "user";
-    defaultCoordinates.appendChild(user);  
+function addUser(user, container) {    
+    const element = document.createElement('div');
+    element.classList.add("user"); 
+    element.id = "user";
+    container.appendChild(element);  
 }
 
-console.log(grid);
+var gridData = {
+    objects: [
+        {type: "user", x: 12, y: 17},
+        {type: "wall", x: 0, y: 4},
+        {type: "wall", x: 1, y: 4},
+        {type: "wall", x: 2, y: 4},
+        {type: "wall", x: 3, y: 4},
+        {type: "wall", x: 4, y: 4},
+        {type: "wall", x: 5, y: 4},
+        {type: "wall", x: 6, y: 4},
+        {type: "wall", x: 7, y: 4}
+    ]
+};
 
-function addWalls(wall) {
-    console.log(wall.length)
-    for(let i = 0; i < wall.length; i++) {
-        console.log(wall[i]);
-    }
+function addWall(wall, container) {  
+    container.classList.add("wall");   
 }
 
 window.addEventListener('load', () => {

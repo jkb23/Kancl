@@ -1,6 +1,7 @@
 package online.kancl.page.comments;
 
 import online.kancl.db.TransactionJobRunner;
+import online.kancl.page.PageContext;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
@@ -23,7 +24,7 @@ public class CommentsController extends Controller {
         return transactionJobRunner.runInTransaction((dbRunner) -> {
             var comments = new Comments(CommentStorage.loadAllComments(dbRunner));
 
-            return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, comments);
+            return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, comments, new PageContext(request));
         });
     }
 

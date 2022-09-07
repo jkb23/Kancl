@@ -6,6 +6,10 @@ export function showsConnectedUser(name) {
     cy.get("p").should("contain", name);
 }
 
+export function showsLoggedUser(name) {
+    cy.get(".user-info").should("contain", name);
+}
+
 export function showsEmptyMeeting() {
     cy.get("p").should("contain", "No participant");
 }
@@ -44,3 +48,41 @@ export function showsHello() {
 export function recreateDatabase() {
     cy.visit("/recreateDb");
 }
+
+export function openLoginPage() {
+    cy.visit("/login");
+}
+
+export function enterCredentials(username, password) {
+    cy.get("#username").type("{selectall}{del}" + username);
+    cy.get("#password").type("{selectall}{del}" + password);
+}
+
+export function clickSubmit() {
+    cy.get('#submit').click();
+}
+
+export function checkVisibility() {
+    cy.get('#submit').should('be.disabled')
+}
+
+export function checkNotificationCredentials() {
+    cy.get('.invalid_credentials').contains('Invalid credentials')
+}
+
+export function checkLockoutCredentials() {
+    cy.get('.invalid_credentials').contains('Too many unsuccessful attempts. Try again later.')
+}
+
+export function checkInvalidCredentialsFalse() {
+    cy.get('.invalid_credentials').should('not.exist')
+}
+
+export function redirect() {
+    cy.url().should('not.contains', '/login')
+}
+
+export function notRedirected() {
+    cy.url().should('contains', '/login')
+}
+
