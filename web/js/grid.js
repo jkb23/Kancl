@@ -3,6 +3,7 @@ const container = document.getElementById('container');
 let user = document.getElementById("user");
 const array = [];
 obstacles = [][2];
+let gridData;
 
 function check_obstacles(x,y)
 {
@@ -49,30 +50,34 @@ function addUser(user, container) {
     container.appendChild(element);  
 }
 
-var gridData = {
-    objects: [
-        {type: "user", x: 12, y: 17},
-        {type: "wall", x: 0, y: 4},
-        {type: "wall", x: 1, y: 4},
-        {type: "wall", x: 2, y: 4},
-        {type: "wall", x: 3, y: 4},
-        {type: "wall", x: 4, y: 4},
-        {type: "wall", x: 5, y: 4},
-        {type: "wall", x: 6, y: 4},
-        {type: "wall", x: 7, y: 4}
-    ]
-};
+
 
 function addWall(wall, container) {  
     container.classList.add("wall");   
 }
 
-for (const object of gridData.objects) {
-    const container =  grid[object.x][object.y];
-   
-    if(object.type === "wall") {
-        addWall(object, container);
-    } else if(object.type === "user") {
-        addUser(object, container);
-    }
+window.addEventListener('load', () => {
+    addUserToDefaultCoordinates()
+    addWalls([[4,0][4,1]])
+    var fetchInterval = 1000;
+    setInterval(fetchOfficeState, fetchInterval);
+
+})
+
+function fetchOfficeState() {
+  fetch('https://jsonplaceholder.typicode.com/todos/1')
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      refreshOfficeState(data);
+    })
+    .catch(function (err) {
+      console.log('error: ' + err);
+    });
+}
+
+function refreshOfficeState(data) {
+    console.log(data);
+    gridData = JSON.parse(data);
 }
