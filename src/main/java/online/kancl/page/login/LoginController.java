@@ -1,13 +1,12 @@
 package online.kancl.page.login;
 
+import online.kancl.auth.Auth;
+import online.kancl.auth.AuthReturnCode;
 import online.kancl.db.TransactionJobRunner;
-import online.kancl.page.hello.HelloController;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
 import spark.Response;
-import online.kancl.auth.Auth;
-import online.kancl.auth.AuthReturnCode;
 
 import static online.kancl.auth.AuthReturnCode.CORRECT;
 
@@ -39,10 +38,10 @@ public class LoginController extends Controller {
                     request.queryParams("password"));
             AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(dbRunner, user.username(), user.password());
             if (returnCode == CORRECT) {
-                response.redirect("/");
                 request.session(true);
                 request.session().attribute("user", user.username());
-                return pebbleTemplateRenderer.renderDefaultControllerTemplate(new HelloController(pebbleTemplateRenderer), new Object());
+                response.redirect("/");
+                return "";
             }
             loginInfo = new LoginInfo(returnCode.message);
             return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
