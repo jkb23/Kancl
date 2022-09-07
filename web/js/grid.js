@@ -3,7 +3,7 @@ const container = document.getElementById('container');
 let user = document.getElementById("user");
 const array = [];
 obstacles = [][2];
-let tableData;
+let gridData;
 
 function check_obstacles(x,y)
 {
@@ -50,19 +50,7 @@ function addUser(user, container) {
     container.appendChild(element);  
 }
 
-var gridData = {
-    objects: [
-        {type: "user", x: 12, y: 17},
-        {type: "wall", x: 0, y: 4},
-        {type: "wall", x: 1, y: 4},
-        {type: "wall", x: 2, y: 4},
-        {type: "wall", x: 3, y: 4},
-        {type: "wall", x: 4, y: 4},
-        {type: "wall", x: 5, y: 4},
-        {type: "wall", x: 6, y: 4},
-        {type: "wall", x: 7, y: 4}
-    ]
-};
+
 
 function addWall(wall, container) {  
     container.classList.add("wall");   
@@ -91,5 +79,5 @@ function fetchOfficeState() {
 
 function refreshOfficeState(data) {
     console.log(data);
-    tableData = JSON.parse(data);
+    gridData = JSON.parse(data);
 }
