@@ -6,8 +6,8 @@ public class User {
     public final String username;
 
     public User(String username) {
-        this.y = 800;
-        this.x = 800;
+        this.y = 0;
+        this.x = 0;
         this.username = username;
     }
 
@@ -24,18 +24,18 @@ public class User {
     }
 
     public void moveRight(){
-        this.x += 5;
+        this.x += 1;
     }
 
     public void moveLeft(){
-        this.x -= 5;
+        this.x -= 1;
     }
 
     public void moveUp(){
-        this.y -= 5;
+        this.y -= 1;
     }
 
     public void moveDown(){
-        this.y += 5;
+        this.y += 1;
     }
 }
