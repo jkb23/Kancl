@@ -11,7 +11,5 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container" id="container">
-        <div class="user" id="user"></div>          
-    </div>
+    <div class="container" id="container"></div>
 {% endblock %}
