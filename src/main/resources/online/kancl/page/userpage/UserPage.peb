@@ -1,0 +1,15 @@
+
+
+{% extends "../BaseHtml.peb" %}
+
+{% block title %} User profile {% endblock %}
+
+
+{% block body %}
+
+<div class="col-lg-6 mx-auto">
+    Currently logged as:
+    <div class="userPage">{{pageContext.getUsername()}}</div>
+</div>
+
+{% endblock %}
