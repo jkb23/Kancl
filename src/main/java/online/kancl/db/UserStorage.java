@@ -30,7 +30,7 @@ public class UserStorage {
         return isFound == 1;
     }
 
-    public void createUser(DatabaseRunner dbRunner, String username, String hash, String email) {
+    public void createUser(String username, String hash, String email) {
         try {
             dbRunner.insert("INSERT INTO AppUser (username, password, email, nickname, avatar, avatar_color, bad_login_count, bad_login_timestamp)" +
                     " VALUES(?, ?, ?, null, null, null, null, null)", username, hash, email);

@@ -42,7 +42,7 @@ class UserStorageTest {
 
     @Test
     public void createUser_whenNonExistingUser_thenUserIsCreated() {
-        userStorage.createUser(dbRunner, "daniel", "11111", "danie@gmail.com");
+        userStorage.createUser("daniel", "11111", "danie@gmail.com");
         assertThat(userStorage.findUser("daniel", "11111"))
                 .isEqualTo(true);
     }
@@ -50,7 +50,7 @@ class UserStorageTest {
     @Test
     public void createUser_whenExistingUser_thenExceptionThrown() {
         Assertions.assertThatExceptionOfType(DuplicateUserException.class)
-                .isThrownBy(() -> userStorage.createUser(dbRunner, "john", "12345", "john@gmail.com"));
+                .isThrownBy(() -> userStorage.createUser( "john", "12345", "john@gmail.com"));
 
     }
 

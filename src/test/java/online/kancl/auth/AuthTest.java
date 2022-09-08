@@ -24,7 +24,7 @@ class AuthTest {
 
     @BeforeEach
     void setUp() {
-        userStorage.createUser(dbRunner, "username", HashUtils.sha256Hash("password"), "neexistuju@baf.com");
+        userStorage.createUser("username", HashUtils.sha256Hash("password"), "neexistuju@baf.com");
     }
 
     @Test

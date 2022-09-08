@@ -1,17 +1,12 @@
 package online.kancl.page.registration;
 
 import online.kancl.auth.Auth;
-import online.kancl.auth.AuthReturnCode;
 import online.kancl.db.TransactionJobRunner;
 import online.kancl.db.UserStorage;
-import online.kancl.objects.User;
-import online.kancl.page.login.Login;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
 import spark.Response;
-
-import static online.kancl.auth.AuthReturnCode.CORRECT;
 
 public class RegistrationController extends Controller {
 
@@ -41,34 +36,21 @@ public class RegistrationController extends Controller {
                     request.queryParams("username"),
                     request.queryParams("password"),
                     request.queryParams("email"));
-            //return authenticate(request, response, auth, user);
-            return "";
+            return registerUser(request, response, auth, registration);
         });
     }
 
-    private boolean usernameExists(String username){
-        return userStorage.usernameExists(username);
-    };
+    String registerUser(Request request, Response response, Auth auth, Registration registration)
+    {
 
-    private boolean emailExists(String email){
-        return userStorage.emailExists(email);
-    };
-
-
-    String registerUser(Request request, Response response, Auth auth, Login user){
-        return "";
-    }
-
-    String authenticate(Request request, Response response, Auth auth, Login user) {
-        AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(user.username(), user.password());
-        if (returnCode == CORRECT) {
-            User userObject = new User(user.username(), auth);
+        if (!userStorage.usernameExists(registration.username()) && !userStorage.emailExists(registration.email())){
+            userStorage.createUser(registration.username(), registration.password(), registration.email());
+            var returnCode =  auth.checkCredentialsWithBruteForcePrevention(registration.username(), registration.password());
+            RegistrationInfo.setErrorMessage(returnCode.message);
             request.session(true);
-            request.session().attribute("user", user.username());
+            request.session().attribute("user", registration.username());
             response.redirect("/app");
-            return "";
         }
-        RegistrationInfo.setErrorMessage(returnCode.message);
         return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, RegistrationInfo);
     }
 }
