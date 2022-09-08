@@ -5,6 +5,7 @@ import com.mitchellbosecke.pebble.loader.FileLoader;
 import online.kancl.auth.Auth;
 import online.kancl.objects.GridData;
 import online.kancl.objects.Wall;
+import online.kancl.page.api.OfficeController;
 import online.kancl.page.app.AppController;
 import online.kancl.page.comments.CommentsController;
 import online.kancl.page.hello.HelloController;
@@ -60,7 +61,7 @@ public class Main {
         webServer.addRoute("/user", new UserPageController(pebbleTemplateRenderer, transactionJobRunner));
         webServer.addRoute("/logout", new LogoutController());
 
-        webServer.addRoute("/app", new AppController(gridData));
+        webServer.addRoute("/app", new OfficeController(gridData));
         webServer.start();
 
         System.out.println("Server running");
