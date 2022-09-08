@@ -23,8 +23,8 @@
 
             <form method='post'>
               <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
-                <p class="lead fw-normal mb-2 me-3">Register to</p>
-                <p class="kancl-online">kancl.online</p>
+                <p class="lead fw-normal mb-2 me-3">Register</p>
+{#                <p class="kancl-online">kancl.online</p>#}
               </div>
 
               <div class="form-outline mb-4">
