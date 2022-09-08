@@ -19,7 +19,7 @@ CREATE TABLE AppUser
     avatar              VARCHAR(100),
     avatar_color        CHAR(6),
     bad_login_count     INTEGER DEFAULT 0,
-    bad_login_timestamp TIMESTAMP
+    bad_login_timestamp TIMESTAMP,
     user_status         VARCHAR(200)
 );
 

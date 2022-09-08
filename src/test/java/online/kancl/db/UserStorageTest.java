@@ -24,8 +24,8 @@ class UserStorageTest {
 
     @BeforeEach
     public void initialize(DatabaseRunner dbRunner) {
-        dbRunner.insert("INSERT INTO AppUser (username, password, nickname, avatar, avatar_color, bad_login_count, bad_login_timestamp)" +
-                " VALUES('john@gmail.com', 12345, null, null, null, null, null)");
+        dbRunner.insert("INSERT INTO AppUser (username, password, nickname, avatar, avatar_color, bad_login_count, bad_login_timestamp, user_status)" +
+                " VALUES('john@gmail.com', 12345, null, null, null, null, null, null)");
     }
 
     @Test
@@ -42,7 +42,7 @@ class UserStorageTest {
 
     @Test
     public void createUser_whenNonExistingUser_thenUserIsCreated() {
-        userStorage.createUser(dbRunner, "daniel@gmail.com", "11111");
+        userStorage.createUser("daniel@gmail.com", "11111");
         assertThat(userStorage.findUser("daniel@gmail.com", "11111"))
                 .isEqualTo(true);
     }
@@ -50,7 +50,7 @@ class UserStorageTest {
     @Test
     public void createUser_whenExistingUser_thenExceptionThrown() {
         Assertions.assertThatExceptionOfType(DuplicateUserException.class)
-                .isThrownBy(() -> userStorage.createUser(dbRunner, "john@gmail.com", "12345"));
+                .isThrownBy(() -> userStorage.createUser("john@gmail.com", "12345"));
 
     }
 
