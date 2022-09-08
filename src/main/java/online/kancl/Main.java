@@ -5,8 +5,7 @@ import com.mitchellbosecke.pebble.loader.FileLoader;
 import online.kancl.db.ConnectionProvider;
 import online.kancl.db.SchemaCreator;
 import online.kancl.db.TransactionJobRunner;
-import online.kancl.auth.Auth;
-import online.kancl.db.*;
+import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
 import online.kancl.objects.Wall;
 import online.kancl.objects.ZoomObject;
@@ -21,7 +20,6 @@ import online.kancl.page.main.Meetings;
 import online.kancl.page.recreatedb.RecreateDbController;
 import online.kancl.page.userpage.UserPageController;
 import online.kancl.page.zoomhook.ZoomHookController;
-import online.kancl.page.main.Meetings;
 import online.kancl.server.ExceptionHandler;
 import online.kancl.server.WebServer;
 import online.kancl.server.template.PebbleExtension;
@@ -57,13 +55,13 @@ public class Main {
 
 
         var webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner);
-        webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer, meetings));
+        webServer.addRoute("/", (dbRunner) -> new MainPageController(pebbleTemplateRenderer, meetings, new UserStorage(dbRunner)));
         webServer.addRoute("/comments", () -> new CommentsController(pebbleTemplateRenderer, transactionJobRunner));
         webServer.addRoute("/zoomhook", () -> new ZoomHookController(meetings));
         webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
         webServer.addRoute("/hello", () -> new HelloController(pebbleTemplateRenderer));
         webServer.addRoute("/login", () -> new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData));
-        webServer.addRoute("/user", (ddRunner) -> new UserPageController(pebbleTemplateRenderer));
+        webServer.addRoute("/user", (dbRunner) -> new UserPageController(pebbleTemplateRenderer, new UserStorage(dbRunner)));
         webServer.addRoute("/logout", () -> new LogoutController());
 
         webServer.addRoute("/app", () -> new OfficeController(gridData));

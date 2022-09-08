@@ -9,7 +9,12 @@
 
 <div class="col-lg-6 mx-auto">
     Currently logged as:
-    <div class="userPage">{{pageContext.getUsername()}}</div>
+    {{pageContext.getUsername()}}
+    <p></p>
+    Current status:
+    {{ pageContext.getStatus()}}
+    <p></p>
+    Change your status>:
 </div>
 
 {% endblock %}
