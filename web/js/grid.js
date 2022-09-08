@@ -138,7 +138,7 @@ function getUserCoordinates(user, coordinates) {
 }
 
 window.addEventListener('load', () => {
-    var fetchInterval = 10000;
+    var fetchInterval = 1000;
     setInterval(fetchOfficeState, fetchInterval);
 })
 
@@ -156,6 +156,6 @@ function fetchOfficeState() {
 }
 
 function refreshOfficeState(data) {
-    console.log(data);
-    gridData = JSON.parse(data);
+    console.log(data)
+    gridData = data
 }
