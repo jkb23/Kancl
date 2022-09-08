@@ -2,17 +2,17 @@ package online.kancl;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
+import online.kancl.db.ConnectionProvider;
+import online.kancl.db.SchemaCreator;
+import online.kancl.db.TransactionJobRunner;
 import online.kancl.page.comments.CommentsController;
 import online.kancl.page.hello.HelloController;
 import online.kancl.page.login.LoginController;
 import online.kancl.page.logout.LogoutController;
 import online.kancl.page.main.MainPageController;
+import online.kancl.page.main.Meetings;
 import online.kancl.page.recreatedb.RecreateDbController;
 import online.kancl.page.zoomhook.ZoomHookController;
-import online.kancl.db.ConnectionProvider;
-import online.kancl.db.SchemaCreator;
-import online.kancl.db.TransactionJobRunner;
-import online.kancl.page.main.Meetings;
 import online.kancl.server.ExceptionHandler;
 import online.kancl.server.WebServer;
 import online.kancl.server.template.PebbleExtension;
@@ -41,7 +41,7 @@ public class Main {
 
         var meetings = new Meetings();
 
-        var webServer = new WebServer(8081, new ExceptionHandler());
+        var webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner);
         webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer, meetings));
         webServer.addRoute("/comments", () -> new CommentsController(pebbleTemplateRenderer, transactionJobRunner));
         webServer.addRoute("/zoomhook", () -> new ZoomHookController(meetings));
