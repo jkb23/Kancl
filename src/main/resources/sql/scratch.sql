@@ -24,5 +24,10 @@ CREATE TABLE AppUser
 );
 
 INSERT INTO AppUser (username, password, nickname, avatar, avatar_color, bad_login_count, bad_login_timestamp, user_status)
-      VALUES('correct', '15a596e3c98c407e043751ff3b21ff0358a1bdfdf3fe948b1523893a8e5de2e8', null, null, null, null, null, 'Mam se dobre!')
+      VALUES('correct', '15a596e3c98c407e043751ff3b21ff0358a1bdfdf3fe948b1523893a8e5de2e8', null, null, null, null, null, 'Mam se dobre!');
 
+INSERT INTO AppUser (username, password, nickname, avatar, avatar_color, bad_login_count, bad_login_timestamp, user_status)
+VALUES('honza', '15a596e3c98c407e043751ff3b21ff0358a1bdfdf3fe948b1523893a8e5de2e8', null, null, null, null, null, 'Mam se dobre!');
+
+INSERT INTO AppUser (username, password, nickname, avatar, avatar_color, bad_login_count, bad_login_timestamp, user_status)
+VALUES('matej', '15a596e3c98c407e043751ff3b21ff0358a1bdfdf3fe948b1523893a8e5de2e8', null, null, null, null, null, 'Mam se dobre!');
