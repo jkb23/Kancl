@@ -5,6 +5,7 @@ import com.mitchellbosecke.pebble.loader.FileLoader;
 import online.kancl.auth.Auth;
 import online.kancl.objects.GridData;
 import online.kancl.objects.Wall;
+import online.kancl.objects.ZoomObject;
 import online.kancl.page.api.OfficeController;
 import online.kancl.page.comments.CommentsController;
 import online.kancl.page.hello.HelloController;
@@ -81,6 +82,7 @@ public class Main {
     }
 
     private static void addStartingWalls(GridData gridData){
+        ZoomObject zoomObject = new ZoomObject(25, 0, "xx");
         List<Wall> walls = Arrays.asList(
                 new Wall(0, 4),
                 new Wall(1, 4),
@@ -101,10 +103,10 @@ public class Main {
                 new Wall(22, 4),
                 new Wall(23, 4),
                 new Wall(24, 4),
-                new Wall(25, 4),
-                new Wall(25, 0)
+                new Wall(25, 4)
         );
 
         gridData.addWallsList(walls);
+        gridData.addZoom(zoomObject);
     }
 }
