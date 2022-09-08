@@ -13,6 +13,7 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 
 import static javax.json.Json.createObjectBuilder;
+import static online.kancl.util.HttpUtil.dontCache;
 
 public class OfficeController extends Controller {
     private final GridData gridData;
@@ -23,6 +24,7 @@ public class OfficeController extends Controller {
 
     @Override
     public String get(Request request, Response response){
+        dontCache(response);
         return createObjectBuilder()
                 .add("objects", createObjectsJsonArray())
                 .build()
