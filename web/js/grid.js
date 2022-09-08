@@ -1,9 +1,8 @@
 const grid = [];
 const container = document.getElementById("container");
-let user = document.getElementById("user");
+
 const array = [];
 obstacles = [][2];
-let gridData;
 
 function check_obstacles(x, y) {
   for (i = 0; i != obstacles.length(); i++) {
@@ -45,6 +44,13 @@ function addUser(user, container) {
   container.appendChild(element);
 }
 
+function removeUser(user, container) {
+    const element = document.createElement("div");
+    element.classList.add("user");
+    element.id = "user";
+    container.removeChild(element);
+  }
+
 function addZoom(zoom, container) {
   container.classList.add("zoom");
 }
@@ -81,60 +87,55 @@ function addWall(wall, container) {
 }
 
 for (const object of gridData.objects) {
-  const container = grid[object.x][object.y];
+
+    const x = object.x;
+    const y = object.y;
+  const coordinates = grid[x][y];
+
+ 
 
   if (object.type === "wall") {
-    addWall(object, container);
+    addWall(object, coordinates);
   } else if (object.type === "user") {
-    addUser(object, container);
+    addUser(object, coordinates);
+    getUserCoordinates(object, coordinates);
   } else if (object.type === "zoom") {
-    addZoom(object, container);
-
-    console.log(object.x, object.y);
+    addZoom(object, coordinates);
   }
 }
 
-document.addEventListener("keydown", handleKey);
 
-for (const object of gridData.objects) {
+
+
+function getUserCoordinates(user, coordinates) {
+  document.addEventListener("keydown", handleKey);
+  let userEl = document.getElementById("user");
+
   function handleKey(e) {
-    let containerCoordinates = container.getBoundingClientRect();
-
-
-
-    if (e.key === "ArrowUp") {
-      console.log("Go up");
-      console.log(gridData.objects[0].type[user]);
-    } else if (e.key === "ArrowRight") {
-      console.log("Go right");
-    } else if (e.key === "ArrowLeft") {
-      console.log("Go left");
-    } else {
-      console.log("Go down");
+    if (e.key === "ArrowUp" || e.key === "w") {
+      if (user.y > 0) {
+        user.y--;
+       userEl.remove();
+      }
+      console.log("y" + user.y);
+    } else if (e.key === "ArrowRight" || e.key === "d") {
+      if (user.x < 25) {
+        user.x++;
+        userEl.remove();
+      }
+      console.log("x" + user.x);
+    } else if (e.key === "ArrowLeft" || e.key === "a") {
+      if (user.x > 0) {
+        user.x--;
+        userEl.remove();
+      }
+      console.log("x" + user.x);
+    } else if (e.key === "ArrowDown" || e.key === "s") {
+      if (user.y < 17) {
+        user.y++;
+        userEl.remove();
+      }
+      console.log("y" + user.y);
     }
   }
-window.addEventListener('load', () => {
-    addUserToDefaultCoordinates()
-    addWalls([[4,0][4,1]])
-    var fetchInterval = 1000;
-    setInterval(fetchOfficeState, fetchInterval);
-
-})
-
-function fetchOfficeState() {
-  fetch('https://jsonplaceholder.typicode.com/todos/1')
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      refreshOfficeState(data);
-    })
-    .catch(function (err) {
-      console.log('error: ' + err);
-    });
-}
-
-function refreshOfficeState(data) {
-    console.log(data);
-    gridData = JSON.parse(data);
 }
