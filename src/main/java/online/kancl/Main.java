@@ -114,7 +114,14 @@ public class Main {
                 new Wall(22, 4),
                 new Wall(23, 4),
                 new Wall(24, 4),
-                new Wall(25, 4)
+                new Wall(25, 4),
+                new Wall(0, 13),
+                new Wall(1, 13),
+                new Wall(2, 13),
+                new Wall(3, 13),
+                new Wall(4, 13),
+                new Wall(5, 13),
+                new Wall(6, 13)
         );
 
         gridData.addWallsList(walls);
