@@ -1,6 +1,7 @@
 body {
     margin: 0;
     padding: 0;
+    background-color: #F0EBEE;
 }    
 
 .container {
@@ -30,12 +31,46 @@ body {
     background-size: cover;
     position: absolute;
     margin: 5px;
+    cursor: pointer;
+}
+
+.user:after {
+    content: "Jsem online!";
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+    width: 150px;
+    position: absolute;
+    top:-50px;
+}
+
+.user:hover:after {
+    display: block;
 }
 
 .wall {
-    background-color: brown;
+    background-color: #7C6C77;
 }
 
 .zoom {
-    background-color: blue;
+    background-image: url("https://pnggrid.com/wp-content/uploads/2021/05/Blue-Zoom-Logo-Circle-1022x1024.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    cursor: pointer;
+}
+
+.zoom:after {
+    content: "Join the meeting!";
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+    width: 150px;
+
+}
+
+.zoom:hover:after {
+   display: block;
 }
