@@ -88,6 +88,12 @@ class UserStorageTest {
     }
 
     @Test
+    public void usernameIDIsNotNull() {
+        userStorage.getUserIdFromUsername("john@gmail.com");
+        assertThat(userStorage.getUserIdFromUsername("john@gmail.com")).isNotEqualTo(null);
+    }
+
+    @Test
     public void getStatusFromDb_true() {
         userStorage.getStatusFromDb("john@gmail.com");
         assertThat(userStorage.getStatusFromDb("john@gmail.com")).isEqualTo("Mam se dobre!");
