@@ -18,10 +18,10 @@ public class UserStorage {
         return isFound == 1;
     }
 
-    public void createUser(DatabaseRunner dbRunner, String username, String hash) {
+    public void createUser(String username, String hash) {
         try {
-            dbRunner.insert("INSERT INTO AppUser (username, password, nickname, avatar, avatar_color, bad_login_count, bad_login_timestamp)" +
-                    " VALUES(?, ?, null, null, null, null, null)", username, hash);
+            dbRunner.insert("INSERT INTO AppUser (username, password, nickname, avatar, avatar_color, bad_login_count, bad_login_timestamp, user_status)" +
+                    " VALUES(?, ?, null, null, null, null, null, null)", username, hash);
         } catch (DatabaseRunner.DatabaseAccessException e) {
             if (e.sqlErrorCode == 23505) {
                 throw new DuplicateUserException(e);
@@ -57,8 +57,17 @@ public class UserStorage {
                 username);
     }
 
-    public int getUserIdFromUsername(DatabaseRunner dbRunner, String username) {
+    public int getUserIdFromUsername(String username) {
         return dbRunner.selectInt("SELECT id FROM AppUser WHERE username = ?", username);
+    }
+
+    public String getStatusFromDb (String username) {
+        return dbRunner.selectString("SELECT id FROM user_status WHERE username = ?", username);
+    }
+
+    public void setStatusToDb (String username, String status) {
+        dbRunner.update("UPDATE AppUser SET user_status = ? WHERE username= ?",
+                status, username);
     }
 
     public class DuplicateUserException extends RuntimeException {

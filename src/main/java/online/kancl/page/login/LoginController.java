@@ -53,7 +53,7 @@ public class LoginController extends Controller {
             gridData.addUser(userObject);
             request.session(true);
             request.session().attribute("user", user.username());
-            response.redirect("/app");
+            response.redirect("/");
             return "";
         }
         loginInfo.setErrorMessage(returnCode.message);
