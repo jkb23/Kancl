@@ -1,6 +1,5 @@
 package online.kancl.objects;
 
-import online.kancl.db.DatabaseRunner;
 import online.kancl.db.UserStorage;
 
 public class User extends OfficeObject {
@@ -11,10 +10,10 @@ public class User extends OfficeObject {
 
     private String status;
 
-    public User(String username, DatabaseRunner dbRunner) {
+    public User(String username, UserStorage userStorage) {
         super();
         this.username = username;
-        this.userStorage = new UserStorage(dbRunner);
+        this.userStorage = userStorage;
         this.status = userStorage.getStatusFromDb(username);
     }
 

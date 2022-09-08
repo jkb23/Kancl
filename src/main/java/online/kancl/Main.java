@@ -2,9 +2,11 @@ package online.kancl;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
+import online.kancl.auth.Auth;
 import online.kancl.db.ConnectionProvider;
 import online.kancl.db.SchemaCreator;
 import online.kancl.db.TransactionJobRunner;
+import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
 import online.kancl.objects.Wall;
 import online.kancl.objects.ZoomObject;
@@ -59,8 +61,8 @@ public class Main {
         webServer.addRoute("/zoomhook", () -> new ZoomHookController(meetings));
         webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
         webServer.addRoute("/hello", () -> new HelloController(pebbleTemplateRenderer));
-        webServer.addRoute("/login", () -> new LoginController(pebbleTemplateRenderer,
-                transactionJobRunner, new LoginInfo(), gridData));
+        webServer.addRoute("/login", (dbRunner) -> new LoginController(pebbleTemplateRenderer,
+                transactionJobRunner, new LoginInfo(), gridData, new UserStorage(dbRunner), new Auth(new UserStorage(dbRunner))));
         webServer.addRoute("/user", (dbRunner) -> new UserPageController(pebbleTemplateRenderer, dbRunner));
         webServer.addRoute("/logout", LogoutController::new);
 

@@ -4,6 +4,7 @@ import mockit.*;
 import online.kancl.auth.Auth;
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
+import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,9 @@ public class LoginTest {
 
     @Injectable
     GridData gridData;
+
+    @Injectable
+    UserStorage userStorage;
 
     @Injectable
     Request request;

@@ -20,13 +20,17 @@ public class LoginController extends Controller {
     private final TransactionJobRunner transactionJobRunner;
     private LoginInfo loginInfo;
     private final GridData gridData;
+    private UserStorage userStorage;
+    private Auth auth;
 
     public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner,
-                           LoginInfo loginInfo, GridData gridData) {
+                           LoginInfo loginInfo, GridData gridData, UserStorage userStorage, Auth auth) {
         this.pebbleTemplateRenderer = pebbleTemplateRenderer;
         this.transactionJobRunner = transactionJobRunner;
         this.loginInfo = loginInfo;
         this.gridData = gridData;
+        this.userStorage = userStorage;
+        this.auth = auth;
     }
 
     @Override
@@ -38,7 +42,6 @@ public class LoginController extends Controller {
     @Override
     public String post(Request request, Response response) {
         return transactionJobRunner.runInTransaction((dbRunner) -> {
-            var auth = new Auth(new UserStorage(dbRunner));
             var user = new Login(
                     request.queryParams("username"),
                     request.queryParams("password"));
@@ -49,7 +52,7 @@ public class LoginController extends Controller {
     String authenticate(Request request, Response response, Auth auth, Login user, DatabaseRunner dbRunner) {
         AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(user.username(), user.password());
         if (returnCode == CORRECT) {
-            User userObject = new User(user.username(), dbRunner);
+            User userObject = new User(user.username(), userStorage);
             gridData.addUser(userObject);
             request.session(true);
             request.session().attribute("user", user.username());

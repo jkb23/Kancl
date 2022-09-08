@@ -1,6 +1,7 @@
 package online.kancl.page.api;
 
 import online.kancl.db.DatabaseRunner;
+import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
 import online.kancl.objects.User;
 import online.kancl.objects.Wall;
@@ -24,7 +25,7 @@ class OfficeControllerTest {
     void correctJsonEncapsulation(){
         var gridData = new GridData();
 
-        User user1 = new User("correct", dbRunner);
+        User user1 = new User("correct", new UserStorage(dbRunner));
         Wall wall = new Wall(1,1);
         ZoomObject zoomObject = new ZoomObject(5, 5, "zoom.com");
 
