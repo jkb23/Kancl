@@ -1,5 +1,4 @@
 import * as application from '../testrig/application';
-import * as zoom from '../testrig/zoom';
 
 describe('Main page', () => {
     beforeEach(() => {
