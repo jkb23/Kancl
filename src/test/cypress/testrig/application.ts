@@ -2,47 +2,8 @@ export function openMainPage() {
     cy.visit("/");
 }
 
-export function showsConnectedUser(name) {
-    cy.get("p").should("contain", name);
-}
-
 export function showsLoggedUser(name) {
     cy.get(".user-info").should("contain", name);
-}
-
-export function showsEmptyMeeting() {
-    cy.get("p").should("contain", "No participant");
-}
-
-export function postComment(author, message) {
-    cy.get("#author").type("{selectall}{del}" + author);
-    cy.get("#message").type("{selectall}{del}" + message);
-    cy.get('#submit').click()
-}
-
-export function showsNoComments() {
-    cy.get("#comments").children().should(comments => {
-        expect(comments.length).to.equal(0);
-    })
-}
-
-export function showsComment(index, author, message) {
-    cy.get("#comments").children('li').eq(index).should(comment => {
-        expect(comment.children('.author')).to.contain(author);
-        expect(comment.children('.message')).to.contain(message);
-    });
-}
-
-export function openCommentPage() {
-    cy.visit("/comments");
-}
-
-export function openHelloPage() {
-    cy.visit("/hello");
-}
-
-export function showsHello() {
-    cy.get("h2").contains("Hello world");
 }
 
 export function recreateDatabase() {
@@ -63,26 +24,25 @@ export function clickSubmit() {
 }
 
 export function submitButtonIsDisabled() {
-    cy.get('#submit').should('be.disabled')
+    cy.get('#submit').should('be.disabled');
 }
 
 export function displaysInvalidCredentials() {
-    cy.get('.invalid_credentials').contains('Invalid credentials')
+    cy.get('.invalid_credentials').contains('Invalid credentials');
 }
 
 export function displaysTooManyUnsuccessfulLoginAttempts() {
-    cy.get('.invalid_credentials').contains('Too many unsuccessful attempts. Try again later.')
+    cy.get('.invalid_credentials').contains('Too many unsuccessful attempts. Try again later.');
 }
 
 export function doesNotShowInvalidCredentials() {
-    cy.get('.invalid_credentials').should('not.exist')
+    cy.get('.invalid_credentials').should('not.exist');
 }
 
 export function doesNotDisplayLoginPage() {
-    cy.url().should('not.contains', '/login')
+    cy.url().should('not.contains', '/login');
 }
 
 export function displaysLoginPage() {
-    cy.url().should('contains', '/login')
+    cy.url().should('contains', '/login');
 }
-
