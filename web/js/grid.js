@@ -55,53 +55,8 @@ function addZoom(zoom, container) {
   container.classList.add("zoom");
 }
 
-var gridData = {
-  objects: [
-    { type: "user", x: 12, y: 17 },
-    { type: "wall", x: 0, y: 4 },
-    { type: "wall", x: 1, y: 4 },
-    { type: "wall", x: 2, y: 4 },
-    { type: "wall", x: 3, y: 4 },
-    { type: "wall", x: 4, y: 4 },
-    { type: "wall", x: 5, y: 4 },
-    { type: "wall", x: 6, y: 4 },
-    { type: "wall", x: 6, y: 0 },
-    { type: "wall", x: 6, y: 1 },
-    { type: "wall", x: 6, y: 2 },
-    { type: "wall", x: 19, y: 0 },
-    { type: "wall", x: 19, y: 1 },
-    { type: "wall", x: 19, y: 2 },
-    { type: "wall", x: 19, y: 4 },
-    { type: "wall", x: 20, y: 4 },
-    { type: "wall", x: 21, y: 4 },
-    { type: "wall", x: 22, y: 4 },
-    { type: "wall", x: 23, y: 4 },
-    { type: "wall", x: 24, y: 4 },
-    { type: "wall", x: 25, y: 4 },
-    { type: "zoom", x: 25, y: 0 },
-  ],
-};
-
 function addWall(wall, container) {
   container.classList.add("wall");
-}
-
-for (const object of gridData.objects) {
-
-    const x = object.x;
-    const y = object.y;
-  const coordinates = grid[x][y];
-
- 
-
-  if (object.type === "wall") {
-    addWall(object, coordinates);
-  } else if (object.type === "user") {
-    addUser(object, coordinates);
-    getUserCoordinates(object, coordinates);
-  } else if (object.type === "zoom") {
-    addZoom(object, coordinates);
-  }
 }
 
 function getUserCoordinates(user, coordinates) {
@@ -139,6 +94,7 @@ function getUserCoordinates(user, coordinates) {
 
 window.addEventListener('load', () => {
     var fetchInterval = 1000;
+    fetchOfficeState();
     setInterval(fetchOfficeState, fetchInterval);
 })
 
@@ -156,6 +112,18 @@ function fetchOfficeState() {
 }
 
 function refreshOfficeState(data) {
-    console.log(data)
-    gridData = data
+    for (const object of data.objects) {
+        const x = object.x;
+        const y = object.y;
+        const coordinates = grid[x][y];
+
+        if (object.type === "wall") {
+            addWall(object, coordinates);
+        } else if (object.type === "user") {
+            addUser(object, coordinates);
+            getUserCoordinates(object, coordinates);
+        } else if (object.type === "zoom") {
+            addZoom(object, coordinates);
+        }
+    }
 }
