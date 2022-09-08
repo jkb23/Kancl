@@ -58,7 +58,7 @@ public class Main {
         webServer.addRoute("/hello", new HelloController(pebbleTemplateRenderer));
         webServer.addRoute("/login", new LoginController(pebbleTemplateRenderer, transactionJobRunner, new Auth(),
                 new LoginInfo(), gridData));
-        webServer.addRoute("/user", new UserPageController(pebbleTemplateRenderer, transactionJobRunner));
+        webServer.addRoute("/user", new UserPageController(pebbleTemplateRenderer));
         webServer.addRoute("/logout", new LogoutController());
 
         webServer.addRoute("/app", new OfficeController(gridData));

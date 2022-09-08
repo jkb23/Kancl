@@ -25,7 +25,8 @@ class OfficeControllerTest {
         OfficeController officeController = new OfficeController(gridData);
         System.out.println(officeController.get(null, null));
         assertThat(officeController.get(null, null))
-                .isEqualTo("{\"users\":[{\"username\":\"Jozko\",\"x\":1,\"y\":0}" +
-                        ",{\"username\":\"Ferko\",\"x\":0,\"y\":1}]}");
+                .isEqualTo("{\"objects\":[{\"type\":\"user\",\"username\":\"Jozko\",\"x\":0,\"y\":0}," +
+                        "{\"type\":\"user\",\"username\":\"Ferko\",\"x\":0,\"y\":0}," +
+                        "{\"type\":\"wall\",\"x\":1,\"y\":1}]}\n");
     }
 }
