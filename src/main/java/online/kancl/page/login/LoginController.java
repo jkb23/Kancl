@@ -48,7 +48,8 @@ public class LoginController extends Controller {
     String authenticate(Request request, Response response, Auth auth, Login user) {
         AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(user.username(), user.password());
         if (returnCode == CORRECT) {
-            User userObject = new User(user.username());
+            String status = UserStorage.getStatus(dbRunner, user.username());
+            User userObject = new User(user.username(), status);
             gridData.addUser(userObject);
             request.session(true);
             request.session().attribute("user", user.username());
