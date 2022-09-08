@@ -11,6 +11,18 @@ public class UserStorage {
         this.dbRunner = dbRunner;
     }
 
+    public boolean usernameExists(String username) {
+        int isFound = dbRunner.selectInt(
+                "SELECT COUNT(*) FROM AppUser WHERE username= ?", username);
+        return isFound == 1;
+    }
+
+    public boolean emailExists(String email) {
+        int isFound = dbRunner.selectInt(
+                "SELECT COUNT(*) FROM AppUser WHERE email= ?", email);
+        return isFound == 1;
+    }
+
     public boolean findUser(String username, String hash) {
         int isFound = dbRunner.selectInt(
                 "SELECT COUNT(*) FROM AppUser WHERE username= ? AND password = ?",
@@ -18,8 +30,11 @@ public class UserStorage {
         return isFound == 1;
     }
 
+    public void createUser(String username, String hash, String email) {
     public void createUser(String username, String hash) {
         try {
+            dbRunner.insert("INSERT INTO AppUser (username, password, email, nickname, avatar, avatar_color, bad_login_count, bad_login_timestamp)" +
+                    " VALUES(?, ?, ?, null, null, null, null, null)", username, hash, email);
             dbRunner.insert("INSERT INTO AppUser (username, password, nickname, avatar, avatar_color, bad_login_count, bad_login_timestamp, user_status)" +
                     " VALUES(?, ?, null, null, null, null, null, null)", username, hash);
         } catch (DatabaseRunner.DatabaseAccessException e) {

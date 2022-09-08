@@ -2,6 +2,10 @@ package online.kancl;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
+import online.kancl.db.ConnectionProvider;
+import online.kancl.db.SchemaCreator;
+import online.kancl.db.TransactionJobRunner;
+import online.kancl.db.UserStorage;
 import online.kancl.auth.Auth;
 import online.kancl.db.*;
 import online.kancl.objects.GridData;
@@ -14,6 +18,8 @@ import online.kancl.page.logout.LogoutController;
 import online.kancl.page.main.MainPageController;
 import online.kancl.page.main.Meetings;
 import online.kancl.page.recreatedb.RecreateDbController;
+import online.kancl.page.registration.RegistrationController;
+import online.kancl.page.registration.RegistrationInfo;
 import online.kancl.page.userpage.UserPageController;
 import online.kancl.page.zoomhook.ZoomHookController;
 import online.kancl.server.Controller;
@@ -54,6 +60,13 @@ public class Main {
         webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer));
         webServer.addRoute("/zoomhook", () -> new ZoomHookController(meetings));
         webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
+        webServer.addRoute("/hello", () -> new HelloController(pebbleTemplateRenderer));
+        webServer.addRoute("/login", () -> new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData));
+        webServer.addRoute("/user", () -> new UserPageController(pebbleTemplateRenderer));
+        webServer.addRoute("/register", (dbRunner) -> new RegistrationController(pebbleTemplateRenderer, transactionJobRunner, new RegistrationInfo(), new UserStorage(dbRunner)));
+        webServer.addRoute("/logout", () -> new LogoutController());
+
+        webServer.addRoute("/app", () -> new OfficeController(gridData));
         webServer.addRoute("/login", createLoginController(pebbleTemplateRenderer, transactionJobRunner, gridData));
         webServer.addRoute("/user", (dbRunner) -> new UserPageController(pebbleTemplateRenderer, dbRunner));
         webServer.addRoute("/logout", LogoutController::new);
