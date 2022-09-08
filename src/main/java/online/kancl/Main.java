@@ -2,6 +2,9 @@ package online.kancl;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
+import online.kancl.db.ConnectionProvider;
+import online.kancl.db.SchemaCreator;
+import online.kancl.db.TransactionJobRunner;
 import online.kancl.auth.Auth;
 import online.kancl.db.*;
 import online.kancl.objects.GridData;
@@ -14,6 +17,7 @@ import online.kancl.page.login.LoginController;
 import online.kancl.page.login.LoginInfo;
 import online.kancl.page.logout.LogoutController;
 import online.kancl.page.main.MainPageController;
+import online.kancl.page.main.Meetings;
 import online.kancl.page.recreatedb.RecreateDbController;
 import online.kancl.page.userpage.UserPageController;
 import online.kancl.page.zoomhook.ZoomHookController;
@@ -52,17 +56,17 @@ public class Main {
 
 
 
-        var webServer = new WebServer(8081, new ExceptionHandler());
-        webServer.addRoute("/", new MainPageController(pebbleTemplateRenderer, meetings));
-        webServer.addRoute("/comments", new CommentsController(pebbleTemplateRenderer, transactionJobRunner));
-        webServer.addRoute("/zoomhook", new ZoomHookController(meetings));
-        webServer.addRoute("/recreateDb", new RecreateDbController(schemaCreator));
-        webServer.addRoute("/hello", new HelloController(pebbleTemplateRenderer));
-        webServer.addRoute("/login", new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData));
-        webServer.addRoute("/user", new UserPageController(pebbleTemplateRenderer));
-        webServer.addRoute("/logout", new LogoutController());
+        var webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner);
+        webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer, meetings));
+        webServer.addRoute("/comments", () -> new CommentsController(pebbleTemplateRenderer, transactionJobRunner));
+        webServer.addRoute("/zoomhook", () -> new ZoomHookController(meetings));
+        webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
+        webServer.addRoute("/hello", () -> new HelloController(pebbleTemplateRenderer));
+        webServer.addRoute("/login", () -> new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData));
+        webServer.addRoute("/user", () -> new UserPageController(pebbleTemplateRenderer));
+        webServer.addRoute("/logout", () -> new LogoutController());
 
-        webServer.addRoute("/app", new OfficeController(gridData));
+        webServer.addRoute("/app", () -> new OfficeController(gridData));
         webServer.start();
 
         System.out.println("Server running");
