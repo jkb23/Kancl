@@ -61,7 +61,6 @@ public class Main {
         webServer.addRoute("/login", createLoginController(pebbleTemplateRenderer, transactionJobRunner, gridData));
         webServer.addRoute("/user", (dbRunner) -> new UserPageController(pebbleTemplateRenderer, dbRunner));
         webServer.addRoute("/logout", LogoutController::new);
-
         webServer.addRoute("/app", () -> new OfficeController(gridData));
         webServer.start();
 
