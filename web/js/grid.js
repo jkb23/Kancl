@@ -45,11 +45,11 @@ function addUser(user, container) {
 }
 
 function removeUser(user, container) {
-    const element = document.createElement("div");
-    element.classList.add("user");
-    element.id = "user";
-    container.removeChild(element);
-  }
+  const element = document.createElement("div");
+  element.classList.add("user");
+  element.id = "user";
+  container.removeChild(element);
+}
 
 function addZoom(zoom, container) {
   container.classList.add("zoom");
@@ -67,39 +67,42 @@ function getUserCoordinates(user, coordinates) {
     if (e.key === "ArrowUp" || e.key === "w") {
       if (user.y > 0) {
         user.y--;
-       userEl.remove();
-      }
-      console.log("y" + user.y);
-    } else if (e.key === "ArrowRight" || e.key === "d") {
-      if (user.x < 25) {
-        user.x++;
         userEl.remove();
       }
-      console.log("x" + user.x);
+      sendRequest(user.x, user.y) 
+
+    } else if (e.key === "ArrowRight" || e.key === "d") {
+      if (user.x < 25) {
+        user.x++;       
+        userEl.remove();
+      }
+      sendRequest(user.x, user.y) 
+
     } else if (e.key === "ArrowLeft" || e.key === "a") {
       if (user.x > 0) {
         user.x--;
         userEl.remove();
       }
-      console.log("x" + user.x);
+      sendRequest(user.x, user.y) 
+
     } else if (e.key === "ArrowDown" || e.key === "s") {
       if (user.y < 17) {
         user.y++;
-        userEl.remove();
-      }
-      console.log("y" + user.y);
+        userEl.remove();           
+      }     
+      sendRequest(user.x, user.y)   
     }
   }
 }
 
-window.addEventListener('load', () => {
-    var fetchInterval = 1000;
-    fetchOfficeState();
-    setInterval(fetchOfficeState, fetchInterval);
-})
+window.addEventListener("load", () => {
+  let fetchInterval = 1000;
+  fetchOfficeState();
+  setInterval(fetchOfficeState, fetchInterval);
+});
 
 function fetchOfficeState() {
-  fetch('/api/office')
+  fetch("/api/office")
     .then(function (response) {
       return response.json();
     })
@@ -107,23 +110,40 @@ function fetchOfficeState() {
       refreshOfficeState(data);
     })
     .catch(function (err) {
-      console.log('error: ' + err);
+      console.log("error: " + err);
     });
 }
 
 function refreshOfficeState(data) {
-    for (const object of data.objects) {
-        const x = object.x;
-        const y = object.y;
-        const coordinates = grid[x][y];
+  for (const object of data.objects) {
+    const x = object.x;
+    const y = object.y;
+    const coordinates = grid[x][y];
 
-        if (object.type === "wall") {
-            addWall(object, coordinates);
-        } else if (object.type === "user") {
-            addUser(object, coordinates);
-            getUserCoordinates(object, coordinates);
-        } else if (object.type === "zoom") {
-            addZoom(object, coordinates);
-        }
+    if (object.type === "wall") {
+      addWall(object, coordinates);
+    } else if (object.type === "user") {
+      addUser(object, coordinates);
+      getUserCoordinates(object, coordinates);
+    } else if (object.type === "zoom") {
+      addZoom(object, coordinates);
     }
+  }
 }
+
+function sendRequest(xCoordinates, yCoordinates) {
+  let xmlhttp = new XMLHttpRequest(); 
+  let url = "/api/office";
+  xmlhttp.open("POST", url);
+  xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  xmlhttp.send(
+    JSON.stringify({
+      objectType: "user",
+      username: "correct",
+      action: "move",
+      position: [{ x: xCoordinates}, { y: yCoordinates }],
+    })
+  );
+}
+
+

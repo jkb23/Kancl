@@ -60,15 +60,11 @@ public class Main {
         webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer));
         webServer.addRoute("/zoomhook", () -> new ZoomHookController(meetings));
         webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
-        webServer.addRoute("/login", (dbRunner) -> new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData, new UserStorage(dbRunner)));
+        //webServer.addRoute("/login", (dbRunner) -> new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData, new UserStorage(dbRunner)));
         webServer.addRoute("/user", (dbRunner) -> new UserPageController(pebbleTemplateRenderer, dbRunner));
         webServer.addRoute("/register", (dbRunner) -> new RegistrationController(pebbleTemplateRenderer, transactionJobRunner, new RegistrationInfo(), new UserStorage(dbRunner)));
-        webServer.addRoute("/logout", () -> new LogoutController());
-
-        webServer.addRoute("/app", () -> new OfficeController(gridData));
         webServer.addRoute("/login", createLoginController(pebbleTemplateRenderer, transactionJobRunner, gridData));
-        webServer.addRoute("/user", (dbRunner) -> new UserPageController(pebbleTemplateRenderer, dbRunner));
-        webServer.addRoute("/logout", LogoutController::new);
+        webServer.addRoute("/logout", () -> new LogoutController(gridData));
         webServer.addRoute("/api/office", () -> new OfficeController(gridData));
         webServer.start();
 
