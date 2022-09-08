@@ -6,10 +6,12 @@ import java.util.List;
 public class GridData {
     List<User> users;
     List<Wall> walls;
+    List<ZoomObject> zoomObjects;
 
     public GridData() {
         this.walls = new ArrayList<>();
         this.users = new ArrayList<>();
+        this.zoomObjects = new ArrayList<>();
     }
 
     public void addUser(User user){
