@@ -60,9 +60,8 @@ public class Main {
         webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer));
         webServer.addRoute("/zoomhook", () -> new ZoomHookController(meetings));
         webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
-        webServer.addRoute("/hello", () -> new HelloController(pebbleTemplateRenderer));
-        webServer.addRoute("/login", () -> new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData));
-        webServer.addRoute("/user", () -> new UserPageController(pebbleTemplateRenderer));
+        webServer.addRoute("/login", (dbRunner) -> new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData, new UserStorage(dbRunner)));
+        webServer.addRoute("/user", (dbRunner) -> new UserPageController(pebbleTemplateRenderer, dbRunner));
         webServer.addRoute("/register", (dbRunner) -> new RegistrationController(pebbleTemplateRenderer, transactionJobRunner, new RegistrationInfo(), new UserStorage(dbRunner)));
         webServer.addRoute("/logout", () -> new LogoutController());
 
@@ -81,7 +80,7 @@ public class Main {
             var userStorage = new UserStorage(dbRunner);
             Auth auth = new Auth(userStorage);
             return new LoginController(pebbleTemplateRenderer,
-                    transactionJobRunner, new LoginInfo(), gridData, userStorage, auth);
+                    transactionJobRunner, new LoginInfo(), gridData, userStorage);
         };
     }
 

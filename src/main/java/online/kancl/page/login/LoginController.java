@@ -25,13 +25,13 @@ public class LoginController extends Controller {
     private Auth auth;
 
     public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner,
-                           LoginInfo loginInfo, GridData gridData, UserStorage userStorage, Auth auth) {
+                           LoginInfo loginInfo, GridData gridData, UserStorage userStorage) {
         this.pebbleTemplateRenderer = pebbleTemplateRenderer;
         this.transactionJobRunner = transactionJobRunner;
         this.loginInfo = loginInfo;
         this.gridData = gridData;
         this.userStorage = userStorage;
-        this.auth = auth;
+        this.auth = new Auth(userStorage);
     }
 
     @Override

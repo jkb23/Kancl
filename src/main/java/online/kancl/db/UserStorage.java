@@ -31,12 +31,9 @@ public class UserStorage {
     }
 
     public void createUser(String username, String hash, String email) {
-    public void createUser(String username, String hash) {
         try {
             dbRunner.insert("INSERT INTO AppUser (username, password, email, nickname, avatar, avatar_color, bad_login_count, bad_login_timestamp)" +
                     " VALUES(?, ?, ?, null, null, null, null, null)", username, hash, email);
-            dbRunner.insert("INSERT INTO AppUser (username, password, nickname, avatar, avatar_color, bad_login_count, bad_login_timestamp, user_status)" +
-                    " VALUES(?, ?, null, null, null, null, null, null)", username, hash);
         } catch (DatabaseRunner.DatabaseAccessException e) {
             if (e.sqlErrorCode == 23505) {
                 throw new DuplicateUserException(e);

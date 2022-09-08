@@ -76,15 +76,15 @@ class UserStorageTest {
     @Test
     public void  incrementBadLoginCount_to_five() {
         for (int i = 0; i < 5; i++) {
-            userStorage.incrementBadLoginCount("john@gmail.com");
+            userStorage.incrementBadLoginCount("john");
         }
-        assertThat(userStorage.getBadLoginCount("john@gmail.com")).contains(5);
+        assertThat(userStorage.getBadLoginCount("john")).contains(5);
     }
 
     @Test
     public void nullBadLoginCount_equal_null() {
-        userStorage.nullBadLoginCount("john@gmail.com");
-        assertThat(userStorage.getBadLoginCount("john@gmail.com")).contains(0);
+        userStorage.nullBadLoginCount("john");
+        assertThat(userStorage.getBadLoginCount("john")).contains(0);
     }
 
 }
