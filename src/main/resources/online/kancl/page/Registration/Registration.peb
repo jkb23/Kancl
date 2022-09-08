@@ -51,7 +51,7 @@
               </div>
 
               <div class="form-outline mb-3">
-                <input type="password" id="passwordCheck" name="passwordCheck" class="form-control form-control-lg"
+                <input type="password" id="passwordCheck" name="passwordCheck" class="form-control form-control-lg" autocomplete="new-password" passwordrules="minlength:5"
                   placeholder="Enter your password again" />
                 <label class="form-label" for="passwordCheck">Password</label>
                 <p class="invalid_credentials small fw-bold mt-2 pt-1 mb-0">{{registrationInfo.getErrorMessage()}}</p>

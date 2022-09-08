@@ -25,6 +25,12 @@ body {
 
 }
 
+/*input[type=email]:not(:placeholder-shown):invalid {
+  color: #DC343B;
+  outline-color: #DC343B;
+  background-color: rgba(220,52,59,0.2);
+}*/
+
 .password-alert {
     color: rgba(0,0,0,0.38);
 }
