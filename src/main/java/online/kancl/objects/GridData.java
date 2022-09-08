@@ -2,8 +2,6 @@ package online.kancl.objects;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class GridData {
     List<User> users;
@@ -17,6 +15,11 @@ public class GridData {
     }
 
     public void addUser(User user){
+        for (User user1 : users){
+            if (user1.username.equals(user.username)){
+                return;
+            }
+        }
         users.add(user);
     }
 
@@ -42,7 +45,10 @@ public class GridData {
     }
 
     public void addWallsList(List<Wall> startWalls){
-        this.walls = Stream.concat(this.walls.stream(), walls.stream()).collect(Collectors.toList());
+        List<Wall> temp = new ArrayList<>();
+        temp.addAll(startWalls);
+        temp.addAll(this.walls);
+        this.walls = temp;
     }
 
     public List<ZoomObject> getZoomObjects() {

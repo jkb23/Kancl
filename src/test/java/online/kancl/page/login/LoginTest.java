@@ -4,6 +4,7 @@ import mockit.*;
 import online.kancl.auth.Auth;
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
+import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,9 @@ public class LoginTest {
     GridData gridData;
 
     @Injectable
+    UserStorage userStorage;
+
+    @Injectable
     Request request;
     @Injectable
     Response response;
@@ -49,7 +53,7 @@ public class LoginTest {
             result = CORRECT;
         }};
 
-        tested.authenticate(request, response, auth, new Login(correct_username, correct_password ));
+        tested.authenticate(request, response, auth, new Login(correct_username, correct_password ), databaseRunner);
 
         new Verifications() {{
             response.redirect("/");
@@ -64,7 +68,7 @@ public class LoginTest {
             result = BAD_CREDENTIALS;
         }};
 
-        tested.authenticate(request, response, auth, new Login(correct_username, wrong_password));
+        tested.authenticate(request, response, auth, new Login(correct_username, wrong_password), databaseRunner);
 
         new Verifications() {{
             loginInfo.setErrorMessage(BAD_CREDENTIALS.message);
@@ -80,7 +84,7 @@ public class LoginTest {
             result = BLOCKED_USER;
         }};
 
-        tested.authenticate(request, response, auth, new Login(blocked_username, wrong_password));
+        tested.authenticate(request, response, auth, new Login(blocked_username, wrong_password), databaseRunner);
 
         new Verifications() {{
             loginInfo.setErrorMessage(BLOCKED_USER.message);
