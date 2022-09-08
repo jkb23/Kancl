@@ -22,6 +22,10 @@ public class GridData {
         walls.add(wall);
     }
 
+    public void addZoom(ZoomObject zoomObject){
+        zoomObjects.add(zoomObject);
+    }
+
     public void removeUser(String username){
         users.removeIf(user -> user.username.equals(username));
     }
@@ -34,4 +38,10 @@ public class GridData {
     {
         return walls;
     }
+
+    public List<ZoomObject> getZoomObjects() {
+        return zoomObjects;
+    }
+
+
 }

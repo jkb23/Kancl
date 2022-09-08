@@ -21,4 +21,9 @@ public class OfficeObject {
     public int getY() {
         return y;
     }
+
+    public void moveObject(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
 }

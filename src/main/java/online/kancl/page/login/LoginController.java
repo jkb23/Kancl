@@ -2,6 +2,7 @@ package online.kancl.page.login;
 
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
+import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
 import online.kancl.objects.User;
 import online.kancl.server.Controller;
@@ -49,7 +50,8 @@ public class LoginController extends Controller {
     String authenticate(Request request, Response response, DatabaseRunner dbRunner, Login user) {
         AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(dbRunner, user.username(), user.password());
         if (returnCode == CORRECT) {
-            User userObject = new User(user.username());
+            String status = UserStorage.getStatus(dbRunner, user.username());
+            User userObject = new User(user.username(), status);
             gridData.addUser(userObject);
             request.session(true);
             request.session().attribute("user", user.username());
