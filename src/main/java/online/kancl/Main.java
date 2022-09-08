@@ -3,6 +3,7 @@ package online.kancl;
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
 import online.kancl.auth.Auth;
+import online.kancl.db.*;
 import online.kancl.objects.GridData;
 import online.kancl.objects.Wall;
 import online.kancl.page.api.OfficeController;
@@ -16,9 +17,6 @@ import online.kancl.page.main.MainPageController;
 import online.kancl.page.recreatedb.RecreateDbController;
 import online.kancl.page.userpage.UserPageController;
 import online.kancl.page.zoomhook.ZoomHookController;
-import online.kancl.db.ConnectionProvider;
-import online.kancl.db.SchemaCreator;
-import online.kancl.db.TransactionJobRunner;
 import online.kancl.page.main.Meetings;
 import online.kancl.server.ExceptionHandler;
 import online.kancl.server.WebServer;
@@ -50,14 +48,15 @@ public class Main {
         var gridData = new GridData();
         addStartingWalls(gridData);
 
+
+
         var webServer = new WebServer(8081, new ExceptionHandler());
         webServer.addRoute("/", new MainPageController(pebbleTemplateRenderer, meetings));
         webServer.addRoute("/comments", new CommentsController(pebbleTemplateRenderer, transactionJobRunner));
         webServer.addRoute("/zoomhook", new ZoomHookController(meetings));
         webServer.addRoute("/recreateDb", new RecreateDbController(schemaCreator));
         webServer.addRoute("/hello", new HelloController(pebbleTemplateRenderer));
-        webServer.addRoute("/login", new LoginController(pebbleTemplateRenderer, transactionJobRunner, new Auth(),
-                new LoginInfo(), gridData));
+        webServer.addRoute("/login", new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData));
         webServer.addRoute("/user", new UserPageController(pebbleTemplateRenderer));
         webServer.addRoute("/logout", new LogoutController());
 
