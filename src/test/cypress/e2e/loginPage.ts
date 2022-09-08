@@ -3,7 +3,7 @@ import * as application from '../testrig/application';
 describe('Login page', () => {
     beforeEach(() => {
         application.recreateDatabase();
-    })
+    });
 
     it("enters correct credentials", () => {
         application.openLoginPage();
