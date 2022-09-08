@@ -24,7 +24,7 @@ class UserStorageTest {
 
     @BeforeEach
     public void initialize(DatabaseRunner dbRunner) {
-        dbRunner.insert("INSERT INTO AppUser (username, password, email, , user_status)" +
+        dbRunner.insert("INSERT INTO AppUser (username, password, email, user_status)" +
                 " VALUES('john', 12345, 'john@gmail.com','Mam se dobre!')");
     }
 
@@ -89,32 +89,32 @@ class UserStorageTest {
 
     @Test
     public void usernameIDIsNotNull() {
-        userStorage.getUserIdFromUsername("john@gmail.com");
-        assertThat(userStorage.getUserIdFromUsername("john@gmail.com")).isNotEqualTo(null);
+        userStorage.getUserIdFromUsername("john");
+        assertThat(userStorage.getUserIdFromUsername("john")).isNotEqualTo(null);
     }
 
     @Test
     public void getStatusFromDb_true() {
-        userStorage.getStatusFromDb("john@gmail.com");
-        assertThat(userStorage.getStatusFromDb("john@gmail.com")).isEqualTo("Mam se dobre!");
+        userStorage.getStatusFromDb("john");
+        assertThat(userStorage.getStatusFromDb("john")).isEqualTo("Mam se dobre!");
     }
 
     @Test
     public void getStatusFromDb_false() {
-        userStorage.getStatusFromDb("john@gmail.com");
-        assertThat(userStorage.getStatusFromDb("john@gmail.com")).isNotEqualTo("Mam se spatne!");
+        userStorage.getStatusFromDb("john");
+        assertThat(userStorage.getStatusFromDb("john")).isNotEqualTo("Mam se spatne!");
     }
 
     @Test
     public void setStatusFromDb_true() {
-        userStorage.setStatusToDb("john@gmail.com", "Aktualne testuji");
-        assertThat(userStorage.getStatusFromDb("john@gmail.com")).isEqualTo("Aktualne testuji");
+        userStorage.setStatusToDb("john", "Aktualne testuji");
+        assertThat(userStorage.getStatusFromDb("john")).isEqualTo("Aktualne testuji");
     }
 
     @Test
     public void setStatusFromDb_false() {
-        userStorage.setStatusToDb("john@gmail.com", "Aktualne testuji");
-        assertThat(userStorage.getStatusFromDb("john@gmail.com")).isNotEqualTo("Mam se dobre!");
+        userStorage.setStatusToDb("john", "Aktualne testuji");
+        assertThat(userStorage.getStatusFromDb("john")).isNotEqualTo("Mam se dobre!");
     }
 
 
