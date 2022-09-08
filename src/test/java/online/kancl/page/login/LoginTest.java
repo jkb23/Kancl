@@ -45,11 +45,11 @@ public class LoginTest {
     @Test
     void checkIfCorrectCredentialsRedirect() {
         new Expectations() {{
-            auth.checkCredentialsWithBruteForcePrevention((DatabaseRunner) any, correct_username, correct_password);
+            auth.checkCredentialsWithBruteForcePrevention(correct_username, correct_password);
             result = CORRECT;
         }};
 
-        tested.authenticate(request, response, databaseRunner, new Login(correct_username, correct_password ));
+        tested.authenticate(request, response, auth, new Login(correct_username, correct_password ));
 
         new Verifications() {{
             response.redirect("/app");
@@ -60,11 +60,11 @@ public class LoginTest {
     @Test
     void checkIfInCorrectCredentialsRedirect() {
         new Expectations() {{
-            auth.checkCredentialsWithBruteForcePrevention((DatabaseRunner) any, correct_username, wrong_password);
+            auth.checkCredentialsWithBruteForcePrevention(correct_username, wrong_password);
             result = BAD_CREDENTIALS;
         }};
 
-        tested.authenticate(request, response, databaseRunner, new Login(correct_username, wrong_password));
+        tested.authenticate(request, response, auth, new Login(correct_username, wrong_password));
 
         new Verifications() {{
             loginInfo.setErrorMessage(BAD_CREDENTIALS.message);
@@ -76,11 +76,11 @@ public class LoginTest {
     @Test
     void checkIfUserIsBlocked() {
         new Expectations() {{
-            auth.checkCredentialsWithBruteForcePrevention((DatabaseRunner) any, blocked_username, wrong_password);
+            auth.checkCredentialsWithBruteForcePrevention(blocked_username, wrong_password);
             result = BLOCKED_USER;
         }};
 
-        tested.authenticate(request, response, databaseRunner, new Login(blocked_username, wrong_password));
+        tested.authenticate(request, response, auth, new Login(blocked_username, wrong_password));
 
         new Verifications() {{
             loginInfo.setErrorMessage(BLOCKED_USER.message);

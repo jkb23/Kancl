@@ -3,6 +3,7 @@ package online.kancl.page.api;
 import online.kancl.objects.GridData;
 import online.kancl.objects.User;
 import online.kancl.objects.Wall;
+import online.kancl.objects.ZoomObject;
 import online.kancl.server.Controller;
 import spark.Request;
 import spark.Response;
@@ -37,6 +38,7 @@ public class OfficeController extends Controller {
             JsonObjectBuilder userBuilder = Json.createObjectBuilder();
             userBuilder.add("type", "user");
             userBuilder.add("username", user.getUsername());
+            //userBuilder.add("status", user.getStatus());
             userBuilder.add("x", user.getX());
             userBuilder.add("y", user.getY());
             objects.add(userBuilder);
@@ -48,6 +50,15 @@ public class OfficeController extends Controller {
             wallBuilder.add("x", wall.getX());
             wallBuilder.add("y", wall.getY());
             objects.add(wallBuilder);
+        }
+
+        for (ZoomObject zoomObject : gridData.getZoomObjects()) {
+            JsonObjectBuilder zoomObjectBuilder = Json.createObjectBuilder();
+            zoomObjectBuilder.add("type", "zoom");
+            zoomObjectBuilder.add("link", zoomObject.getZoomLink());
+            zoomObjectBuilder.add("x", zoomObject.getX());
+            zoomObjectBuilder.add("y", zoomObject.getY());
+            objects.add(zoomObjectBuilder);
         }
 
         return objects;

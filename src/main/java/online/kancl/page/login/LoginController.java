@@ -1,7 +1,7 @@
 package online.kancl.page.login;
 
-import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
+import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
 import online.kancl.objects.User;
 import online.kancl.server.Controller;
@@ -18,14 +18,12 @@ public class LoginController extends Controller {
     private final PebbleTemplateRenderer pebbleTemplateRenderer;
     private final TransactionJobRunner transactionJobRunner;
     private LoginInfo loginInfo;
-    private final Auth auth;
-    private GridData gridData;
+    private final GridData gridData;
 
     public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner,
-                           Auth auth, LoginInfo loginInfo, GridData gridData) {
+                           LoginInfo loginInfo, GridData gridData) {
         this.pebbleTemplateRenderer = pebbleTemplateRenderer;
         this.transactionJobRunner = transactionJobRunner;
-        this.auth = auth;
         this.loginInfo = loginInfo;
         this.gridData = gridData;
     }
@@ -39,17 +37,18 @@ public class LoginController extends Controller {
     @Override
     public String post(Request request, Response response) {
         return transactionJobRunner.runInTransaction((dbRunner) -> {
+            var auth = new Auth(new UserStorage(dbRunner));
             var user = new Login(
                     request.queryParams("username"),
                     request.queryParams("password"));
-            return authenticate(request, response, dbRunner, user);
+            return authenticate(request, response, auth, user);
         });
     }
 
-    String authenticate(Request request, Response response, DatabaseRunner dbRunner, Login user) {
-        AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(dbRunner, user.username(), user.password());
+    String authenticate(Request request, Response response, Auth auth, Login user) {
+        AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(user.username(), user.password());
         if (returnCode == CORRECT) {
-            User userObject = new User(user.username());
+            User userObject = new User(user.username(), auth);
             gridData.addUser(userObject);
             request.session(true);
             request.session().attribute("user", user.username());
