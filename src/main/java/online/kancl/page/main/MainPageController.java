@@ -20,13 +20,6 @@ public class MainPageController extends Controller {
 
     @Override
     public String get(Request request, Response response) {
-        PageContext pageContext = new PageContext(request);
-        if ("".equals(pageContext.getUsername())) {
-            response.redirect("/login");
-            return "";
-        } else {
-            return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, meetings, new PageContext(request));
-        }
-
+        return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, meetings, new PageContext(request));
     }
 }
