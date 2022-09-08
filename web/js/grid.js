@@ -99,7 +99,7 @@ window.addEventListener('load', () => {
 })
 
 function fetchOfficeState() {
-  fetch('/app')
+  fetch('/api/office')
     .then(function (response) {
       return response.json();
     })
