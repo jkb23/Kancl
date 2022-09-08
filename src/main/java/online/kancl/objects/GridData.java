@@ -34,4 +34,6 @@ public class GridData {
     {
         return walls;
     }
+
+    //public void addWallsList()
 }

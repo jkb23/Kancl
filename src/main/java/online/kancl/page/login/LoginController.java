@@ -2,6 +2,7 @@ package online.kancl.page.login;
 
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
+import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
 import online.kancl.objects.User;
 import online.kancl.server.Controller;
