@@ -63,7 +63,7 @@ public class Main {
         webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
         webServer.addRoute("/hello", () -> new HelloController(pebbleTemplateRenderer));
         webServer.addRoute("/login", () -> new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData));
-        webServer.addRoute("/user", () -> new UserPageController(pebbleTemplateRenderer));
+        webServer.addRoute("/user", (ddRunner) -> new UserPageController(pebbleTemplateRenderer));
         webServer.addRoute("/logout", () -> new LogoutController());
 
         webServer.addRoute("/app", () -> new OfficeController(gridData));

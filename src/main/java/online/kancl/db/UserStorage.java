@@ -62,7 +62,7 @@ public class UserStorage {
     }
 
     public String getStatusFromDb (String username) {
-        return dbRunner.selectString("SELECT id FROM user_status WHERE username = ?", username);
+        return dbRunner.selectString("SELECT user_status FROM AppUser WHERE username = ?", username);
     }
 
     public void setStatusToDb (String username, String status) {
