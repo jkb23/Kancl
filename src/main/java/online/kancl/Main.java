@@ -26,6 +26,8 @@ import online.kancl.util.DirectoryHashCalculator;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 
 public class Main {
 
@@ -79,11 +81,18 @@ public class Main {
     }
 
     private static void addStartingWalls(GridData gridData){
-        Wall wall1 = new Wall(0, 4);
-        Wall wall2 = new Wall(1, 4);
-        //TODO add another starting walls
+        List<Wall> walls = Arrays.asList(
+        new Wall(0, 4),
+        new Wall(1, 4),
+        new Wall(2, 4),
+        new Wall(3, 4),
+        new Wall(4, 4),
+        new Wall(5, 4),
+        new Wall(6, 4),
+        new Wall(6, 0),
+        new Wall(6, 1),
+        new Wall(6, 2));
 
-        gridData.addWall(wall1);
-        gridData.addWall(wall2);
+        //gridData.addWall();
     }
 }
