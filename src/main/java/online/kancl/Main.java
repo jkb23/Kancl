@@ -19,6 +19,7 @@ import online.kancl.page.logout.LogoutController;
 import online.kancl.page.main.MainPageController;
 import online.kancl.page.main.Meetings;
 import online.kancl.page.recreatedb.RecreateDbController;
+import online.kancl.page.registration.RegistrationController;
 import online.kancl.page.userpage.UserPageController;
 import online.kancl.page.zoomhook.ZoomHookController;
 import online.kancl.page.main.Meetings;
@@ -64,6 +65,7 @@ public class Main {
         webServer.addRoute("/hello", () -> new HelloController(pebbleTemplateRenderer));
         webServer.addRoute("/login", () -> new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData));
         webServer.addRoute("/user", () -> new UserPageController(pebbleTemplateRenderer));
+        webServer.addRoute("/register", () -> new RegistrationController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData));
         webServer.addRoute("/logout", () -> new LogoutController());
 
         webServer.addRoute("/app", () -> new OfficeController(gridData));
