@@ -25,16 +25,10 @@ public class OfficeController extends Controller {
 
     @Override
     public String get(Request request, Response response){
-        PageContext pageContext = new PageContext(request);
-        if ("".equals(pageContext.getUsername())) {
-            response.redirect("/login");
-            return "";
-        } else {
-            return createObjectBuilder()
+           return createObjectBuilder()
                     .add("objects", createObjectsJsonArray())
                     .build()
                     .toString();
-        }
     }
 
     private JsonArrayBuilder createObjectsJsonArray() {

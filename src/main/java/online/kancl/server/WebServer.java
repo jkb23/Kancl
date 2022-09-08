@@ -1,6 +1,5 @@
 package online.kancl.server;
 
-import online.kancl.auth.AuthGuard;
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
 import spark.Route;
@@ -33,12 +32,10 @@ public class WebServer {
 
     private Route processGet(Function<DatabaseRunner, Controller> controllerSupplier) {
         return (request, response) -> {
-            return AuthGuard.checkIfLogged(request, response) -> {
-                return transactionJobRunner.runInTransaction((dbRunner) -> {
-                    return controllerSupplier.apply(dbRunner)
-                            .get(request, response);
-                });
-            };
+            return transactionJobRunner.runInTransaction((dbRunner) -> {
+                return controllerSupplier.apply(dbRunner)
+                        .get(request, response);
+            });
         };
     }
 
