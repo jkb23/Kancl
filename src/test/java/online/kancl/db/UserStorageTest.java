@@ -24,8 +24,8 @@ class UserStorageTest {
 
     @BeforeEach
     public void initialize(DatabaseRunner dbRunner) {
-        dbRunner.insert("INSERT INTO AppUser (username, password, email)" +
-                " VALUES('john', 12345, 'john@gmail.com')");
+        dbRunner.insert("INSERT INTO AppUser (username, password, email, , user_status)" +
+                " VALUES('john', 12345, 'john@gmail.com','Mam se dobre!')");
     }
 
     @Test
@@ -86,5 +86,36 @@ class UserStorageTest {
         userStorage.nullBadLoginCount("john");
         assertThat(userStorage.getBadLoginCount("john")).contains(0);
     }
+
+    @Test
+    public void usernameIDIsNotNull() {
+        userStorage.getUserIdFromUsername("john@gmail.com");
+        assertThat(userStorage.getUserIdFromUsername("john@gmail.com")).isNotEqualTo(null);
+    }
+
+    @Test
+    public void getStatusFromDb_true() {
+        userStorage.getStatusFromDb("john@gmail.com");
+        assertThat(userStorage.getStatusFromDb("john@gmail.com")).isEqualTo("Mam se dobre!");
+    }
+
+    @Test
+    public void getStatusFromDb_false() {
+        userStorage.getStatusFromDb("john@gmail.com");
+        assertThat(userStorage.getStatusFromDb("john@gmail.com")).isNotEqualTo("Mam se spatne!");
+    }
+
+    @Test
+    public void setStatusFromDb_true() {
+        userStorage.setStatusToDb("john@gmail.com", "Aktualne testuji");
+        assertThat(userStorage.getStatusFromDb("john@gmail.com")).isEqualTo("Aktualne testuji");
+    }
+
+    @Test
+    public void setStatusFromDb_false() {
+        userStorage.setStatusToDb("john@gmail.com", "Aktualne testuji");
+        assertThat(userStorage.getStatusFromDb("john@gmail.com")).isNotEqualTo("Mam se dobre!");
+    }
+
 
 }
