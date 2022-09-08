@@ -3,10 +3,14 @@ package online.kancl.page.login;
 import online.kancl.auth.Auth;
 import online.kancl.auth.AuthReturnCode;
 import online.kancl.db.TransactionJobRunner;
+import online.kancl.db.UserStorage;
+import online.kancl.page.hello.HelloController;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
 import spark.Response;
+import online.kancl.auth.Auth;
+import online.kancl.auth.AuthReturnCode;
 
 import static online.kancl.auth.AuthReturnCode.CORRECT;
 
@@ -16,12 +20,9 @@ public class LoginController extends Controller {
     private final TransactionJobRunner transactionJobRunner;
     private LoginInfo loginInfo;
 
-    private final Auth auth;
-
     public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner) {
         this.pebbleTemplateRenderer = pebbleTemplateRenderer;
         this.transactionJobRunner = transactionJobRunner;
-        this.auth = new Auth();
     }
 
     @Override
@@ -36,11 +37,12 @@ public class LoginController extends Controller {
             var user = new Login(
                     request.queryParams("username"),
                     request.queryParams("password"));
-            AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(dbRunner, user.username(), user.password());
+            var auth = new Auth(new UserStorage(dbRunner));
+            AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(user.username(), user.password());
             if (returnCode == CORRECT) {
                 request.session(true);
                 request.session().attribute("user", user.username());
-                response.redirect("/user");
+                response.redirect("/");
                 return "";
             }
             loginInfo = new LoginInfo(returnCode.message);
