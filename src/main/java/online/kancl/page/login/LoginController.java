@@ -36,7 +36,7 @@ public class LoginController extends Controller {
 
     @Override
     public String get(Request request, Response response) {
-        PageContext pageContext = new PageContext(request);
+        PageContext pageContext = new PageContext(request, userStorage);
         if ("".equals(pageContext.getUsername())) {
             loginInfo = new LoginInfo();
             return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);

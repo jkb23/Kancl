@@ -39,7 +39,7 @@ class OfficeControllerTest {
         OfficeController officeController = new OfficeController(gridData);
         assertThat(officeController.get(null, response))
                 .isEqualTo("{\"objects\":[{\"type\":\"user\",\"username\":\"correct\",\"status\":\"Mam se dobre!\"" +
-                        ",\"x\":0,\"y\":0},{\"type\":\"wall\",\"x\":1,\"y\":1}" +
+                        ",\"x\":13,\"y\":8},{\"type\":\"wall\",\"x\":1,\"y\":1}" +
                         ",{\"type\":\"zoom\",\"link\":\"zoom.com\",\"x\":5,\"y\":5}]}");
     }
 }
