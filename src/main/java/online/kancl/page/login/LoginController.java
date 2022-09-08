@@ -42,14 +42,14 @@ public class LoginController extends Controller {
             var user = new Login(
                     request.queryParams("username"),
                     request.queryParams("password"));
-            return authenticate(request, response, auth, user);
+            return authenticate(request, response, auth, user, dbRunner);
         });
     }
 
-    String authenticate(Request request, Response response, Auth auth, Login user) {
+    String authenticate(Request request, Response response, Auth auth, Login user, DatabaseRunner dbRunner) {
         AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(user.username(), user.password());
         if (returnCode == CORRECT) {
-            User userObject = new User(user.username());
+            User userObject = new User(user.username(), dbRunner);
             gridData.addUser(userObject);
             request.session(true);
             request.session().attribute("user", user.username());

@@ -1,6 +1,5 @@
 package online.kancl.objects;
 
-import online.kancl.auth.Auth;
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.UserStorage;
 
@@ -8,13 +7,15 @@ public class User extends OfficeObject {
     private int x;
     private int y;
     public final String username;
+    private final UserStorage userStorage;
 
     private String status;
 
-    public User(String username) {
+    public User(String username, DatabaseRunner dbRunner) {
         super();
         this.username = username;
-        this.status = UserStorage.getStatusFromDb(username);
+        this.userStorage = new UserStorage(dbRunner);
+        this.status = userStorage.getStatusFromDb(username);
     }
 
     public String getUsername() {
@@ -43,6 +44,6 @@ public class User extends OfficeObject {
 
     public void setStatus(String status) {
         this.status = status;
-        UserStorage.setStatusToDb(username, status);
+        userStorage.setStatusToDb(username, status);
     }
 }
