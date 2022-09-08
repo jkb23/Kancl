@@ -6,7 +6,6 @@ import online.kancl.auth.Auth;
 import online.kancl.objects.GridData;
 import online.kancl.objects.Wall;
 import online.kancl.page.api.OfficeController;
-import online.kancl.page.app.AppController;
 import online.kancl.page.comments.CommentsController;
 import online.kancl.page.hello.HelloController;
 import online.kancl.page.login.LoginController;
@@ -83,17 +82,29 @@ public class Main {
 
     private static void addStartingWalls(GridData gridData){
         List<Wall> walls = Arrays.asList(
-        new Wall(0, 4),
-        new Wall(1, 4),
-        new Wall(2, 4),
-        new Wall(3, 4),
-        new Wall(4, 4),
-        new Wall(5, 4),
-        new Wall(6, 4),
-        new Wall(6, 0),
-        new Wall(6, 1),
-        new Wall(6, 2));
+                new Wall(0, 4),
+                new Wall(1, 4),
+                new Wall(2, 4),
+                new Wall(3, 4),
+                new Wall(4, 4),
+                new Wall(5, 4),
+                new Wall(6, 4),
+                new Wall(6, 0),
+                new Wall(6, 1),
+                new Wall(6, 2),
+                new Wall(19, 0),
+                new Wall(19, 1),
+                new Wall(19, 2),
+                new Wall(19, 4),
+                new Wall(20, 4),
+                new Wall(21, 4),
+                new Wall(22, 4),
+                new Wall(23, 4),
+                new Wall(24, 4),
+                new Wall(25, 4),
+                new Wall(25, 0)
+        );
 
-        //gridData.addWall();
+        gridData.addWallsList(walls);
     }
 }
