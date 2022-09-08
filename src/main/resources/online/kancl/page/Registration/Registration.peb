@@ -23,8 +23,7 @@
 
             <form method='post'>
               <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
-                <p class="lead fw-normal mb-2 me-3">Register</p>
-{#                <p class="kancl-online">kancl.online</p>#}
+              <div class="register">Register with us</div>
               </div>
 
               <div class="form-outline mb-4">
@@ -44,16 +43,14 @@
 
               <div class="form-outline mb-3">
                 <input type="password" id="password" name="password" class="form-control form-control-lg"
-                  placeholder="Enter your password" />
+                  placeholder="Enter your password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![\n])(?=.*[A-Z])(?=.*[a-z]).*$" title="Must contain at least one number or at least one non-word character, one uppercase and one lowercase letter, and at least 8 or more characters with no newline in a string of any characters" required/>
                 <label class="form-label" for="password">Password</label>
-                 <p class="password-alert">Password must be at least 5 characters long</p>
-                <p class="invalid_credentials small fw-bold mt-2 pt-1 mb-0">{{registrationInfo.getErrorMessage()}}</p>
               </div>
 
               <div class="form-outline mb-3">
-                <input type="password" id="passwordCheck" name="passwordCheck" class="form-control form-control-lg" autocomplete="new-password" passwordrules="minlength:5"
-                  placeholder="Enter your password again" />
-                <label class="form-label" for="passwordCheck">Password</label>
+                <input type="password" id="passwordCheck" name="passwordCheck" class="form-control form-control-lg" onkeyup="isEqual()" oncheck="isLongEnough()" autocomplete="new-password"
+                  placeholder="Enter your password again" required/>
+                <label class="form-label" id="message" for="passwordCheck"></label>
                 <p class="invalid_credentials small fw-bold mt-2 pt-1 mb-0">{{registrationInfo.getErrorMessage()}}</p>
               </div>
 
