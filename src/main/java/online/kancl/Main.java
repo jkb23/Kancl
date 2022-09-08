@@ -51,7 +51,7 @@ public class Main {
         addStartingWalls(gridData);
 
         var webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner);
-        webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer, meetings));
+        webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer));
         webServer.addRoute("/zoomhook", () -> new ZoomHookController(meetings));
         webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
         webServer.addRoute("/login", createLoginController(pebbleTemplateRenderer, transactionJobRunner, gridData));

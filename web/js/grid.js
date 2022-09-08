@@ -104,9 +104,6 @@ for (const object of gridData.objects) {
   }
 }
 
-
-
-
 function getUserCoordinates(user, coordinates) {
   document.addEventListener("keydown", handleKey);
   let userEl = document.getElementById("user");
@@ -138,4 +135,27 @@ function getUserCoordinates(user, coordinates) {
       console.log("y" + user.y);
     }
   }
+}
+
+window.addEventListener('load', () => {
+    var fetchInterval = 10000;
+    setInterval(fetchOfficeState, fetchInterval);
+})
+
+function fetchOfficeState() {
+  fetch('/app')
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      refreshOfficeState(data);
+    })
+    .catch(function (err) {
+      console.log('error: ' + err);
+    });
+}
+
+function refreshOfficeState(data) {
+    console.log(data);
+    gridData = JSON.parse(data);
 }
