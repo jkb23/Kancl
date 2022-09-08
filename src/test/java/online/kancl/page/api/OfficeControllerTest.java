@@ -3,11 +3,9 @@ package online.kancl.page.api;
 import online.kancl.objects.GridData;
 import online.kancl.objects.User;
 import online.kancl.objects.Wall;
-import online.kancl.page.app.AppController;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class OfficeControllerTest {
     @Test
@@ -24,9 +22,9 @@ class OfficeControllerTest {
         gridData.addWall(wall);
         gridData.addUser(user2);
 
-        AppController appController = new AppController(gridData);
-        System.out.println(appController.get(null, null));
-        assertThat(appController.get(null, null))
+        OfficeController officeController = new OfficeController(gridData);
+        System.out.println(officeController.get(null, null));
+        assertThat(officeController.get(null, null))
                 .isEqualTo("{\"users\":[{\"username\":\"Jozko\",\"x\":1,\"y\":0}" +
                         ",{\"username\":\"Ferko\",\"x\":0,\"y\":1}]}");
     }
