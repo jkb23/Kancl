@@ -39,6 +39,8 @@ public class GridData {
         return walls;
     }
 
+    //public void addWallsList()
+
     public List<ZoomObject> getZoomObjects() {
         return zoomObjects;
     }
