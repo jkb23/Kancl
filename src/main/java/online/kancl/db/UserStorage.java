@@ -61,6 +61,14 @@ public class UserStorage {
         return dbRunner.selectInt("SELECT id FROM AppUser WHERE username = ?", username);
     }
 
+    public String getStatusFromDb (String username) {
+        return dbRunner.selectString("SELECT id FROM user_status WHERE username = ?", username);
+    }
+
+    public void setStatusToDb (String username, String status) {
+        dbRunner.update("UPDATE AppUser SET user_status = ? WHERE username= ?",
+                status, username);
+    }
 
     public class DuplicateUserException extends RuntimeException {
         public DuplicateUserException(Throwable cause) {

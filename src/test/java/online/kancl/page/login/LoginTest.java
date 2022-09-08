@@ -52,7 +52,7 @@ public class LoginTest {
         tested.authenticate(request, response, auth, new Login(correct_username, correct_password ));
 
         new Verifications() {{
-            response.redirect("/app");
+            response.redirect("/");
             times = 1;
         }};
     }
