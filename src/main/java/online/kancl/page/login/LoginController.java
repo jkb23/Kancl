@@ -5,6 +5,7 @@ import online.kancl.db.TransactionJobRunner;
 import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
 import online.kancl.objects.User;
+import online.kancl.page.PageContext;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
@@ -35,8 +36,14 @@ public class LoginController extends Controller {
 
     @Override
     public String get(Request request, Response response) {
-        loginInfo = new LoginInfo();
-        return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
+        PageContext pageContext = new PageContext(request);
+        if ("".equals(pageContext.getUsername())) {
+            loginInfo = new LoginInfo();
+            return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
+        } else {
+            response.redirect("/");
+            return "";
+        }
     }
 
     @Override
