@@ -62,27 +62,27 @@ export function clickSubmit() {
     cy.get('#submit').click();
 }
 
-export function checkVisibility() {
+export function submitButtonIsDisabled() {
     cy.get('#submit').should('be.disabled')
 }
 
-export function checkNotificationCredentials() {
+export function displaysInvalidCredentials() {
     cy.get('.invalid_credentials').contains('Invalid credentials')
 }
 
-export function checkLockoutCredentials() {
+export function displaysTooManyUnsuccessfulLoginAttempts() {
     cy.get('.invalid_credentials').contains('Too many unsuccessful attempts. Try again later.')
 }
 
-export function checkInvalidCredentialsFalse() {
+export function doesNotShowInvalidCredentials() {
     cy.get('.invalid_credentials').should('not.exist')
 }
 
-export function redirect() {
+export function doesNotDisplayLoginPage() {
     cy.url().should('not.contains', '/login')
 }
 
-export function notRedirected() {
+export function displaysLoginPage() {
     cy.url().should('contains', '/login')
 }
 

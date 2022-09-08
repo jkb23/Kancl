@@ -9,49 +9,48 @@ describe('Login page', () => {
         application.openLoginPage()
         application.enterCredentials('correct', 'correct')
         application.clickSubmit()
-        application.checkInvalidCredentialsFalse()
-        application.redirect()
+        application.doesNotShowInvalidCredentials()
+        application.doesNotDisplayLoginPage()
     });
 
     it("enters incorrect username", () => {
         application.openLoginPage()
         application.enterCredentials('incorrect', 'correct')
         application.clickSubmit()
-        application.checkNotificationCredentials()
-        application.notRedirected()
+        application.displaysInvalidCredentials()
+        application.displaysLoginPage()
     });
 
     it("enters incorrect password", () => {
         application.openLoginPage()
         application.enterCredentials('correct', 'incorrect')
         application.clickSubmit()
-        application.checkNotificationCredentials()
-        application.notRedirected()
+        application.displaysInvalidCredentials()
+        application.displaysLoginPage()
     });
 
     it("leaves username empty", () => {
         application.openLoginPage()
         application.enterCredentials('', 'correct')
-        application.checkVisibility()
-        application.notRedirected()
+        application.submitButtonIsDisabled()
     });
 
     it("leaves password empty", () => {
         application.openLoginPage()
         application.enterCredentials('user', '')
-        application.checkVisibility()
-        application.notRedirected()
+        application.submitButtonIsDisabled()
+        application.displaysLoginPage()
     });
 
     it("enters incorrect credentials 5 times", () => {
         application.openLoginPage()
 
-        for(let i = 0; i < 6; i++){
+        for (let i = 0; i < 6; i++) {
             application.enterCredentials('correct', 'password');
             application.clickSubmit()
         }
-        application.checkLockoutCredentials()
-        application.notRedirected()
-    });
 
+        application.displaysTooManyUnsuccessfulLoginAttempts()
+        application.displaysLoginPage()
+    });
 });
