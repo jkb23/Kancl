@@ -2,6 +2,8 @@ package online.kancl.server;
 
 import spark.Spark;
 
+import java.util.function.Supplier;
+
 public class WebServer {
 
     public WebServer(int port, ExceptionHandler exceptionHandler) {
@@ -10,9 +12,9 @@ public class WebServer {
         Spark.exception(Exception.class, exceptionHandler::handleException);
     }
 
-    public void addRoute(String path, Controller controller) {
-        Spark.get(path, controller::get);
-        Spark.post(path, controller::post);
+    public void addRoute(String path, Supplier<Controller> controllerSupplier) {
+        Spark.get(path, (request, response) -> controllerSupplier.get().get(request, response));
+        Spark.post(path, (request, response) -> controllerSupplier.get().post(request, response));
     }
 
     public void start() {

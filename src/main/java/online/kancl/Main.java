@@ -42,13 +42,13 @@ public class Main {
         var meetings = new Meetings();
 
         var webServer = new WebServer(8081, new ExceptionHandler());
-        webServer.addRoute("/", new MainPageController(pebbleTemplateRenderer, meetings));
-        webServer.addRoute("/comments", new CommentsController(pebbleTemplateRenderer, transactionJobRunner));
-        webServer.addRoute("/zoomhook", new ZoomHookController(meetings));
-        webServer.addRoute("/recreateDb", new RecreateDbController(schemaCreator));
-        webServer.addRoute("/hello", new HelloController(pebbleTemplateRenderer));
-        webServer.addRoute("/login", new LoginController(pebbleTemplateRenderer, transactionJobRunner));
-        webServer.addRoute("/logout", new LogoutController());
+        webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer, meetings));
+        webServer.addRoute("/comments", () -> new CommentsController(pebbleTemplateRenderer, transactionJobRunner));
+        webServer.addRoute("/zoomhook", () -> new ZoomHookController(meetings));
+        webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
+        webServer.addRoute("/hello", () -> new HelloController(pebbleTemplateRenderer));
+        webServer.addRoute("/login", () -> new LoginController(pebbleTemplateRenderer, transactionJobRunner));
+        webServer.addRoute("/logout", () -> new LogoutController());
 
         webServer.start();
 
