@@ -1,9 +1,5 @@
 import * as application from '../testrig/application';
 
-<<<<<<< HEAD
-=======
-
->>>>>>> e37545e (Created loginPage.ts, added basic functions to application.ts)
 describe('Login page', () => {
     beforeEach(() => {
         application.recreateDatabase();
