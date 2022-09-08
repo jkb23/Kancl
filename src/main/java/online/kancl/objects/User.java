@@ -1,27 +1,23 @@
 package online.kancl.objects;
 
+import online.kancl.auth.Auth;
+
 public class User extends OfficeObject {
     private int x;
     private int y;
     public final String username;
-    public String status;
+    private Auth auth;
 
-    public User(String username, String status) {
+    private String status;
+
+    public User(String username, Auth auth) {
         super();
         this.username = username;
-        this.status = status;
+        this.auth = auth;
     }
 
     public String getUsername() {
         return username;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public void moveRight(){
