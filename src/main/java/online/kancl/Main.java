@@ -94,6 +94,7 @@ public class Main {
 
     private static void addStartingWalls(GridData gridData){
         ZoomObject zoomObject = new ZoomObject(25, 0, "xx");
+        ZoomObject zoomObject2 = new ZoomObject(0, 0, "xx");
         List<Wall> walls = Arrays.asList(
                 new Wall(0, 4),
                 new Wall(1, 4),
@@ -121,10 +122,14 @@ public class Main {
                 new Wall(3, 13),
                 new Wall(4, 13),
                 new Wall(5, 13),
-                new Wall(6, 13)
+                new Wall(6, 13),
+                new Wall(6, 15),
+                new Wall(6, 16),
+                new Wall(6, 17)
         );
 
         gridData.addWallsList(walls);
+        gridData.addZoom(zoomObject);
         gridData.addZoom(zoomObject);
     }
 }
