@@ -4,6 +4,7 @@ import mockit.*;
 import online.kancl.auth.Auth;
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
+import online.kancl.objects.GridData;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import org.junit.jupiter.api.Test;
 import spark.Request;
@@ -26,6 +27,9 @@ public class LoginTest {
 
     @Injectable
     TransactionJobRunner transactionJobRunner;
+
+    @Injectable
+    GridData gridData;
 
     @Injectable
     Request request;

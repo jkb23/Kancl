@@ -4,13 +4,17 @@ import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
 import online.kancl.auth.Auth;
 import online.kancl.objects.GridData;
+import online.kancl.objects.Wall;
+import online.kancl.page.api.OfficeController;
 import online.kancl.page.app.AppController;
 import online.kancl.page.comments.CommentsController;
 import online.kancl.page.hello.HelloController;
 import online.kancl.page.login.LoginController;
 import online.kancl.page.login.LoginInfo;
+import online.kancl.page.logout.LogoutController;
 import online.kancl.page.main.MainPageController;
 import online.kancl.page.recreatedb.RecreateDbController;
+import online.kancl.page.userpage.UserPageController;
 import online.kancl.page.zoomhook.ZoomHookController;
 import online.kancl.db.ConnectionProvider;
 import online.kancl.db.SchemaCreator;
@@ -44,6 +48,7 @@ public class Main {
 
         var meetings = new Meetings();
         var gridData = new GridData();
+        addStartingWalls(gridData);
 
         var webServer = new WebServer(8081, new ExceptionHandler());
         webServer.addRoute("/", new MainPageController(pebbleTemplateRenderer, meetings));
@@ -51,8 +56,12 @@ public class Main {
         webServer.addRoute("/zoomhook", new ZoomHookController(meetings));
         webServer.addRoute("/recreateDb", new RecreateDbController(schemaCreator));
         webServer.addRoute("/hello", new HelloController(pebbleTemplateRenderer));
-        webServer.addRoute("/login", new LoginController(pebbleTemplateRenderer, transactionJobRunner, new Auth(), new LoginInfo()));
-        webServer.addRoute("/app", new AppController(gridData));
+        webServer.addRoute("/login", new LoginController(pebbleTemplateRenderer, transactionJobRunner, new Auth(),
+                new LoginInfo(), gridData));
+        webServer.addRoute("/user", new UserPageController(pebbleTemplateRenderer, transactionJobRunner));
+        webServer.addRoute("/logout", new LogoutController());
+
+        webServer.addRoute("/app", new OfficeController(gridData));
         webServer.start();
 
         System.out.println("Server running");
@@ -68,5 +77,14 @@ public class Main {
                 .build();
 
         return new PebbleTemplateRenderer(pebbleEngine);
+    }
+
+    private static void addStartingWalls(GridData gridData){
+        Wall wall1 = new Wall(0, 4);
+        Wall wall2 = new Wall(1, 4);
+        //TODO add another starting walls
+
+        gridData.addWall(wall1);
+        gridData.addWall(wall2);
     }
 }

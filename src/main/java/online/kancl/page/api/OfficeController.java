@@ -1,7 +1,8 @@
-package online.kancl.page.app;
+package online.kancl.page.api;
 
 import online.kancl.objects.GridData;
 import online.kancl.objects.User;
+import online.kancl.objects.Wall;
 import online.kancl.server.Controller;
 import spark.Request;
 import spark.Response;
@@ -12,38 +13,46 @@ import javax.json.JsonObjectBuilder;
 
 import static javax.json.Json.createObjectBuilder;
 
-public class AppController extends Controller {
+public class OfficeController extends Controller {
     private final GridData gridData;
 
-
-    public AppController(GridData gridData) {
+    public OfficeController(GridData gridData) {
         this.gridData = gridData;
     }
 
     @Override
     public String get(Request request, Response response){
         return createObjectBuilder()
-                .add("users", createUsersJsonArray())
+                .add("objects", createObjectsJsonArray())
                 .build()
                 .toString();
 
     }
 
-    private JsonArrayBuilder createUsersJsonArray() {
+    private JsonArrayBuilder createObjectsJsonArray() {
 
         JsonArrayBuilder objects = Json.createArrayBuilder();
 
-        JsonArrayBuilder users = Json.createArrayBuilder();
-
         for (User user : gridData.getUsers()) {
             JsonObjectBuilder userBuilder = Json.createObjectBuilder();
+            userBuilder.add("type", "user");
             userBuilder.add("username", user.getUsername());
             userBuilder.add("x", user.getX());
             userBuilder.add("y", user.getY());
-            users.add(userBuilder);
+            objects.add(userBuilder);
         }
 
-        return users;
+        for (Wall wall : gridData.getWalls()) {
+            JsonObjectBuilder wallBuilder = Json.createObjectBuilder();
+            wallBuilder.add("type", "wall");
+            wallBuilder.add("x", wall.getX());
+            wallBuilder.add("y", wall.getY());
+            objects.add(wallBuilder);
+        }
+
+        return objects;
     }
 
 }
+
+
