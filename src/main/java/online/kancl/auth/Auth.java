@@ -12,7 +12,7 @@ import static online.kancl.auth.AuthReturnCode.*;
 public class Auth {
 
     public static final int BLOCKED_DURATION_IN_MILLISECONDS = 5 * 60 * 1000;
-    private UserStorage userStorage;
+    private final UserStorage userStorage;
 
     public Auth(UserStorage userStorage) {
         this.userStorage = userStorage;
@@ -68,4 +68,5 @@ public class Auth {
             return currentTime.before(check);
         }
     }
+
 }
