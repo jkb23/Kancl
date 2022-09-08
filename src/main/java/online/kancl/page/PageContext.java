@@ -8,6 +8,13 @@ public class PageContext {
 
     private UserStorage userStorage;
 
+    public PageContext(Request request) {
+        String username = request.session().attribute("user");
+        if(username != null) {
+            this.username = username;
+        }
+    }
+
     public PageContext(Request request, UserStorage userStorage) {
         this.userStorage = userStorage;
         String username = request.session().attribute("user");

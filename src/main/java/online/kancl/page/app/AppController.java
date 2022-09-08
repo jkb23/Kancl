@@ -1,7 +1,9 @@
 package online.kancl.page.app;
 
+import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
 import online.kancl.objects.User;
+import online.kancl.page.PageContext;
 import online.kancl.server.Controller;
 import spark.Request;
 import spark.Response;
@@ -14,19 +16,28 @@ import static javax.json.Json.createObjectBuilder;
 
 public class AppController extends Controller {
     private final GridData gridData;
+    private UserStorage userStorage;
 
 
-    public AppController(GridData gridData) {
+    public AppController(GridData gridData, UserStorage userStorage) {
+
         this.gridData = gridData;
+        this.userStorage = userStorage;
+
     }
 
     @Override
     public String get(Request request, Response response){
-        return createObjectBuilder()
-                .add("users", createUsersJsonArray())
-                .build()
-                .toString();
-
+        PageContext pageContext = new PageContext(request, userStorage);
+        if ("".equals(pageContext.getUsername())) {
+            return createObjectBuilder()
+                    .add("users", createUsersJsonArray())
+                    .build()
+                    .toString();
+        } else {
+            response.redirect("/login");
+            return "";
+        }
     }
 
     private JsonArrayBuilder createUsersJsonArray() {

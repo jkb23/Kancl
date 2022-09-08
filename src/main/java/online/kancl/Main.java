@@ -53,13 +53,13 @@ public class Main {
         addStartingWalls(gridData);
 
         var webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner);
-        webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer, meetings));
+        webServer.addRoute("/", (dbRunner) -> new MainPageController(pebbleTemplateRenderer, meetings));
         webServer.addRoute("/comments", () -> new CommentsController(pebbleTemplateRenderer, transactionJobRunner));
         webServer.addRoute("/zoomhook", () -> new ZoomHookController(meetings));
         webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
         webServer.addRoute("/hello", () -> new HelloController(pebbleTemplateRenderer));
         webServer.addRoute("/login", createLoginController(pebbleTemplateRenderer, transactionJobRunner, gridData));
-        webServer.addRoute("/user", (dbRunner) -> new UserPageController(pebbleTemplateRenderer, dbRunner));
+        webServer.addRoute("/user", (dbRunner) -> new UserPageController(pebbleTemplateRenderer, new UserStorage(dbRunner)));
         webServer.addRoute("/logout", LogoutController::new);
         webServer.addRoute("/app", () -> new OfficeController(gridData));
         webServer.start();

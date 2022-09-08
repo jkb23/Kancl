@@ -4,6 +4,7 @@ import online.kancl.objects.GridData;
 import online.kancl.objects.User;
 import online.kancl.objects.Wall;
 import online.kancl.objects.ZoomObject;
+import online.kancl.page.PageContext;
 import online.kancl.server.Controller;
 import spark.Request;
 import spark.Response;
@@ -17,17 +18,23 @@ import static javax.json.Json.createObjectBuilder;
 public class OfficeController extends Controller {
     private final GridData gridData;
 
+
     public OfficeController(GridData gridData) {
         this.gridData = gridData;
     }
 
     @Override
     public String get(Request request, Response response){
-        return createObjectBuilder()
-                .add("objects", createObjectsJsonArray())
-                .build()
-                .toString();
-
+        PageContext pageContext = new PageContext(request);
+        if ("".equals(pageContext.getUsername())) {
+            response.redirect("/login");
+            return "";
+        } else {
+            return createObjectBuilder()
+                    .add("objects", createObjectsJsonArray())
+                    .build()
+                    .toString();
+        }
     }
 
     private JsonArrayBuilder createObjectsJsonArray() {
