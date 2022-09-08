@@ -8,8 +8,6 @@ import online.kancl.objects.GridData;
 import online.kancl.objects.Wall;
 import online.kancl.objects.ZoomObject;
 import online.kancl.page.api.OfficeController;
-import online.kancl.page.comments.CommentsController;
-import online.kancl.page.hello.HelloController;
 import online.kancl.page.login.LoginController;
 import online.kancl.page.login.LoginInfo;
 import online.kancl.page.logout.LogoutController;
@@ -54,10 +52,8 @@ public class Main {
 
         var webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner);
         webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer, meetings));
-        webServer.addRoute("/comments", () -> new CommentsController(pebbleTemplateRenderer, transactionJobRunner));
         webServer.addRoute("/zoomhook", () -> new ZoomHookController(meetings));
         webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
-        webServer.addRoute("/hello", () -> new HelloController(pebbleTemplateRenderer));
         webServer.addRoute("/login", createLoginController(pebbleTemplateRenderer, transactionJobRunner, gridData));
         webServer.addRoute("/user", (dbRunner) -> new UserPageController(pebbleTemplateRenderer, dbRunner));
         webServer.addRoute("/logout", LogoutController::new);
