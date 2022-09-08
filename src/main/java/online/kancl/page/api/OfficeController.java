@@ -38,7 +38,7 @@ public class OfficeController extends Controller {
             JsonObjectBuilder userBuilder = Json.createObjectBuilder();
             userBuilder.add("type", "user");
             userBuilder.add("username", user.getUsername());
-            userBuilder.add("status", user.getStatus());
+            //userBuilder.add("status", user.getStatus());
             userBuilder.add("x", user.getX());
             userBuilder.add("y", user.getY());
             objects.add(userBuilder);

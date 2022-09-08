@@ -18,7 +18,7 @@ public class LoginController extends Controller {
     private final PebbleTemplateRenderer pebbleTemplateRenderer;
     private final TransactionJobRunner transactionJobRunner;
     private LoginInfo loginInfo;
-    private GridData gridData;
+    private final GridData gridData;
 
     public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner,
                            LoginInfo loginInfo, GridData gridData) {
@@ -48,8 +48,7 @@ public class LoginController extends Controller {
     String authenticate(Request request, Response response, Auth auth, Login user) {
         AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(user.username(), user.password());
         if (returnCode == CORRECT) {
-            String status = UserStorage.getStatus(dbRunner, user.username());
-            User userObject = new User(user.username(), status);
+            User userObject = new User(user.username(), auth);
             gridData.addUser(userObject);
             request.session(true);
             request.session().attribute("user", user.username());
