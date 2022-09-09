@@ -41,7 +41,7 @@ createGrid();
 function addUser(user, container) {
  const element = document.createElement("div");
  element.classList.add("user");
- element.id = "user";
+ element.setAttribute("name", "user")
  container.appendChild(element);
 
   //TODO: add varible with h4(username) and p(state)
@@ -49,8 +49,8 @@ function addUser(user, container) {
   userState.classList.add("state");
   const userHeading = document.createElement("h4");
   userState.appendChild(userHeading);
-  userHeading.textContent += "Username"
-  userState.innerHTML += "<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Etiam quis quam. Fusce dui leo, imperdiet in, aliquam sit amet, feugiat eu, orci. Fusce aliquam vestibulum ipsum. Etiam dui sem, fermentum vit</p>";
+  userHeading.textContent += user.username;
+  userState.innerHTML += `<p>${user.status}</p>`;
 
   element.appendChild(userState);
 }
@@ -63,21 +63,17 @@ function removeUser(user, container) {
 }
 
 function addZoom(zoom, container) {
- container.classList.add("zoom");
-
- const zoomItem = document.querySelector(".zoom")
+ container.classList.add("zoom"); const zoomItem = document.querySelector(".zoom")
  const zoomEl = document.createElement("div");
  zoomEl.classList.add("zoom_state");
  zoomEl.textContent += "Zoom meeting"
  zoomItem.appendChild(zoomEl)
 
- //TODO: add varible with link
  const zoomLink = document.createElement("a");
  zoomLink.textContent += "Připojit se na meeting"
- zoomLink.setAttribute("href", "https://www.google.com/")
+ zoomLink.setAttribute("href", zoom.link)
  zoomLink.setAttribute("target", "_blank")
  zoomEl.appendChild(zoomLink);
-
 }
 
 function addWall(wall, container) {
@@ -86,34 +82,29 @@ function addWall(wall, container) {
 
 function getUserCoordinates(user, coordinates) {
  document.addEventListener("keydown", handleKey);
- let userEl = document.getElementById("user");
 
  function handleKey(e) {
    if (e.key === "ArrowUp" || e.key === "w") {
      if (user.y > 0) {
        user.y--;
-       userEl.remove();
      }
      sendRequest(user.x, user.y)
 
    } else if (e.key === "ArrowRight" || e.key === "d") {
      if (user.x < 25) {
        user.x++;
-       userEl.remove();
      }
      sendRequest(user.x, user.y)
 
    } else if (e.key === "ArrowLeft" || e.key === "a") {
      if (user.x > 0) {
        user.x--;
-       userEl.remove();
      }
      sendRequest(user.x, user.y)
 
    } else if (e.key === "ArrowDown" || e.key === "s") {
      if (user.y < 17) {
        user.y++;
-       userEl.remove();
      }
      sendRequest(user.x, user.y)
    }
@@ -127,6 +118,7 @@ window.addEventListener("load", () => {
 });
 
 function fetchOfficeState() {
+data = {};
  fetch("/api/office")
    .then(function (response) {
      return response.json();
@@ -140,6 +132,11 @@ function fetchOfficeState() {
 }
 
 function refreshOfficeState(data) {
+ let userElements = document.getElementsByName("user");
+ for (const userElement of userElements) {
+    userElement.remove();
+ }
+
  for (const object of data.objects) {
    const x = object.x;
    const y = object.y;
