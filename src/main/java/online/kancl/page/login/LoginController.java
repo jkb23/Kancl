@@ -1,9 +1,11 @@
 package online.kancl.page.login;
 
+import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
 import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
 import online.kancl.objects.User;
+import online.kancl.page.PageContext;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
@@ -19,40 +21,49 @@ public class LoginController extends Controller {
     private final TransactionJobRunner transactionJobRunner;
     private LoginInfo loginInfo;
     private final GridData gridData;
+    private UserStorage userStorage;
+    private Auth auth;
 
     public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner,
-                           LoginInfo loginInfo, GridData gridData) {
+                           LoginInfo loginInfo, GridData gridData, UserStorage userStorage) {
         this.pebbleTemplateRenderer = pebbleTemplateRenderer;
         this.transactionJobRunner = transactionJobRunner;
         this.loginInfo = loginInfo;
         this.gridData = gridData;
+        this.userStorage = userStorage;
+        this.auth = new Auth(userStorage);
     }
 
     @Override
     public String get(Request request, Response response) {
-        loginInfo = new LoginInfo();
-        return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
+        PageContext pageContext = new PageContext(request, userStorage);
+        if ("".equals(pageContext.getUsername())) {
+            loginInfo = new LoginInfo();
+            return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
+        } else {
+            response.redirect("/");
+            return "";
+        }
     }
 
     @Override
     public String post(Request request, Response response) {
         return transactionJobRunner.runInTransaction((dbRunner) -> {
-            var auth = new Auth(new UserStorage(dbRunner));
             var user = new Login(
                     request.queryParams("username"),
                     request.queryParams("password"));
-            return authenticate(request, response, auth, user);
+            return authenticate(request, response, auth, user, dbRunner);
         });
     }
 
-    String authenticate(Request request, Response response, Auth auth, Login user) {
+    String authenticate(Request request, Response response, Auth auth, Login user, DatabaseRunner dbRunner) {
         AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(user.username(), user.password());
         if (returnCode == CORRECT) {
-            User userObject = new User(user.username(), auth);
+            User userObject = new User(user.username(), userStorage);
             gridData.addUser(userObject);
             request.session(true);
             request.session().attribute("user", user.username());
-            response.redirect("/app");
+            response.redirect("/");
             return "";
         }
         loginInfo.setErrorMessage(returnCode.message);

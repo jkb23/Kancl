@@ -1,9 +1,8 @@
 const grid = [];
 const container = document.getElementById("container");
-let user = document.getElementById("user");
+
 const array = [];
 obstacles = [][2];
-let gridData;
 
 function check_obstacles(x, y) {
   for (i = 0; i != obstacles.length(); i++) {
@@ -45,84 +44,65 @@ function addUser(user, container) {
   container.appendChild(element);
 }
 
+function removeUser(user, container) {
+  const element = document.createElement("div");
+  element.classList.add("user");
+  element.id = "user";
+  container.removeChild(element);
+}
+
 function addZoom(zoom, container) {
   container.classList.add("zoom");
 }
-
-var gridData = {
-  objects: [
-    { type: "user", x: 12, y: 17 },
-    { type: "wall", x: 0, y: 4 },
-    { type: "wall", x: 1, y: 4 },
-    { type: "wall", x: 2, y: 4 },
-    { type: "wall", x: 3, y: 4 },
-    { type: "wall", x: 4, y: 4 },
-    { type: "wall", x: 5, y: 4 },
-    { type: "wall", x: 6, y: 4 },
-    { type: "wall", x: 6, y: 0 },
-    { type: "wall", x: 6, y: 1 },
-    { type: "wall", x: 6, y: 2 },
-    { type: "wall", x: 19, y: 0 },
-    { type: "wall", x: 19, y: 1 },
-    { type: "wall", x: 19, y: 2 },
-    { type: "wall", x: 19, y: 4 },
-    { type: "wall", x: 20, y: 4 },
-    { type: "wall", x: 21, y: 4 },
-    { type: "wall", x: 22, y: 4 },
-    { type: "wall", x: 23, y: 4 },
-    { type: "wall", x: 24, y: 4 },
-    { type: "wall", x: 25, y: 4 },
-    { type: "zoom", x: 25, y: 0 },
-  ],
-};
 
 function addWall(wall, container) {
   container.classList.add("wall");
 }
 
-for (const object of gridData.objects) {
-  const container = grid[object.x][object.y];
+function getUserCoordinates(user, coordinates) {
+  document.addEventListener("keydown", handleKey);
+  let userEl = document.getElementById("user");
 
-  if (object.type === "wall") {
-    addWall(object, container);
-  } else if (object.type === "user") {
-    addUser(object, container);
-  } else if (object.type === "zoom") {
-    addZoom(object, container);
+  function handleKey(e) {
+    if (e.key === "ArrowUp" || e.key === "w") {
+      if (user.y > 0) {
+        user.y--;
+        userEl.remove();
+      }
+      sendRequest(user.x, user.y) 
 
-    console.log(object.x, object.y);
+    } else if (e.key === "ArrowRight" || e.key === "d") {
+      if (user.x < 25) {
+        user.x++;       
+        userEl.remove();
+      }
+      sendRequest(user.x, user.y) 
+
+    } else if (e.key === "ArrowLeft" || e.key === "a") {
+      if (user.x > 0) {
+        user.x--;
+        userEl.remove();
+      }
+      sendRequest(user.x, user.y) 
+
+    } else if (e.key === "ArrowDown" || e.key === "s") {
+      if (user.y < 17) {
+        user.y++;
+        userEl.remove();           
+      }     
+      sendRequest(user.x, user.y)   
+    }
   }
 }
 
-document.addEventListener("keydown", handleKey);
-
-for (const object of gridData.objects) {
-  function handleKey(e) {
-    let containerCoordinates = container.getBoundingClientRect();
-
-
-
-    if (e.key === "ArrowUp") {
-      console.log("Go up");
-      console.log(gridData.objects[0].type[user]);
-    } else if (e.key === "ArrowRight") {
-      console.log("Go right");
-    } else if (e.key === "ArrowLeft") {
-      console.log("Go left");
-    } else {
-      console.log("Go down");
-    }
-  }
-window.addEventListener('load', () => {
-    addUserToDefaultCoordinates()
-    addWalls([[4,0][4,1]])
-    var fetchInterval = 1000;
-    setInterval(fetchOfficeState, fetchInterval);
-
-})
+window.addEventListener("load", () => {
+  let fetchInterval = 1000;
+  fetchOfficeState();
+  setInterval(fetchOfficeState, fetchInterval);
+});
 
 function fetchOfficeState() {
-  fetch('https://jsonplaceholder.typicode.com/todos/1')
+  fetch("/api/office")
     .then(function (response) {
       return response.json();
     })
@@ -130,11 +110,40 @@ function fetchOfficeState() {
       refreshOfficeState(data);
     })
     .catch(function (err) {
-      console.log('error: ' + err);
+      console.log("error: " + err);
     });
 }
 
 function refreshOfficeState(data) {
-    console.log(data);
-    gridData = JSON.parse(data);
+  for (const object of data.objects) {
+    const x = object.x;
+    const y = object.y;
+    const coordinates = grid[x][y];
+
+    if (object.type === "wall") {
+      addWall(object, coordinates);
+    } else if (object.type === "user") {
+      addUser(object, coordinates);
+      getUserCoordinates(object, coordinates);
+    } else if (object.type === "zoom") {
+      addZoom(object, coordinates);
+    }
+  }
 }
+
+function sendRequest(xCoordinates, yCoordinates) {
+  let xmlhttp = new XMLHttpRequest(); 
+  let url = "/api/office";
+  xmlhttp.open("POST", url);
+  xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  xmlhttp.send(
+    JSON.stringify({
+      objectType: "user",
+      username: "correct",
+      action: "move",
+      position: [{ x: xCoordinates}, { y: yCoordinates }],
+    })
+  );
+}
+
+

@@ -5,6 +5,7 @@ import online.kancl.db.TransactionJobRunner;
 import online.kancl.db.UserStorage;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
+import online.kancl.util.HashUtils;
 import spark.Request;
 import spark.Response;
 
@@ -44,12 +45,12 @@ public class RegistrationController extends Controller {
     {
 
         if (!userStorage.usernameExists(registration.username()) && !userStorage.emailExists(registration.email())){
-            userStorage.createUser(registration.username(), registration.password(), registration.email());
+            userStorage.createUser(registration.username(), HashUtils.sha256Hash(registration.password()), registration.email());
             var returnCode =  auth.checkCredentialsWithBruteForcePrevention(registration.username(), registration.password());
             RegistrationInfo.setErrorMessage(returnCode.message);
             request.session(true);
             request.session().attribute("user", registration.username());
-            response.redirect("/app");
+            response.redirect("/");
         }
         return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, RegistrationInfo);
     }

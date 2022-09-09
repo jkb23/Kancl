@@ -5,8 +5,8 @@ public class OfficeObject {
     private int y;
 
     public OfficeObject() {
-        this.x = 0;
-        this.y = 0;
+        this.x = 13;
+        this.y = 8;
     }
 
     public OfficeObject(int x, int y) {
