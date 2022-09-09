@@ -46,3 +46,25 @@ export function doesNotDisplayLoginPage() {
 export function displaysLoginPage() {
     cy.url().should('contains', '/login');
 }
+
+// Registration Page
+
+export function openRegistrationPage() {
+    cy.visit("/register");
+}
+
+export function enterCredentialsRegistration(username, email, password, passwordCheck) {
+    cy.get("#username").type("{selectall}{del}" + username);
+    cy.get("#email").type("{selectall}{del}" + email);
+    cy.get("#password").type("{selectall}{del}" + password);
+    cy.get("#passwordCheck").type("{selectall}{del}" + passwordCheck);
+}
+
+
+export function doesNotDisplayRegistrationPage() {
+    cy.url().should('not.contains', '/register');
+}
+
+export function displaysRegistrationPage() {
+    cy.url().should('contains', '/register');
+}
