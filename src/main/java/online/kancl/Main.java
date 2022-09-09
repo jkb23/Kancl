@@ -29,10 +29,14 @@ import online.kancl.server.template.PebbleExtension;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import online.kancl.util.DirectoryHashCalculator;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 import java.util.function.Function;
 
 public class Main {
@@ -96,9 +100,22 @@ public class Main {
     }
 
     private static void addStartingWalls(GridData gridData){
-        ZoomObject zoomObject = new ZoomObject(25, 0, "xx");
-        ZoomObject zoomObject2 = new ZoomObject(0, 0, "xx");
-        ZoomObject zoomObject3 = new ZoomObject(10, 10, "xx");
+        List<String> zoomLinks = new ArrayList<>();
+        try {
+            File myObj = new File("zoomlinks.txt");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                zoomLinks.add(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        ZoomObject zoomObject = new ZoomObject(25, 0, zoomLinks.get(0));
+        ZoomObject zoomObject2 = new ZoomObject(0, 0, zoomLinks.get(1));
 
         List<Wall> walls = Arrays.asList(
                 new Wall(0, 4),
@@ -136,6 +153,5 @@ public class Main {
         gridData.addWallsList(walls);
         gridData.addZoom(zoomObject);
         gridData.addZoom(zoomObject2);
-        gridData.addZoom(zoomObject3);
     }
 }
