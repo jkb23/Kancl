@@ -2,6 +2,7 @@ package online.kancl.server;
 
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
+import spark.Request;
 import spark.Route;
 import spark.Spark;
 
@@ -20,11 +21,17 @@ public class WebServer {
         Spark.exception(Exception.class, exceptionHandler::handleException);
 
         Spark.before((request, response) -> {
-            if (request.session().attribute("user") == null && !request.pathInfo().equals("/login")) {
+            if (shouldRedirectToLogin(request)) {
                 response.redirect("/login");
                 Spark.halt();
             }
         });
+    }
+
+    private static boolean shouldRedirectToLogin(Request request) {
+        return request.session().attribute("user") == null
+                && !request.pathInfo().equals("/login")
+                && !request.pathInfo().equals("/register");
     }
 
     public void addRoute(String path, Supplier<Controller> controllerSupplier) {
