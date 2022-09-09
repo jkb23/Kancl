@@ -4,11 +4,41 @@
 
 {% block title %} User profile {% endblock %}
 
+{% block style %}
+    <link href='css/user-page.css' rel='stylesheet'/>
+{% endblock %}
+
+{% block javascript %}
+  <script src='js/userpage.js' type="text/javascript"></script>
+{% endblock %}
 
 {% block body %}
 
-<div class="col-lg-6 mx-auto">
+<!-- <div class="col-lg-6 mx-auto">
     Currently logged as:
+    <div class="userPage">{{pageContext.getUsername()}}</div> -->
+
+
+
+
+<h1>User Settings</h1>
+<div class="settings-message" id="js-message"></div>
+<form>
+  <input id="js-file-uploader" class="hidden" name="profile-picture" type="file" accept="image/png, image/jpeg" />
+
+  <div id="js-profile-pic" class="profile-pic__container">Upload Profile Pic
+    <div id="js-profile-trigger" class="profile-pic__foreground">Upload Profile Pic</div>
+  </div>
+
+  <div class="input__container">
+    <div class="input-container__single">
+      <label for="name">Signed in as: <div style="text-decoration: underline; font-weight: bold;">{{pageContext.getUsername()}}</div></label>
+    </div>
+
+    <div class="input__container__single">
+      <label for="status">Status:</label>
+      <input type="text" id="status" name="status" />
+    </div>
     {{pageContext.getUsername()}}
     <p></p>
     Current status:
@@ -16,5 +46,16 @@
     <p></p>
     Change your status>:
 </div>
+
+  </div>
+
+
+  <input type="submit" value="Save Profile" />
+</form>
+
+
+
+
+
 
 {% endblock %}
