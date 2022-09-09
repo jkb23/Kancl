@@ -30,7 +30,6 @@
                 <input type="text" id="username" name="username" class="form-control form-control-lg"
                   placeholder="Enter a valid username" />
                 <label class="form-label" for="username">Username</label>
-                <p class="invalid_credentials small fw-bold mt-2 pt-1 mb-0">{{registrationInfo.getErrorMessage()}}</p>
               </div>
 
 
@@ -38,7 +37,6 @@
                 <input type="email" id="email" name="email" class="form-control form-control-lg"
                   placeholder="Enter your email address" />
                 <label class="form-label" for="email">Email</label>
-                <p class="invalid_credentials small fw-bold mt-2 pt-1 mb-0">{{registrationInfo.getErrorMessage()}}</p>
               </div>
 
               <div class="form-outline mb-3">
@@ -51,10 +49,10 @@
                 <input type="password" id="passwordCheck" name="passwordCheck" class="form-control form-control-lg" onkeyup="isEqual()" oncheck="isLongEnough()" autocomplete="new-password"
                   placeholder="Enter your password again" required/>
                 <label class="form-label" id="message" for="passwordCheck"></label>
-{#                <p class="invalid_credentials small fw-bold mt-2 pt-1 mb-0">{{registrationInfo.getErrorMessage()}}</p>#}
               </div>
 
               <div class="text-center text-lg-start mt-4 pt-2">
+              <p class="invalid_credentials small fw-bold mt-2 pt-1 mb-0">{{registrationInfo.getErrorMessage()}}</p>
                 <button type="submit" id="submit" class="btn btn-primary btn-lg"
                   style="padding-left: 2.5rem; padding-right: 2.5rem;" disabled>Register</button>
 

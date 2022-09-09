@@ -12,17 +12,19 @@ describe('Registration page', () => {
             application.doesNotDisplayRegistrationPage();
         });
 
-//     it("username already exists", () => {
-//             application.openRegistrationPage();
-//             application.enterCredentialsRegistration("correct", "newuser@mail.com", "Password123", "Password123");
-//             application.submitButtonIsDisabled();
-//         });
-//
-//     it("email already exists", () => {
-//             application.openRegistrationPage();
-//             application.enterCredentialsRegistration("correct", "correct@mail.com", "Password123", "Password123");
-//             application.submitButtonIsDisabled();
-//         });
+    it("username already exists", () => {
+            application.openRegistrationPage();
+            application.enterCredentialsRegistration("correct", "newuser@mail.com", "Password123", "Password123");
+            application.hasErrorMessage();
+            application.displaysRegistrationPage();
+        });
+
+    it("email already exists", () => {
+            application.openRegistrationPage();
+            application.enterCredentialsRegistration("newUser0", "neexistuju@baf.com", "Password123", "Password123");
+            application.hasErrorMessage();
+            application.displaysRegistrationPage();
+        });
 
     it("enters email in a wrong format", () => {
             application.openRegistrationPage();

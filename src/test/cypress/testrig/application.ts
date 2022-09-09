@@ -68,3 +68,7 @@ export function doesNotDisplayRegistrationPage() {
 export function displaysRegistrationPage() {
     cy.url().should('contains', '/register');
 }
+
+export function hasErrorMessage() {
+    cy.get('.invalid_credentials').contains('exists');
+}
