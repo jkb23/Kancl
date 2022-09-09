@@ -166,7 +166,7 @@ function sendRequest(xCoordinates, yCoordinates) {
  xmlhttp.send(
    JSON.stringify({
      objectType: "user",
-     username: "correct",
+     username: me.username,
      action: "move",
      x: xCoordinates,
      y: yCoordinates
