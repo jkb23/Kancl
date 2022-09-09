@@ -6,6 +6,8 @@ import spark.Request;
 import spark.Route;
 import spark.Spark;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -13,12 +15,12 @@ public class WebServer {
 
     private final TransactionJobRunner transactionJobRunner;
 
-
     public WebServer(int port, ExceptionHandler exceptionHandler, TransactionJobRunner transactionJobRunner) {
         this.transactionJobRunner = transactionJobRunner;
         Spark.port(port);
         Spark.staticFiles.externalLocation("web");
         Spark.exception(Exception.class, exceptionHandler::handleException);
+
 
         Spark.before((request, response) -> {
             if (shouldRedirectToLogin(request)) {
@@ -29,9 +31,17 @@ public class WebServer {
     }
 
     private static boolean shouldRedirectToLogin(Request request) {
-        return request.session().attribute("user") == null
-                && !request.pathInfo().equals("/login")
-                && !request.pathInfo().equals("/register");
+        List<String> publicPaths = new ArrayList<>();
+
+        publicPaths.add("/login");
+        publicPaths.add("/recreateDb");
+        publicPaths.add("/register");
+
+        for (String path : publicPaths) {
+            if (request.session().attribute("user") == null && !request.pathInfo().equals(path))
+                return true;
+        }
+        return false;
     }
 
     public void addRoute(String path, Supplier<Controller> controllerSupplier) {
