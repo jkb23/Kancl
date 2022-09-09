@@ -6,12 +6,14 @@ import online.kancl.util.HashUtils;
 import java.sql.Timestamp;
 import java.util.Optional;
 
-import static online.kancl.auth.AuthReturnCode.*;
-
+import static online.kancl.auth.AuthReturnCode.BAD_CREDENTIALS;
+import static online.kancl.auth.AuthReturnCode.BLOCKED_USER;
+import static online.kancl.auth.AuthReturnCode.CORRECT;
 
 public class Auth {
 
     public static final int BLOCKED_DURATION_IN_MILLISECONDS = 5 * 60 * 1000;
+
     private final UserStorage userStorage;
 
     public Auth(UserStorage userStorage) {
@@ -68,5 +70,4 @@ public class Auth {
             return currentTime.before(check);
         }
     }
-
 }
