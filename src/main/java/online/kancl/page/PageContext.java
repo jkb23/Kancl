@@ -27,6 +27,14 @@ public class PageContext {
         return username;
     }
 
+    public String showLogoutWhenLoggedIn() {
+        if(username == null) {
+            return "";
+        } else {
+            return "Logout";
+        }
+    }
+
     public String getStatus() {
         return userStorage.getStatusFromDb(username);
     }

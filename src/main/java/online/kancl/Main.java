@@ -56,7 +56,7 @@ public class Main {
         var gridData = new GridData();
         addStartingWalls(gridData);
 
-        var webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner);
+        var webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner, "/login");
         webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer));
         webServer.addRoute("/zoomhook", () -> new ZoomHookController(meetings));
         webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
@@ -66,6 +66,9 @@ public class Main {
         webServer.addRoute("/login", createLoginController(pebbleTemplateRenderer, transactionJobRunner, gridData));
         webServer.addRoute("/logout", () -> new LogoutController(gridData));
         webServer.addRoute("/api/office", () -> new OfficeController(gridData));
+
+        webServer.addPublicPaths("/login", "/register", "/zoomhook", "/recreateDb");
+
         webServer.start();
 
         System.out.println("Server running");
@@ -95,6 +98,8 @@ public class Main {
     private static void addStartingWalls(GridData gridData){
         ZoomObject zoomObject = new ZoomObject(25, 0, "xx");
         ZoomObject zoomObject2 = new ZoomObject(0, 0, "xx");
+        ZoomObject zoomObject3 = new ZoomObject(10, 10, "xx");
+
         List<Wall> walls = Arrays.asList(
                 new Wall(0, 4),
                 new Wall(1, 4),
@@ -130,6 +135,7 @@ public class Main {
 
         gridData.addWallsList(walls);
         gridData.addZoom(zoomObject);
-        gridData.addZoom(zoomObject);
+        gridData.addZoom(zoomObject2);
+        gridData.addZoom(zoomObject3);
     }
 }
