@@ -13,12 +13,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(ProductionDatabase.class)
 class AuthenticatorTest {
 
-    private final DatabaseRunner dbRunner;
     private final Authenticator authenticator;
     private final UserStorage userStorage;
 
     public AuthenticatorTest(DatabaseRunner dbRunner) {
-        this.dbRunner = dbRunner;
         this.userStorage = new UserStorage(dbRunner);
         this.authenticator = new Authenticator(userStorage);
     }
