@@ -2,6 +2,10 @@ package online.kancl;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
+import online.kancl.db.ConnectionProvider;
+import online.kancl.db.SchemaCreator;
+import online.kancl.db.TransactionJobRunner;
+import online.kancl.db.UserStorage;
 import online.kancl.auth.Auth;
 import online.kancl.db.*;
 import online.kancl.objects.GridData;
@@ -14,6 +18,8 @@ import online.kancl.page.logout.LogoutController;
 import online.kancl.page.main.MainPageController;
 import online.kancl.page.main.Meetings;
 import online.kancl.page.recreatedb.RecreateDbController;
+import online.kancl.page.registration.RegistrationController;
+import online.kancl.page.registration.RegistrationInfo;
 import online.kancl.page.userpage.UserPageController;
 import online.kancl.page.zoomhook.ZoomHookController;
 import online.kancl.server.Controller;
@@ -50,14 +56,19 @@ public class Main {
         var gridData = new GridData();
         addStartingWalls(gridData);
 
-        var webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner);
+        var webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner, "/login");
         webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer));
         webServer.addRoute("/zoomhook", () -> new ZoomHookController(meetings));
         webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
+        //webServer.addRoute("/login", (dbRunner) -> new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData, new UserStorage(dbRunner)));
+        webServer.addRoute("/user", (dbRunner) -> new UserPageController(pebbleTemplateRenderer, new UserStorage(dbRunner)));
+        webServer.addRoute("/register", (dbRunner) -> new RegistrationController(pebbleTemplateRenderer, transactionJobRunner, new RegistrationInfo(), new UserStorage(dbRunner)));
         webServer.addRoute("/login", createLoginController(pebbleTemplateRenderer, transactionJobRunner, gridData));
-        webServer.addRoute("/user", (dbRunner) -> new UserPageController(pebbleTemplateRenderer, dbRunner));
-        webServer.addRoute("/logout", LogoutController::new);
+        webServer.addRoute("/logout", () -> new LogoutController(gridData));
         webServer.addRoute("/api/office", () -> new OfficeController(gridData));
+
+        webServer.addPublicPaths("/login", "/register", "/zoomhook", "/recreateDb");
+
         webServer.start();
 
         System.out.println("Server running");
@@ -68,7 +79,7 @@ public class Main {
             var userStorage = new UserStorage(dbRunner);
             Auth auth = new Auth(userStorage);
             return new LoginController(pebbleTemplateRenderer,
-                    transactionJobRunner, new LoginInfo(), gridData, userStorage, auth);
+                    transactionJobRunner, new LoginInfo(), gridData, userStorage);
         };
     }
 
@@ -86,6 +97,9 @@ public class Main {
 
     private static void addStartingWalls(GridData gridData){
         ZoomObject zoomObject = new ZoomObject(25, 0, "xx");
+        ZoomObject zoomObject2 = new ZoomObject(0, 0, "xx");
+        ZoomObject zoomObject3 = new ZoomObject(10, 10, "xx");
+
         List<Wall> walls = Arrays.asList(
                 new Wall(0, 4),
                 new Wall(1, 4),
@@ -106,10 +120,22 @@ public class Main {
                 new Wall(22, 4),
                 new Wall(23, 4),
                 new Wall(24, 4),
-                new Wall(25, 4)
+                new Wall(25, 4),
+                new Wall(0, 13),
+                new Wall(1, 13),
+                new Wall(2, 13),
+                new Wall(3, 13),
+                new Wall(4, 13),
+                new Wall(5, 13),
+                new Wall(6, 13),
+                new Wall(6, 15),
+                new Wall(6, 16),
+                new Wall(6, 17)
         );
 
         gridData.addWallsList(walls);
         gridData.addZoom(zoomObject);
+        gridData.addZoom(zoomObject2);
+        gridData.addZoom(zoomObject3);
     }
 }

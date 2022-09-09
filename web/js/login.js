@@ -1,5 +1,4 @@
 const loginButton = document.getElementById("submit");
-//const elements = [document.getElementById("username"), document.getElementById("password")];
 
 const elements = document.querySelectorAll("input")
 
@@ -12,7 +11,3 @@ for (let i = 0; i < elements.length; i++) {
         }
     }
 }
-
-
-//TODO https://stackoverflow.com/questions/7115022/how-do-i-enumerate-all-of-the-html-ids-in-a-document-with-javascript
-

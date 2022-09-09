@@ -25,18 +25,18 @@ public class LoginController extends Controller {
     private Auth auth;
 
     public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner,
-                           LoginInfo loginInfo, GridData gridData, UserStorage userStorage, Auth auth) {
+                           LoginInfo loginInfo, GridData gridData, UserStorage userStorage) {
         this.pebbleTemplateRenderer = pebbleTemplateRenderer;
         this.transactionJobRunner = transactionJobRunner;
         this.loginInfo = loginInfo;
         this.gridData = gridData;
         this.userStorage = userStorage;
-        this.auth = auth;
+        this.auth = new Auth(userStorage);
     }
 
     @Override
     public String get(Request request, Response response) {
-        PageContext pageContext = new PageContext(request);
+        PageContext pageContext = new PageContext(request, userStorage);
         if ("".equals(pageContext.getUsername())) {
             loginInfo = new LoginInfo();
             return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);

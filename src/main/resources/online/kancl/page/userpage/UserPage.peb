@@ -43,6 +43,13 @@
       <label for="status">Status:</label>
       <input type="text" id="status" name="status" />
     </div>
+    {{pageContext.getUsername()}}
+    <p></p>
+    Current status:
+    {{ pageContext.getStatus()}}
+    <p></p>
+    Change your status>:
+</div>
 
   </div>
 

@@ -5,6 +5,10 @@
     background: #eee;
 }
 
+body {
+    overflow: hidden;
+}
+
 .h-custom {
     height: calc(100% - 73px);
 }

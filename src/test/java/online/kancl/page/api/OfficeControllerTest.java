@@ -1,5 +1,6 @@
 package online.kancl.page.api;
 
+import mockit.Injectable;
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
@@ -9,6 +10,7 @@ import online.kancl.objects.ZoomObject;
 import online.kancl.test.ProductionDatabase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import spark.Response;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,22 +24,21 @@ class OfficeControllerTest {
     }
 
     @Test
-    void correctJsonEncapsulation(){
+    void correctJsonEncapsulation(@Injectable Response response) {
         var gridData = new GridData();
 
         User user1 = new User("correct", new UserStorage(dbRunner));
         Wall wall = new Wall(1,1);
         ZoomObject zoomObject = new ZoomObject(5, 5, "zoom.com");
 
-        user1.moveRight();
         gridData.addUser(user1);
         gridData.addWall(wall);
         gridData.addZoom(zoomObject);
 
         OfficeController officeController = new OfficeController(gridData);
-        assertThat(officeController.get(null, null))
+        assertThat(officeController.get(null, response))
                 .isEqualTo("{\"objects\":[{\"type\":\"user\",\"username\":\"correct\",\"status\":\"Mam se dobre!\"" +
-                        ",\"x\":0,\"y\":0},{\"type\":\"wall\",\"x\":1,\"y\":1}" +
+                        ",\"x\":13,\"y\":8},{\"type\":\"wall\",\"x\":1,\"y\":1}" +
                         ",{\"type\":\"zoom\",\"link\":\"zoom.com\",\"x\":5,\"y\":5}]}");
     }
 }

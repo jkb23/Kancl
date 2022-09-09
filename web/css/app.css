@@ -1,41 +1,130 @@
 body {
-    margin: 0;
-    padding: 0;
-}    
+   margin: 0;
+   padding: 0;
+   background-color: #F0EBEE;
+}
+
+.mainpage-title {
+   color: #0099e6 !important;
+   border-bottom: none;
+   margin-bottom: 30px;
+   text-align: center;
+}
 
 .container {
-    display: grid;
-    grid-template-columns: repeat(26, 50px);
-    grid-template-rows: repeat(18, 50px);
-    grid-auto-rows: 50px;
-    grid-auto-columns: 50px;
-    width: 1650px;
-    height: 920px;
-    margin: 0 auto;
-    border: 10px solid black;
-    padding: 0;
-}    
+   display: grid;
+   grid-template-columns: repeat(26, 50px);
+   grid-template-rows: repeat(18, 50px);
+   grid-auto-rows: 50px;
+   grid-auto-columns: 50px;
+   width: 1650px;
+   height: 920px;
+   margin: 0 auto;
+   border: 10px solid black;
+   border-radius: 10px;
+   padding: 0;
+}
 
-.container > div {
-    border: 1px solid black;
+.container>div {
+   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .user {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-image: url("https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fG1hbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60");
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: absolute;
-    margin: 5px;
+   width: 40px;
+   height: 40px;
+   border-radius: 50%;
+   background-image: url("https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fG1hbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60");
+   background-position: center center;
+   background-repeat: no-repeat;
+   background-size: cover;
+   position: absolute;
+   margin: 5px;
+   cursor: pointer;
+}
+
+.state {
+   position: relative;
+   font-family: sans-serif;
+   font-size: 18px;
+   line-height: 24px;
+   width: 300px;
+   background: #fff;
+   border-radius: 30px;
+   padding: 14px;
+   text-align: center;
+   color: #000;
+   bottom: -70px;
+   display: none;
+}
+
+.state h4 {
+   font-size: 16px;
+   font-weight: 700;
+}
+
+.state p {
+   font-size: 12px;
+}
+
+.state:before {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 62px;
+   width: 0;
+   height: 0;
+   border: 32px solid transparent;
+   border-bottom-color: #fff;
+   border-top: 0;
+   border-left: 0;
+   margin-left: -23px;
+   margin-top: -30px;
+}
+
+.user:hover .state {
+   display: block;
 }
 
 .wall {
-    background-color: brown;
+   background-color: #7C6C77;
 }
 
 .zoom {
-    background-color: blue;
+   background-image: url("https://pnggrid.com/wp-content/uploads/2021/05/Blue-Zoom-Logo-Circle-1022x1024.png");
+   background-position: center center;
+   background-repeat: no-repeat;
+   background-size: cover;
+   cursor: pointer;
+   position: relative;
+   text-align: center;
+}
+
+.zoom_state {
+   border: 1px solid black;
+   padding: 20px;
+   background-color: white;
+   width: 200px;
+   border-radius: 5px;
+   position: absolute;
+   top: 25px;
+   right: 20px;
+   display: flex;
+   flex-direction: column;
+   font-weight: 500;
+   font-size: 18px;
+   display: none;
+}
+
+.zoom_state a {
+   padding: 10px;
+   background-color: #007FFF;
+   border-radius: 5px;
+   color: white;
+   text-decoration: none;
+   margin-top: 10px;
+   font-size: 12px;
+}
+
+.zoom:hover .zoom_state {
+   display: flex;
 }

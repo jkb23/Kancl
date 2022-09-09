@@ -8,11 +8,16 @@ import online.kancl.server.Controller;
 import spark.Request;
 import spark.Response;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
+import javax.json.*;
+
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static javax.json.Json.createObjectBuilder;
+import static online.kancl.util.HttpUtil.dontCache;
 
 public class OfficeController extends Controller {
     private final GridData gridData;
@@ -21,14 +26,35 @@ public class OfficeController extends Controller {
         this.gridData = gridData;
     }
 
+
     @Override
     public String get(Request request, Response response){
+        dontCache(response);
         return createObjectBuilder()
                 .add("objects", createObjectsJsonArray())
                 .build()
                 .toString();
-
     }
+
+    @Override
+    public String post (Request request, Response response) {
+        request.body();
+        JsonReader jsonReader = Json.createReader(new StringReader(request.body()));
+        var jsonObject = jsonReader.readObject();
+        String type = jsonObject.getString("objectType");
+        if (type.equals("user")){
+            String username = jsonObject.getString("username");
+            int x = jsonObject.getInt("x");
+            int y = jsonObject.getInt("y");
+            for(User user : gridData.getUsers()) {
+                if (user.username.equals(username)) {
+                    user.moveObject(x, y);
+                }
+            }
+        }
+        return "";
+    }
+
 
     private JsonArrayBuilder createObjectsJsonArray() {
 
