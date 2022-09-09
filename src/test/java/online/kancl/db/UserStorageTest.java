@@ -2,6 +2,7 @@ package online.kancl.db;
 
 import online.kancl.db.UserStorage.DuplicateUserException;
 import online.kancl.test.ProductionDatabase;
+import online.kancl.util.HashUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,8 @@ class UserStorageTest {
     @BeforeEach
     public void initialize(DatabaseRunner dbRunner) {
         dbRunner.insert("INSERT INTO AppUser (username, password, email, user_status)" +
-                " VALUES('john', 12345, 'john@gmail.com','Mam se dobre!')");
+                " VALUES('john', ?, 'john@gmail.com','Mam se dobre!')",
+                HashUtils.sha256Hash("12345"));
     }
 
     @Test

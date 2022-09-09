@@ -23,7 +23,7 @@ class AuthenticatorTest {
 
     @BeforeEach
     void setUp() {
-        userStorage.createUser("username", HashUtils.sha256Hash("password"), "neexistuju@baf.com");
+        userStorage.createUser("username", "password", "neexistuju@baf.com");
     }
 
     @Test

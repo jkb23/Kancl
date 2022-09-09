@@ -29,8 +29,7 @@ public final class Authenticator {
             return BLOCKED_USER;
         }
 
-        String hashedPassword = HashUtils.sha256Hash(password);
-        boolean validCredentials = userStorage.findUser(username, hashedPassword);
+        boolean validCredentials = userStorage.findUser(username, password);
 
         if (validCredentials) {
             clearBadLoginCount(username);

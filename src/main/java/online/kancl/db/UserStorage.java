@@ -1,5 +1,7 @@
 package online.kancl.db;
 
+import online.kancl.util.HashUtils;
+
 import java.sql.Timestamp;
 import java.util.Optional;
 
@@ -23,17 +25,18 @@ public class UserStorage {
         return isFound == 1;
     }
 
-    public boolean findUser(String username, String hash) {
+    public boolean findUser(String username, String password) {
+        String hashedPassword = HashUtils.sha256Hash(password);
         int isFound = dbRunner.selectInt(
                 "SELECT COUNT(*) FROM AppUser WHERE username= ? AND password = ?",
-                username, hash);
+                username, hashedPassword);
         return isFound == 1;
     }
 
-    public void createUser(String username, String hash, String email) {
+    public void createUser(String username, String password, String email) {
         try {
             dbRunner.insert("INSERT INTO AppUser (username, password, email, user_status)" +
-                    " VALUES(?, ?, ?, ?)", username, hash, email, "Hello everyone");
+                    " VALUES(?, ?, ?, ?)", username, HashUtils.sha256Hash(password), email, "Hello everyone");
         } catch (DatabaseRunner.DatabaseAccessException e) {
             if (e.sqlErrorCode == 23505) {
                 throw new DuplicateUserException(e);

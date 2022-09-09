@@ -62,7 +62,7 @@ public class RegistrationController extends Controller {
             return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, RegistrationInfo);
         }
 
-        userStorage.createUser(registration.username(), HashUtils.sha256Hash(registration.password()), registration.email());
+        userStorage.createUser(registration.username(), registration.password(), registration.email());
         var returnCode =  authenticator.checkCredentialsWithBruteForcePrevention(registration.username(), registration.password());
         RegistrationInfo.setErrorMessage(returnCode.message);
         request.session(true);
