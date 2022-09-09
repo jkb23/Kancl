@@ -11,7 +11,9 @@
         {% block style %}{% endblock %}
     </head>
     <body>
-        <div class="user-info">{{pageContext.getUsername()}}</div>
+        <div class="user-info">
+             <a Href="/user">{{pageContext.getUsername()}}</a>
+        </div>
 
 
         <div class="px-4 py-5">
