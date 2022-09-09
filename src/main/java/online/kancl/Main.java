@@ -6,7 +6,6 @@ import online.kancl.db.ConnectionProvider;
 import online.kancl.db.SchemaCreator;
 import online.kancl.db.TransactionJobRunner;
 import online.kancl.db.UserStorage;
-import online.kancl.auth.Auth;
 import online.kancl.db.*;
 import online.kancl.objects.GridData;
 import online.kancl.objects.Wall;
@@ -64,7 +63,6 @@ public class Main {
         webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer));
         webServer.addRoute("/zoomhook", () -> new ZoomHookController(meetings));
         webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
-        //webServer.addRoute("/login", (dbRunner) -> new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData, new UserStorage(dbRunner)));
         webServer.addRoute("/user", (dbRunner) -> new UserPageController(pebbleTemplateRenderer, new UserStorage(dbRunner)));
         webServer.addRoute("/register", (dbRunner) -> new RegistrationController(pebbleTemplateRenderer, transactionJobRunner, new RegistrationInfo(), new UserStorage(dbRunner)));
         webServer.addRoute("/login", createLoginController(pebbleTemplateRenderer, transactionJobRunner, gridData));
@@ -81,7 +79,6 @@ public class Main {
     private static Function<DatabaseRunner, Controller> createLoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner, GridData gridData) {
         return (dbRunner) -> {
             var userStorage = new UserStorage(dbRunner);
-            Auth auth = new Auth(userStorage);
             return new LoginController(pebbleTemplateRenderer,
                     transactionJobRunner, new LoginInfo(), gridData, userStorage);
         };
