@@ -152,8 +152,8 @@ public class Main {
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+            zoomLinks.add("https://www.google.com/");
+            zoomLinks.add("https://www.google.com/");
         }
 
         return zoomLinks;
