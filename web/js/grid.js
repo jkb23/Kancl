@@ -3,6 +3,8 @@ const container = document.getElementById("container");
 
 const array = [];
 obstacles = [][2];
+let me = null;
+let lastData = null;
 
 //TODO: check the walls
 function check_obstacles(x, y) {
@@ -80,35 +82,40 @@ function addWall(wall, container) {
  container.classList.add("wall");
 }
 
-function getUserCoordinates(user, coordinates) {
- document.addEventListener("keydown", handleKey);
+document.addEventListener("keyup", handleKey);
 
- function handleKey(e) {
-   if (e.key === "ArrowUp" || e.key === "w") {
-     if (user.y > 0) {
-       user.y--;
-     }
-     sendRequest(user.x, user.y)
+function handleKey(e) {
+    console.log(e);
+    let updatedUser = false;
+    if (e.key === "ArrowUp" || e.key === "w") {
+        if (me.y > 0) {
+            me.y--;
+        }
+        updatedUser = true;
+    } else if (e.key === "ArrowRight" || e.key === "d") {
+        if (me.x < 25) {
+            me.x++;
+        }
+        updatedUser = true;
+    } else if (e.key === "ArrowLeft" || e.key === "a") {
+        if (me.x > 0) {
+            me.x--;
+        }
+        updatedUser = true;
+    } else if (e.key === "ArrowDown" || e.key === "s") {
+        if (me.y < 17) {
+            me.y++;
+        }
+        updatedUser = true;
+    }
 
-   } else if (e.key === "ArrowRight" || e.key === "d") {
-     if (user.x < 25) {
-       user.x++;
-     }
-     sendRequest(user.x, user.y)
-
-   } else if (e.key === "ArrowLeft" || e.key === "a") {
-     if (user.x > 0) {
-       user.x--;
-     }
-     sendRequest(user.x, user.y)
-
-   } else if (e.key === "ArrowDown" || e.key === "s") {
-     if (user.y < 17) {
-       user.y++;
-     }
-     sendRequest(user.x, user.y)
-   }
- }
+    if (updatedUser) {
+        e.preventDefault();
+        console.log(me);
+        if (lastData)
+            refreshOfficeState(lastData);
+        sendRequest(me.x, me.y)
+    }
 }
 
 window.addEventListener("load", () => {
@@ -124,6 +131,7 @@ data = {};
      return response.json();
    })
    .then(function (data) {
+     lastData = data;
      refreshOfficeState(data);
    })
    .catch(function (err) {
@@ -137,6 +145,8 @@ function refreshOfficeState(data) {
     userElement.remove();
  }
 
+ let haveUser = false;
+
  for (const object of data.objects) {
    const x = object.x;
    const y = object.y;
@@ -146,7 +156,10 @@ function refreshOfficeState(data) {
      addWall(object, coordinates);
    } else if (object.type === "user") {
      addUser(object, coordinates);
-     getUserCoordinates(object, coordinates);
+     if (!haveUser) {
+        me = object;
+        haveUser = true;
+     }
    } else if (object.type === "zoom") {
      addZoom(object, coordinates);
    }
