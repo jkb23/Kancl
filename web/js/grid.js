@@ -113,7 +113,7 @@ function handleKey(e) {
 }
 
 window.addEventListener("load", () => {
- let fetchInterval = 1000000000;
+ let fetchInterval = 1000;
  fetchOfficeState();
  setInterval(fetchOfficeState, fetchInterval);
 });
