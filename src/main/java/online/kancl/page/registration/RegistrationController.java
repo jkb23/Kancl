@@ -55,7 +55,7 @@ public class RegistrationController extends Controller {
             canBerRegister = false;
         }
         if (userStorage.emailExists(registration.email())) {
-            RegistrationInfo.setErrorMessage("Email exists");
+            RegistrationInfo.addTextToErrorMessage("Email exists");
             canBerRegister = false;
         }
         if (!canBerRegister){
