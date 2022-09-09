@@ -4,6 +4,8 @@ import mockit.*;
 import online.kancl.auth.Auth;
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
+import online.kancl.db.UserStorage;
+import online.kancl.objects.GridData;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import org.junit.jupiter.api.Test;
 import spark.Request;
@@ -28,6 +30,12 @@ public class LoginTest {
     TransactionJobRunner transactionJobRunner;
 
     @Injectable
+    GridData gridData;
+
+    @Injectable
+    UserStorage userStorage;
+
+    @Injectable
     Request request;
     @Injectable
     Response response;
@@ -41,14 +49,14 @@ public class LoginTest {
     @Test
     void checkIfCorrectCredentialsRedirect() {
         new Expectations() {{
-            auth.checkCredentialsWithBruteForcePrevention((DatabaseRunner) any, correct_username, correct_password);
+            auth.checkCredentialsWithBruteForcePrevention(correct_username, correct_password);
             result = CORRECT;
         }};
 
-        tested.authenticate(request, response, databaseRunner, new Login(correct_username, correct_password ));
+        tested.authenticate(request, response, auth, new Login(correct_username, correct_password ), databaseRunner);
 
         new Verifications() {{
-            response.redirect("/app");
+            response.redirect("/");
             times = 1;
         }};
     }
@@ -56,11 +64,11 @@ public class LoginTest {
     @Test
     void checkIfInCorrectCredentialsRedirect() {
         new Expectations() {{
-            auth.checkCredentialsWithBruteForcePrevention((DatabaseRunner) any, correct_username, wrong_password);
+            auth.checkCredentialsWithBruteForcePrevention(correct_username, wrong_password);
             result = BAD_CREDENTIALS;
         }};
 
-        tested.authenticate(request, response, databaseRunner, new Login(correct_username, wrong_password));
+        tested.authenticate(request, response, auth, new Login(correct_username, wrong_password), databaseRunner);
 
         new Verifications() {{
             loginInfo.setErrorMessage(BAD_CREDENTIALS.message);
@@ -72,11 +80,11 @@ public class LoginTest {
     @Test
     void checkIfUserIsBlocked() {
         new Expectations() {{
-            auth.checkCredentialsWithBruteForcePrevention((DatabaseRunner) any, blocked_username, wrong_password);
+            auth.checkCredentialsWithBruteForcePrevention(blocked_username, wrong_password);
             result = BLOCKED_USER;
         }};
 
-        tested.authenticate(request, response, databaseRunner, new Login(blocked_username, wrong_password));
+        tested.authenticate(request, response, auth, new Login(blocked_username, wrong_password), databaseRunner);
 
         new Verifications() {{
             loginInfo.setErrorMessage(BLOCKED_USER.message);

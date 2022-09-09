@@ -15,74 +15,107 @@ import static org.assertj.core.api.Assertions.assertThat;
 class UserStorageTest {
 
     private final DatabaseRunner dbRunner;
+    private final UserStorage userStorage;
 
     UserStorageTest(DatabaseRunner dbRunner) {
         this.dbRunner = dbRunner;
+        this.userStorage = new UserStorage(dbRunner);
     }
 
     @BeforeEach
     public void initialize(DatabaseRunner dbRunner) {
-        dbRunner.insert("INSERT INTO AppUser (username, password, nickname, avatar, avatar_color, bad_login_count, bad_login_timestamp)" +
-                " VALUES('john@gmail.com', 12345, null, null, null, null, null)");
+        dbRunner.insert("INSERT INTO AppUser (username, password, email, user_status)" +
+                " VALUES('john', 12345, 'john@gmail.com','Mam se dobre!')");
     }
 
     @Test
     public void findUser_whenNonExistingUser_thenFalse() {
-        assertThat(UserStorage.findUser(dbRunner, "bhjawbd@dabd.cy", "hgdhgawvd"))
+        assertThat(userStorage.findUser("bhjawbd@dabd.cy", "hgdhgawvd"))
                 .isEqualTo(false);
     }
 
     @Test
     public void findUser_whenExistingUser_thenTrue() {
-        assertThat(UserStorage.findUser(dbRunner, "john@gmail.com", "12345"))
+        assertThat(userStorage.findUser("john", "12345"))
                 .isEqualTo(true);
     }
 
     @Test
     public void createUser_whenNonExistingUser_thenUserIsCreated() {
-        UserStorage.createUser(dbRunner, "daniel@gmail.com", "11111");
-        assertThat(UserStorage.findUser(dbRunner, "daniel@gmail.com", "11111"))
+        userStorage.createUser("daniel", "11111", "danie@gmail.com");
+        assertThat(userStorage.findUser("daniel", "11111"))
                 .isEqualTo(true);
     }
 
     @Test
     public void createUser_whenExistingUser_thenExceptionThrown() {
         Assertions.assertThatExceptionOfType(DuplicateUserException.class)
-                .isThrownBy(() -> UserStorage.createUser(dbRunner, "john@gmail.com", "12345"));
+                .isThrownBy(() -> userStorage.createUser( "john", "12345", "john@gmail.com"));
 
     }
 
     @Test
     public void setBadLoginTimestamp_whenTimeStampPassed_thenCorrectTimestampIsRetrievedFromDB() {
         Timestamp actualTimeStamp = new Timestamp(System.currentTimeMillis());
-        UserStorage.setBadLoginTimestamp(dbRunner, "john@gmail.com", actualTimeStamp);
-        assertThat(UserStorage.getBadLoginTimestamp(dbRunner, "john@gmail.com"))
+        userStorage.setBadLoginTimestamp("john", actualTimeStamp);
+        assertThat(userStorage.getBadLoginTimestamp("john"))
                 .contains(actualTimeStamp);
     }
 
     @Test
     public void incrementBadLoginCount_counter_then_default() {
-        assertThat(UserStorage.getBadLoginCount(dbRunner,"john@gmail.com")).contains(0);
+        assertThat(userStorage.getBadLoginCount("john")).contains(0);
     }
 
     @Test
     public void incrementBadLoginCount_to_one() {
-        UserStorage.incrementBadLoginCount(dbRunner,"john@gmail.com");
-        assertThat(UserStorage.getBadLoginCount(dbRunner,"john@gmail.com")).contains(1);
+        userStorage.incrementBadLoginCount("john");
+        assertThat(userStorage.getBadLoginCount("john")).contains(1);
     }
 
     @Test
     public void  incrementBadLoginCount_to_five() {
         for (int i = 0; i < 5; i++) {
-            UserStorage.incrementBadLoginCount(dbRunner,"john@gmail.com");
+            userStorage.incrementBadLoginCount("john");
         }
-        assertThat(UserStorage.getBadLoginCount(dbRunner,"john@gmail.com")).contains(5);
+        assertThat(userStorage.getBadLoginCount("john")).contains(5);
     }
 
     @Test
     public void nullBadLoginCount_equal_null() {
-        UserStorage.nullBadLoginCount(dbRunner, "john@gmail.com");
-        assertThat(UserStorage.getBadLoginCount(dbRunner,"john@gmail.com")).contains(0);
+        userStorage.nullBadLoginCount("john");
+        assertThat(userStorage.getBadLoginCount("john")).contains(0);
     }
+
+    @Test
+    public void usernameIDIsNotNull() {
+        userStorage.getUserIdFromUsername("john");
+        assertThat(userStorage.getUserIdFromUsername("john")).isNotEqualTo(null);
+    }
+
+    @Test
+    public void getStatusFromDb_true() {
+        userStorage.getStatusFromDb("john");
+        assertThat(userStorage.getStatusFromDb("john")).isEqualTo("Mam se dobre!");
+    }
+
+    @Test
+    public void getStatusFromDb_false() {
+        userStorage.getStatusFromDb("john");
+        assertThat(userStorage.getStatusFromDb("john")).isNotEqualTo("Mam se spatne!");
+    }
+
+    @Test
+    public void setStatusFromDb_true() {
+        userStorage.setStatusToDb("john", "Aktualne testuji");
+        assertThat(userStorage.getStatusFromDb("john")).isEqualTo("Aktualne testuji");
+    }
+
+    @Test
+    public void setStatusFromDb_false() {
+        userStorage.setStatusToDb("john", "Aktualne testuji");
+        assertThat(userStorage.getStatusFromDb("john")).isNotEqualTo("Mam se dobre!");
+    }
+
 
 }

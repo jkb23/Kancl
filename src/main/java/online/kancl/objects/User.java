@@ -1,41 +1,32 @@
 package online.kancl.objects;
 
-public class User {
+import online.kancl.db.UserStorage;
+
+public class User extends OfficeObject {
     private int x;
     private int y;
     public final String username;
+    private final UserStorage userStorage;
 
-    public User(String username) {
-        this.y = 0;
-        this.x = 0;
+    private String status;
+
+    public User(String username, UserStorage userStorage) {
+        super();
         this.username = username;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
+        this.userStorage = userStorage;
+        this.status = userStorage.getStatusFromDb(username);
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void moveRight(){
-        this.x += 1;
+    public String getStatus() {
+        return status;
     }
 
-    public void moveLeft(){
-        this.x -= 1;
-    }
-
-    public void moveUp(){
-        this.y -= 1;
-    }
-
-    public void moveDown(){
-        this.y += 1;
+    public void setStatus(String status) {
+        this.status = status;
+        userStorage.setStatusToDb(username, status);
     }
 }

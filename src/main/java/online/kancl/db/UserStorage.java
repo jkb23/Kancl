@@ -5,17 +5,35 @@ import java.util.Optional;
 
 public class UserStorage {
 
-    public static boolean findUser(DatabaseRunner dbRunner, String username, String hash) {
+    private final DatabaseRunner dbRunner;
+
+    public UserStorage(DatabaseRunner dbRunner) {
+        this.dbRunner = dbRunner;
+    }
+
+    public boolean usernameExists(String username) {
+        int isFound = dbRunner.selectInt(
+                "SELECT COUNT(*) FROM AppUser WHERE username= ?", username);
+        return isFound == 1;
+    }
+
+    public boolean emailExists(String email) {
+        int isFound = dbRunner.selectInt(
+                "SELECT COUNT(*) FROM AppUser WHERE email= ?", email);
+        return isFound == 1;
+    }
+
+    public boolean findUser(String username, String hash) {
         int isFound = dbRunner.selectInt(
                 "SELECT COUNT(*) FROM AppUser WHERE username= ? AND password = ?",
                 username, hash);
         return isFound == 1;
     }
 
-    public static void createUser(DatabaseRunner dbRunner, String username, String hash) {
+    public void createUser(String username, String hash, String email) {
         try {
-            dbRunner.insert("INSERT INTO AppUser (username, password, nickname, avatar, avatar_color, bad_login_count, bad_login_timestamp)" +
-                    " VALUES(?, ?, null, null, null, null, null)", username, hash);
+            dbRunner.insert("INSERT INTO AppUser (username, password, email, user_status)" +
+                    " VALUES(?, ?, ?, ?)", username, hash, email, "Hello everyone");
         } catch (DatabaseRunner.DatabaseAccessException e) {
             if (e.sqlErrorCode == 23505) {
                 throw new DuplicateUserException(e);
@@ -25,37 +43,46 @@ public class UserStorage {
         }
     }
 
-    public static Optional<Integer> getBadLoginCount(DatabaseRunner dbRunner, String username) {
+    public Optional<Integer> getBadLoginCount(String username) {
         return dbRunner.select("SELECT bad_login_count FROM AppUser WHERE username= ?",
                 (r) -> r.getInt(1),
                 username);
     }
 
-    public static void incrementBadLoginCount(DatabaseRunner dbRunner, String username) {
+    public void incrementBadLoginCount(String username) {
         dbRunner.update("UPDATE AppUser SET bad_login_count = nvl(bad_login_count, 0) + 1 WHERE username= ?", username);
     }
 
-    public static void nullBadLoginCount(DatabaseRunner dbRunner, String username) {
+    public void nullBadLoginCount(String username) {
         dbRunner.update("UPDATE AppUser SET bad_login_count = 0 WHERE username= ?",
                 username);
     }
 
-    public static void setBadLoginTimestamp(DatabaseRunner dbRunner, String username, Timestamp timestamp) {
+    public void setBadLoginTimestamp(String username, Timestamp timestamp) {
         dbRunner.update("UPDATE AppUser SET bad_login_timestamp = ? WHERE username= ?",
                 timestamp, username);
     }
 
-    public static Optional<Timestamp> getBadLoginTimestamp(DatabaseRunner dbRunner, String username) {
+    public Optional<Timestamp> getBadLoginTimestamp(String username) {
         return dbRunner.select("SELECT bad_login_timestamp FROM AppUser WHERE username= ?",
                 (r) -> r.getTimestamp(1),
                 username);
     }
 
-    public static int getUserIdFromUsername(DatabaseRunner dbRunner, String username) {
+    public int getUserIdFromUsername(String username) {
         return dbRunner.selectInt("SELECT id FROM AppUser WHERE username = ?", username);
     }
 
-    public static class DuplicateUserException extends RuntimeException {
+    public String getStatusFromDb (String username) {
+        return dbRunner.selectString("SELECT user_status FROM AppUser WHERE username = ?", username);
+    }
+
+    public void setStatusToDb (String username, String status) {
+        dbRunner.update("UPDATE AppUser SET user_status = ? WHERE username= ?",
+                status, username);
+    }
+
+    public class DuplicateUserException extends RuntimeException {
         public DuplicateUserException(Throwable cause) {
             super(cause);
         }

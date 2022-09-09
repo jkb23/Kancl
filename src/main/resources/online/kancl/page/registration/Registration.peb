@@ -1,0 +1,67 @@
+{# @pebvariable name="registrationInfo" type="online.kancl.page.registration.RegistrationInfo" #}
+
+    {% extends "../BaseHtml.peb" %}
+
+    {% block title %}
+    Registration
+    {% endblock %}
+
+    {% block style %}
+    <link href='css/register.css' rel='stylesheet'/>
+    {% endblock %}
+
+    {% block javascript %}
+  <script src='js/register.js' type="text/javascript"></script>
+    {% endblock %}
+
+{% block body %}
+    <section class="vh-100">
+      <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+
+          <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 form-style">
+
+            <form method='post'>
+              <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+              <div class="register">Register with us</div>
+              </div>
+
+              <div class="form-outline mb-4">
+                <input type="text" id="username" name="username" class="form-control form-control-lg"
+                  placeholder="Enter a valid username" />
+                <label class="form-label" for="username">Username</label>
+                <p class="invalid_credentials small fw-bold mt-2 pt-1 mb-0">{{registrationInfo.getErrorMessage()}}</p>
+              </div>
+
+
+              <div class="form-outline mb-4">
+                <input type="email" id="email" name="email" class="form-control form-control-lg"
+                  placeholder="Enter your email address" />
+                <label class="form-label" for="email">Email</label>
+                <p class="invalid_credentials small fw-bold mt-2 pt-1 mb-0">{{registrationInfo.getErrorMessage()}}</p>
+              </div>
+
+              <div class="form-outline mb-3">
+                <input type="password" id="password" name="password" class="form-control form-control-lg"
+                  placeholder="Enter your password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![\n])(?=.*[A-Z])(?=.*[a-z]).*$" title="Must contain at least one number or at least one non-word character, one uppercase and one lowercase letter, and at least 8 or more characters with no newline in a string of any characters" required/>
+                <label class="form-label" for="password">Password</label>
+              </div>
+
+              <div class="form-outline mb-3">
+                <input type="password" id="passwordCheck" name="passwordCheck" class="form-control form-control-lg" onkeyup="isEqual()" oncheck="isLongEnough()" autocomplete="new-password"
+                  placeholder="Enter your password again" required/>
+                <label class="form-label" id="message" for="passwordCheck"></label>
+{#                <p class="invalid_credentials small fw-bold mt-2 pt-1 mb-0">{{registrationInfo.getErrorMessage()}}</p>#}
+              </div>
+
+              <div class="text-center text-lg-start mt-4 pt-2">
+                <button type="submit" id="submit" class="btn btn-primary btn-lg"
+                  style="padding-left: 2.5rem; padding-right: 2.5rem;" disabled>Register</button>
+
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

@@ -1,6 +1,5 @@
 package online.kancl.auth;
 
-import online.kancl.db.DatabaseRunner;
 import online.kancl.db.UserStorage;
 import online.kancl.util.HashUtils;
 
@@ -13,47 +12,51 @@ import static online.kancl.auth.AuthReturnCode.*;
 public class Auth {
 
     public static final int BLOCKED_DURATION_IN_MILLISECONDS = 5 * 60 * 1000;
+    private final UserStorage userStorage;
 
-    public AuthReturnCode checkCredentialsWithBruteForcePrevention(DatabaseRunner dbRunner,
-                                                                   String username, String password) {
+    public Auth(UserStorage userStorage) {
+        this.userStorage = userStorage;
+    }
+
+    public AuthReturnCode checkCredentialsWithBruteForcePrevention(String username, String password) {
         if (username == null || password == null) {
             return BAD_CREDENTIALS;
         }
 
-        if (isBlocked(dbRunner, username)) {
+        if (isBlocked(username)) {
             return BLOCKED_USER;
         }
 
         String hashedPassword = HashUtils.sha256Hash(password);
-        boolean validCredentials = UserStorage.findUser(dbRunner, username, hashedPassword);
+        boolean validCredentials = userStorage.findUser(username, hashedPassword);
 
         if (validCredentials) {
-            clearBadLoginCount(dbRunner, username);
+            clearBadLoginCount(username);
             return CORRECT;
         } else {
-            preventBruteForce(dbRunner, username);
+            preventBruteForce(username);
             return BAD_CREDENTIALS;
         }
     }
 
-    private void clearBadLoginCount(DatabaseRunner dbRunner, String username) {
-        UserStorage.nullBadLoginCount(dbRunner, username);
+    private void clearBadLoginCount(String username) {
+        userStorage.nullBadLoginCount(username);
     }
 
-    private void preventBruteForce(DatabaseRunner databaseRunner, String username) {
-        UserStorage.incrementBadLoginCount(databaseRunner, username);
-        Optional<Integer> badLoginCount = UserStorage.getBadLoginCount(databaseRunner, username);
+    private void preventBruteForce(String username) {
+        userStorage.incrementBadLoginCount(username);
+        Optional<Integer> badLoginCount = userStorage.getBadLoginCount(username);
         if (badLoginCount.isPresent() && badLoginCount.get() >= 5) {
-            blockUser(databaseRunner, username);
+            blockUser(username);
         }
     }
 
-    private void blockUser(DatabaseRunner dbRunner, String username) {
-        UserStorage.setBadLoginTimestamp(dbRunner, username, new Timestamp(System.currentTimeMillis()));
+    private void blockUser(String username) {
+        userStorage.setBadLoginTimestamp(username, new Timestamp(System.currentTimeMillis()));
     }
 
-    private boolean isBlocked(DatabaseRunner dbRunner, String username) {
-        Optional<Timestamp> badLoginTimestamp = UserStorage.getBadLoginTimestamp(dbRunner, username);
+    private boolean isBlocked(String username) {
+        Optional<Timestamp> badLoginTimestamp = userStorage.getBadLoginTimestamp(username);
 
         if (badLoginTimestamp.isEmpty()) {
             return false;
@@ -64,6 +67,6 @@ public class Auth {
 
             return currentTime.before(check);
         }
-
     }
+
 }
