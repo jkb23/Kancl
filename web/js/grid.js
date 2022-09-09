@@ -57,13 +57,6 @@ function addUser(user, container) {
   element.appendChild(userState);
 }
 
-function removeUser(user, container) {
- const element = document.createElement("div");
- element.classList.add("user");
- element.id = "user";
- container.removeChild(element);
-}
-
 function addZoom(zoom, container) {
  container.classList.add("zoom"); const zoomItem = document.querySelector(".zoom")
  const zoomEl = document.createElement("div");
@@ -106,10 +99,13 @@ function handleKey(e) {
             me.y++;
         }
         updatedUser = true;
+    } else if (e.key == "r") {
+        fetchOfficeState();
     }
 
     if (updatedUser) {
         e.preventDefault();
+        console.log('move', me);
         if (lastData)
             refreshOfficeState(lastData);
         sendRequest(me.x, me.y)
@@ -117,13 +113,12 @@ function handleKey(e) {
 }
 
 window.addEventListener("load", () => {
- let fetchInterval = 1000;
+ let fetchInterval = 1000000000;
  fetchOfficeState();
  setInterval(fetchOfficeState, fetchInterval);
 });
 
 function fetchOfficeState() {
-data = {};
  fetch("/api/office")
    .then(function (response) {
      return response.json();
@@ -139,11 +134,10 @@ data = {};
 
 function refreshOfficeState(data) {
  let userElements = document.getElementsByName("user");
+ console.log('removing', userElements);
  for (const userElement of userElements) {
     userElement.remove();
  }
-
- let haveUser = false;
 
  for (const object of data.objects) {
    const x = object.x;
@@ -153,10 +147,10 @@ function refreshOfficeState(data) {
    if (object.type === "wall") {
      addWall(object, coordinates);
    } else if (object.type === "user") {
+     console.log(object);
      addUser(object, coordinates);
-     if (!haveUser) {
+     if (object.username == data.me) {
         me = object;
-        haveUser = true;
      }
    } else if (object.type === "zoom") {
      addZoom(object, coordinates);

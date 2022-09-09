@@ -32,6 +32,7 @@ public class OfficeController extends Controller {
         dontCache(response);
         return createObjectBuilder()
                 .add("objects", createObjectsJsonArray())
+                .add("me", (String)request.session().attribute("user"))
                 .build()
                 .toString();
     }

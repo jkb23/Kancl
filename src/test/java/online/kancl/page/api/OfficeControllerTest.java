@@ -1,6 +1,8 @@
 package online.kancl.page.api;
 
+import mockit.Expectations;
 import mockit.Injectable;
+import mockit.Mocked;
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
@@ -10,8 +12,13 @@ import online.kancl.objects.ZoomObject;
 import online.kancl.test.ProductionDatabase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import spark.Request;
 import spark.Response;
+import spark.Session;
 
+import static online.kancl.auth.AuthReturnCode.CORRECT;
+import static online.kancl.loginTestEnum.correct_password;
+import static online.kancl.loginTestEnum.correct_username;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(ProductionDatabase.class)
@@ -24,7 +31,15 @@ class OfficeControllerTest {
     }
 
     @Test
-    void correctJsonEncapsulation(@Injectable Response response) {
+    void correctJsonEncapsulation(@Injectable Response response, @Mocked Request request, @Mocked Session session) {
+        new Expectations() {{
+            request.session();
+            result = session;
+
+            session.attribute("user");
+            result = "John";
+        }};
+
         var gridData = new GridData();
 
         User user1 = new User("correct", new UserStorage(dbRunner));
@@ -36,9 +51,10 @@ class OfficeControllerTest {
         gridData.addZoom(zoomObject);
 
         OfficeController officeController = new OfficeController(gridData);
-        assertThat(officeController.get(null, response))
+        assertThat(officeController.get(request, response))
                 .isEqualTo("{\"objects\":[{\"type\":\"user\",\"username\":\"correct\",\"status\":\"Mam se dobre!\"" +
                         ",\"x\":13,\"y\":8},{\"type\":\"wall\",\"x\":1,\"y\":1}" +
-                        ",{\"type\":\"zoom\",\"link\":\"zoom.com\",\"x\":5,\"y\":5}]}");
+                        ",{\"type\":\"zoom\",\"link\":\"zoom.com\",\"x\":5,\"y\":5}],\"me\":\"John\"}");
+
     }
 }
