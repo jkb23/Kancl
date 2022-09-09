@@ -1,6 +1,8 @@
 const loginButton = document.getElementById("submit");
-
-const elements = document.querySelectorAll("input")
+const elements = document.querySelectorAll("input");
+const passwordInput = document.getElementById("password");
+const passwordCheck = document.getElementById("passwordCheck");
+const message = document.getElementById("message");
 
 for (let i = 0; i < elements.length; i++) {
     elements[i].oninput = () => {
@@ -11,4 +13,29 @@ for (let i = 0; i < elements.length; i++) {
         }
     }
 }
+
+let isEqual = function() {
+  if (passwordInput.value == passwordCheck.value) {
+    message.setAttribute("hidden", "");
+    submit.removeAttribute("disabled");
+
+  } else {
+    message.removeAttribute("hidden");
+    message.style.color = '#DC343B';
+    message.innerHTML = 'Not matching';
+    submit.setAttribute("disabled", "");
+  }
+}
+
+let isLongEnough = function() {
+    if (passwordInput.value.length < 5) {
+       passwordInput.style.color="#DC343B";
+    } else {
+        passwordInput.style.color="#f7f7f7";
+    }
+}
+
+
+
+
 

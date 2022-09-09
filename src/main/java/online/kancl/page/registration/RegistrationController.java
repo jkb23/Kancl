@@ -36,6 +36,7 @@ public class RegistrationController extends Controller {
             var registration = new Registration(
                     request.queryParams("username"),
                     request.queryParams("password"),
+                    request.queryParams("passwordCheck"),
                     request.queryParams("email"));
             return registerUser(request, response, auth, registration);
         });
@@ -43,15 +44,30 @@ public class RegistrationController extends Controller {
 
     String registerUser(Request request, Response response, Auth auth, Registration registration)
     {
-
-        if (!userStorage.usernameExists(registration.username()) && !userStorage.emailExists(registration.email())){
-            userStorage.createUser(registration.username(), HashUtils.sha256Hash(registration.password()), registration.email());
-            var returnCode =  auth.checkCredentialsWithBruteForcePrevention(registration.username(), registration.password());
-            RegistrationInfo.setErrorMessage(returnCode.message);
-            request.session(true);
-            request.session().attribute("user", registration.username());
-            response.redirect("/");
+        boolean canBerRegister = true;
+        if (!registration.password().equals(registration.passwordCheck())) {
+            RegistrationInfo.setErrorMessage("Passwords are not same");
+            canBerRegister = false;
         }
-        return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, RegistrationInfo);
+
+        if (userStorage.usernameExists(registration.username())) {
+            RegistrationInfo.addTextToErrorMessage("Username exists");
+            canBerRegister = false;
+        }
+        if (userStorage.emailExists(registration.email())) {
+            RegistrationInfo.setErrorMessage("Email exists");
+            canBerRegister = false;
+        }
+        if (!canBerRegister){
+            return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, RegistrationInfo);
+        }
+
+        userStorage.createUser(registration.username(), HashUtils.sha256Hash(registration.password()), registration.email());
+        var returnCode =  auth.checkCredentialsWithBruteForcePrevention(registration.username(), registration.password());
+        RegistrationInfo.setErrorMessage(returnCode.message);
+        request.session(true);
+        request.session().attribute("user", registration.username());
+        response.redirect("/");
+        return "";
     }
 }

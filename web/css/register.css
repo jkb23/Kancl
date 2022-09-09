@@ -8,8 +8,15 @@
 }
 
 body {
-    overflow: hidden;
     background-color:#f7f7f7;
+}
+
+.register {
+  padding-left:33%;
+  padding-bottom: 5%;
+  font-size: 1.6em;
+  letter-spacing: 0.15em;
+
 }
 
 .h-custom {
@@ -18,22 +25,25 @@ body {
 
 .form-style {
     background-color: white;
-    padding: 100px;
+    padding: 50px;
+    width: 100vh;
     -webkit-box-shadow: 2px 1px 21px -9px rgba(0,0,0,0.38);
     -moz-box-shadow: 2px 1px 21px -9px rgba(0,0,0,0.38);
     box-shadow: 2px 1px 21px -9px rgba(0,0,0,0.38);
 
 }
 
-/*input[type=email]:not(:placeholder-shown):invalid {
+input[type=email]:not(:placeholder-shown):invalid, input[type=password]:not(:placeholder-shown):invalid {
   color: #DC343B;
   outline-color: #DC343B;
-  background-color: rgba(220,52,59,0.2);
-}*/
+}
+
 
 .password-alert {
     color: rgba(0,0,0,0.38);
 }
+
+
 
 input[type=text], input[type=password], input[type=email] {
     width: 100%;
