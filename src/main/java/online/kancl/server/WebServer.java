@@ -18,6 +18,13 @@ public class WebServer {
         Spark.port(port);
         Spark.staticFiles.externalLocation("web");
         Spark.exception(Exception.class, exceptionHandler::handleException);
+
+        Spark.before((request, response) -> {
+            if (request.session().attribute("user") == null && !request.pathInfo().equals("/login")) {
+                response.redirect("/login");
+                Spark.halt();
+            }
+        });
     }
 
     public void addRoute(String path, Supplier<Controller> controllerSupplier) {
