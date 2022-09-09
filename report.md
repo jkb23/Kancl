@@ -6,7 +6,6 @@
 -add function to remember username and password on login page and be able
  to instantly login via login button or enter
 -zoom object clicking - redirect to Zoom conference
--show user status on mouse hover on user avatar
 -add collision with walls
 
 -show default avatar for new registered users
@@ -17,4 +16,6 @@
 -when user is standing next to zoom object, url is not showing automatically
 -when credentials are saved in browser user have to retype at least one character to login
 -outer office walls moving in when they can't fit on one page
+-userpage has option to change status, but status is not changing (and so does profile photo)
+-add buttons to change pages instead of rewriting url
 
