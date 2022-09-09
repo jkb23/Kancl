@@ -1,7 +1,7 @@
 package online.kancl.page.registration;
 
 import mockit.*;
-import online.kancl.auth.Auth;
+import online.kancl.auth.Authenticator;
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
 import online.kancl.db.UserStorage;
@@ -20,7 +20,7 @@ class RegistrationControllerTest {
 
     @Injectable
     @Mocked
-    Auth auth;
+    Authenticator authenticator;
 
     @Injectable
     PebbleTemplateRenderer pebbleTemplateRenderer;
@@ -57,7 +57,7 @@ class RegistrationControllerTest {
             result = false;
         }};
 
-        tested.registerUser(request, response, auth, new Registration(correct_username, correct_password, correct_password, email));
+        tested.registerUser(request, response, authenticator, new Registration(correct_username, correct_password, correct_password, email));
         new Verifications() {{
             response.redirect("/");
             times = 1;
@@ -76,7 +76,7 @@ class RegistrationControllerTest {
             result = false;
         }};
 
-        tested.registerUser(request, response, auth, new Registration(correct_username, correct_password, correct_password, email));
+        tested.registerUser(request, response, authenticator, new Registration(correct_username, correct_password, correct_password, email));
         new Verifications() {{
             pebbleTemplateRenderer.renderDefaultControllerTemplate(tested, registrationInfo);
             times = 1;
@@ -95,7 +95,7 @@ class RegistrationControllerTest {
             result = true;
         }};
 
-        tested.registerUser(request, response, auth, new Registration(correct_username, correct_password, correct_password, email));
+        tested.registerUser(request, response, authenticator, new Registration(correct_username, correct_password, correct_password, email));
         new Verifications() {{
             pebbleTemplateRenderer.renderDefaultControllerTemplate(tested, registrationInfo);
             times = 1;
@@ -114,7 +114,7 @@ class RegistrationControllerTest {
             result = false;
         }};
 
-        tested.registerUser(request, response, auth, new Registration(correct_username, correct_password, wrong_password, email));
+        tested.registerUser(request, response, authenticator, new Registration(correct_username, correct_password, wrong_password, email));
         new Verifications() {{
             pebbleTemplateRenderer.renderDefaultControllerTemplate(tested, registrationInfo);
             times = 1;

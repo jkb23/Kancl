@@ -10,7 +10,7 @@ import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
 import spark.Response;
-import online.kancl.auth.Auth;
+import online.kancl.auth.Authenticator;
 import online.kancl.auth.AuthReturnCode;
 
 import static online.kancl.auth.AuthReturnCode.CORRECT;
@@ -22,7 +22,7 @@ public class LoginController extends Controller {
     private LoginInfo loginInfo;
     private final GridData gridData;
     private UserStorage userStorage;
-    private Auth auth;
+    private Authenticator authenticator;
 
     public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner,
                            LoginInfo loginInfo, GridData gridData, UserStorage userStorage) {
@@ -31,7 +31,7 @@ public class LoginController extends Controller {
         this.loginInfo = loginInfo;
         this.gridData = gridData;
         this.userStorage = userStorage;
-        this.auth = new Auth(userStorage);
+        this.authenticator = new Authenticator(userStorage);
     }
 
     @Override
@@ -52,12 +52,12 @@ public class LoginController extends Controller {
             var user = new Login(
                     request.queryParams("username"),
                     request.queryParams("password"));
-            return authenticate(request, response, auth, user, dbRunner);
+            return authenticate(request, response, authenticator, user, dbRunner);
         });
     }
 
-    String authenticate(Request request, Response response, Auth auth, Login user, DatabaseRunner dbRunner) {
-        AuthReturnCode returnCode = auth.checkCredentialsWithBruteForcePrevention(user.username(), user.password());
+    String authenticate(Request request, Response response, Authenticator authenticator, Login user, DatabaseRunner dbRunner) {
+        AuthReturnCode returnCode = authenticator.checkCredentialsWithBruteForcePrevention(user.username(), user.password());
         if (returnCode == CORRECT) {
             User userObject = new User(user.username(), userStorage);
             gridData.addUser(userObject);

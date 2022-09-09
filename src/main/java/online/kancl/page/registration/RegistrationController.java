@@ -1,6 +1,6 @@
 package online.kancl.page.registration;
 
-import online.kancl.auth.Auth;
+import online.kancl.auth.Authenticator;
 import online.kancl.db.TransactionJobRunner;
 import online.kancl.db.UserStorage;
 import online.kancl.server.Controller;
@@ -32,7 +32,7 @@ public class RegistrationController extends Controller {
     @Override
     public String post(Request request, Response response) {
         return transactionJobRunner.runInTransaction((dbRunner) -> {
-            var auth = new Auth(new UserStorage(dbRunner));
+            var auth = new Authenticator(new UserStorage(dbRunner));
             var registration = new Registration(
                     request.queryParams("username"),
                     request.queryParams("password"),
@@ -42,7 +42,7 @@ public class RegistrationController extends Controller {
         });
     }
 
-    String registerUser(Request request, Response response, Auth auth, Registration registration)
+    String registerUser(Request request, Response response, Authenticator authenticator, Registration registration)
     {
         boolean canBerRegister = true;
         if (!registration.password().equals(registration.passwordCheck())) {
@@ -63,7 +63,7 @@ public class RegistrationController extends Controller {
         }
 
         userStorage.createUser(registration.username(), HashUtils.sha256Hash(registration.password()), registration.email());
-        var returnCode =  auth.checkCredentialsWithBruteForcePrevention(registration.username(), registration.password());
+        var returnCode =  authenticator.checkCredentialsWithBruteForcePrevention(registration.username(), registration.password());
         RegistrationInfo.setErrorMessage(returnCode.message);
         request.session(true);
         request.session().attribute("user", registration.username());

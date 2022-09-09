@@ -1,7 +1,7 @@
 package online.kancl.page.login;
 
 import mockit.*;
-import online.kancl.auth.Auth;
+import online.kancl.auth.Authenticator;
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
 import online.kancl.db.UserStorage;
@@ -21,7 +21,7 @@ public class LoginTest {
 
     @Injectable
     @Mocked
-    Auth auth;
+    Authenticator authenticator;
 
     @Injectable
     PebbleTemplateRenderer pebbleTemplateRenderer;
@@ -49,11 +49,11 @@ public class LoginTest {
     @Test
     void checkIfCorrectCredentialsRedirect() {
         new Expectations() {{
-            auth.checkCredentialsWithBruteForcePrevention(correct_username, correct_password);
+            authenticator.checkCredentialsWithBruteForcePrevention(correct_username, correct_password);
             result = CORRECT;
         }};
 
-        tested.authenticate(request, response, auth, new Login(correct_username, correct_password ), databaseRunner);
+        tested.authenticate(request, response, authenticator, new Login(correct_username, correct_password ), databaseRunner);
 
         new Verifications() {{
             response.redirect("/");
@@ -64,11 +64,11 @@ public class LoginTest {
     @Test
     void checkIfInCorrectCredentialsRedirect() {
         new Expectations() {{
-            auth.checkCredentialsWithBruteForcePrevention(correct_username, wrong_password);
+            authenticator.checkCredentialsWithBruteForcePrevention(correct_username, wrong_password);
             result = BAD_CREDENTIALS;
         }};
 
-        tested.authenticate(request, response, auth, new Login(correct_username, wrong_password), databaseRunner);
+        tested.authenticate(request, response, authenticator, new Login(correct_username, wrong_password), databaseRunner);
 
         new Verifications() {{
             loginInfo.setErrorMessage(BAD_CREDENTIALS.message);
@@ -80,11 +80,11 @@ public class LoginTest {
     @Test
     void checkIfUserIsBlocked() {
         new Expectations() {{
-            auth.checkCredentialsWithBruteForcePrevention(blocked_username, wrong_password);
+            authenticator.checkCredentialsWithBruteForcePrevention(blocked_username, wrong_password);
             result = BLOCKED_USER;
         }};
 
-        tested.authenticate(request, response, auth, new Login(blocked_username, wrong_password), databaseRunner);
+        tested.authenticate(request, response, authenticator, new Login(blocked_username, wrong_password), databaseRunner);
 
         new Verifications() {{
             loginInfo.setErrorMessage(BLOCKED_USER.message);

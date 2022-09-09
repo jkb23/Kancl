@@ -11,15 +11,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(ProductionDatabase.class)
-class AuthTest {
+class AuthenticatorTest {
+
     private final DatabaseRunner dbRunner;
-    private final Auth auth;
+    private final Authenticator authenticator;
     private final UserStorage userStorage;
 
-    public AuthTest(DatabaseRunner dbRunner) {
+    public AuthenticatorTest(DatabaseRunner dbRunner) {
         this.dbRunner = dbRunner;
         this.userStorage = new UserStorage(dbRunner);
-        this.auth = new Auth(userStorage);
+        this.authenticator = new Authenticator(userStorage);
     }
 
     @BeforeEach
@@ -29,36 +30,36 @@ class AuthTest {
 
     @Test
     void successfulLogin() {
-        assertThat(auth.checkCredentialsWithBruteForcePrevention("username", "password"))
+        assertThat(authenticator.checkCredentialsWithBruteForcePrevention("username", "password"))
                 .isEqualTo(AuthReturnCode.CORRECT);
     }
 
     @Test
     void unknownUserWithPasswordKnownForDifferentUser() {
-        assertThat(auth.checkCredentialsWithBruteForcePrevention("incorrect", "password"))
+        assertThat(authenticator.checkCredentialsWithBruteForcePrevention("incorrect", "password"))
                 .isEqualTo(AuthReturnCode.BAD_CREDENTIALS);
     }
 
     @Test
     void incorrectPassword() {
-        assertThat(auth.checkCredentialsWithBruteForcePrevention("username", "incorrect"))
+        assertThat(authenticator.checkCredentialsWithBruteForcePrevention("username", "incorrect"))
                 .isEqualTo(AuthReturnCode.BAD_CREDENTIALS);
     }
 
     @Test
     void unknownUserWithUnknownPassword() {
-        assertThat(auth.checkCredentialsWithBruteForcePrevention("incorrect", "incorrect"))
+        assertThat(authenticator.checkCredentialsWithBruteForcePrevention("incorrect", "incorrect"))
                 .isEqualTo(AuthReturnCode.BAD_CREDENTIALS);
     }
 
    @Test
     void blockTest() {
         for (int i = 0; i < 5; i++) {
-            assertThat(auth.checkCredentialsWithBruteForcePrevention("username", "block"))
+            assertThat(authenticator.checkCredentialsWithBruteForcePrevention("username", "block"))
                     .isEqualTo(AuthReturnCode.BAD_CREDENTIALS);
         }
 
-        assertThat(auth.checkCredentialsWithBruteForcePrevention("username", "block"))
+        assertThat(authenticator.checkCredentialsWithBruteForcePrevention("username", "block"))
                 .isEqualTo(AuthReturnCode.BLOCKED_USER);
     }
 }
