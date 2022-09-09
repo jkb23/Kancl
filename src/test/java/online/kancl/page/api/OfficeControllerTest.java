@@ -31,7 +31,6 @@ class OfficeControllerTest {
         Wall wall = new Wall(1,1);
         ZoomObject zoomObject = new ZoomObject(5, 5, "zoom.com");
 
-        user1.moveRight();
         gridData.addUser(user1);
         gridData.addWall(wall);
         gridData.addZoom(zoomObject);
