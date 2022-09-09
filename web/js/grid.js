@@ -166,7 +166,8 @@ function sendRequest(xCoordinates, yCoordinates) {
      objectType: "user",
      username: "correct",
      action: "move",
-     position: [{ x: xCoordinates}, { y: yCoordinates }],
+     x: xCoordinates,
+     y: yCoordinates
    })
  );
 }
