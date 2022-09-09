@@ -85,7 +85,6 @@ function addWall(wall, container) {
 document.addEventListener("keyup", handleKey);
 
 function handleKey(e) {
-    console.log(e);
     let updatedUser = false;
     if (e.key === "ArrowUp" || e.key === "w") {
         if (me.y > 0) {
@@ -111,7 +110,6 @@ function handleKey(e) {
 
     if (updatedUser) {
         e.preventDefault();
-        console.log(me);
         if (lastData)
             refreshOfficeState(lastData);
         sendRequest(me.x, me.y)
