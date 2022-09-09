@@ -14,6 +14,9 @@
         <div class="user-info">
              <a Href="/user">{{pageContext.getUsername()}}</a>
         </div>
+        <div class="logout">
+            <a Href="/logout">{{pageContext.showLogoutWhenLoggedIn()}}</a>
+        </div>
 
 
         <div class="px-4 py-5">
