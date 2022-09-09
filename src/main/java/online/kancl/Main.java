@@ -100,19 +100,7 @@ public class Main {
     }
 
     private static void addStartingWalls(GridData gridData){
-        List<String> zoomLinks = new ArrayList<>();
-        try {
-            File myObj = new File("zoomlinks.txt");
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                zoomLinks.add(data);
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
+        List<String> zoomLinks = extracted();
 
         ZoomObject zoomObject = new ZoomObject(25, 0, zoomLinks.get(0));
         ZoomObject zoomObject2 = new ZoomObject(0, 0, zoomLinks.get(1));
@@ -150,8 +138,27 @@ public class Main {
                 new Wall(6, 17)
         );
 
+        System.out.println(zoomLinks);
         gridData.addWallsList(walls);
         gridData.addZoom(zoomObject);
         gridData.addZoom(zoomObject2);
+    }
+
+    private static List<String> extracted() {
+        List<String> zoomLinks = new ArrayList<>();
+        try {
+            File myObj = new File("zoomlinks.txt");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                zoomLinks.add(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        return zoomLinks;
     }
 }
