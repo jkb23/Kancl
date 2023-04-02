@@ -97,7 +97,7 @@ public class Main {
     }
 
     private static void addStartingWalls(GridData gridData){
-        List<String> zoomLinks = extracted();
+        List<String> zoomLinks = addZoomLinksIfExistent();
 
         ZoomObject zoomObject = new ZoomObject(25, 0, zoomLinks.get(0));
         ZoomObject zoomObject2 = new ZoomObject(0, 0, zoomLinks.get(1));
@@ -141,7 +141,7 @@ public class Main {
         gridData.addZoom(zoomObject2);
     }
 
-    private static List<String> extracted() {
+    private static List<String> addZoomLinksIfExistent() {
         List<String> zoomLinks = new ArrayList<>();
         try {
             File myObj = new File("zoomlinks.txt");

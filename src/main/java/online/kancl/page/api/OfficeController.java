@@ -28,26 +28,26 @@ public class OfficeController extends Controller {
 
 
     @Override
-    public String get(Request request, Response response){
+    public String get(Request request, Response response) {
         dontCache(response);
         return createObjectBuilder()
                 .add("objects", createObjectsJsonArray())
-                .add("me", (String)request.session().attribute("user"))
+                .add("me", (String) request.session().attribute("user"))
                 .build()
                 .toString();
     }
 
     @Override
-    public String post (Request request, Response response) {
+    public String post(Request request, Response response) {
         request.body();
         JsonReader jsonReader = Json.createReader(new StringReader(request.body()));
         var jsonObject = jsonReader.readObject();
         String type = jsonObject.getString("objectType");
-        if (type.equals("user")){
+        if (type.equals("user")) {
             String username = jsonObject.getString("username");
             int x = jsonObject.getInt("x");
             int y = jsonObject.getInt("y");
-            for(User user : gridData.getUsers()) {
+            for (User user : gridData.getUsers()) {
                 if (user.username.equals(username)) {
                     user.moveObject(x, y);
                 }
@@ -55,7 +55,6 @@ public class OfficeController extends Controller {
         }
         return "";
     }
-
 
     private JsonArrayBuilder createObjectsJsonArray() {
 
@@ -90,7 +89,4 @@ public class OfficeController extends Controller {
 
         return objects;
     }
-
 }
-
-

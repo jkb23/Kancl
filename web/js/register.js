@@ -14,24 +14,24 @@ for (let i = 0; i < elements.length; i++) {
     }
 }
 
-let isEqual = function() {
-  if (passwordInput.value == passwordCheck.value) {
-    message.setAttribute("hidden", "");
-    submit.removeAttribute("disabled");
+let isEqual = function () {
+    if (passwordInput.value == passwordCheck.value) {
+        message.setAttribute("hidden", "");
+        submit.removeAttribute("disabled");
 
-  } else {
-    message.removeAttribute("hidden");
-    message.style.color = '#DC343B';
-    message.innerHTML = 'Not matching';
-    submit.setAttribute("disabled", "");
-  }
+    } else {
+        message.removeAttribute("hidden");
+        message.style.color = '#DC343B';
+        message.innerHTML = 'Not matching';
+        submit.setAttribute("disabled", "");
+    }
 }
 
-let isLongEnough = function() {
+let isLongEnough = function () {
     if (passwordInput.value.length < 5) {
-       passwordInput.style.color="#DC343B";
+        passwordInput.style.color = "#DC343B";
     } else {
-        passwordInput.style.color="#f7f7f7";
+        passwordInput.style.color = "#f7f7f7";
     }
 }
 

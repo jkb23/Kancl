@@ -23,3 +23,101 @@ body {
         height: 100%;
     }
 }
+
+form {
+    width: 100%;
+    height: 100%;
+    min-width: 30rem;
+    min-height: 20rem;
+    background: white;
+
+}
+
+.signIn {
+    font-size: 40px;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    padding-bottom: 4rem;
+    flex-direction: column;
+    background: white;
+}
+
+h1 {
+    color: #992233;
+    background: white;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    background-image: linear-gradient(to bottom right, cornflowerblue, white, lightcoral);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: Raleway, sans-serif;
+}
+
+html {
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main {
+    font-family: Raleway, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: white;
+}
+
+button {
+    color: white !important;
+    background: dodgerblue;
+}
+
+input {
+    outline: solid 3px dodgerblue;
+    background: white;
+}
+
+.input {
+    padding-bottom: 2rem;
+    background: white;
+}
+
+.px-4.py-5 {
+    background: white;
+}
+
+h5 {
+    background: white;
+}
+
+label > b {
+    background: white;
+}
+
+label {
+    background: white;
+}
+
+.forgot {
+    background: white;
+}
+
+a {
+    background: white;
+}
+
+.text-center.text-lg-start.mt-4.pt-2 {
+    background: white;
+}
+
+p {
+    background: white;
+}
