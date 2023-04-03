@@ -24,13 +24,11 @@
               </div>
 
               <div class="input">
-                <label class="form-label" for="username"> <b>Username:</b> </label>
-                <input type="text" id="username" name="username" class="form-control form-control-lg" placeholder="Enter a valid username" />
+                <input type="text" id="username" name="username" class="form-control form-control-lg" placeholder="&#128100; Username" />
               </div>
 
               <div class="input">
-                <label class="form-label" for="password"> <b>Password:</b> </label>
-                <input type="password" id="password" name="password" class="form-control form-control-lg" placeholder="Enter password" />
+                <input type="password" id="password" name="password" class="form-control form-control-lg" placeholder="&#128274; Password" />
               </div>
 
               <div class="forgot">
@@ -38,13 +36,14 @@
               </div>
 
               <div class="text-center text-lg-start mt-4 pt-2">
-                <button type="submit" id="submit" class="btn btn-primary btn-lg"
-                  style="padding-left: 2.5rem; padding-right: 2.5rem;" disabled>Login</button>
+                <button type="submit" id="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" disabled>Login</button>
 
                 <p class="invalid_credentials small fw-bold mt-2 pt-1 mb-0">{{loginInfo.getErrorMessage()}}</p>
 
-                <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="/register"
-                    class="link-danger">Register</a></p>
+                <div class="register">
+                    <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? </p>
+                    <a href="/register" class="link-danger"> <b> Register </b> </a>
+                </div>
               </div>
             </form>
     </section

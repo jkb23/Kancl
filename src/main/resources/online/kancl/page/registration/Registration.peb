@@ -17,9 +17,9 @@
 {% block body %}
     <section class="vh-100">
       <div class="container-fluid h-custom">
-        <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="row d-flex justify-content-center h-100">
 
-          <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 form-style">
+          <div class="form-style">
 
             <form method='post'>
               <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
@@ -55,8 +55,8 @@
 
               <div class="text-center text-lg-start mt-4 pt-2">
                 <p class="invalid_credentials small fw-bold mt-2 pt-1 mb-0">{{registrationInfo.getErrorMessage()}}</p>
-                <button type="submit" id="submit" class="btn btn-primary btn-lg"
-                  style="padding-left: 2.5rem; padding-right: 2.5rem;" disabled>Register</button>
+                <button type="submit" id="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" disabled>Register</button>
+                <a href="/login" class="link"> <b> Back to login </b> </a>
 
               </div>
             </form>

@@ -7,6 +7,7 @@
 
 body {
     overflow: hidden;
+    background-image: linear-gradient(to bottom right, dodgerblue, lightcoral);
 }
 
 .h-custom {
@@ -30,11 +31,13 @@ form {
     min-width: 30rem;
     min-height: 20rem;
     background: white;
+    padding-top: 1rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
 
 }
 
 .signIn {
-    font-size: 40px;
     width: 100%;
     justify-content: center;
     display: flex;
@@ -52,9 +55,6 @@ h1 {
 * {
     margin: 0;
     padding: 0;
-    background-image: linear-gradient(to bottom right, cornflowerblue, white, lightcoral);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
     font-family: Raleway, sans-serif;
 }
 
@@ -62,22 +62,15 @@ html {
     font-size: 16px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    height: 100%;
 }
 
 .main {
     font-family: Raleway, sans-serif;
     display: flex;
     justify-content: center;
-    align-items: center;
     width: 100%;
     height: 100%;
-    background: white;
-}
-
-button {
-    color: white !important;
-    background: dodgerblue;
 }
 
 input {
@@ -87,37 +80,27 @@ input {
 
 .input {
     padding-bottom: 2rem;
-    background: white;
 }
 
 .px-4.py-5 {
-    background: white;
-}
-
-h5 {
-    background: white;
-}
-
-label > b {
-    background: white;
-}
-
-label {
+    margin-top: 2rem;
     background: white;
 }
 
 .forgot {
     background: white;
+    display: flex;
+    justify-content: flex-end;
 }
 
-a {
-    background: white;
+.btn.btn-primary.btn-lg {
+    width: 100%;
+    background: dodgerblue;
 }
 
-.text-center.text-lg-start.mt-4.pt-2 {
-    background: white;
-}
-
-p {
-    background: white;
+.register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
