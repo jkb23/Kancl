@@ -5,24 +5,9 @@
     background: #eee;
 }
 
-body {
-    overflow: hidden;
-    background-image: linear-gradient(to bottom right, dodgerblue, lightcoral);
-}
-
-.h-custom {
-    height: calc(100% - 73px);
-}
-
 .invalid_credentials {
     height: calc(100% - 73px);
     color: red;
-}
-
-@media (max-width: 450px) {
-    .h-custom {
-        height: 100%;
-    }
 }
 
 form {
@@ -34,7 +19,6 @@ form {
     padding-top: 1rem;
     padding-right: 1rem;
     padding-left: 1rem;
-
 }
 
 .signIn {
@@ -44,11 +28,6 @@ form {
     align-items: center;
     padding-bottom: 4rem;
     flex-direction: column;
-    background: white;
-}
-
-h1 {
-    color: #992233;
     background: white;
 }
 
@@ -93,9 +72,17 @@ input {
     justify-content: flex-end;
 }
 
-.btn.btn-primary.btn-lg {
-    width: 100%;
-    background: dodgerblue;
+h1 {
+    color: #992233;
+    border-bottom: 4px solid #0099e6;
+}
+
+.user-info {
+    text-align: right;
+    padding: 5px;
+    margin-right: 10px;
+    font-weight: 500;
+    letter-spacing: 2px;
 }
 
 .register {
@@ -103,4 +90,42 @@ input {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    padding-bottom: 1rem;
+}
+
+body {
+    overflow: hidden;
+    background-image: linear-gradient(to bottom right, dodgerblue, lightcoral);
+}
+
+.h-custom {
+    height: calc(100% - 73px);
+}
+
+@media (max-width: 450px) {
+    .h-custom {
+        height: 100%;
+    }
+}
+
+.text-center.text-lg-start.mt-4.pt-2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+}
+
+.btn.btn-primary.btn-lg {
+    width: 100%;
+    background: dodgerblue;
+}
+
+.reroute {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
 }

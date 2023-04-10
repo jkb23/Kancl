@@ -40,7 +40,7 @@
 
                 <p class="invalid_credentials small fw-bold mt-2 pt-1 mb-0">{{loginInfo.getErrorMessage()}}</p>
 
-                <div class="register">
+                <div class="reroute">
                     <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? </p>
                     <a href="/register" class="link-danger"> <b> Register </b> </a>
                 </div>
