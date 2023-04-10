@@ -11,14 +11,6 @@
         {% block style %}{% endblock %}
     </head>
     <body>
-        <div class="user-info">
-             <a Href="/user">{{pageContext.getUsername()}}</a>
-        </div>
-        <div class="logout">
-            <a Href="/logout">{{pageContext.showLogoutWhenLoggedIn()}}</a>
-        </div>
-
-
         <div class="px-4 py-5">
             {#<h1 class="display-5 fw-bold text-center">{% block title %} {% endblock %}</h1>#}
             {% block body %}{% endblock %}

@@ -1,7 +1,7 @@
 {% extends "../BaseHtml.peb" %}
 
 {% block style %}
-<link href='css/app.css' rel='stylesheet'/>
+<link href='css/board.css' rel='stylesheet'/>
 {% endblock %}
 
 {% block title %}Office{% endblock %}
@@ -11,6 +11,15 @@
 {% endblock %}
 
 {% block body %}
-<h1 class="mainpage-title">Kancl.online</h1>
-<div class="container" id="container"></div>
+    <div class"board-and-header">
+        <div class="header">
+            <h1 class="mainpage-title">Kancl.online</h1>
+            <div class="href-buttons">
+                <a href="/user" class="href-button">{{pageContext.getUsername()}} Home Page</a>
+                <a href="/logout" class="href-button">{{pageContext.showLogoutWhenLoggedIn()}}</a>
+            </div>
+        </div>
+
+        <div class="container" id="container"></div>
+    </div>
 {% endblock %}

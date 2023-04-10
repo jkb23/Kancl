@@ -19,7 +19,7 @@
           <div class="form-style">
 
             <form method='post'>
-             <div class="register">
+             <div class="page-label">
               <h1>Register to Kancl</h1>
               <h5> Please fill out this form</h5>
              </div>

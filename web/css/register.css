@@ -1,20 +1,6 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: Raleway, sans-serif;
-}
-
-.divider:after, .divider:before {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: #eee;
-}
-
 .form-style {
     background-color: white;
-    padding: 2rem;
+    padding: 2rem 2rem 0 2rem;
     width: 40rem;
     height: 100%;
     -webkit-box-shadow: 2px 1px 21px -9px rgba(0,0,0,0.38);
@@ -33,77 +19,18 @@ input[type=email]:not(:placeholder-shown):invalid, input[type=password]:not(:pla
     color: rgba(0,0,0,0.38);
 }
 
-
-
-input[type=text], input[type=password], input[type=email] {
-    width: 100%;
-    padding: 1rem;
-    margin: 1rem 0 0 0;
-    display: inline-block;
-    border: none;
-    background: #f7f7f7;
-}
-
 .btn {
       display: block;
       margin-left: auto;
       margin-right: auto;
 }
 
-.invalid_credentials {
-    height: calc(100% - 73px);
-    color: red;
-}
-
-.px-4.py-5 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-input {
-    outline: solid 3px dodgerblue;
-    background: white;
-}
-
 html {
     height: 100%;
 }
 
-h1 {
-    color: #992233;
-    border-bottom: 4px solid #0099e6;
-}
-
-.user-info {
-    text-align: right;
-    padding: 5px;
-    margin-right: 10px;
-    font-weight: 500;
-    letter-spacing: 2px;
-}
-
-.register {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding-bottom: 1rem;
-}
-
-body {
-    overflow: hidden;
-    background-image: linear-gradient(to bottom right, dodgerblue, lightcoral);
-}
-
-.h-custom {
-    height: calc(100% - 73px);
-}
-
-@media (max-width: 450px) {
-    .h-custom {
-        height: 100%;
-    }
+.page-label {
+    padding-bottom: 0;
 }
 
 .text-center.text-lg-start.mt-4.pt-2 {
@@ -115,15 +42,6 @@ body {
     margin: 0;
 }
 
-.btn.btn-primary.btn-lg {
-    width: 100%;
-    background: dodgerblue;
-}
-
 .reroute {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
+    padding-bottom: 1rem;
 }

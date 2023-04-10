@@ -7,8 +7,8 @@ import spark.Request;
 import spark.Response;
 
 public class MainPageController extends Controller {
-
     private final PebbleTemplateRenderer pebbleTemplateRenderer;
+
     public MainPageController(PebbleTemplateRenderer pebbleTemplateRenderer) {
         this.pebbleTemplateRenderer = pebbleTemplateRenderer;
     }
