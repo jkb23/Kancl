@@ -1,7 +1,6 @@
 const grid = [];
 const container = document.getElementById("container");
 
-const array = [];
 obstacles = [][2];
 let me = null;
 let lastData = null;
@@ -32,7 +31,7 @@ function createGrid() {
         square.classList.add("item");
         container.appendChild(square);
 
-        if (y == 0) grid.push([]);
+        if (y === 0) grid.push([]);
 
         grid[x].push(square);
     });
@@ -43,18 +42,23 @@ createGrid();
 function addUser(user, container) {
     const element = document.createElement("div");
     element.classList.add("user");
-    element.setAttribute("name", "user")
+    element.setAttribute("name", "user",)
     container.appendChild(element);
 
     //TODO: add varible with h4(username) and p(state)
     const userState = document.createElement("div");
     userState.classList.add("state");
+
     const userHeading = document.createElement("h4");
     userState.appendChild(userHeading);
     userHeading.textContent += user.username;
     userState.innerHTML += `<p>${user.status}</p>`;
 
+    const userProfilePicture = document.createElement("p");
+    userProfilePicture.textContent += user.username.charAt(0).toUpperCase();
+
     element.appendChild(userState);
+    element.appendChild(userProfilePicture);
 }
 
 function addZoom(zoom, container) {
@@ -66,7 +70,7 @@ function addZoom(zoom, container) {
     zoomItem.appendChild(zoomEl)
 
     const zoomLink = document.createElement("a");
-    zoomLink.textContent += "Připojit se na meeting"
+    zoomLink.textContent += "Join a meeting"
     zoomLink.setAttribute("href", zoom.link)
     zoomLink.setAttribute("target", "_blank")
     zoomEl.appendChild(zoomLink);
@@ -150,7 +154,7 @@ function refreshOfficeState(data) {
         } else if (object.type === "user") {
             console.log(object);
             addUser(object, coordinates);
-            if (object.username == data.me) {
+            if (object.username === data.me) {
                 me = object;
             }
         } else if (object.type === "zoom") {

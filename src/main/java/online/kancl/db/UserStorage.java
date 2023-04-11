@@ -2,6 +2,7 @@ package online.kancl.db;
 
 import online.kancl.util.HashUtils;
 
+import java.awt.*;
 import java.sql.Timestamp;
 import java.util.Optional;
 
@@ -35,8 +36,8 @@ public class UserStorage {
 
     public void createUser(String username, String password, String email) {
         try {
-            dbRunner.insert("INSERT INTO AppUser (username, password, email, user_status)" +
-                    " VALUES(?, ?, ?, ?)", username, HashUtils.sha256Hash(password), email, "Hello everyone");
+            dbRunner.insert("INSERT INTO AppUser (username, password, email, border_color, user_status)" +
+                    " VALUES(?, ?, ?, ?, ?)", username, HashUtils.sha256Hash(password), email, "skyblue", "Hello everyone");
         } catch (DatabaseRunner.DatabaseAccessException e) {
             if (e.sqlErrorCode == 23505) {
                 throw new DuplicateUserException(e);
@@ -80,9 +81,12 @@ public class UserStorage {
         return dbRunner.selectString("SELECT user_status FROM AppUser WHERE username = ?", username);
     }
 
-    public void setStatusToDb (String username, String status) {
-        dbRunner.update("UPDATE AppUser SET user_status = ? WHERE username= ?",
-                status, username);
+    public void setStatusToDb(String username, String status) {
+        dbRunner.update("UPDATE AppUser SET user_status = ? WHERE username = ?", status, username);
+    }
+
+    public String getBorderColor(String username) {
+        return dbRunner.selectString("SELECT border_color FROM AppUser WHERE username = ?", username);
     }
 
     public class DuplicateUserException extends RuntimeException {

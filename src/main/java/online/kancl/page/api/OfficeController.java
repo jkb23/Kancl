@@ -63,6 +63,7 @@ public class OfficeController extends Controller {
             userBuilder.add("type", "user");
             userBuilder.add("username", user.getUsername());
             userBuilder.add("status", user.getStatus());
+            userBuilder.add("border-color", user.getBorderColor());
             userBuilder.add("x", user.getX());
             userBuilder.add("y", user.getY());
             objects.add(userBuilder);

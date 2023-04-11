@@ -10,6 +10,7 @@ public class RegistrationInfo {
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
+
     public void addTextToErrorMessage(String errorMessage) {
         this.errorMessage += errorMessage;
     }
@@ -17,7 +18,6 @@ public class RegistrationInfo {
     public String getErrorMessage() {
         return errorMessage;
     }
-
 }
 
 
