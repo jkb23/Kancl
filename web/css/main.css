@@ -2,13 +2,13 @@
     margin: 0;
     padding: 0;
     font-family: Raleway, sans-serif;
-    --main-color: dodgerblue;
+    --main-color: #080891;
     --secondary-color: black;
     /*#992233*/
 }
 
 body {
-    background-image: linear-gradient(to bottom right, var(--main-color), var(--secondary-color));
+    background-image: linear-gradient(to right, var(--main-color), var(--secondary-color));
 }
 
 .h-custom {
