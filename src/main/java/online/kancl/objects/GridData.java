@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GridData {
-    List<User> users;
-    List<Wall> walls;
-    List<ZoomObject> zoomObjects;
+    private final List<User> users;
+    private List<Wall> walls;
+    private final List<ZoomObject> zoomObjects;
 
     public GridData() {
         this.walls = new ArrayList<>();

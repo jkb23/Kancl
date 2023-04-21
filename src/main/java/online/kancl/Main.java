@@ -10,17 +10,15 @@ import online.kancl.db.*;
 import online.kancl.objects.GridData;
 import online.kancl.objects.Wall;
 import online.kancl.objects.ZoomObject;
-import online.kancl.page.api.OfficeController;
+import online.kancl.page.office.OfficeController;
 import online.kancl.page.login.LoginController;
 import online.kancl.page.login.LoginInfo;
 import online.kancl.page.logout.LogoutController;
 import online.kancl.page.main.MainPageController;
-import online.kancl.page.main.Meetings;
 import online.kancl.page.recreatedb.RecreateDbController;
 import online.kancl.page.registration.RegistrationController;
 import online.kancl.page.registration.RegistrationInfo;
 import online.kancl.page.userpage.UserPageController;
-import online.kancl.page.zoomhook.ZoomHookController;
 import online.kancl.server.Controller;
 import online.kancl.server.ExceptionHandler;
 import online.kancl.server.WebServer;
@@ -55,13 +53,11 @@ public class Main {
 
         var transactionJobRunner = new TransactionJobRunner(connectionProvider);
 
-        var meetings = new Meetings();
         var gridData = new GridData();
         addStartingWalls(gridData);
 
         var webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner, "/login");
         webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer));
-        webServer.addRoute("/zoomhook", () -> new ZoomHookController(meetings));
         webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
         webServer.addRoute("/user", (dbRunner) -> new UserPageController(pebbleTemplateRenderer, new UserStorage(dbRunner)));
         webServer.addRoute("/register", (dbRunner) -> new RegistrationController(pebbleTemplateRenderer, transactionJobRunner, new RegistrationInfo(), new UserStorage(dbRunner)));
@@ -69,7 +65,7 @@ public class Main {
         webServer.addRoute("/logout", () -> new LogoutController(gridData));
         webServer.addRoute("/api/office", () -> new OfficeController(gridData));
 
-        webServer.addPublicPaths("/login", "/register", "/zoomhook", "/recreateDb");
+        webServer.addPublicPaths("/login", "/register", "/recreateDb");
 
         webServer.start();
 

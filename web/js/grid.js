@@ -7,9 +7,9 @@ let lastData = null;
 
 //TODO: check the walls
 function check_obstacles(x, y) {
-    for (i = 0; i != obstacles.length(); i++) {
-        if (obstacles[i][0] == x) {
-            if (obstacles[i][1] == y) {
+    for (let i = 0; i !== obstacles.length(); i++) {
+        if (obstacles[i][0] === x) {
+            if (obstacles[i][1] === y) {
                 return false;
             }
         }
@@ -104,7 +104,7 @@ function handleKey(e) {
             me.y++;
         }
         updatedUser = true;
-    } else if (e.key == "r") {
+    } else if (e.key === "r") {
         fetchOfficeState();
     }
 

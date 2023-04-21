@@ -15,11 +15,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(ProductionDatabase.class)
 class UserStorageTest {
 
-    private final DatabaseRunner dbRunner;
     private final UserStorage userStorage;
 
     UserStorageTest(DatabaseRunner dbRunner) {
-        this.dbRunner = dbRunner;
         this.userStorage = new UserStorage(dbRunner);
     }
 

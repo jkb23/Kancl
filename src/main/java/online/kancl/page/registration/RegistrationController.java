@@ -5,7 +5,6 @@ import online.kancl.db.TransactionJobRunner;
 import online.kancl.db.UserStorage;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
-import online.kancl.util.HashUtils;
 import spark.Request;
 import spark.Response;
 
@@ -44,21 +43,23 @@ public class RegistrationController extends Controller {
 
     String registerUser(Request request, Response response, Authenticator authenticator, Registration registration)
     {
-        boolean canBerRegister = true;
+        boolean canBeRegistered = true;
         if (!registration.password().equals(registration.passwordCheck())) {
             RegistrationInfo.setErrorMessage("Passwords are not same");
-            canBerRegister = false;
+            canBeRegistered = false;
         }
 
         if (userStorage.usernameExists(registration.username())) {
             RegistrationInfo.addTextToErrorMessage("Username exists");
-            canBerRegister = false;
+            canBeRegistered = false;
         }
+
         if (userStorage.emailExists(registration.email())) {
             RegistrationInfo.addTextToErrorMessage("Email exists");
-            canBerRegister = false;
+            canBeRegistered = false;
         }
-        if (!canBerRegister){
+
+        if (!canBeRegistered){
             return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, RegistrationInfo);
         }
 

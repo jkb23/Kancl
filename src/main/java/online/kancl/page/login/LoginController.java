@@ -21,8 +21,8 @@ public class LoginController extends Controller {
     private final TransactionJobRunner transactionJobRunner;
     private LoginInfo loginInfo;
     private final GridData gridData;
-    private UserStorage userStorage;
-    private Authenticator authenticator;
+    private final UserStorage userStorage;
+    private final Authenticator authenticator;
 
     public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner,
                            LoginInfo loginInfo, GridData gridData, UserStorage userStorage) {

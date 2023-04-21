@@ -27,14 +27,12 @@
               <div class="field">
                 <input type="text" id="username" name="username" class="form-control form-control-lg"
                   placeholder="&#128100; Username"/>
-                <p class="invalid_credentials small fw-bold mt-2 pt-1 mb-0">{{registrationInfo.getErrorMessage()}}</p>
               </div>
 
 
               <div class="field">
                 <input type="email" id="email" name="email" class="form-control form-control-lg"
                   placeholder="&#128231; Email address"/>
-                <p class="invalid_credentials small fw-bold mt-2 pt-1 mb-0">{{registrationInfo.getErrorMessage()}}</p>
               </div>
 
               <div class="field">

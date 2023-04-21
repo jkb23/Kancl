@@ -1,4 +1,4 @@
-package online.kancl.page.api;
+package online.kancl.page.office;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -16,9 +16,6 @@ import spark.Request;
 import spark.Response;
 import spark.Session;
 
-import static online.kancl.auth.AuthReturnCode.CORRECT;
-import static online.kancl.loginTestEnum.correct_password;
-import static online.kancl.loginTestEnum.correct_username;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(ProductionDatabase.class)
