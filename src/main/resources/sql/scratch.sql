@@ -17,17 +17,17 @@ CREATE TABLE AppUser
     password            VARCHAR(100) NOT NULL,
     email               VARCHAR(100),
     avatar              VARCHAR(100),
-    border_color        VARCHAR(50),
+    bg_color            VARCHAR(50),
     bad_login_count     INTEGER DEFAULT 0,
     bad_login_timestamp TIMESTAMP,
     user_status         VARCHAR(200)
 );
 
-INSERT INTO AppUser (username, password, avatar, border_color, bad_login_count, bad_login_timestamp, user_status)
+INSERT INTO AppUser (username, password, avatar, bg_color, bad_login_count, bad_login_timestamp, user_status)
 VALUES('honza', '15a596e3c98c407e043751ff3b21ff0358a1bdfdf3fe948b1523893a8e5de2e8', null, null, null, null, 'Mam se dobre!');
 
-INSERT INTO AppUser (username, password, avatar, border_color, bad_login_count, bad_login_timestamp, user_status)
+INSERT INTO AppUser (username, password, avatar, bg_color, bad_login_count, bad_login_timestamp, user_status)
 VALUES('matej', '15a596e3c98c407e043751ff3b21ff0358a1bdfdf3fe948b1523893a8e5de2e8', null, null, null, null, 'Mam se dobre!');
 
-INSERT INTO AppUser (username, password, email, border_color, user_status)
+INSERT INTO AppUser (username, password, email, bg_color, user_status)
       VALUES('correct', '15a596e3c98c407e043751ff3b21ff0358a1bdfdf3fe948b1523893a8e5de2e8', 'neexistuju@baf.com', 'antique_white', 'Mam se dobre!')

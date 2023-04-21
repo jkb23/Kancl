@@ -43,9 +43,9 @@ function addUser(user, container) {
     const element = document.createElement("div");
     element.classList.add("user");
     element.setAttribute("name", "user",)
+    element.style.background = user.avatarBackgroundColor;
     container.appendChild(element);
 
-    //TODO: add varible with h4(username) and p(state)
     const userState = document.createElement("div");
     userState.classList.add("state");
 

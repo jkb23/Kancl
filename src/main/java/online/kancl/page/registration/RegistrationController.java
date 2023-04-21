@@ -67,7 +67,7 @@ public class RegistrationController extends Controller {
         RegistrationInfo.setErrorMessage(returnCode.message);
         request.session(true);
         request.session().attribute("user", registration.username());
-        response.redirect("/");
+        response.redirect("/login");
         return "";
     }
 }

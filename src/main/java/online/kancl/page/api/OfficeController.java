@@ -24,7 +24,6 @@ public class OfficeController extends Controller {
         this.gridData = gridData;
     }
 
-
     @Override
     public String get(Request request, Response response) {
         dontCache(response);
@@ -63,7 +62,7 @@ public class OfficeController extends Controller {
             userBuilder.add("type", "user");
             userBuilder.add("username", user.getUsername());
             userBuilder.add("status", user.getStatus());
-            userBuilder.add("border-color", user.getBorderColor());
+            userBuilder.add("avatarBackgroundColor", user.getAvatarBackgroundColor());
             userBuilder.add("x", user.getX());
             userBuilder.add("y", user.getY());
             objects.add(userBuilder);

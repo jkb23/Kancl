@@ -30,7 +30,7 @@ a.href-button {
    margin: 0 3rem 1rem 0;
    border: solid 2px red;
    border-radius: 30%;
-   padding: 1rem 1rem;
+   padding: 0.6rem 0.6rem;
    color: white;
    font-size: 1.2rem;
 }
@@ -68,7 +68,6 @@ a.href-button {
    position: absolute;
    margin: 4px;
    cursor: pointer;
-   background-color: antiquewhite;
 }
 
 .user > p {
@@ -110,7 +109,7 @@ a.href-button {
    width: 0;
    height: 0;
    border: 32px solid transparent;
-   border-top-color: #fff;
+   border-top-color: white;
    border-bottom: 0;
    border-right: 0;
    margin-left: -23px;
@@ -128,13 +127,16 @@ a.href-button {
 }
 
 .zoom {
-   background-image: url("https://play-lh.googleusercontent.com/V1lb4J811SNh6hlGqNlDnGZXfdtI2i-1dC7_i9TnViyiboZ2RHp8xbhKbbECG-f26is");
+   background-image: url("meeting-logo-reverted.png");
    background-position: center center;
    background-repeat: no-repeat;
    background-size: cover;
    cursor: pointer;
    position: relative;
    text-align: center;
+   border-radius: 50%;
+   width: 48px;
+   height: 48px;
 }
 
 .zoom_state {
