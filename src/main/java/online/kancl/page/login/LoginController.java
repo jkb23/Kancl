@@ -2,7 +2,6 @@ package online.kancl.page.login;
 
 import online.kancl.auth.AuthReturnCode;
 import online.kancl.auth.Authenticator;
-import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
 import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
@@ -52,11 +51,11 @@ public class LoginController extends Controller {
             var user = new Login(
                     request.queryParams("username"),
                     request.queryParams("password"));
-            return authenticate(request, response, authenticator, user, dbRunner);
+            return authenticate(request, response, authenticator, user);
         });
     }
 
-    String authenticate(Request request, Response response, Authenticator authenticator, Login user, DatabaseRunner dbRunner) {
+    String authenticate(Request request, Response response, Authenticator authenticator, Login user) {
         AuthReturnCode returnCode = authenticator.checkCredentialsWithBruteForcePrevention(user.username(), user.password());
         if (returnCode.equals(CORRECT)) {
             User userObject = new User(user.username(), userStorage);

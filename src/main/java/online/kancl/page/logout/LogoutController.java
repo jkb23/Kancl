@@ -14,7 +14,7 @@ public class LogoutController extends Controller {
 
     @Override
     public String get(Request request, Response response){
-        gridData.removeUser(request.session().attribute("username"));
+        gridData.removeUser(request.session().attribute("user"));
         request.session().invalidate();
         response.redirect("/login");
         return "";
