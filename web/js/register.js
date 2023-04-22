@@ -23,7 +23,7 @@ let isEqual = function () {
     } else {
         submit.setAttribute("disabled", "");
         passwordCheck.style.color = "red";
-        passwordCheck.style.borderColor = "red";
+        passwordCheck.style.outlineColor = "red";
     }
 }
 

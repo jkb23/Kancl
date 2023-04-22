@@ -45,7 +45,7 @@
 
               <div class="field">
                 <input type="password" id="passwordCheck" name="passwordCheck" class="form-control form-control-lg" onkeyup="isEqual()" oncheck="isLongEnough()" autocomplete="new-password"
-                  placeholder="&#128274; Repeat password" required/>
+                  placeholder="&#128274; Repeat password" required title="Passwords have to match"/>
               </div>
 
               <div class="text-center text-lg-start mt-4 pt-2">
