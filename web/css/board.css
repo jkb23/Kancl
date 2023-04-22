@@ -28,7 +28,7 @@
 a.href-button {
    text-decoration: none;
    margin: 0 3rem 1rem 0;
-   border: solid 2px red;
+   border: solid 2px var(--third-color);
    border-radius: 30%;
    padding: 0.6rem 0.6rem;
    color: white;
@@ -36,7 +36,7 @@ a.href-button {
 }
 
 .mainpage-title {
-   color: white !important;
+   color: var(--third-color) !important;
    border-bottom: none;
    text-align: center;
 }

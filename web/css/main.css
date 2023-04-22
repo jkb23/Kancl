@@ -4,6 +4,7 @@
     font-family: Raleway, sans-serif;
     --main-color: #080891;
     --secondary-color: black;
+    --third-color: limegreen;
     /*#992233*/
 }
 
@@ -55,7 +56,7 @@ input {
 
 h1 {
     color: var(--secondary-color);
-    border-bottom: 4px solid var(--main-color);
+    border-bottom: 4px solid var(--third-color);
 }
 
 .btn.btn-primary.btn-lg {
