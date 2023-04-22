@@ -13,3 +13,24 @@ for (let i = 0; i < elements.length; i++) {
         }
     }
 }
+
+let isEqual = function () {
+    if (passwordInput.value === passwordCheck.value) {
+        submit.removeAttribute("disabled");
+        passwordCheck.style.color = "black";
+        passwordCheck.style.borderColor = "#080891";
+
+    } else {
+        submit.setAttribute("disabled", "");
+        passwordCheck.style.color = "red";
+        passwordCheck.style.borderColor = "red";
+    }
+}
+
+let isLongEnough = function () {
+    if (passwordInput.value.length < 5) {
+        passwordInput.style.color = "#DC343B";
+    } else {
+        passwordInput.style.color = "#f7f7f7";
+    }
+}
