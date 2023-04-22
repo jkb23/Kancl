@@ -1,5 +1,7 @@
 package online.kancl.page.login;
 
+import online.kancl.auth.AuthReturnCode;
+import online.kancl.auth.Authenticator;
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
 import online.kancl.db.UserStorage;
@@ -10,8 +12,6 @@ import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
 import spark.Response;
-import online.kancl.auth.Authenticator;
-import online.kancl.auth.AuthReturnCode;
 
 import static online.kancl.auth.AuthReturnCode.CORRECT;
 
@@ -19,10 +19,10 @@ public class LoginController extends Controller {
 
     private final PebbleTemplateRenderer pebbleTemplateRenderer;
     private final TransactionJobRunner transactionJobRunner;
-    private LoginInfo loginInfo;
     private final GridData gridData;
     private final UserStorage userStorage;
     private final Authenticator authenticator;
+    private LoginInfo loginInfo;
 
     public LoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner,
                            LoginInfo loginInfo, GridData gridData, UserStorage userStorage) {
@@ -58,7 +58,7 @@ public class LoginController extends Controller {
 
     String authenticate(Request request, Response response, Authenticator authenticator, Login user, DatabaseRunner dbRunner) {
         AuthReturnCode returnCode = authenticator.checkCredentialsWithBruteForcePrevention(user.username(), user.password());
-        if (returnCode == CORRECT) {
+        if (returnCode.equals(CORRECT)) {
             User userObject = new User(user.username(), userStorage);
             gridData.addUser(userObject);
             request.session(true);

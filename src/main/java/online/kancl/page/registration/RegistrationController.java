@@ -1,31 +1,38 @@
 package online.kancl.page.registration;
 
+import online.kancl.auth.AuthReturnCode;
 import online.kancl.auth.Authenticator;
 import online.kancl.db.TransactionJobRunner;
 import online.kancl.db.UserStorage;
+import online.kancl.objects.GridData;
+import online.kancl.objects.User;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
 import spark.Response;
 
+import static online.kancl.auth.AuthReturnCode.CORRECT;
+
 public class RegistrationController extends Controller {
 
     private final PebbleTemplateRenderer pebbleTemplateRenderer;
     private final TransactionJobRunner transactionJobRunner;
-    private final RegistrationInfo RegistrationInfo;
+    private final RegistrationInfo registrationInfo;
     private final UserStorage userStorage;
+    private final GridData gridData;
 
     public RegistrationController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner,
-                                  RegistrationInfo registration, UserStorage userStorage) {
+                                  RegistrationInfo registration, UserStorage userStorage, GridData gridData) {
         this.pebbleTemplateRenderer = pebbleTemplateRenderer;
         this.transactionJobRunner = transactionJobRunner;
-        this.RegistrationInfo = registration;
+        this.registrationInfo = registration;
         this.userStorage = userStorage;
+        this.gridData = gridData;
     }
 
     @Override
     public String get(Request request, Response response) {
-        return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, RegistrationInfo);
+        return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, registrationInfo);
     }
 
     @Override
@@ -41,34 +48,34 @@ public class RegistrationController extends Controller {
         });
     }
 
-    String registerUser(Request request, Response response, Authenticator authenticator, Registration registration)
-    {
+    String registerUser(Request request, Response response, Authenticator authenticator, Registration user) {
         boolean canBeRegistered = true;
-        if (!registration.password().equals(registration.passwordCheck())) {
-            RegistrationInfo.setErrorMessage("Passwords are not same");
+        if (!user.password().equals(user.passwordCheck())) {
+            registrationInfo.setErrorMessage("Passwords are not same");
             canBeRegistered = false;
         }
 
-        if (userStorage.usernameExists(registration.username())) {
-            RegistrationInfo.addTextToErrorMessage("Username exists");
+        if (userStorage.usernameExists(user.username())) {
+            registrationInfo.addTextToErrorMessage("Username exists");
             canBeRegistered = false;
         }
 
-        if (userStorage.emailExists(registration.email())) {
-            RegistrationInfo.addTextToErrorMessage("Email exists");
+        if (userStorage.emailExists(user.email())) {
+            registrationInfo.addTextToErrorMessage("Email exists");
             canBeRegistered = false;
         }
 
-        if (!canBeRegistered){
-            return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, RegistrationInfo);
+        if (!canBeRegistered) {
+            return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, registrationInfo);
         }
 
-        userStorage.createUser(registration.username(), registration.password(), registration.email());
-        var returnCode =  authenticator.checkCredentialsWithBruteForcePrevention(registration.username(), registration.password());
-        RegistrationInfo.setErrorMessage(returnCode.message);
+        userStorage.createUser(user.username(), user.password(), user.email());
+        AuthReturnCode returnCode = authenticator.checkCredentialsWithBruteForcePrevention(user.username(), user.password());
+        User userObject = new User(user.username(), userStorage);
+        gridData.addUser(userObject);
         request.session(true);
-        request.session().attribute("user", registration.username());
-        response.redirect("/login");
+        request.session().attribute("user", user.username());
+        response.redirect("/");
         return "";
     }
 }
