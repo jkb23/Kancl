@@ -1,21 +1,26 @@
-@import url("https://fonts.googleapis.com/css?family=Lato");
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-size: 16px;
-  font-family: "Lato", sans-serif;
 }
 
 h1 {
-  margin: 20px;
-  text-align: center;
-  font-size: 34px;
-  color: #344966 !important;
+  color: white;
 }
 
 body {
-    background-color: #F0F4EF;
+  color: white;
+}
+
+.user-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.current-status {
+  padding-left: 5rem;
 }
 
 .settings-message {
@@ -29,7 +34,7 @@ body {
   color: #293;
 }
 
-.hidden {
+.image-upload {
   display: none;
 }
 
@@ -49,7 +54,8 @@ form > *:not(:first-of-type) {
 }
 @media (min-width: 750px) {
   form {
-    flex-direction: row;
+    display: flex;
+    flex-direction: column;
   }
   form > * {
     flex-grow: 0;
@@ -68,21 +74,47 @@ label {
   color: rgba(0,0,0,0.4);
 }
 
+.profile-picture {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+}
+
 .profile-pic__container,
 .profile-pic__foreground {
   line-height: 200px;
   text-align: center;
+  background-color: white;
+  color: black !important;
 }
 
 .profile-pic__container {
   overflow: hidden;
   position: relative;
-  border: 3px solid #333;
+  border: 6px solid var(--third-color);
   border-radius: 100%;
   width: 200px;
   height: 200px;
   background-size: cover;
   background-position: center;
+}
+
+.profile-picture__frame-with-label {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+b {
+  padding-bottom: 1rem;
+  text-align: center;
+}
+
+.status {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
 .profile-pic__foreground {
@@ -93,7 +125,9 @@ label {
   color: transparent;
   cursor: pointer;
   transition: color 0.2s, background-color 0.2s;
+  background-color: transparent;
 }
+
 .profile-pic__foreground:hover {
   color: #fff;
   background-color: rgba(20, 20, 20, 0.85);
@@ -103,12 +137,6 @@ label {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-
-
-}
-
-#status {
-    width: 205%;
 }
 
 .input__container > * {
@@ -141,6 +169,10 @@ input[type=password] {
   padding: 5px 8px;
 }
 
+#status {
+  width: 200%;
+}
+
 input[type=submit] {
   border: 2px solid #333;
   border-radius: 3px;
@@ -153,4 +185,18 @@ input[type=submit] {
 input[type=submit]:hover, input[type=submit]:focus {
   background-color: #333;
   color: #EEE;
+}
+
+label {
+  color: white;
+}
+
+.btn.btn-primary.btn-lg {
+  width: 80%;
+  background: var(--third-color);
+  margin-top: 1rem;
+}
+
+.reroute {
+  color: white;
 }

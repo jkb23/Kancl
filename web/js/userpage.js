@@ -2,7 +2,6 @@ const fileUpload = document.querySelector('#js-file-uploader');
 const profileTrigger = document.querySelector('#js-profile-trigger');
 const profileBackground = document.querySelector('#js-profile-pic');
 
-
 profileTrigger.addEventListener('click', function (event) {
     event.preventDefault();
     fileUpload.click();

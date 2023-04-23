@@ -59,7 +59,7 @@ public class Main {
         var webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner, "/login");
         webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer));
         webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
-        webServer.addRoute("/user", (dbRunner) -> new UserPageController(pebbleTemplateRenderer, new UserStorage(dbRunner)));
+        webServer.addRoute("/user", (dbRunner) -> new UserPageController(pebbleTemplateRenderer, new UserStorage(dbRunner), gridData, transactionJobRunner));
         webServer.addRoute("/register", (dbRunner) -> new RegistrationController(pebbleTemplateRenderer, transactionJobRunner, new RegistrationInfo(), new UserStorage(dbRunner), gridData));
         webServer.addRoute("/login", createLoginController(pebbleTemplateRenderer, transactionJobRunner, gridData));
         webServer.addRoute("/logout", () -> new LogoutController(gridData));

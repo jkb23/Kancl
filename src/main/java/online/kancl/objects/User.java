@@ -31,6 +31,5 @@ public class User extends OfficeObject {
 
     public void setStatus(String status) {
         this.status = status;
-        userStorage.setStatusToDb(username, status);
     }
 }

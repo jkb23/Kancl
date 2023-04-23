@@ -61,21 +61,13 @@ public class WebServer {
     }
 
     private Route processGetWithTransaction(Function<DatabaseRunner, Controller> controllerSupplier) {
-        return (request, response) -> {
-            return transactionJobRunner.runInTransaction((dbRunner) -> {
-                return controllerSupplier.apply(dbRunner)
-                        .get(request, response);
-            });
-        };
+        return (request, response) -> transactionJobRunner.runInTransaction((dbRunner) -> controllerSupplier.apply(dbRunner)
+                .get(request, response));
     }
 
     private Route processPostWithTransaction(Function<DatabaseRunner, Controller> controllerSupplier) {
-        return (request, response) -> {
-            return transactionJobRunner.runInTransaction((dbRunner) -> {
-                return controllerSupplier.apply(dbRunner)
-                        .post(request, response);
-            });
-        };
+        return (request, response) -> transactionJobRunner.runInTransaction((dbRunner) -> controllerSupplier.apply(dbRunner)
+                .post(request, response));
     }
 
     public void start() {

@@ -14,37 +14,45 @@ public class GridData {
         this.zoomObjects = new ArrayList<>();
     }
 
-    public void addUser(User user){
-        for (User user1 : users){
-            if (user1.username.equals(user.username)){
+    public void addUser(User user) {
+        for (User user1 : users) {
+            if (user1.username.equals(user.username)) {
                 return;
             }
         }
         users.add(user);
     }
 
-    public void addWall(Wall wall){
+    public void addWall(Wall wall) {
         walls.add(wall);
     }
 
-    public void addZoom(ZoomObject zoomObject){
+    public void addZoom(ZoomObject zoomObject) {
         zoomObjects.add(zoomObject);
     }
 
-    public void removeUser(String username){
+    public void removeUser(String username) {
         users.removeIf(user -> user.username.equals(username));
+    }
+
+    public void updateStatus(String username, String newStatus) {
+        users.stream()
+                .filter(user -> user.getUsername()
+                .equals(username))
+                .findFirst()
+                .ifPresent(user -> user
+                .setStatus(newStatus));
     }
 
     public List<User> getUsers() {
         return users;
     }
 
-    public List<Wall> getWalls()
-    {
+    public List<Wall> getWalls() {
         return walls;
     }
 
-    public void addWallsList(List<Wall> startWalls){
+    public void addWallsList(List<Wall> startWalls) {
         List<Wall> temp = new ArrayList<>();
         temp.addAll(startWalls);
         temp.addAll(this.walls);
@@ -54,6 +62,4 @@ public class GridData {
     public List<ZoomObject> getZoomObjects() {
         return zoomObjects;
     }
-
-
 }

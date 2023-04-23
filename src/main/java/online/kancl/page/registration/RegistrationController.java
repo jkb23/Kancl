@@ -1,6 +1,5 @@
 package online.kancl.page.registration;
 
-import online.kancl.auth.AuthReturnCode;
 import online.kancl.auth.Authenticator;
 import online.kancl.db.TransactionJobRunner;
 import online.kancl.db.UserStorage;
@@ -10,8 +9,6 @@ import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import spark.Request;
 import spark.Response;
-
-import static online.kancl.auth.AuthReturnCode.CORRECT;
 
 public class RegistrationController extends Controller {
 
@@ -38,8 +35,8 @@ public class RegistrationController extends Controller {
     @Override
     public String post(Request request, Response response) {
         return transactionJobRunner.runInTransaction((dbRunner) -> {
-            var auth = new Authenticator(new UserStorage(dbRunner));
-            var registration = new Registration(
+            Authenticator auth = new Authenticator(new UserStorage(dbRunner));
+            Registration registration = new Registration(
                     request.queryParams("username"),
                     request.queryParams("password"),
                     request.queryParams("passwordCheck"),
@@ -70,7 +67,6 @@ public class RegistrationController extends Controller {
         }
 
         userStorage.createUser(user.username(), user.password(), user.email());
-        AuthReturnCode returnCode = authenticator.checkCredentialsWithBruteForcePrevention(user.username(), user.password());
         User userObject = new User(user.username(), userStorage);
         gridData.addUser(userObject);
         request.session(true);
