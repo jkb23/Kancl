@@ -5,15 +5,51 @@ obstacles = [][2];
 let me = null;
 let lastData = null;
 
-//TODO: check the walls
-function check_obstacles(x, y) {
-    for (let i = 0; i !== obstacles.length(); i++) {
-        if (obstacles[i][0] === x) {
-            if (obstacles[i][1] === y) {
+function canMoveRight() {
+    for (let object of lastData.objects) {
+        if (object.type === "wall") {
+            if ((me.x + 1) === object.x && me.y === object.y) {
                 return false;
             }
         }
     }
+
+    return true;
+}
+
+function canMoveLeft() {
+    for (let object of lastData.objects) {
+        if (object.type === "wall") {
+            if ((me.x - 1) === object.x && me.y === object.y) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+function canMoveUp() {
+    for (let object of lastData.objects) {
+        if (object.type === "wall") {
+            if ((me.y - 1) === object.y && me.x === object.x) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+function canMoveDown() {
+    for (let object of lastData.objects) {
+        if (object.type === "wall") {
+            if ((me.y + 1) === object.y && me.x === object.x) {
+                return false;
+            }
+        }
+    }
+
     return true;
 }
 
@@ -85,25 +121,33 @@ document.addEventListener("keydown", handleKey);
 function handleKey(e) {
     let updatedUser = false;
     if (e.key === "ArrowUp" || e.key === "w") {
-        if (me.y > 0) {
-            me.y--;
+        if (canMoveUp()) {
+            if (me.y > 0) {
+                me.y--;
+            }
+            updatedUser = true;
         }
-        updatedUser = true;
     } else if (e.key === "ArrowRight" || e.key === "d") {
-        if (me.x < 25) {
-            me.x++;
+        if (canMoveRight()) {
+            if (me.x < 25) {
+                me.x++;
+            }
+            updatedUser = true;
         }
-        updatedUser = true;
     } else if (e.key === "ArrowLeft" || e.key === "a") {
-        if (me.x > 0) {
-            me.x--;
+        if (canMoveLeft()) {
+            if (me.x > 0) {
+                me.x--;
+            }
+            updatedUser = true;
         }
-        updatedUser = true;
     } else if (e.key === "ArrowDown" || e.key === "s") {
-        if (me.y < 17) {
-            me.y++;
+        if (canMoveDown()) {
+            if (me.y < 17) {
+                me.y++;
+            }
+            updatedUser = true;
         }
-        updatedUser = true;
     } else if (e.key === "r") {
         fetchOfficeState();
     }
