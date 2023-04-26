@@ -8,7 +8,7 @@ import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
 import online.kancl.objects.User;
 import online.kancl.objects.Wall;
-import online.kancl.objects.ZoomObject;
+import online.kancl.objects.MeetingObject;
 import online.kancl.test.ProductionDatabase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,11 +41,11 @@ class OfficeControllerTest {
 
         User user1 = new User("correct", new UserStorage(dbRunner));
         Wall wall = new Wall(1,1);
-        ZoomObject zoomObject = new ZoomObject(5, 5, "zoom.com");
+        MeetingObject meetingObject = new MeetingObject(5, 5, "zoom.com");
 
         gridData.addUser(user1);
         gridData.addWall(wall);
-        gridData.addZoom(zoomObject);
+        gridData.addZoom(meetingObject);
 
         OfficeController officeController = new OfficeController(gridData);
         assertThat(officeController.get(request, response))

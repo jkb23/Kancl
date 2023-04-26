@@ -6,12 +6,12 @@ import java.util.List;
 public class GridData {
     private final List<User> users;
     private List<Wall> walls;
-    private final List<ZoomObject> zoomObjects;
+    private final List<MeetingObject> meetingObjects;
 
     public GridData() {
         this.walls = new ArrayList<>();
         this.users = new ArrayList<>();
-        this.zoomObjects = new ArrayList<>();
+        this.meetingObjects = new ArrayList<>();
     }
 
     public void addUser(User user) {
@@ -27,8 +27,8 @@ public class GridData {
         walls.add(wall);
     }
 
-    public void addZoom(ZoomObject zoomObject) {
-        zoomObjects.add(zoomObject);
+    public void addZoom(MeetingObject meetingObject) {
+        meetingObjects.add(meetingObject);
     }
 
     public void removeUser(String username) {
@@ -59,7 +59,7 @@ public class GridData {
         this.walls = temp;
     }
 
-    public List<ZoomObject> getZoomObjects() {
-        return zoomObjects;
+    public List<MeetingObject> getMeetingObjects() {
+        return meetingObjects;
     }
 }

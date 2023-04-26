@@ -9,7 +9,7 @@ import online.kancl.db.UserStorage;
 import online.kancl.db.*;
 import online.kancl.objects.GridData;
 import online.kancl.objects.Wall;
-import online.kancl.objects.ZoomObject;
+import online.kancl.objects.MeetingObject;
 import online.kancl.page.office.OfficeController;
 import online.kancl.page.login.LoginController;
 import online.kancl.page.login.LoginInfo;
@@ -95,8 +95,8 @@ public class Main {
     private static void addStartingWalls(GridData gridData){
         List<String> zoomLinks = addZoomLinksIfExistent();
 
-        ZoomObject zoomObject = new ZoomObject(25, 0, zoomLinks.get(0));
-        ZoomObject zoomObject2 = new ZoomObject(0, 0, zoomLinks.get(1));
+        MeetingObject meetingObject = new MeetingObject(25, 0, zoomLinks.get(0));
+        MeetingObject meetingObject2 = new MeetingObject(0, 0, zoomLinks.get(1));
 
         List<Wall> walls = Arrays.asList(
                 new Wall(0, 4),
@@ -133,8 +133,8 @@ public class Main {
 
         System.out.println(zoomLinks);
         gridData.addWallsList(walls);
-        gridData.addZoom(zoomObject);
-        gridData.addZoom(zoomObject2);
+        gridData.addZoom(meetingObject);
+        gridData.addZoom(meetingObject2);
     }
 
     private static List<String> addZoomLinksIfExistent() {
