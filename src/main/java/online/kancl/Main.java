@@ -7,6 +7,7 @@ import online.kancl.db.SchemaCreator;
 import online.kancl.db.TransactionJobRunner;
 import online.kancl.db.UserStorage;
 import online.kancl.db.*;
+import online.kancl.objects.CoffeeMachine;
 import online.kancl.objects.GridData;
 import online.kancl.objects.Wall;
 import online.kancl.objects.MeetingObject;
@@ -93,7 +94,7 @@ public class Main {
     }
 
     private static void addStartingWalls(GridData gridData){
-        List<String> zoomLinks = addZoomLinksIfExistent();
+        List<String> zoomLinks = addMeetingLinksIfExistent();
 
         MeetingObject meetingObject = new MeetingObject(25, 0, zoomLinks.get(0));
         MeetingObject meetingObject2 = new MeetingObject(0, 0, zoomLinks.get(1));
@@ -133,11 +134,13 @@ public class Main {
 
         System.out.println(zoomLinks);
         gridData.addWallsList(walls);
-        gridData.addZoom(meetingObject);
-        gridData.addZoom(meetingObject2);
+        gridData.addMeeting(meetingObject);
+        gridData.addMeeting(meetingObject2);
+        gridData.addCoffeeMachine(new CoffeeMachine(12, 0));
+        gridData.addCoffeeMachine(new CoffeeMachine(13, 0));
     }
 
-    private static List<String> addZoomLinksIfExistent() {
+    private static List<String> addMeetingLinksIfExistent() {
         List<String> zoomLinks = new ArrayList<>();
         try {
             File myObj = new File("zoomlinks.txt");

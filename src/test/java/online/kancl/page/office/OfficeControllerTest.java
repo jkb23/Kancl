@@ -45,7 +45,7 @@ class OfficeControllerTest {
 
         gridData.addUser(user1);
         gridData.addWall(wall);
-        gridData.addZoom(meetingObject);
+        gridData.addMeeting(meetingObject);
 
         OfficeController officeController = new OfficeController(gridData);
         assertThat(officeController.get(request, response))

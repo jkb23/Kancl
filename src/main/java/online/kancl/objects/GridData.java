@@ -7,11 +7,13 @@ public class GridData {
     private final List<User> users;
     private List<Wall> walls;
     private final List<MeetingObject> meetingObjects;
+    private final List<CoffeeMachine> coffeeMachines;
 
     public GridData() {
         this.walls = new ArrayList<>();
         this.users = new ArrayList<>();
         this.meetingObjects = new ArrayList<>();
+        this.coffeeMachines = new ArrayList<>();
     }
 
     public void addUser(User user) {
@@ -27,8 +29,12 @@ public class GridData {
         walls.add(wall);
     }
 
-    public void addZoom(MeetingObject meetingObject) {
+    public void addMeeting(MeetingObject meetingObject) {
         meetingObjects.add(meetingObject);
+    }
+
+    public void addCoffeeMachine(CoffeeMachine coffeeMachine) {
+        coffeeMachines.add(coffeeMachine);
     }
 
     public void removeUser(String username) {
@@ -61,5 +67,9 @@ public class GridData {
 
     public List<MeetingObject> getMeetingObjects() {
         return meetingObjects;
+    }
+
+    public List<CoffeeMachine> getCoffeeMachines() {
+        return coffeeMachines;
     }
 }

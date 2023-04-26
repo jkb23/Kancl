@@ -1,9 +1,6 @@
 package online.kancl.page.office;
 
-import online.kancl.objects.GridData;
-import online.kancl.objects.User;
-import online.kancl.objects.Wall;
-import online.kancl.objects.MeetingObject;
+import online.kancl.objects.*;
 import online.kancl.server.Controller;
 import spark.Request;
 import spark.Response;
@@ -77,12 +74,20 @@ public class OfficeController extends Controller {
         }
 
         for (MeetingObject meetingObject : gridData.getMeetingObjects()) {
-            JsonObjectBuilder zoomObjectBuilder = Json.createObjectBuilder();
-            zoomObjectBuilder.add("type", "zoom");
-            zoomObjectBuilder.add("link", meetingObject.getMeetingLink());
-            zoomObjectBuilder.add("x", meetingObject.getX());
-            zoomObjectBuilder.add("y", meetingObject.getY());
-            objects.add(zoomObjectBuilder);
+            JsonObjectBuilder meetingObjectBuilder = Json.createObjectBuilder();
+            meetingObjectBuilder.add("type", "zoom");
+            meetingObjectBuilder.add("link", meetingObject.getMeetingLink());
+            meetingObjectBuilder.add("x", meetingObject.getX());
+            meetingObjectBuilder.add("y", meetingObject.getY());
+            objects.add(meetingObjectBuilder);
+        }
+
+        for (CoffeeMachine coffeeMachine : gridData.getCoffeeMachines()) {
+            JsonObjectBuilder coffeeMachineBuilder = Json.createObjectBuilder();
+            coffeeMachineBuilder.add("type", "coffeeMachine");
+            coffeeMachineBuilder.add("x", coffeeMachine.getX());
+            coffeeMachineBuilder.add("y", coffeeMachine.getY());
+            objects.add(coffeeMachineBuilder);
         }
 
         return objects;

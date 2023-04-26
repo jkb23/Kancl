@@ -116,6 +116,10 @@ function addWall(wall, container) {
     container.classList.add("wall");
 }
 
+function addCoffeeMachine(coffeeMachine, container) {
+    container.classList.add("coffeeMachine");
+}
+
 document.addEventListener("keydown", handleKey);
 
 function handleKey(e) {
@@ -203,6 +207,8 @@ function refreshOfficeState(data) {
             }
         } else if (object.type === "zoom") {
             addZoom(object, coordinates);
+        } else if (object.type === "coffeeMachine") {
+            addCoffeeMachine(object, coordinates);
         }
     }
 }
