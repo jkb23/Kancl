@@ -95,11 +95,17 @@ public class Main {
 
     private static void addStartingWalls(GridData gridData){
         List<String> zoomLinks = addMeetingLinksIfExistent();
+        gridData.addWallsList(getWallList());
+        gridData.addMeeting( new MeetingObject(25, 0, zoomLinks.get(0)));
+        gridData.addMeeting(new MeetingObject(0, 0, zoomLinks.get(1)));
+        // gridData.addMeeting( new MeetingObject(25, 25, zoomLinks.get(2))); TODO adding these to meeting messes up other objects and resets user
+        // gridData.addMeeting(new MeetingObject(0, 25, zoomLinks.get(3)));
+        gridData.addCoffeeMachine(new CoffeeMachine(12, 0));
+        gridData.addCoffeeMachine(new CoffeeMachine(13, 0));
+    }
 
-        MeetingObject meetingObject = new MeetingObject(25, 0, zoomLinks.get(0));
-        MeetingObject meetingObject2 = new MeetingObject(0, 0, zoomLinks.get(1));
-
-        List<Wall> walls = Arrays.asList(
+    private static List<Wall> getWallList() {
+        return Arrays.asList(
                 new Wall(0, 4),
                 new Wall(1, 4),
                 new Wall(2, 4),
@@ -149,12 +155,6 @@ public class Main {
                 new Wall(24, 13),
                 new Wall(25, 13)
         );
-
-        gridData.addWallsList(walls);
-        gridData.addMeeting(meetingObject);
-        gridData.addMeeting(meetingObject2);
-        gridData.addCoffeeMachine(new CoffeeMachine(12, 0));
-        gridData.addCoffeeMachine(new CoffeeMachine(13, 0));
     }
 
     private static List<String> addMeetingLinksIfExistent() {
@@ -168,6 +168,8 @@ public class Main {
             }
             myReader.close();
         } catch (FileNotFoundException e) {
+            zoomLinks.add("https://www.google.com/");
+            zoomLinks.add("https://www.google.com/");
             zoomLinks.add("https://www.google.com/");
             zoomLinks.add("https://www.google.com/");
         }

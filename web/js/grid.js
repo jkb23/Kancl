@@ -100,16 +100,16 @@ function addUser(user, container) {
 function addZoom(zoom, container) {
     container.classList.add("zoom");
     const zoomItem = document.querySelector(".zoom")
-    const zoomEl = document.createElement("div");
-    zoomEl.classList.add("zoom_state");
-    zoomEl.textContent += "Zoom meeting"
-    zoomItem.appendChild(zoomEl)
+    const zoomElement = document.createElement("div");
+    zoomElement.classList.add("zoom_state");
+    zoomElement.textContent += "Zoom meeting"
+    zoomItem.appendChild(zoomElement)
 
     const zoomLink = document.createElement("a");
     zoomLink.textContent += "Join a meeting"
     zoomLink.setAttribute("href", zoom.link)
     zoomLink.setAttribute("target", "_blank")
-    zoomEl.appendChild(zoomLink);
+    zoomElement.appendChild(zoomLink);
 }
 
 function addWall(wall, container) {
