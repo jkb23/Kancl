@@ -44,7 +44,7 @@ public class UserStorage {
         Random rand = new Random();
         try {
             dbRunner.insert("INSERT INTO AppUser (username, password, email, bg_color, user_status)" +
-                    " VALUES(?, ?, ?, ?, ?)", username, HashUtils.sha256Hash(password), email,
+                            " VALUES(?, ?, ?, ?, ?)", username, HashUtils.sha256Hash(password), email,
                     AVATAR_BACKGROUND_COLORS[rand.nextInt(AVATAR_BACKGROUND_COLORS.length)], "Hello everyone");
         } catch (DatabaseRunner.DatabaseAccessException e) {
             if (e.sqlErrorCode == 23505) {
@@ -94,6 +94,14 @@ public class UserStorage {
 
     public String getAvatarBackgroundColor(String username) {
         return dbRunner.selectString("SELECT bg_color FROM AppUser WHERE username = ?", username);
+    }
+
+    public String getProfilePicture(String username) {
+        return dbRunner.selectString("SELECT profile_picture FROM AppUser WHERE username = ?", username);
+    }
+
+    public void setProfilePicture(String username, String profilePicture) {
+        dbRunner.update("UPDATE AppUser SET profile_picture = ? WHERE username = ?", profilePicture, username);
     }
 
     public class DuplicateUserException extends RuntimeException {

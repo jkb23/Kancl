@@ -47,7 +47,7 @@
         <div class="input__container">
             <div class="input__container__single">
                 <label for="status"><b>Update status:</b></label>
-                <input type="text" id="status" name="status" />
+                <input type="text" id="status" name="status" class="status-input"/>
             </div>
         </div>
     </div>

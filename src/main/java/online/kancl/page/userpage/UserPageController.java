@@ -49,7 +49,7 @@ public class UserPageController extends Controller {
             }
 
             if (!Objects.equals(newProfilePicture, "")) {
-                // profile pic to db
+                userStorage.setProfilePicture(username, newProfilePicture);
             }
 
             response.redirect("/");

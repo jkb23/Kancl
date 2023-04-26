@@ -80,7 +80,7 @@ function addWall(wall, container) {
     container.classList.add("wall");
 }
 
-document.addEventListener("keyup", handleKey);
+document.addEventListener("keydown", handleKey);
 
 function handleKey(e) {
     let updatedUser = false;
