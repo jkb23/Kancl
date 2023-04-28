@@ -110,6 +110,10 @@ function addZoom(zoom, container) {
     zoomLink.setAttribute("href", zoom.link)
     zoomLink.setAttribute("target", "_blank")
     zoomElement.appendChild(zoomLink);
+
+    zoomLink.addEventListener("click", function (event) {
+        sendRequest(zoom.x, zoom.y)
+    });
 }
 
 function addWall(wall, container) {
