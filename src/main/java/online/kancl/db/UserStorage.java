@@ -104,6 +104,14 @@ public class UserStorage {
         dbRunner.update("UPDATE AppUser SET profile_picture = ? WHERE username = ?", profilePicture, username);
     }
 
+    public String getPassword(String username) {
+        return dbRunner.selectString("SELECT password FROM AppUser WHERE username = ?", username);
+    }
+
+    public void setPassword(String username, String password) {
+        dbRunner.update("UPDATE AppUser SET password = ? WHERE username = ?", password, username);
+    }
+
     public class DuplicateUserException extends RuntimeException {
         public DuplicateUserException(Throwable cause) {
             super(cause);

@@ -2,20 +2,16 @@ package online.kancl;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
-import online.kancl.db.ConnectionProvider;
-import online.kancl.db.SchemaCreator;
-import online.kancl.db.TransactionJobRunner;
-import online.kancl.db.UserStorage;
 import online.kancl.db.*;
 import online.kancl.objects.CoffeeMachine;
 import online.kancl.objects.GridData;
-import online.kancl.objects.Wall;
 import online.kancl.objects.MeetingObject;
-import online.kancl.page.office.OfficeController;
+import online.kancl.objects.Wall;
 import online.kancl.page.login.LoginController;
 import online.kancl.page.login.LoginInfo;
 import online.kancl.page.logout.LogoutController;
 import online.kancl.page.main.MainPageController;
+import online.kancl.page.office.OfficeController;
 import online.kancl.page.recreatedb.RecreateDbController;
 import online.kancl.page.registration.RegistrationController;
 import online.kancl.page.registration.RegistrationInfo;
@@ -93,13 +89,13 @@ public class Main {
         return new PebbleTemplateRenderer(pebbleEngine);
     }
 
-    private static void addStartingWalls(GridData gridData){
+    private static void addStartingWalls(GridData gridData) {
         List<String> zoomLinks = addMeetingLinksIfExistent();
         gridData.addWallsList(getWallList());
-        gridData.addMeeting( new MeetingObject(25, 0, zoomLinks.get(0)));
+        gridData.addMeeting(new MeetingObject(25, 0, zoomLinks.get(0)));
         gridData.addMeeting(new MeetingObject(0, 0, zoomLinks.get(1)));
-        // gridData.addMeeting( new MeetingObject(25, 25, zoomLinks.get(2))); TODO adding these to meeting messes up other objects and resets user
-        // gridData.addMeeting(new MeetingObject(0, 25, zoomLinks.get(3)));
+        //gridData.addMeeting( new MeetingObject(25, 25, zoomLinks.get(2))); //TODO adding these to meeting messes up other objects and resets user
+        //gridData.addMeeting(new MeetingObject(0, 25, zoomLinks.get(3)));
         gridData.addCoffeeMachine(new CoffeeMachine(12, 0));
         gridData.addCoffeeMachine(new CoffeeMachine(13, 0));
     }
@@ -110,7 +106,6 @@ public class Main {
                 new Wall(1, 4),
                 new Wall(2, 4),
                 new Wall(3, 4),
-                new Wall(4, 4),
                 new Wall(6, 3),
                 new Wall(6, 4),
                 new Wall(6, 0),
@@ -125,7 +120,6 @@ public class Main {
                 new Wall(19, 2),
                 new Wall(19, 4),
                 new Wall(19, 3),
-                new Wall(21, 4),
                 new Wall(22, 4),
                 new Wall(23, 4),
                 new Wall(24, 4),
@@ -138,7 +132,6 @@ public class Main {
                 new Wall(1, 13),
                 new Wall(2, 13),
                 new Wall(3, 13),
-                new Wall(4, 13),
                 new Wall(6, 14),
                 new Wall(6, 13),
                 new Wall(6, 15),
@@ -149,7 +142,6 @@ public class Main {
                 new Wall(19, 16),
                 new Wall(19, 17),
                 new Wall(19, 13),
-                new Wall(21, 13),
                 new Wall(22, 13),
                 new Wall(23, 13),
                 new Wall(24, 13),

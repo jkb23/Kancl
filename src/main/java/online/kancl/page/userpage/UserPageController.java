@@ -6,6 +6,7 @@ import online.kancl.objects.GridData;
 import online.kancl.page.PageContext;
 import online.kancl.server.Controller;
 import online.kancl.server.template.PebbleTemplateRenderer;
+import online.kancl.util.HashUtils;
 import spark.Request;
 import spark.Response;
 
@@ -43,6 +44,10 @@ public class UserPageController extends Controller {
             String newStatus = request.queryParams("status");
             String newProfilePicture = request.queryParams("profile-picture");
             String username = request.session().attribute("user");
+            String newPassword = HashUtils.sha256Hash(request.queryParams("password-new"));
+            String currentPasswordEntered = HashUtils.sha256Hash(request.queryParams("password-current"));
+            String currentPasswordFromDatabase = userStorage.getPassword(username);
+
             if (!Objects.equals(newStatus, "")) {
                 userStorage.setStatusToDb(username, newStatus);
                 gridData.updateStatus(username, newStatus);
@@ -50,6 +55,12 @@ public class UserPageController extends Controller {
 
             if (!Objects.equals(newProfilePicture, "")) {
                 userStorage.setProfilePicture(username, newProfilePicture);
+            }
+
+            if (!Objects.equals(newPassword, "")) {
+                if (Objects.equals(currentPasswordEntered, currentPasswordFromDatabase)) {
+                    userStorage.setPassword(username, newPassword);
+                }
             }
 
             response.redirect("/");

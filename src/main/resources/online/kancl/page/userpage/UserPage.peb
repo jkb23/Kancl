@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <div class="status">
+    <div class="input-box">
         <div class="current-status">
             <b> Current status: </b>
             <p> {{pageContext.getStatus()}} </p>
@@ -46,11 +46,28 @@
 
         <div class="input__container">
             <div class="input__container__single">
-                <label for="status"><b>Update status:</b></label>
-                <input type="text" id="status" name="status" class="status-input"/>
+                <label for="status"><b>Enter updated status:</b></label>
+                <input type="text" id="status" name="status" class="text-input" autocomplete="off"/>
             </div>
         </div>
     </div>
+
+    <div class="input-box">
+        <div class="input__container">
+            <div class="input__container__single">
+                <label for="password-current"><b>Enter current password:</b></label>
+                <input type="password" id="password-current" name="password-current" class="text-input autocomplete="off""/>
+            </div>
+        </div>
+
+        <div class="input__container">
+            <div class="input__container__single">
+                <label for="password-new"><b>Enter new password:</b></label>
+                <input type="password" id="password-new" name="password-new" class="text-input autocomplete="off""/>
+            </div>
+        </div>
+    </div>
+
     <button type="submit" id="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Save</button>
     <div class="reroute">
         <a href="/" class="link"> <b> Back </b> </a>
