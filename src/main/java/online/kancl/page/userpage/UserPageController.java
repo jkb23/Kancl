@@ -57,7 +57,7 @@ public class UserPageController extends Controller {
                 userStorage.setProfilePicture(username, newProfilePicture);
             }
 
-            if (!Objects.equals(newPassword, "")) {
+            if (!Objects.equals(newPassword, HashUtils.sha256Hash(""))) {
                 if (Objects.equals(currentPasswordEntered, currentPasswordFromDatabase)) {
                     userStorage.setPassword(username, newPassword);
                 }

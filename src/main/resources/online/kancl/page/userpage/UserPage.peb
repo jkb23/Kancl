@@ -47,7 +47,8 @@
         <div class="input__container">
             <div class="input__container__single">
                 <label for="status"><b>Enter updated status:</b></label>
-                <input type="text" id="status" name="status" class="text-input" autocomplete="off"/>
+                <input type="text" id="status" name="status" class="text-input" autocomplete="off"
+                placeholder="&#128172; Updated status"/>
             </div>
         </div>
     </div>
@@ -56,14 +57,20 @@
         <div class="input__container">
             <div class="input__container__single">
                 <label for="password-current"><b>Enter current password:</b></label>
-                <input type="password" id="password-current" name="password-current" class="text-input autocomplete="off""/>
+                <input type="password" id="password-current" name="password-current" class="text-input autocomplete="off"
+                placeholder="&#128274; Current password"/>
             </div>
         </div>
 
         <div class="input__container">
             <div class="input__container__single">
                 <label for="password-new"><b>Enter new password:</b></label>
-                <input type="password" id="password-new" name="password-new" class="text-input autocomplete="off""/>
+                <input type="password" id="password-new" name="password-new" class="text-input autocomplete="new-password"
+                placeholder="&#128274; New password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+                  title="Password must be at least 8 characters long and must contain:
+                  Number or Special Character
+                  Uppercase Letter
+                  Lowercase Letter"/>
             </div>
         </div>
     </div>

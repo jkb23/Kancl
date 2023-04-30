@@ -94,8 +94,8 @@ public class Main {
         gridData.addWallsList(getWallList());
         gridData.addMeeting(new MeetingObject(25, 0, zoomLinks.get(0)));
         gridData.addMeeting(new MeetingObject(0, 0, zoomLinks.get(1)));
-        //gridData.addMeeting( new MeetingObject(25, 25, zoomLinks.get(2))); //TODO adding these to meeting messes up other objects and resets user
-        //gridData.addMeeting(new MeetingObject(0, 25, zoomLinks.get(3)));
+        gridData.addMeeting( new MeetingObject(0, 17, zoomLinks.get(2)));
+        gridData.addMeeting(new MeetingObject(25, 17, zoomLinks.get(3)));
         gridData.addCoffeeMachine(new CoffeeMachine(12, 0));
         gridData.addCoffeeMachine(new CoffeeMachine(13, 0));
     }

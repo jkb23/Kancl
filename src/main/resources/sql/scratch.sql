@@ -24,11 +24,5 @@ CREATE TABLE AppUser
     profile_picture     BLOB
 );
 
-INSERT INTO AppUser (username, password, avatar, bg_color, bad_login_count, bad_login_timestamp, user_status, profile_picture)
-VALUES('honza', '15a596e3c98c407e043751ff3b21ff0358a1bdfdf3fe948b1523893a8e5de2e8', null, null, null, null, 'Mam se dobre!', null);
-
-INSERT INTO AppUser (username, password, avatar, bg_color, bad_login_count, bad_login_timestamp, user_status, profile_picture)
-VALUES('matej', '15a596e3c98c407e043751ff3b21ff0358a1bdfdf3fe948b1523893a8e5de2e8', null, null, null, null, 'Mam se dobre!', null);
-
 INSERT INTO AppUser (username, password, email, bg_color, user_status, profile_picture)
       VALUES('correct', '15a596e3c98c407e043751ff3b21ff0358a1bdfdf3fe948b1523893a8e5de2e8', 'neexistuju@baf.com', 'antique_white', 'Mam se dobre!', null)

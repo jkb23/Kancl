@@ -37,7 +37,8 @@
 
               <div class="field">
                 <input type="password" id="password" name="password" class="form-control form-control-lg"
-                  placeholder="&#128274; Password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![\n])(?=.*[A-Z])(?=.*[a-z]).*$" title="Password must be at least 8 characters long and must contain:
+                  placeholder="&#128274; Password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+                  title="Password must be at least 8 characters long and must contain:
                   Number or Special Character
                   Uppercase Letter
                   Lowercase Letter" required/>

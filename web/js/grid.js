@@ -112,7 +112,7 @@ function addZoom(zoom, container) {
     zoomElement.appendChild(zoomLink);
 
     zoomLink.addEventListener("click", function (event) {
-        sendRequest(zoom.x, zoom.y)
+        sendRequestWithUpdatedUser(zoom.x, zoom.y)
     });
 }
 
@@ -165,7 +165,7 @@ function handleKey(e) {
         console.log('move', me);
         if (lastData)
             refreshOfficeState(lastData);
-        sendRequest(me.x, me.y)
+        sendRequestWithUpdatedUser(me.x, me.y)
     }
 }
 
@@ -217,7 +217,7 @@ function refreshOfficeState(data) {
     }
 }
 
-function sendRequest(xCoordinates, yCoordinates) {
+function sendRequestWithUpdatedUser(xCoordinates, yCoordinates) {
     let xmlhttp = new XMLHttpRequest();
     let url = "/api/office";
     xmlhttp.open("POST", url);
