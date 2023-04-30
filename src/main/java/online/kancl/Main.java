@@ -90,12 +90,12 @@ public class Main {
     }
 
     private static void addStartingWalls(GridData gridData) {
-        List<String> zoomLinks = addMeetingLinksIfExistent();
+        List<String> meetingsLinks = addMeetingLinksIfExistent();
         gridData.addWallsList(getWallList());
-        gridData.addMeeting(new MeetingObject(25, 0, zoomLinks.get(0)));
-        gridData.addMeeting(new MeetingObject(0, 0, zoomLinks.get(1)));
-        gridData.addMeeting( new MeetingObject(0, 17, zoomLinks.get(2)));
-        gridData.addMeeting(new MeetingObject(25, 17, zoomLinks.get(3)));
+        gridData.addMeeting(new MeetingObject(25, 0, meetingsLinks.get(0)));
+        gridData.addMeeting(new MeetingObject(0, 0, meetingsLinks.get(1)));
+        gridData.addMeeting( new MeetingObject(0, 17, meetingsLinks.get(2)));
+        gridData.addMeeting(new MeetingObject(25, 17, meetingsLinks.get(3)));
         gridData.addCoffeeMachine(new CoffeeMachine(12, 0));
         gridData.addCoffeeMachine(new CoffeeMachine(13, 0));
     }
@@ -150,22 +150,22 @@ public class Main {
     }
 
     private static List<String> addMeetingLinksIfExistent() {
-        List<String> zoomLinks = new ArrayList<>();
+        List<String> meetingsLinks = new ArrayList<>();
         try {
-            File myObj = new File("zoomlinks.txt");
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                zoomLinks.add(data);
+            File linksFile = new File("zoomlinks.txt");
+            Scanner scanner = new Scanner(linksFile);
+            while (scanner.hasNextLine()) {
+                String data = scanner.nextLine();
+                meetingsLinks.add(data);
             }
-            myReader.close();
+            scanner.close();
         } catch (FileNotFoundException e) {
-            zoomLinks.add("https://www.google.com/");
-            zoomLinks.add("https://www.google.com/");
-            zoomLinks.add("https://www.google.com/");
-            zoomLinks.add("https://www.google.com/");
+            meetingsLinks.add("https://www.google.com/");
+            meetingsLinks.add("https://www.google.com/");
+            meetingsLinks.add("https://www.google.com/");
+            meetingsLinks.add("https://www.google.com/");
         }
 
-        return zoomLinks;
+        return meetingsLinks;
     }
 }

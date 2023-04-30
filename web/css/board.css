@@ -126,7 +126,7 @@ a.href-button {
    background-color: #7C6C77;
 }
 
-.zoom {
+.meeting {
    background-image: url("meeting-logo-reverted.png");
    background-position: center center;
    background-repeat: no-repeat;
@@ -139,7 +139,7 @@ a.href-button {
    height: 48px;
 }
 
-.zoom_state {
+.meeting_state {
    border: 1px solid black;
    padding: 20px;
    background-color: white;
@@ -154,7 +154,7 @@ a.href-button {
    display: none;
 }
 
-.zoom_state a {
+.meeting_state a {
    padding: 10px;
    background-color: #007FFF;
    border-radius: 5px;
@@ -164,7 +164,7 @@ a.href-button {
    font-size: 12px;
 }
 
-.zoom:hover .zoom_state {
+.meeting:hover .meeting_state {
    display: flex;
 }
 

@@ -97,22 +97,22 @@ function addUser(user, container) {
     element.appendChild(userProfilePicture);
 }
 
-function addZoom(zoom, container) {
-    container.classList.add("zoom");
-    const zoomItem = document.querySelector(".zoom")
-    const zoomElement = document.createElement("div");
-    zoomElement.classList.add("zoom_state");
-    zoomElement.textContent += "Zoom meeting"
-    zoomItem.appendChild(zoomElement)
+function addMeeting(meeting, container) {
+    container.classList.add("meeting");
+    const meetingItem = document.querySelector(".meeting")
+    const meetingElement = document.createElement("div");
+    meetingElement.classList.add("meeting_state");
+    meetingElement.textContent += "Meeting"
+    meetingItem.appendChild(meetingElement)
 
-    const zoomLink = document.createElement("a");
-    zoomLink.textContent += "Join a meeting"
-    zoomLink.setAttribute("href", zoom.link)
-    zoomLink.setAttribute("target", "_blank")
-    zoomElement.appendChild(zoomLink);
+    const meetingLink = document.createElement("a");
+    meetingLink.textContent += "Join a meeting"
+    meetingLink.setAttribute("href", meeting.link)
+    meetingLink.setAttribute("target", "_blank")
+    meetingElement.appendChild(meetingLink);
 
-    zoomLink.addEventListener("click", function (event) {
-        sendRequestWithUpdatedUser(zoom.x, zoom.y)
+    meetingLink.addEventListener("click", function (event) {
+        sendRequestWithUpdatedUser(meeting.x, meeting.y)
     });
 }
 
@@ -209,8 +209,8 @@ function refreshOfficeState(data) {
             if (object.username === data.me) {
                 me = object;
             }
-        } else if (object.type === "zoom") {
-            addZoom(object, coordinates);
+        } else if (object.type === "meeting") {
+            addMeeting(object, coordinates);
         } else if (object.type === "coffeeMachine") {
             addCoffeeMachine(object, coordinates);
         }

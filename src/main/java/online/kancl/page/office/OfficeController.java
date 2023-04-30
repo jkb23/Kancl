@@ -75,7 +75,7 @@ public class OfficeController extends Controller {
 
         for (MeetingObject meetingObject : gridData.getMeetingObjects()) {
             JsonObjectBuilder meetingObjectBuilder = Json.createObjectBuilder();
-            meetingObjectBuilder.add("type", "zoom");
+            meetingObjectBuilder.add("type", "meeting");
             meetingObjectBuilder.add("link", meetingObject.getMeetingLink());
             meetingObjectBuilder.add("x", meetingObject.getX());
             meetingObjectBuilder.add("y", meetingObject.getY());

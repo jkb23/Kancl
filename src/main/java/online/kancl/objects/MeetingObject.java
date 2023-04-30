@@ -2,13 +2,13 @@ package online.kancl.objects;
 
 public class MeetingObject extends OfficeObject {
 
-    private final String zoomLink;
-    public MeetingObject(int x, int y, String zoomLink) {
+    private final String meetingLink;
+    public MeetingObject(int x, int y, String meetingLink) {
         super(x, y);
-        this.zoomLink = zoomLink;
+        this.meetingLink = meetingLink;
     }
 
     public String getMeetingLink() {
-        return zoomLink;
+        return meetingLink;
     }
 }

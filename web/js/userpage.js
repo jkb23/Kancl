@@ -31,4 +31,3 @@ fileUpload.addEventListener("change", function (event) {
         reader.readAsDataURL(fileUpload.files[0]);
     }
 });
-
