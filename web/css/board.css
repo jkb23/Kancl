@@ -139,7 +139,7 @@ a.href-button {
    height: 48px;
 }
 
-.meeting_state {
+.meeting-state {
    border: 1px solid black;
    padding: 20px;
    background-color: white;
@@ -154,7 +154,7 @@ a.href-button {
    display: none;
 }
 
-.meeting_state a {
+.meeting-state a {
    padding: 10px;
    background-color: #007FFF;
    border-radius: 5px;
@@ -164,7 +164,7 @@ a.href-button {
    font-size: 12px;
 }
 
-.meeting:hover .meeting_state {
+.meeting:hover .meeting-state {
    display: flex;
 }
 

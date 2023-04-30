@@ -98,21 +98,24 @@ function addUser(user, container) {
 }
 
 function addMeeting(meeting, container) {
+    const xCoordinate = meeting.x;
+    const yCoordinate = meeting.y;
+
     container.classList.add("meeting");
-    const meetingItem = document.querySelector(".meeting")
+
     const meetingElement = document.createElement("div");
-    meetingElement.classList.add("meeting_state");
-    meetingElement.textContent += "Meeting"
-    meetingItem.appendChild(meetingElement)
+    meetingElement.classList.add("meeting-state");
+    meetingElement.textContent = "Meeting";
+    container.appendChild(meetingElement);
 
     const meetingLink = document.createElement("a");
-    meetingLink.textContent += "Join a meeting"
-    meetingLink.setAttribute("href", meeting.link)
-    meetingLink.setAttribute("target", "_blank")
+    meetingLink.textContent = "Join a meeting";
+    meetingLink.setAttribute("href", meeting.link);
+    meetingLink.setAttribute("target", "_blank");
     meetingElement.appendChild(meetingLink);
 
-    meetingLink.addEventListener("click", function (event) {
-        sendRequestWithUpdatedUser(meeting.x, meeting.y)
+    meetingLink.addEventListener("click", function(event) {
+        sendRequestWithUpdatedUser(xCoordinate, yCoordinate);
     });
 }
 
@@ -191,7 +194,6 @@ function fetchOfficeState() {
 
 function refreshOfficeState(data) {
     let userElements = document.getElementsByName("user");
-    console.log('removing', userElements);
     for (const userElement of userElements) {
         userElement.remove();
     }
@@ -204,7 +206,6 @@ function refreshOfficeState(data) {
         if (object.type === "wall") {
             addWall(object, coordinates);
         } else if (object.type === "user") {
-            console.log(object);
             addUser(object, coordinates);
             if (object.username === data.me) {
                 me = object;
