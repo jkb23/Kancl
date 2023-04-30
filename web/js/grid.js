@@ -178,6 +178,11 @@ window.addEventListener("load", () => {
     setInterval(fetchOfficeState, fetchInterval);
 });
 
+window.addEventListener("unload", function(e) {
+    e.preventDefault();
+    sendLogoutRequestOnClose();
+});
+
 function fetchOfficeState() {
     fetch("/api/office")
         .then(function (response) {
@@ -219,11 +224,11 @@ function refreshOfficeState(data) {
 }
 
 function sendRequestWithUpdatedUser(xCoordinates, yCoordinates) {
-    let xmlhttp = new XMLHttpRequest();
+    let httpRequest = new XMLHttpRequest();
     let url = "/api/office";
-    xmlhttp.open("POST", url);
-    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xmlhttp.send(
+    httpRequest.open("POST", url);
+    httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    httpRequest.send(
         JSON.stringify({
             objectType: "user",
             username: me.username,
@@ -232,4 +237,10 @@ function sendRequestWithUpdatedUser(xCoordinates, yCoordinates) {
             y: yCoordinates
         })
     );
+}
+
+function sendLogoutRequestOnClose() {
+    let httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", "/logout");
+    httpRequest.send();
 }
