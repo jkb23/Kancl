@@ -32,7 +32,7 @@ public class ProductionDatabase implements
 
     @Override
     public void beforeEach(ExtensionContext context) {
-        var directoryHashCalculator = new DirectoryHashCalculator();
+        DirectoryHashCalculator directoryHashCalculator = new DirectoryHashCalculator();
         new SchemaCreator(directoryHashCalculator, connectionProvider, Main.SQL_SCRATCH_DIRECTORY)
                 .recreateSchema();
     }

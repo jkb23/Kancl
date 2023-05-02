@@ -29,8 +29,7 @@ public class PebbleTemplateRenderer {
      */
     public String renderTemplate(String templateName, Object... contexts) {
         try {
-            var stringWriter = new StringWriter();
-
+            StringWriter stringWriter = new StringWriter();
             PebbleTemplate compiledTemplate = pebbleEngine.getTemplate(templateName);
             compiledTemplate.evaluate(stringWriter, createContextMap(contexts));
 
@@ -41,7 +40,7 @@ public class PebbleTemplateRenderer {
     }
 
     private Map<String, Object> createContextMap(Object[] contexts) {
-        var contextMap = new HashMap<String, Object>();
+        HashMap<String, Object> contextMap = new HashMap<String, Object>();
 
         for (Object context : contexts) {
             contextMap.put(getContextName(context), context);
@@ -59,6 +58,7 @@ public class PebbleTemplateRenderer {
 
         String classNameWithoutSuffix = className.substring(0, className.length() - controllerSuffix.length());
         String filePath = classNameWithoutSuffix.replace('.', '/');
+
         return filePath + ".peb";
     }
 
@@ -67,7 +67,6 @@ public class PebbleTemplateRenderer {
         if (className.isEmpty()) {
             throw new IllegalArgumentException("Context can't be an anonymous class.");
         }
-
         String firstLowercaseLetter = className.substring(0, 1).toLowerCase(Locale.ROOT);
         return firstLowercaseLetter + className.substring(1);
     }

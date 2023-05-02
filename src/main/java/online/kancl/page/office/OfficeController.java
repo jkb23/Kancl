@@ -5,10 +5,7 @@ import online.kancl.server.Controller;
 import spark.Request;
 import spark.Response;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonReader;
+import javax.json.*;
 import java.io.StringReader;
 
 import static javax.json.Json.createObjectBuilder;
@@ -35,8 +32,9 @@ public class OfficeController extends Controller {
     public String post(Request request, Response response) {
         request.body();
         JsonReader jsonReader = Json.createReader(new StringReader(request.body()));
-        var jsonObject = jsonReader.readObject();
+        JsonObject jsonObject = jsonReader.readObject();
         String type = jsonObject.getString("objectType");
+
         if (type.equals("user")) {
             String username = jsonObject.getString("username");
             int x = jsonObject.getInt("x");
@@ -47,6 +45,7 @@ public class OfficeController extends Controller {
                 }
             }
         }
+
         return "";
     }
 

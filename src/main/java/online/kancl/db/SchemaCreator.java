@@ -49,7 +49,7 @@ public class SchemaCreator {
 
     private boolean shouldRecreateSchema() {
         try (Connection connection = connectionProvider.getConnection()) {
-            var dbRunner = new DatabaseRunner(connection);
+            DatabaseRunner dbRunner = new DatabaseRunner(connection);
 
             String scratchDirectoryHash = directoryHashCalculator.calculateEncodedHash(scratchDirectory);
 
@@ -87,7 +87,7 @@ public class SchemaCreator {
     private void runSqlFile(Connection connection, Path sqlFile) {
         try {
             byte[] fileContent = Files.readAllBytes(sqlFile);
-            var reader = new InputStreamReader(new ByteArrayInputStream(fileContent), StandardCharsets.UTF_8);
+            InputStreamReader reader = new InputStreamReader(new ByteArrayInputStream(fileContent), StandardCharsets.UTF_8);
 
             RunScript.execute(connection, reader);
         } catch (IOException e) {

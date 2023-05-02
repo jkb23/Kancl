@@ -31,8 +31,8 @@ public class ExceptionHandler {
     }
 
     private String getExceptionText(Exception exception) {
-        var stringWriter = new StringWriter();
-        var printWriter = new PrintWriter(stringWriter);
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
 
         exception.printStackTrace(printWriter);
         return stringWriter.toString();

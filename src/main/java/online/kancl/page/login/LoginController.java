@@ -48,9 +48,10 @@ public class LoginController extends Controller {
     @Override
     public String post(Request request, Response response) {
         return transactionJobRunner.runInTransaction((dbRunner) -> {
-            var user = new Login(
+            Login user = new Login(
                     request.queryParams("username"),
                     request.queryParams("password"));
+
             return authenticate(request, response, authenticator, user);
         });
     }
@@ -66,6 +67,7 @@ public class LoginController extends Controller {
             return "";
         }
         loginInfo.setErrorMessage(returnCode.message);
+
         return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
     }
 }

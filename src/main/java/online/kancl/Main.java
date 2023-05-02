@@ -2,7 +2,10 @@ package online.kancl;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
-import online.kancl.db.*;
+import online.kancl.db.ConnectionProvider;
+import online.kancl.db.SchemaCreator;
+import online.kancl.db.TransactionJobRunner;
+import online.kancl.db.UserStorage;
 import online.kancl.objects.CoffeeMachine;
 import online.kancl.objects.GridData;
 import online.kancl.objects.MeetingObject;
@@ -16,7 +19,6 @@ import online.kancl.page.recreatedb.RecreateDbController;
 import online.kancl.page.registration.RegistrationController;
 import online.kancl.page.registration.RegistrationInfo;
 import online.kancl.page.userpage.UserPageController;
-import online.kancl.server.Controller;
 import online.kancl.server.ExceptionHandler;
 import online.kancl.server.WebServer;
 import online.kancl.server.template.PebbleExtension;
@@ -31,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.function.Function;
 
 public class Main {
 
@@ -42,45 +43,32 @@ public class Main {
 
     public static void main(String[] args) {
         PebbleTemplateRenderer pebbleTemplateRenderer = createPebbleTemplateRenderer(TEMPLATE_DIRECTORY);
-
         ConnectionProvider connectionProvider = ConnectionProvider.forDatabaseInFile(DB_DIRECTORY, DB_NAME);
-        var directoryHashCalculator = new DirectoryHashCalculator();
-        var schemaCreator = new SchemaCreator(directoryHashCalculator, connectionProvider, SQL_SCRATCH_DIRECTORY);
+        DirectoryHashCalculator directoryHashCalculator = new DirectoryHashCalculator();
+        TransactionJobRunner transactionJobRunner = new TransactionJobRunner(connectionProvider);
+        SchemaCreator schemaCreator = new SchemaCreator(directoryHashCalculator, connectionProvider, SQL_SCRATCH_DIRECTORY);
         schemaCreator.recreateSchemaIfNeeded();
-
-        var transactionJobRunner = new TransactionJobRunner(connectionProvider);
-
-        var gridData = new GridData();
+        GridData gridData = new GridData();
         addStartingWalls(gridData);
 
-        var webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner, "/login");
+        WebServer webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner, "/login");
         webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer));
         webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
         webServer.addRoute("/user", (dbRunner) -> new UserPageController(pebbleTemplateRenderer, new UserStorage(dbRunner), gridData, transactionJobRunner));
         webServer.addRoute("/register", (dbRunner) -> new RegistrationController(pebbleTemplateRenderer, transactionJobRunner, new RegistrationInfo(), new UserStorage(dbRunner), gridData));
-        webServer.addRoute("/login", createLoginController(pebbleTemplateRenderer, transactionJobRunner, gridData));
+        webServer.addRoute("/login", (dbRunner) -> new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData, new UserStorage(dbRunner)));
         webServer.addRoute("/logout", () -> new LogoutController(gridData));
         webServer.addRoute("/api/office", () -> new OfficeController(gridData));
-
         webServer.addPublicPaths("/login", "/register", "/recreateDb");
-
         webServer.start();
 
         System.out.println("Server running");
     }
 
-    private static Function<DatabaseRunner, Controller> createLoginController(PebbleTemplateRenderer pebbleTemplateRenderer, TransactionJobRunner transactionJobRunner, GridData gridData) {
-        return (dbRunner) -> {
-            var userStorage = new UserStorage(dbRunner);
-            return new LoginController(pebbleTemplateRenderer,
-                    transactionJobRunner, new LoginInfo(), gridData, userStorage);
-        };
-    }
-
     public static PebbleTemplateRenderer createPebbleTemplateRenderer(Path templateDirectory) {
-        var pebbleTemplateLoader = new FileLoader();
+        FileLoader pebbleTemplateLoader = new FileLoader();
         pebbleTemplateLoader.setPrefix(templateDirectory.toAbsolutePath().toString());
-        var pebbleEngine = new PebbleEngine.Builder()
+        PebbleEngine pebbleEngine = new PebbleEngine.Builder()
                 .loader(pebbleTemplateLoader)
                 .extension(new PebbleExtension())
                 .cacheActive(false)
@@ -152,7 +140,7 @@ public class Main {
     private static List<String> addMeetingLinksIfExistent() {
         List<String> meetingsLinks = new ArrayList<>();
         try {
-            File linksFile = new File("zoomlinks.txt");
+            File linksFile = new File("meetinglinks.txt");
             Scanner scanner = new Scanner(linksFile);
             while (scanner.hasNextLine()) {
                 String data = scanner.nextLine();

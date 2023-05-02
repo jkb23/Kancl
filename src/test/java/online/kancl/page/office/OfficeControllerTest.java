@@ -37,7 +37,7 @@ class OfficeControllerTest {
             result = "John";
         }};
 
-        var gridData = new GridData();
+        GridData gridData = new GridData();
 
         User user1 = new User("correct", new UserStorage(dbRunner));
         Wall wall = new Wall(1,1);

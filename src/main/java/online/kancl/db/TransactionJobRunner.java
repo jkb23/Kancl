@@ -37,7 +37,7 @@ public class TransactionJobRunner {
 
     private <T> T runJobAndCommitOrRollback(Function<DatabaseRunner, T> job, Connection connection) throws SQLException {
         try {
-            var databaseRunner = new DatabaseRunner(connection);
+            DatabaseRunner databaseRunner = new DatabaseRunner(connection);
             T result = job.apply(databaseRunner);
 
             connection.commit();

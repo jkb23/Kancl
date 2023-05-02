@@ -33,7 +33,7 @@ public class ConnectionProvider {
     }
 
     private DataSource createDataSource(String dbLocation) {
-        var dataSource = new BasicDataSource();
+        BasicDataSource dataSource = new BasicDataSource();
 
         dataSource.setUrl("jdbc:h2:" + dbLocation);
         dataSource.setMaxOpenPreparedStatements(100);
