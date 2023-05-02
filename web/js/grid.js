@@ -6,7 +6,7 @@ let me = null;
 let lastData = null;
 
 function canMoveRight() {
-    for (let object of lastData.objects) {
+    for (const object of lastData.objects) {
         if (object.type === "wall") {
             if ((me.x + 1) === object.x && me.y === object.y) {
                 return false;
@@ -18,7 +18,7 @@ function canMoveRight() {
 }
 
 function canMoveLeft() {
-    for (let object of lastData.objects) {
+    for (const object of lastData.objects) {
         if (object.type === "wall") {
             if ((me.x - 1) === object.x && me.y === object.y) {
                 return false;
@@ -30,7 +30,7 @@ function canMoveLeft() {
 }
 
 function canMoveUp() {
-    for (let object of lastData.objects) {
+    for (const object of lastData.objects) {
         if (object.type === "wall") {
             if ((me.y - 1) === object.y && me.x === object.x) {
                 return false;
@@ -42,7 +42,7 @@ function canMoveUp() {
 }
 
 function canMoveDown() {
-    for (let object of lastData.objects) {
+    for (const object of lastData.objects) {
         if (object.type === "wall") {
             if ((me.y + 1) === object.y && me.x === object.x) {
                 return false;
@@ -114,7 +114,7 @@ function addMeeting(meeting, container) {
     meetingLink.setAttribute("target", "_blank");
     meetingElement.appendChild(meetingLink);
 
-    meetingLink.addEventListener("click", function(event) {
+    meetingLink.addEventListener("click", function () {
         sendRequestWithUpdatedUser(xCoordinate, yCoordinate);
     });
 }
@@ -173,12 +173,12 @@ function handleKey(e) {
 }
 
 window.addEventListener("load", () => {
-    let fetchInterval = 1000;
+    const fetchInterval = 1000;
     fetchOfficeState();
     setInterval(fetchOfficeState, fetchInterval);
 });
 
-window.addEventListener("unload", function(e) {
+window.addEventListener("unload", function (e) {
     e.preventDefault();
     sendLogoutRequestOnClose();
 });
@@ -198,7 +198,7 @@ function fetchOfficeState() {
 }
 
 function refreshOfficeState(data) {
-    let userElements = document.getElementsByName("user");
+    const userElements = document.getElementsByName("user");
     for (const userElement of userElements) {
         userElement.remove();
     }
@@ -224,8 +224,8 @@ function refreshOfficeState(data) {
 }
 
 function sendRequestWithUpdatedUser(xCoordinates, yCoordinates) {
-    let httpRequest = new XMLHttpRequest();
-    let url = "/api/office";
+    const httpRequest = new XMLHttpRequest();
+    const url = "/api/office";
     httpRequest.open("POST", url);
     httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     httpRequest.send(
@@ -240,7 +240,7 @@ function sendRequestWithUpdatedUser(xCoordinates, yCoordinates) {
 }
 
 function sendLogoutRequestOnClose() {
-    let httpRequest = new XMLHttpRequest();
+    const httpRequest = new XMLHttpRequest();
     httpRequest.open("GET", "/logout");
     httpRequest.send();
 }

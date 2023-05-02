@@ -1,14 +1,11 @@
 package online.kancl.auth;
 
 import online.kancl.db.UserStorage;
-import online.kancl.util.HashUtils;
 
 import java.sql.Timestamp;
 import java.util.Optional;
 
-import static online.kancl.auth.AuthReturnCode.BAD_CREDENTIALS;
-import static online.kancl.auth.AuthReturnCode.BLOCKED_USER;
-import static online.kancl.auth.AuthReturnCode.CORRECT;
+import static online.kancl.auth.AuthReturnCode.*;
 
 public final class Authenticator {
 

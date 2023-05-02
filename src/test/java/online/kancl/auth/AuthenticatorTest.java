@@ -3,7 +3,6 @@ package online.kancl.auth;
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.UserStorage;
 import online.kancl.test.ProductionDatabase;
-import online.kancl.util.HashUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,7 +49,7 @@ class AuthenticatorTest {
                 .isEqualTo(AuthReturnCode.BAD_CREDENTIALS);
     }
 
-   @Test
+    @Test
     void blockTest() {
         for (int i = 0; i < 5; i++) {
             assertThat(authenticator.checkCredentialsWithBruteForcePrevention("username", "block"))

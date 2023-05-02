@@ -21,9 +21,9 @@ input.addEventListener('change', (event) => {
     }
 })
 
-fileUpload.addEventListener("change", function (event) {
+fileUpload.addEventListener("change", function () {
     if (fileUpload.files && fileUpload.files[0]) {
-        let reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = function (event) {
             profileBackground.childNodes[0].nodeValue = "";
             profileBackground.style.backgroundImage = "url('" + event.target.result + "')";

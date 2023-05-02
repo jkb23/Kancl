@@ -112,7 +112,7 @@ public class UserStorage {
         dbRunner.update("UPDATE AppUser SET password = ? WHERE username = ?", password, username);
     }
 
-    public class DuplicateUserException extends RuntimeException {
+    public static class DuplicateUserException extends RuntimeException {
         public DuplicateUserException(Throwable cause) {
             super(cause);
         }

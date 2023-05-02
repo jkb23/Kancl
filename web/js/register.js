@@ -2,7 +2,6 @@ const registerButton = document.getElementById("submit");
 const elements = document.querySelectorAll("input");
 const passwordInput = document.getElementById("password");
 const passwordCheck = document.getElementById("passwordCheck");
-const message = document.getElementById("message");
 
 for (let i = 0; i < elements.length; i++) {
     elements[i].oninput = () => {
@@ -14,7 +13,7 @@ for (let i = 0; i < elements.length; i++) {
     }
 }
 
-let isEqual = function () {
+const isEqual = function () {
     if (passwordInput.value === passwordCheck.value) {
         submit.removeAttribute("disabled");
         passwordCheck.style.color = "black";
@@ -25,12 +24,12 @@ let isEqual = function () {
         passwordCheck.style.color = "red";
         passwordCheck.style.outlineColor = "red";
     }
-}
+};
 
-let isLongEnough = function () {
+const isLongEnough = function () {
     if (passwordInput.value.length < 5) {
         passwordInput.style.color = "#DC343B";
     } else {
         passwordInput.style.color = "#f7f7f7";
     }
-}
+};

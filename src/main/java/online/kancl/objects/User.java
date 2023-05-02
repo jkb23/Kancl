@@ -4,7 +4,6 @@ import online.kancl.db.UserStorage;
 
 public class User extends OfficeObject {
     public final String username;
-    private final UserStorage userStorage;
     private final String avatarBackgroundColor;
 
     private String status;
@@ -12,7 +11,6 @@ public class User extends OfficeObject {
     public User(String username, UserStorage userStorage) {
         super();
         this.username = username;
-        this.userStorage = userStorage;
         this.status = userStorage.getStatusFromDb(username);
         this.avatarBackgroundColor = userStorage.getAvatarBackgroundColor(username);
     }

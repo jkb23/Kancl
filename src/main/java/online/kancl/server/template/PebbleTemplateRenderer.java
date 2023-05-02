@@ -40,7 +40,7 @@ public class PebbleTemplateRenderer {
     }
 
     private Map<String, Object> createContextMap(Object[] contexts) {
-        HashMap<String, Object> contextMap = new HashMap<String, Object>();
+        HashMap<String, Object> contextMap = new HashMap<>();
 
         for (Object context : contexts) {
             contextMap.put(getContextName(context), context);
