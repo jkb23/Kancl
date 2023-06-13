@@ -76,7 +76,7 @@ function createGrid() {
 }
 
 function handleAddWallsButton(x, y) {
-    if (canAddWalls){
+    if (canAddWalls) {
         sendRequestWithUpdatedObject(x, y, "wall", "add");
     }
 }
