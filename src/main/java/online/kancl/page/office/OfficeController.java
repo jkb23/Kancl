@@ -46,6 +46,18 @@ public class OfficeController extends Controller {
             }
         }
 
+        if (type.equals("wall")) {
+            int x = jsonObject.getInt("x");
+            int y = jsonObject.getInt("y");
+            Wall wall = new Wall(x, y);
+
+            if (gridData.wallCanBeAdded(wall)) {
+                gridData.addWall(wall);
+            } else {
+                gridData.deleteWall(wall);
+            }
+        }
+
         return "";
     }
 

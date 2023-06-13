@@ -56,6 +56,10 @@ a.href-button {
    background: white;
 }
 
+.container.inEditMode {
+   border-color: red;
+}
+
 .container > div {
    border: 1px solid rgba(0, 0, 0, 0.2);
 }
@@ -179,4 +183,15 @@ a.href-button {
    border-radius: 50%;
    width: 46px;
    height: 46px;
+}
+
+.editButton {
+   text-decoration: none;
+   margin: 0 3rem 1rem 0;
+   border: solid 2px var(--third-color);
+   border-radius: 30%;
+   padding: 0.6rem 0.6rem;
+   color: white;
+   background: none;
+   font-size: 1.2rem;
 }

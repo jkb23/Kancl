@@ -49,7 +49,7 @@ public class Main {
         SchemaCreator schemaCreator = new SchemaCreator(directoryHashCalculator, connectionProvider, SQL_SCRATCH_DIRECTORY);
         schemaCreator.recreateSchemaIfNeeded();
         GridData gridData = new GridData();
-        addStartingWalls(gridData);
+        createInitialGridTemplate(gridData);
 
         WebServer webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner, "/login");
         webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer));
@@ -77,7 +77,7 @@ public class Main {
         return new PebbleTemplateRenderer(pebbleEngine);
     }
 
-    private static void addStartingWalls(GridData gridData) {
+    private static void createInitialGridTemplate(GridData gridData) {
         List<String> meetingsLinks = addMeetingLinksIfExistent();
         gridData.addWallsList(getWallList());
         gridData.addMeeting(new MeetingObject(25, 0, meetingsLinks.get(0)));

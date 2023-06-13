@@ -3,7 +3,8 @@ const container = document.getElementById("container");
 
 obstacles = [][2];
 let me = null;
-let lastData = null;
+let lastData = [];
+let canAddWalls = false;
 
 function canMoveRight() {
     for (const object of lastData.objects) {
@@ -65,12 +66,19 @@ function createGrid() {
     iterateOverGrid((x, y) => {
         const square = document.createElement("div");
         square.classList.add("item");
+        square.addEventListener("click", () => handleAddWallsButton(x, y));
         container.appendChild(square);
 
         if (y === 0) grid.push([]);
 
         grid[x].push(square);
     });
+}
+
+function handleAddWallsButton(x, y) {
+    if (canAddWalls){
+        sendRequestWithUpdatedObject(x, y, "wall", "add");
+    }
 }
 
 createGrid();
@@ -115,7 +123,7 @@ function addMeeting(meeting, container) {
     meetingElement.appendChild(meetingLink);
 
     meetingLink.addEventListener("click", function () {
-        sendRequestWithUpdatedUser(xCoordinate, yCoordinate);
+        sendRequestWithUpdatedObject(xCoordinate, yCoordinate, "user", "move");
     });
 }
 
@@ -127,9 +135,9 @@ function addCoffeeMachine(coffeeMachine, container) {
     container.classList.add("coffeeMachine");
 }
 
-document.addEventListener("keydown", handleKey);
+document.addEventListener("keydown", handleUserMove);
 
-function handleKey(e) {
+function handleUserMove(e) {
     let updatedUser = false;
     if (e.key === "ArrowUp" || e.key === "w") {
         if (canMoveUp()) {
@@ -165,10 +173,10 @@ function handleKey(e) {
 
     if (updatedUser) {
         e.preventDefault();
-        console.log('move', me);
-        if (lastData)
+        if (lastData) {
             refreshOfficeState(lastData);
-        sendRequestWithUpdatedUser(me.x, me.y)
+        }
+        sendRequestWithUpdatedObject(me.x, me.y, "user", "move")
     }
 }
 
@@ -182,6 +190,14 @@ window.addEventListener("unload", function (e) {
     e.preventDefault();
     sendLogoutRequestOnClose();
 });
+
+function handleEnableAddWalls() {
+    canAddWalls = !canAddWalls;
+    container.classList.toggle("inEditMode");
+}
+
+const editButton = document.getElementById("editButton");
+editButton.addEventListener("click", handleEnableAddWalls);
 
 function fetchOfficeState() {
     fetch("/api/office")
@@ -223,16 +239,16 @@ function refreshOfficeState(data) {
     }
 }
 
-function sendRequestWithUpdatedUser(xCoordinates, yCoordinates) {
+function sendRequestWithUpdatedObject(xCoordinates, yCoordinates, type, action) {
     const httpRequest = new XMLHttpRequest();
     const url = "/api/office";
     httpRequest.open("POST", url);
     httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     httpRequest.send(
         JSON.stringify({
-            objectType: "user",
+            objectType: type,
             username: me.username,
-            action: "move",
+            action: action,
             x: xCoordinates,
             y: yCoordinates
         })
