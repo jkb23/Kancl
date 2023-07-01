@@ -2,10 +2,7 @@ package online.kancl;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
-import online.kancl.db.ConnectionProvider;
-import online.kancl.db.SchemaCreator;
-import online.kancl.db.TransactionJobRunner;
-import online.kancl.db.UserStorage;
+import online.kancl.db.*;
 import online.kancl.objects.CoffeeMachine;
 import online.kancl.objects.GridData;
 import online.kancl.objects.MeetingObject;
@@ -24,6 +21,7 @@ import online.kancl.server.WebServer;
 import online.kancl.server.template.PebbleExtension;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import online.kancl.util.DirectoryHashCalculator;
+import online.kancl.util.JsonObjectParser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,7 +47,9 @@ public class Main {
         SchemaCreator schemaCreator = new SchemaCreator(directoryHashCalculator, connectionProvider, SQL_SCRATCH_DIRECTORY);
         schemaCreator.recreateSchemaIfNeeded();
         GridData gridData = new GridData();
-        createInitialGridTemplate(gridData);
+        JsonObjectParser jsonObjectParser = new JsonObjectParser(new UserStorage(new DatabaseRunner(connectionProvider.getConnection())));
+        jsonObjectParser.createGridDataFromJson(gridData);
+        //createInitialGridTemplate(gridData);
 
         WebServer webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner, "/login");
         webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer));
