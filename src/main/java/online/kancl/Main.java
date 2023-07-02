@@ -48,8 +48,9 @@ public class Main {
         schemaCreator.recreateSchemaIfNeeded();
         GridData gridData = new GridData();
         JsonObjectParser jsonObjectParser = new JsonObjectParser(new UserStorage(new DatabaseRunner(connectionProvider.getConnection())));
-        jsonObjectParser.createGridDataFromJson(gridData);
-        //createInitialGridTemplate(gridData);
+        if (!jsonObjectParser.createGridDataFromJson(gridData)) {
+            createInitialGridTemplate(gridData);
+        }
 
         WebServer webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner, "/login");
         webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer));
