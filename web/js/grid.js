@@ -5,6 +5,7 @@ obstacles = [][2];
 let me = null;
 let lastData = [];
 let canAddWalls = false;
+let canAddMeetings = false;
 
 function canMoveRight() {
     for (const object of lastData.objects) {
@@ -66,7 +67,7 @@ function createGrid() {
     iterateOverGrid((x, y) => {
         const square = document.createElement("div");
         square.classList.add("item");
-        square.addEventListener("click", () => handleAddWallsButton(x, y));
+        square.addEventListener("click", () => handleEdit(x, y));
         container.appendChild(square);
 
         if (y === 0) grid.push([]);
@@ -75,9 +76,13 @@ function createGrid() {
     });
 }
 
-function handleAddWallsButton(x, y) {
-    if (canAddWalls) {
+function handleEdit(x, y) {
+    if (canAddWalls && !canAddMeetings) {
         sendRequestWithUpdatedObject(x, y, "wall", "add");
+    }
+
+    if (canAddMeetings && !canAddWalls) {
+        sendRequestWithUpdatedObject(x, y, "meeting", "add");
     }
 }
 
@@ -193,11 +198,27 @@ window.addEventListener("unload", function (e) {
 
 function handleEnableAddWalls() {
     canAddWalls = !canAddWalls;
-    container.classList.toggle("inEditMode");
+    if (canAddMeetings) {
+        canAddMeetings = false;
+    } else {
+        container.classList.toggle("inEditMode");
+    }
 }
 
-const editButton = document.getElementById("editButton");
-editButton.addEventListener("click", handleEnableAddWalls);
+const editWallsButton = document.getElementById("editWallsButton");
+editWallsButton.addEventListener("click", handleEnableAddWalls);
+
+function handleEnableAddMeetings() {
+    canAddMeetings = !canAddMeetings;
+    if (canAddWalls) {
+        canAddWalls = false;
+    } else {
+        container.classList.toggle("inEditMode");
+    }
+}
+
+const editMeetingsButton = document.getElementById("editMeetingsButton");
+editMeetingsButton.addEventListener("click", handleEnableAddMeetings);
 
 function fetchOfficeState() {
     fetch("/api/office")

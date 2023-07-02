@@ -33,6 +33,10 @@ public class GridData {
         walls.remove(wall);
     }
 
+    public void deleteMeeting(MeetingObject meetingObject) {
+        meetingObjects.remove(meetingObject);
+    }
+
     public void addMeeting(MeetingObject meetingObject) {
         meetingObjects.add(meetingObject);
     }
@@ -80,6 +84,15 @@ public class GridData {
     public boolean wallCanBeAdded(Wall newWall) {
         for (Wall oldWall : walls) {
             if (oldWall.equals(newWall)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean meetingCanBeAdded(MeetingObject newMeetingObject) {
+        for (MeetingObject oldMeeting : meetingObjects) {
+            if (oldMeeting.equals(newMeetingObject)) {
                 return false;
             }
         }

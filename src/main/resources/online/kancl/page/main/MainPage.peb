@@ -21,6 +21,7 @@
         </div>
 
         <div class="container" id="container"></div>
-        <button class="editButton" id="editButton"> Edit walls </button>
+        <button class="editButton" id="editWallsButton"> Edit walls </button>
+        <button class="editButton" id="editMeetingsButton"> Edit meetings </button>
     </div>
 {% endblock %}

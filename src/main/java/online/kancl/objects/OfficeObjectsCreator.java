@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class OfficeObjectsCreator {
-    private static final String INITIAL_OFFICE_STATE_FILE_PATH = "C:\\Users\\mjakab\\IdeaProjects\\kancl-online\\src\\main\\java\\online\\kancl\\util\\initialOfficeState.json";
+    private static final String INITIAL_OFFICE_STATE_FILE_PATH = "src/main/resources/initialOfficeState.json";
 
     private final UserStorage userStorage;
 

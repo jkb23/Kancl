@@ -14,7 +14,7 @@ import static javax.json.Json.createObjectBuilder;
 import static online.kancl.util.HttpUtil.dontCache;
 
 public class OfficeController extends Controller {
-    private static final String OFFICE_STATE_FILE_PATH = "C:\\Users\\mjakab\\IdeaProjects\\kancl-online\\src\\main\\java\\online\\kancl\\util\\initialOfficeState.json";
+    private static final String OFFICE_STATE_FILE_PATH = "src/main/resources/initialOfficeState.json";
 
     private final GridData gridData;
 
@@ -50,10 +50,10 @@ public class OfficeController extends Controller {
         JsonObject jsonObject = jsonReader.readObject();
         String type = jsonObject.getString("objectType");
 
+        int x = jsonObject.getInt("x");
+        int y = jsonObject.getInt("y");
         if (type.equals("user")) {
             String username = jsonObject.getString("username");
-            int x = jsonObject.getInt("x");
-            int y = jsonObject.getInt("y");
             for (User user : gridData.getUsers()) {
                 if (user.username.equals(username)) {
                     user.moveObject(x, y);
@@ -62,14 +62,22 @@ public class OfficeController extends Controller {
         }
 
         if (type.equals("wall")) {
-            int x = jsonObject.getInt("x");
-            int y = jsonObject.getInt("y");
             Wall wall = new Wall(x, y);
 
             if (gridData.wallCanBeAdded(wall)) {
                 gridData.addWall(wall);
             } else {
                 gridData.deleteWall(wall);
+            }
+        }
+
+        if (type.equals("meeting")) {
+            MeetingObject meetingObject = new MeetingObject(x, y, "https://www.google.com/");
+
+            if (gridData.meetingCanBeAdded(meetingObject)) {
+                gridData.addMeeting(meetingObject);
+            } else {
+                gridData.deleteMeeting(meetingObject);
             }
         }
 
