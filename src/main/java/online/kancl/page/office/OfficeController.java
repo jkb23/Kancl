@@ -6,12 +6,16 @@ import spark.Request;
 import spark.Response;
 
 import javax.json.*;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.io.StringReader;
 
 import static javax.json.Json.createObjectBuilder;
 import static online.kancl.util.HttpUtil.dontCache;
 
 public class OfficeController extends Controller {
+    private static final String OFFICE_STATE_FILE_PATH = "C:\\Users\\mjakab\\IdeaProjects\\kancl-online\\src\\main\\java\\online\\kancl\\util\\initialOfficeState.json";
+
     private final GridData gridData;
 
     public OfficeController(GridData gridData) {
@@ -21,11 +25,22 @@ public class OfficeController extends Controller {
     @Override
     public String get(Request request, Response response) {
         dontCache(response);
-        return createObjectBuilder()
+        var jsonObjects = createObjectBuilder()
                 .add("objects", createObjectsJsonArray())
                 .add("me", (String) request.session().attribute("user"))
                 .build()
                 .toString();
+
+        PrintWriter printWriter;
+        try {
+            printWriter = new PrintWriter(OFFICE_STATE_FILE_PATH);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        printWriter.println(jsonObjects);
+        printWriter.close();
+
+        return jsonObjects;
     }
 
     @Override
