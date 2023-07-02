@@ -1,7 +1,6 @@
 const grid = [];
 const container = document.getElementById("container");
 
-obstacles = [][2];
 let me = null;
 let lastData = [];
 let canAddWalls = false;
@@ -202,6 +201,7 @@ function handleEnableAddWalls() {
         canAddMeetings = false;
     } else {
         container.classList.toggle("inEditMode");
+        document.getElementById("editLabel").classList.toggle("show");
     }
 }
 
@@ -214,6 +214,7 @@ function handleEnableAddMeetings() {
         canAddWalls = false;
     } else {
         container.classList.toggle("inEditMode");
+        document.getElementById("editLabel").classList.toggle("show");
     }
 }
 

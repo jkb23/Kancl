@@ -14,14 +14,15 @@
     <div class"board-and-header">
         <div class="header">
             <h1 class="mainpage-title">Kancl Online</h1>
+            <h2 class="editLabel" id="editLabel"> Edit Mode Active </h2>
             <div class="href-buttons">
+                <button class="editButton" id="editWallsButton"> Edit walls </button>
+                <button class="editButton" id="editMeetingsButton"> Edit meetings </button>
                 <a href="/user" class="href-button">{{pageContext.getUsername()}} Home Page</a>
                 <a href="/logout" class="href-button">{{pageContext.showLogoutWhenLoggedIn()}}</a>
             </div>
         </div>
 
         <div class="container" id="container"></div>
-        <button class="editButton" id="editWallsButton"> Edit walls </button>
-        <button class="editButton" id="editMeetingsButton"> Edit meetings </button>
     </div>
 {% endblock %}
