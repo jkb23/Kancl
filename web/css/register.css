@@ -3,26 +3,26 @@
     padding: 2rem 2rem 0 2rem;
     width: 40rem;
     height: 100%;
-    -webkit-box-shadow: 2px 1px 21px -9px rgba(0,0,0,0.38);
-    -moz-box-shadow: 2px 1px 21px -9px rgba(0,0,0,0.38);
-    box-shadow: 2px 1px 21px -9px rgba(0,0,0,0.38);
+    -webkit-box-shadow: 2px 1px 21px -9px rgba(0, 0, 0, 0.38);
+    -moz-box-shadow: 2px 1px 21px -9px rgba(0, 0, 0, 0.38);
+    box-shadow: 2px 1px 21px -9px rgba(0, 0, 0, 0.38);
 
 }
 
 input[type=email]:not(:placeholder-shown):invalid, input[type=password]:not(:placeholder-shown):invalid {
-  color: #DC343B;
-  outline-color: #DC343B;
+    color: #DC343B;
+    outline-color: #DC343B;
 }
 
 
 .password-alert {
-    color: rgba(0,0,0,0.38);
+    color: rgba(0, 0, 0, 0.38);
 }
 
 .btn {
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 html {
