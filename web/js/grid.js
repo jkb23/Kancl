@@ -67,6 +67,8 @@ function createGrid() {
         const square = document.createElement("div");
         square.classList.add("item");
         square.addEventListener("click", () => handleEdit(x, y));
+        let squareId = x + "-" + y;
+        square.setAttribute("id", squareId);
         container.appendChild(square);
 
         if (y === 0) grid.push([]);
@@ -76,6 +78,9 @@ function createGrid() {
 }
 
 function handleEdit(x, y) {
+    let square = document.getElementById(x + "-" + y);
+    square.removeAttribute("class");
+    square.classList.add("item");
     if (canAddWalls && !canAddMeetings) {
         sendRequestWithUpdatedObject(x, y, "wall", "add");
     }
