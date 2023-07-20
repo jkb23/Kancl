@@ -1,0 +1,27 @@
+    {% extends "../BaseHtml.peb" %}
+
+        {% block style %}
+<link href='css/board.css' rel='stylesheet'/>
+{% endblock %}
+
+        {% block title %}Office editor{% endblock %}
+
+        {% block javascript %}
+<script src='js/edit.js' type="text/javascript"></script>
+{% endblock %}
+
+    {% block body %}
+    <div class"board-and-header">
+        <div class="header">
+            <h1 class="mainpage-title">Kancl Online</h1>
+            <h2 class="editLabel" id="editLabel"> Edit Mode Active </h2>
+            <div class="href-buttons">
+                <button class="editButton" id="editWallsButton"> Edit walls </button>
+                <button class="editButton" id="editMeetingsButton"> Edit meetings </button>
+                <button class="editButton" id="saveButton"> Save changes </button>
+            </div>
+        </div>
+
+        <div class="container" id="container"></div>
+    </div>
+{% endblock %}

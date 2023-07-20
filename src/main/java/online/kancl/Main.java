@@ -5,6 +5,8 @@ import com.mitchellbosecke.pebble.loader.FileLoader;
 import online.kancl.db.*;
 import online.kancl.objects.GridData;
 import online.kancl.objects.OfficeObjectsCreator;
+import online.kancl.page.edit.EditController;
+import online.kancl.page.edit.EditOfficeController;
 import online.kancl.page.login.LoginController;
 import online.kancl.page.login.LoginInfo;
 import online.kancl.page.logout.LogoutController;
@@ -49,6 +51,8 @@ public class Main {
         webServer.addRoute("/login", (dbRunner) -> new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData, new UserStorage(dbRunner)));
         webServer.addRoute("/logout", () -> new LogoutController(gridData));
         webServer.addRoute("/api/office", () -> new OfficeController(gridData));
+        webServer.addRoute("/api/edit", () -> new EditOfficeController(gridData));
+        webServer.addRoute("/edit", () -> new EditController(pebbleTemplateRenderer));
         webServer.addPublicPaths("/login", "/register", "/recreateDb");
         webServer.start();
 

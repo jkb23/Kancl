@@ -1,13 +1,14 @@
 package online.kancl.page.office;
 
-import online.kancl.objects.*;
+import online.kancl.objects.GridData;
+import online.kancl.objects.User;
 import online.kancl.server.Controller;
 import spark.Request;
 import spark.Response;
 
 import javax.json.*;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.StringReader;
 
 import static javax.json.Json.createObjectBuilder;
@@ -25,22 +26,11 @@ public class OfficeController extends Controller {
     @Override
     public String get(Request request, Response response) {
         dontCache(response);
-        var jsonObjects = createObjectBuilder()
+        return createObjectBuilder()
                 .add("objects", createObjectsJsonArray())
                 .add("me", (String) request.session().attribute("user"))
                 .build()
                 .toString();
-
-        PrintWriter printWriter;
-        try {
-            printWriter = new PrintWriter(OFFICE_STATE_FILE_PATH);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        printWriter.println(jsonObjects);
-        printWriter.close();
-
-        return jsonObjects;
     }
 
     @Override
@@ -61,33 +51,26 @@ public class OfficeController extends Controller {
             }
         }
 
-        if (type.equals("wall")) {
-            Wall wall = new Wall(x, y);
-
-            if (gridData.wallCanBeAdded(wall)) {
-                gridData.addWall(wall);
-            } else {
-                gridData.deleteWall(wall);
-            }
-        }
-
-        if (type.equals("meeting")) {
-            MeetingObject meetingObject = new MeetingObject(x, y, "https://www.google.com/");
-
-            if (gridData.meetingCanBeAdded(meetingObject)) {
-                gridData.addMeeting(meetingObject);
-            } else {
-                gridData.deleteMeeting(meetingObject);
-            }
-        }
-
         return "";
     }
 
     private JsonArrayBuilder createObjectsJsonArray() {
-
         JsonArrayBuilder objects = Json.createArrayBuilder();
 
+        JsonObject jsonOfficeState = null;
+        try (JsonReader reader = Json.createReader(new FileReader(OFFICE_STATE_FILE_PATH))) {
+            jsonOfficeState = reader.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Add objects from jsonOfficeState to the "objects" array
+        JsonArray officeObjects = jsonOfficeState.getJsonArray("objects");
+        for (JsonValue object : officeObjects) {
+            objects.add(object);
+        }
+
+        // Add users from gridData to the "objects" array
         for (User user : gridData.getUsers()) {
             JsonObjectBuilder userBuilder = Json.createObjectBuilder();
             userBuilder.add("type", "user");
@@ -97,31 +80,6 @@ public class OfficeController extends Controller {
             userBuilder.add("x", user.getX());
             userBuilder.add("y", user.getY());
             objects.add(userBuilder);
-        }
-
-        for (Wall wall : gridData.getWalls()) {
-            JsonObjectBuilder wallBuilder = Json.createObjectBuilder();
-            wallBuilder.add("type", "wall");
-            wallBuilder.add("x", wall.getX());
-            wallBuilder.add("y", wall.getY());
-            objects.add(wallBuilder);
-        }
-
-        for (MeetingObject meetingObject : gridData.getMeetingObjects()) {
-            JsonObjectBuilder meetingObjectBuilder = Json.createObjectBuilder();
-            meetingObjectBuilder.add("type", "meeting");
-            meetingObjectBuilder.add("link", meetingObject.getMeetingLink());
-            meetingObjectBuilder.add("x", meetingObject.getX());
-            meetingObjectBuilder.add("y", meetingObject.getY());
-            objects.add(meetingObjectBuilder);
-        }
-
-        for (CoffeeMachine coffeeMachine : gridData.getCoffeeMachines()) {
-            JsonObjectBuilder coffeeMachineBuilder = Json.createObjectBuilder();
-            coffeeMachineBuilder.add("type", "coffeeMachine");
-            coffeeMachineBuilder.add("x", coffeeMachine.getX());
-            coffeeMachineBuilder.add("y", coffeeMachine.getY());
-            objects.add(coffeeMachineBuilder);
         }
 
         return objects;

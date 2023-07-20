@@ -3,8 +3,6 @@ const container = document.getElementById("container");
 
 let me = null;
 let lastData = [];
-let canAddWalls = false;
-let canAddMeetings = false;
 
 function canMoveRight() {
     for (const object of lastData.objects) {
@@ -75,20 +73,6 @@ function createGrid() {
 
         grid[x].push(square);
     });
-}
-
-function handleEdit(x, y) {
-    let square = document.getElementById(x + "-" + y);
-    square.removeAttribute("class");
-    square.classList.add("item");
-
-    if (canAddWalls && !canAddMeetings) {
-        sendRequestWithUpdatedObject(x, y, "wall", "add");
-    }
-
-    if (canAddMeetings && !canAddWalls) {
-        sendRequestWithUpdatedObject(x, y, "meeting", "add");
-    }
 }
 
 createGrid();
@@ -200,32 +184,6 @@ window.addEventListener("unload", function (e) {
     e.preventDefault();
     sendLogoutRequestOnClose();
 });
-
-function handleEnableAddWalls() {
-    canAddWalls = !canAddWalls;
-    if (canAddMeetings) {
-        canAddMeetings = false;
-    } else {
-        container.classList.toggle("inEditMode");
-        document.getElementById("editLabel").classList.toggle("show");
-    }
-}
-
-const editWallsButton = document.getElementById("editWallsButton");
-editWallsButton.addEventListener("click", handleEnableAddWalls);
-
-function handleEnableAddMeetings() {
-    canAddMeetings = !canAddMeetings;
-    if (canAddWalls) {
-        canAddWalls = false;
-    } else {
-        container.classList.toggle("inEditMode");
-        document.getElementById("editLabel").classList.toggle("show");
-    }
-}
-
-const editMeetingsButton = document.getElementById("editMeetingsButton");
-editMeetingsButton.addEventListener("click", handleEnableAddMeetings);
 
 function fetchOfficeState() {
     fetch("/api/office")
