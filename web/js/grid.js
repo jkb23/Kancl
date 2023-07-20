@@ -81,6 +81,7 @@ function handleEdit(x, y) {
     let square = document.getElementById(x + "-" + y);
     square.removeAttribute("class");
     square.classList.add("item");
+
     if (canAddWalls && !canAddMeetings) {
         sendRequestWithUpdatedObject(x, y, "wall", "add");
     }
