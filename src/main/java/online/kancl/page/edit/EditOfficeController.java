@@ -48,6 +48,7 @@ public class EditOfficeController extends Controller {
         JsonObject jsonObject = jsonReader.readObject();
         String type = jsonObject.getString("objectType");
         String action = jsonObject.getString("action");
+        String link = jsonObject.getString("link");
 
         int x = jsonObject.getInt("x");
         int y = jsonObject.getInt("y");
@@ -71,7 +72,7 @@ public class EditOfficeController extends Controller {
         }
 
         if (type.equals("meeting")) {
-            MeetingObject meetingObject = new MeetingObject(x, y, "https://www.google.com/");
+            MeetingObject meetingObject = new MeetingObject(x, y, link);
 
             if (gridData.meetingCanBeAdded(meetingObject)) {
                 gridData.addMeeting(meetingObject);

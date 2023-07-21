@@ -37,13 +37,15 @@ function handleEdit(x, y) {
     if (canAddWalls && !canAddMeetings) {
         square.removeAttribute("class");
         square.classList.add("item");
-        sendRequestWithUpdatedObject(x, y, "wall", "add");
+        sendRequestWithUpdatedObject(x, y, "wall", "add", "");
     }
 
     if (canAddMeetings && !canAddWalls) {
         square.removeAttribute("class");
         square.classList.add("item");
-        sendRequestWithUpdatedObject(x, y, "meeting", "add");
+        let linkElement = document.getElementById("editMeetingLink");
+        let linkValue = linkElement.value;
+        sendRequestWithUpdatedObject(x, y, "meeting", "add", linkValue);
     }
 }
 
@@ -110,7 +112,7 @@ const editMeetingsButton = document.getElementById("editMeetingsButton");
 editMeetingsButton.addEventListener("click", handleEnableAddMeetings);
 
 function handleSaveButton() {
-    sendRequestWithUpdatedObject(0, 0, "none", "rewrite")
+    sendRequestWithUpdatedObject(0, 0, "none", "rewrite", "")
     window.location.href = "/";
 }
 
@@ -156,7 +158,7 @@ function refreshOfficeState(data) {
     }
 }
 
-function sendRequestWithUpdatedObject(xCoordinates, yCoordinates, type, action, update) {
+function sendRequestWithUpdatedObject(xCoordinates, yCoordinates, type, action, link) {
     const httpRequest = new XMLHttpRequest();
     const url = "/api/edit";
     httpRequest.open("POST", url);
@@ -167,6 +169,7 @@ function sendRequestWithUpdatedObject(xCoordinates, yCoordinates, type, action, 
             action: action,
             x: xCoordinates,
             y: yCoordinates,
+            link: link
         })
     );
 }

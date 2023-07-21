@@ -13,12 +13,15 @@
     {% block body %}
     <div class"board-and-header">
         <div class="header">
-            <h1 class="mainpage-title">Kancl Online</h1>
             <h2 class="editLabel" id="editLabel"> Edit Mode Active </h2>
             <div class="href-buttons">
                 <button class="editButton" id="editWallsButton"> Edit walls </button>
                 <button class="editButton" id="editMeetingsButton"> Edit meetings </button>
                 <button class="editButton" id="saveButton"> Save changes </button>
+            </div>
+            <div class="link-input">
+                <label class="meeting-label" for="editMeetingLink">Meeting link:</label>
+                <input type="text" class="meetingLink" id="editMeetingLink" value="https://www.google.com/">
             </div>
         </div>
 
