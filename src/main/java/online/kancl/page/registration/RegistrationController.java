@@ -1,6 +1,5 @@
 package online.kancl.page.registration;
 
-import online.kancl.auth.Authenticator;
 import online.kancl.db.TransactionJobRunner;
 import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
@@ -34,18 +33,17 @@ public class RegistrationController extends Controller {
 
     @Override
     public String post(Request request, Response response) {
-        return transactionJobRunner.runInTransaction((dbRunner) -> {
-            Authenticator auth = new Authenticator(new UserStorage(dbRunner));
+        return transactionJobRunner.runInTransaction(dbRunner -> {
             Registration registration = new Registration(
                     request.queryParams("username"),
                     request.queryParams("password"),
                     request.queryParams("passwordCheck"),
                     request.queryParams("email"));
-            return registerUser(request, response, auth, registration);
+            return registerUser(request, response, registration);
         });
     }
 
-    String registerUser(Request request, Response response, Authenticator authenticator, Registration user) {
+    String registerUser(Request request, Response response, Registration user) {
         boolean canBeRegistered = true;
         if (!user.password().equals(user.passwordCheck())) {
             registrationInfo.setErrorMessage("Passwords are not same");

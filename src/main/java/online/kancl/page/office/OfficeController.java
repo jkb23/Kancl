@@ -10,6 +10,7 @@ import javax.json.*;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Objects;
 
 import static javax.json.Json.createObjectBuilder;
 import static online.kancl.util.HttpUtil.dontCache;
@@ -36,12 +37,15 @@ public class OfficeController extends Controller {
     @Override
     public String post(Request request, Response response) {
         request.body();
-        JsonReader jsonReader = Json.createReader(new StringReader(request.body()));
-        JsonObject jsonObject = jsonReader.readObject();
+        JsonObject jsonObject;
+        try (JsonReader jsonReader = Json.createReader(new StringReader(request.body()))) {
+            jsonObject = jsonReader.readObject();
+        }
         String type = jsonObject.getString("objectType");
 
         int x = jsonObject.getInt("x");
         int y = jsonObject.getInt("y");
+
         if (type.equals("user")) {
             String username = jsonObject.getString("username");
             for (User user : gridData.getUsers()) {
@@ -65,7 +69,7 @@ public class OfficeController extends Controller {
         }
 
         // Add objects from jsonOfficeState to the "objects" array
-        JsonArray officeObjects = jsonOfficeState.getJsonArray("objects");
+        JsonArray officeObjects = Objects.requireNonNull(jsonOfficeState).getJsonArray("objects");
         for (JsonValue object : officeObjects) {
             objects.add(object);
         }
