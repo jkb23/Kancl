@@ -205,6 +205,8 @@ function refreshOfficeState(data) {
         userElement.remove();
     }
 
+    refreshGridSquares()
+
     for (const object of data.objects) {
         const x = object.x;
         const y = object.y;
@@ -221,6 +223,16 @@ function refreshOfficeState(data) {
             addMeeting(object, coordinates);
         } else if (object.type === "coffeeMachine") {
             addCoffeeMachine(object, coordinates);
+        }
+    }
+}
+
+function refreshGridSquares() {
+    for (let y = 0; y < 18; y++) {
+        for (let x = 0; x < 26; x++) {
+            let square = document.getElementById(x + "-" + y);
+            square.removeAttribute("class");
+            square.classList.add("item");
         }
     }
 }
