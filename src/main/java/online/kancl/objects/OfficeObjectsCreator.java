@@ -75,7 +75,7 @@ public class OfficeObjectsCreator {
         gridData.addWallsList(getWallList());
         gridData.addMeeting(new MeetingObject(25, 0, meetingsLinks.get(0)));
         gridData.addMeeting(new MeetingObject(0, 0, meetingsLinks.get(1)));
-        gridData.addMeeting( new MeetingObject(0, 17, meetingsLinks.get(2)));
+        gridData.addMeeting(new MeetingObject(0, 17, meetingsLinks.get(2)));
         gridData.addMeeting(new MeetingObject(25, 17, meetingsLinks.get(3)));
         gridData.addCoffeeMachine(new CoffeeMachine(12, 0));
         gridData.addCoffeeMachine(new CoffeeMachine(13, 0));

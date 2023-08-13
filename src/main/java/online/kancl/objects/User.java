@@ -2,6 +2,8 @@ package online.kancl.objects;
 
 import online.kancl.db.UserStorage;
 
+import java.util.Objects;
+
 public class User extends OfficeObject {
     public final String username;
     private final String avatarBackgroundColor;
@@ -29,5 +31,19 @@ public class User extends OfficeObject {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        User user = (User) o;
+        return Objects.equals(username, user.username) && Objects.equals(avatarBackgroundColor, user.avatarBackgroundColor) && Objects.equals(status, user.status);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), username, avatarBackgroundColor, status);
     }
 }

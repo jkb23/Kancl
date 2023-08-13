@@ -2,7 +2,11 @@ package online.kancl;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.FileLoader;
-import online.kancl.db.*;
+import online.kancl.db.ConnectionProvider;
+import online.kancl.db.DatabaseRunner;
+import online.kancl.db.SchemaCreator;
+import online.kancl.db.TransactionJobRunner;
+import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
 import online.kancl.objects.OfficeObjectsCreator;
 import online.kancl.page.edit.EditController;
@@ -46,9 +50,9 @@ public class Main {
         WebServer webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner, "/login");
         webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer));
         webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
-        webServer.addRoute("/user", (dbRunner) -> new UserPageController(pebbleTemplateRenderer, new UserStorage(dbRunner), gridData, transactionJobRunner));
-        webServer.addRoute("/register", (dbRunner) -> new RegistrationController(pebbleTemplateRenderer, transactionJobRunner, new RegistrationInfo(), new UserStorage(dbRunner), gridData));
-        webServer.addRoute("/login", (dbRunner) -> new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData, new UserStorage(dbRunner)));
+        webServer.addRoute("/user", dbRunner -> new UserPageController(pebbleTemplateRenderer, new UserStorage(dbRunner), gridData, transactionJobRunner));
+        webServer.addRoute("/register", dbRunner -> new RegistrationController(pebbleTemplateRenderer, transactionJobRunner, new RegistrationInfo(), new UserStorage(dbRunner), gridData));
+        webServer.addRoute("/login", dbRunner -> new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData, new UserStorage(dbRunner)));
         webServer.addRoute("/logout", () -> new LogoutController(gridData));
         webServer.addRoute("/api/office", () -> new OfficeController(gridData));
         webServer.addRoute("/api/edit", () -> new EditOfficeController(gridData));

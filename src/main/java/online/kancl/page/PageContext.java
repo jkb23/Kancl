@@ -9,17 +9,17 @@ public class PageContext {
     private UserStorage userStorage;
 
     public PageContext(Request request) {
-        String username = request.session().attribute("user");
-        if(username != null) {
-            this.username = username;
+        String user = request.session().attribute("user");
+        if (user != null) {
+            this.username = user;
         }
     }
 
     public PageContext(Request request, UserStorage userStorage) {
         this.userStorage = userStorage;
-        String username = request.session().attribute("user");
-        if(username != null) {
-            this.username = username;
+        String user = request.session().attribute("user");
+        if (user != null) {
+            this.username = user;
         }
     }
 
@@ -28,7 +28,7 @@ public class PageContext {
     }
 
     public String showLogoutWhenLoggedIn() {
-        if(username == null) {
+        if (username == null) {
             return "";
         } else {
             return "Logout";

@@ -21,13 +21,13 @@ public class ExceptionHandler {
     private void logExceptionInRequest(Exception exception, Request request) {
         System.out.println(
                 RED + "Exception when handling " + request.requestMethod() + " to " + request.url() + RESET_COLOR + "\n"
-                + getExceptionText(exception) + "\n"
+                        + getExceptionText(exception) + "\n"
         );
     }
 
     private String renderException(Exception exception) {
         return "<h1>Unexpected error</h1>"
-               + "<pre>" + getExceptionText(exception) + "</pre>";
+                + "<pre>" + getExceptionText(exception) + "</pre>";
     }
 
     private String getExceptionText(Exception exception) {

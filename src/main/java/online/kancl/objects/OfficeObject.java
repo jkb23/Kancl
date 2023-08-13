@@ -24,7 +24,7 @@ public class OfficeObject {
         return y;
     }
 
-    public void moveObject(int x, int y){
+    public void moveObject(int x, int y) {
         this.x = x;
         this.y = y;
     }
