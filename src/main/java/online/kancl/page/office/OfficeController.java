@@ -6,7 +6,13 @@ import online.kancl.server.Controller;
 import spark.Request;
 import spark.Response;
 
-import javax.json.*;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
+import javax.json.JsonValue;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -16,7 +22,7 @@ import static javax.json.Json.createObjectBuilder;
 import static online.kancl.util.HttpUtil.dontCache;
 
 public class OfficeController extends Controller {
-    private static final String OFFICE_STATE_FILE_PATH = "src/main/resources/initialOfficeState.json";
+    private static final String OFFICE_STATE_FILE_PATH = "src/main/resources/officeLayout.json";
 
     private final GridData gridData;
 
@@ -28,7 +34,7 @@ public class OfficeController extends Controller {
     public String get(Request request, Response response) {
         dontCache(response);
         return createObjectBuilder()
-                .add("objects", createObjectsJsonArray())
+                .add("objects", createObjectsJsonArrayFromFile())
                 .add("me", (String) request.session().attribute("user"))
                 .build()
                 .toString();
@@ -58,7 +64,7 @@ public class OfficeController extends Controller {
         return "";
     }
 
-    private JsonArrayBuilder createObjectsJsonArray() {
+    private JsonArrayBuilder createObjectsJsonArrayFromFile() {
         JsonArrayBuilder objects = Json.createArrayBuilder();
 
         JsonObject jsonOfficeState = null;

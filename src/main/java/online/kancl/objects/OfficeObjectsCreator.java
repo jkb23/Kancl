@@ -15,8 +15,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import static javax.json.Json.createObjectBuilder;
+import static online.kancl.util.JsonFileUtil.createObjectsJsonArray;
+import static online.kancl.util.JsonFileUtil.writeFileContents;
+
 public class OfficeObjectsCreator {
-    private static final String INITIAL_OFFICE_STATE_FILE_PATH = "src/main/resources/initialOfficeState.json";
+    private static final String INITIAL_OFFICE_STATE_FILE_PATH = "src/main/resources/officeLayout.json";
 
     private final UserStorage userStorage;
 
@@ -75,6 +79,16 @@ public class OfficeObjectsCreator {
         gridData.addMeeting(new MeetingObject(25, 17, meetingsLinks.get(3)));
         gridData.addCoffeeMachine(new CoffeeMachine(12, 0));
         gridData.addCoffeeMachine(new CoffeeMachine(13, 0));
+
+        try {
+            String jsonObjects = createObjectBuilder()
+                    .add("objects", createObjectsJsonArray(gridData))
+                    .build()
+                    .toString();
+            writeFileContents(jsonObjects, INITIAL_OFFICE_STATE_FILE_PATH);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static List<Wall> getWallList() {

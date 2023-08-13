@@ -1,6 +1,5 @@
 package online.kancl.page.edit;
 
-import online.kancl.objects.CoffeeMachine;
 import online.kancl.objects.GridData;
 import online.kancl.objects.MeetingObject;
 import online.kancl.objects.Wall;
@@ -8,15 +7,23 @@ import online.kancl.server.Controller;
 import spark.Request;
 import spark.Response;
 
-import javax.json.*;
-import java.io.*;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringReader;
 
 import static javax.json.Json.createObjectBuilder;
 import static online.kancl.util.HttpUtil.dontCache;
+import static online.kancl.util.JsonFileUtil.createObjectsJsonArray;
+import static online.kancl.util.JsonFileUtil.readFileContents;
+import static online.kancl.util.JsonFileUtil.writeFileContents;
 
 public class EditOfficeController extends Controller {
-    private static final String OFFICE_STATE_FILE_PATH = "src/main/resources/initialOfficeState.json";
-    private static final String OFFICE_STATE_FILE_PATH_EDIT = "src/main/resources/initialOfficeStateEdit.json";
+    private static final String OFFICE_STATE_FILE_PATH = "src/main/resources/officeLayout.json";
+    private static final String OFFICE_STATE_FILE_PATH_EDIT = "src/main/resources/editedOfficeLayout.json";
 
     private final GridData gridData;
 
@@ -27,8 +34,8 @@ public class EditOfficeController extends Controller {
     @Override
     public String get(Request request, Response response) {
         dontCache(response);
-        var jsonObjects = createObjectBuilder()
-                .add("objects", createObjectsJsonArray())
+        String jsonObjects = createObjectBuilder()
+                .add("objects", createObjectsJsonArray(gridData))
                 .build()
                 .toString();
 
@@ -80,8 +87,8 @@ public class EditOfficeController extends Controller {
 
         if (action.equals("rewrite")) {
             try {
-                String contentToUpdate = readFileContents();
-                writeFileContents(contentToUpdate);
+                String contentToUpdate = readFileContents(OFFICE_STATE_FILE_PATH_EDIT);
+                writeFileContents(contentToUpdate, OFFICE_STATE_FILE_PATH);
 
                 return "Update successful!";
             } catch (IOException e) {
@@ -92,58 +99,5 @@ public class EditOfficeController extends Controller {
         }
 
         return "";
-    }
-
-
-    private JsonArrayBuilder createObjectsJsonArray() {
-
-        JsonArrayBuilder objects = Json.createArrayBuilder();
-
-        for (Wall wall : gridData.getWalls()) {
-            JsonObjectBuilder wallBuilder = Json.createObjectBuilder();
-            wallBuilder.add("type", "wall");
-            wallBuilder.add("x", wall.getX());
-            wallBuilder.add("y", wall.getY());
-            objects.add(wallBuilder);
-        }
-
-        for (MeetingObject meetingObject : gridData.getMeetingObjects()) {
-            JsonObjectBuilder meetingObjectBuilder = Json.createObjectBuilder();
-            meetingObjectBuilder.add("type", "meeting");
-            meetingObjectBuilder.add("link", meetingObject.getMeetingLink());
-            meetingObjectBuilder.add("x", meetingObject.getX());
-            meetingObjectBuilder.add("y", meetingObject.getY());
-            objects.add(meetingObjectBuilder);
-        }
-
-        for (CoffeeMachine coffeeMachine : gridData.getCoffeeMachines()) {
-            JsonObjectBuilder coffeeMachineBuilder = Json.createObjectBuilder();
-            coffeeMachineBuilder.add("type", "coffeeMachine");
-            coffeeMachineBuilder.add("x", coffeeMachine.getX());
-            coffeeMachineBuilder.add("y", coffeeMachine.getY());
-            objects.add(coffeeMachineBuilder);
-        }
-
-        return objects;
-    }
-
-    private String readFileContents() throws IOException {
-        StringBuilder contentBuilder = new StringBuilder();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(EditOfficeController.OFFICE_STATE_FILE_PATH_EDIT))) {
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                contentBuilder.append(line).append("\n");
-            }
-        }
-
-        return contentBuilder.toString();
-    }
-
-    private void writeFileContents(String content) throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(EditOfficeController.OFFICE_STATE_FILE_PATH))) {
-            writer.write(content);
-        }
     }
 }
