@@ -31,8 +31,7 @@ public class WebServer {
         Spark.before(protectPrivatePaths());
     }
 
-    public void addPublicPaths(String... publicPaths)
-    {
+    public void addPublicPaths(String... publicPaths) {
         this.publicPaths.addAll(List.of(publicPaths));
     }
 
@@ -61,12 +60,12 @@ public class WebServer {
     }
 
     private Route processGetWithTransaction(Function<DatabaseRunner, Controller> controllerSupplier) {
-        return (request, response) -> transactionJobRunner.runInTransaction((dbRunner) -> controllerSupplier.apply(dbRunner)
+        return (request, response) -> transactionJobRunner.runInTransaction(dbRunner -> controllerSupplier.apply(dbRunner)
                 .get(request, response));
     }
 
     private Route processPostWithTransaction(Function<DatabaseRunner, Controller> controllerSupplier) {
-        return (request, response) -> transactionJobRunner.runInTransaction((dbRunner) -> controllerSupplier.apply(dbRunner)
+        return (request, response) -> transactionJobRunner.runInTransaction(dbRunner -> controllerSupplier.apply(dbRunner)
                 .post(request, response));
     }
 

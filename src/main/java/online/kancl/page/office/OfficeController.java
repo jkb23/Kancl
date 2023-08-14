@@ -1,17 +1,29 @@
 package online.kancl.page.office;
 
-import online.kancl.objects.*;
+import online.kancl.objects.GridData;
+import online.kancl.objects.User;
 import online.kancl.server.Controller;
 import spark.Request;
 import spark.Response;
 
-import javax.json.*;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
+import javax.json.JsonValue;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.StringReader;
+import java.util.Objects;
 
 import static javax.json.Json.createObjectBuilder;
 import static online.kancl.util.HttpUtil.dontCache;
 
 public class OfficeController extends Controller {
+    private static final String OFFICE_STATE_FILE_PATH = "src/main/resources/officeLayout.json";
+
     private final GridData gridData;
 
     public OfficeController(GridData gridData) {
@@ -22,7 +34,7 @@ public class OfficeController extends Controller {
     public String get(Request request, Response response) {
         dontCache(response);
         return createObjectBuilder()
-                .add("objects", createObjectsJsonArray())
+                .add("objects", createObjectsJsonArrayFromFile())
                 .add("me", (String) request.session().attribute("user"))
                 .build()
                 .toString();
@@ -31,14 +43,17 @@ public class OfficeController extends Controller {
     @Override
     public String post(Request request, Response response) {
         request.body();
-        JsonReader jsonReader = Json.createReader(new StringReader(request.body()));
-        JsonObject jsonObject = jsonReader.readObject();
+        JsonObject jsonObject;
+        try (JsonReader jsonReader = Json.createReader(new StringReader(request.body()))) {
+            jsonObject = jsonReader.readObject();
+        }
         String type = jsonObject.getString("objectType");
+
+        int x = jsonObject.getInt("x");
+        int y = jsonObject.getInt("y");
 
         if (type.equals("user")) {
             String username = jsonObject.getString("username");
-            int x = jsonObject.getInt("x");
-            int y = jsonObject.getInt("y");
             for (User user : gridData.getUsers()) {
                 if (user.username.equals(username)) {
                     user.moveObject(x, y);
@@ -49,10 +64,23 @@ public class OfficeController extends Controller {
         return "";
     }
 
-    private JsonArrayBuilder createObjectsJsonArray() {
-
+    private JsonArrayBuilder createObjectsJsonArrayFromFile() {
         JsonArrayBuilder objects = Json.createArrayBuilder();
 
+        JsonObject jsonOfficeState = null;
+        try (JsonReader reader = Json.createReader(new FileReader(OFFICE_STATE_FILE_PATH))) {
+            jsonOfficeState = reader.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Add objects from jsonOfficeState to the "objects" array
+        JsonArray officeObjects = Objects.requireNonNull(jsonOfficeState).getJsonArray("objects");
+        for (JsonValue object : officeObjects) {
+            objects.add(object);
+        }
+
+        // Add users from gridData to the "objects" array
         for (User user : gridData.getUsers()) {
             JsonObjectBuilder userBuilder = Json.createObjectBuilder();
             userBuilder.add("type", "user");
@@ -62,31 +90,6 @@ public class OfficeController extends Controller {
             userBuilder.add("x", user.getX());
             userBuilder.add("y", user.getY());
             objects.add(userBuilder);
-        }
-
-        for (Wall wall : gridData.getWalls()) {
-            JsonObjectBuilder wallBuilder = Json.createObjectBuilder();
-            wallBuilder.add("type", "wall");
-            wallBuilder.add("x", wall.getX());
-            wallBuilder.add("y", wall.getY());
-            objects.add(wallBuilder);
-        }
-
-        for (MeetingObject meetingObject : gridData.getMeetingObjects()) {
-            JsonObjectBuilder meetingObjectBuilder = Json.createObjectBuilder();
-            meetingObjectBuilder.add("type", "meeting");
-            meetingObjectBuilder.add("link", meetingObject.getMeetingLink());
-            meetingObjectBuilder.add("x", meetingObject.getX());
-            meetingObjectBuilder.add("y", meetingObject.getY());
-            objects.add(meetingObjectBuilder);
-        }
-
-        for (CoffeeMachine coffeeMachine : gridData.getCoffeeMachines()) {
-            JsonObjectBuilder coffeeMachineBuilder = Json.createObjectBuilder();
-            coffeeMachineBuilder.add("type", "coffeeMachine");
-            coffeeMachineBuilder.add("x", coffeeMachine.getX());
-            coffeeMachineBuilder.add("y", coffeeMachine.getY());
-            objects.add(coffeeMachineBuilder);
         }
 
         return objects;

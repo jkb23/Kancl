@@ -29,6 +29,14 @@ public class GridData {
         walls.add(wall);
     }
 
+    public void deleteWall(Wall wall) {
+        walls.remove(wall);
+    }
+
+    public void deleteMeeting(MeetingObject meetingObject) {
+        meetingObjects.remove(meetingObject);
+    }
+
     public void addMeeting(MeetingObject meetingObject) {
         meetingObjects.add(meetingObject);
     }
@@ -44,10 +52,10 @@ public class GridData {
     public void updateStatus(String username, String newStatus) {
         users.stream()
                 .filter(user -> user.getUsername()
-                .equals(username))
+                        .equals(username))
                 .findFirst()
                 .ifPresent(user -> user
-                .setStatus(newStatus));
+                        .setStatus(newStatus));
     }
 
     public List<User> getUsers() {
@@ -71,5 +79,23 @@ public class GridData {
 
     public List<CoffeeMachine> getCoffeeMachines() {
         return coffeeMachines;
+    }
+
+    public boolean wallCanBeAdded(Wall newWall) {
+        for (Wall oldWall : walls) {
+            if (oldWall.equals(newWall)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean meetingCanBeAdded(MeetingObject newMeetingObject) {
+        for (MeetingObject oldMeeting : meetingObjects) {
+            if (oldMeeting.equals(newMeetingObject)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

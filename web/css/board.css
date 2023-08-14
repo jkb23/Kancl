@@ -1,182 +1,232 @@
 .px-4.py-5 {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   width: 100%;
-   height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 }
 
 .board-and-header {
-   display: flex;
-   flex-direction: row;
+    display: flex;
+    flex-direction: row;
 }
 
 .header {
-   display: flex;
-   flex-direction: row;
-   justify-content: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 1rem;
 }
 
 .href-buttons {
-   display: flex;
-   position: absolute;
-   right: 0;
-   flex-direction: row;
-   align-self: flex-end;
+    display: flex;
+    position: absolute;
+    right: 0;
+    flex-direction: row;
+    align-self: flex-end;
 }
 
 a.href-button {
-   text-decoration: none;
-   margin: 0 3rem 1rem 0;
-   border: solid 2px var(--third-color);
-   border-radius: 30%;
-   padding: 0.6rem 0.6rem;
-   color: white;
-   font-size: 1.2rem;
+    text-decoration: none;
+    margin: 0 3rem 0 0;
+    border: solid 2px var(--third-color);
+    border-radius: 30%;
+    padding: 0.6rem 0.6rem;
+    color: white;
+    font-size: 1.2rem;
 }
 
 .mainpage-title {
-   color: var(--third-color) !important;
-   border-bottom: none;
-   text-align: center;
+    color: var(--third-color) !important;
+    border-bottom: none;
+    padding: 0;
+    margin: 0;
 }
 
 .container {
-   display: grid;
-   grid-template-columns: repeat(26, 50px);
-   grid-template-rows: repeat(18, 50px);
-   grid-auto-rows: 50px;
-   grid-auto-columns: 50px;
-   width: 100%;
-   height: 100%;
-   margin: 0 auto;
-   border: 10px solid black;
-   border-radius: 10px;
-   padding: 0;
-   background: white;
+    display: grid;
+    grid-template-columns: repeat(26, 50px);
+    grid-template-rows: repeat(18, 50px);
+    grid-auto-rows: 50px;
+    grid-auto-columns: 50px;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    border: 10px solid black;
+    border-radius: 10px;
+    padding: 0;
+    background: white;
+}
+
+.container.inEditMode {
+    border-color: red;
+}
+
+.editLabel {
+    color: red;
+    visibility: hidden;
+    margin: 0 2rem 0 0;
+}
+
+.show {
+    visibility: visible;
+}
+
+.hide {
+    visibility: hidden;
 }
 
 .container > div {
-   border: 1px solid rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .user {
-   width: 42px;
-   height: 42px;
-   border-radius: 50%;
-   border: 1px solid black;
-   position: absolute;
-   margin: 4px;
-   cursor: pointer;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid black;
+    position: absolute;
+    margin: 4px;
+    cursor: pointer;
 }
 
 .user > p {
-   position: absolute;
-   font-size: 32px;
-   top: -4px;
-   left: 9px;
+    position: absolute;
+    font-size: 32px;
+    top: -4px;
+    left: 9px;
 }
 
 .state {
-   position: relative;
-   font-size: 18px;
-   width: 200px;
-   background: #fff;
-   border-radius: 30px;
-   text-align: center;
-   color: #000;
-   bottom: -50px;
-   display: none;
-   padding: 0.5rem;
-   z-index: 999;
+    position: relative;
+    font-size: 18px;
+    width: 200px;
+    background: #fff;
+    border-radius: 30px;
+    text-align: center;
+    color: #000;
+    bottom: -50px;
+    display: none;
+    padding: 0.5rem;
+    z-index: 999;
 }
 
 .state h4 {
-   font-size: 16px;
-   font-weight: 700;
+    font-size: 16px;
+    font-weight: 700;
 }
 
 .state p {
-   font-size: 12px;
-   margin-bottom: 0;
+    font-size: 12px;
+    margin-bottom: 0;
 }
 
 .state:before {
-   content: '';
-   position: absolute;
-   top: 0;
-   left: 62px;
-   width: 0;
-   height: 0;
-   border: 32px solid transparent;
-   border-top-color: white;
-   border-bottom: 0;
-   border-right: 0;
-   margin-left: -23px;
-   margin-top: -32px;
-   background-color: #a0dbf2;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 62px;
+    width: 0;
+    height: 0;
+    border: 32px solid transparent;
+    border-top-color: white;
+    border-bottom: 0;
+    border-right: 0;
+    margin-left: -23px;
+    margin-top: -32px;
+    background-color: #a0dbf2;
 }
 
 .user:hover .state {
-   display: block;
-   background-color: #a0dbf2;
+    display: block;
+    background-color: #a0dbf2;
 }
 
 .wall {
-   background-color: #7C6C77;
+    background-color: #7C6C77;
 }
 
 .meeting {
-   background-image: url("meeting-logo-reverted.png");
-   background-position: center center;
-   background-repeat: no-repeat;
-   background-size: cover;
-   cursor: pointer;
-   position: relative;
-   text-align: center;
-   border-radius: 50%;
-   width: 48px;
-   height: 48px;
+    background-image: url("meeting-logo-reverted.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    cursor: pointer;
+    position: relative;
+    text-align: center;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
 }
 
 .meeting-state {
-   border: 1px solid black;
-   padding: 20px;
-   background-color: white;
-   width: 200px;
-   border-radius: 5px;
-   position: absolute;
-   top: 25px;
-   right: 20px;
-   flex-direction: column;
-   font-weight: 500;
-   font-size: 18px;
-   display: none;
+    border: 1px solid black;
+    padding: 20px;
+    background-color: white;
+    width: 200px;
+    border-radius: 5px;
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    flex-direction: column;
+    font-weight: 500;
+    font-size: 18px;
+    display: none;
 }
 
 .meeting-state a {
-   padding: 10px;
-   background-color: #007FFF;
-   border-radius: 5px;
-   color: white;
-   text-decoration: none;
-   margin-top: 10px;
-   font-size: 12px;
+    padding: 10px;
+    background-color: #007FFF;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    margin-top: 10px;
+    font-size: 12px;
 }
 
 .meeting:hover .meeting-state {
-   display: flex;
+    display: flex;
 }
 
 .coffeeMachine {
-   background-image: url("coffee-machine.png");
-   background-position: center center;
-   background-repeat: no-repeat;
-   background-size: cover;
-   cursor: pointer;
-   position: relative;
-   text-align: center;
-   border-radius: 50%;
-   width: 46px;
-   height: 46px;
+    background-image: url("coffee-machine.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    cursor: pointer;
+    position: relative;
+    text-align: center;
+    border-radius: 50%;
+    width: 46px;
+    height: 46px;
+}
+
+.editButton {
+    text-decoration: none;
+    margin: 0 3rem 0 0;
+    border: solid 3px var(--third-color);
+    border-radius: 30%;
+    padding: 0.6rem 0.6rem;
+    color: white;
+    background: none;
+    font-size: 1.2rem;
+}
+
+.meetingLink {
+    max-width: 30rem;
+    height: 2rem;
+    color: black;
+    background-color: black;
+}
+
+.link-input {
+    display: flex;
+    flex-direction: column;
+    width: 30rem;
+}
+
+.meeting-label {
+    color: white;
+    font-size: 18px;
 }

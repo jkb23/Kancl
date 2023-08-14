@@ -25,7 +25,7 @@ public class PebbleTemplateRenderer {
 
     /**
      * @param contexts The contexts name (key of the HashMap) is the name of the given class with the first
-     *                letter lowercase (e.g. class: LoginInfo -> contexts name: loginInfo)
+     *                 letter lowercase (e.g. class: LoginInfo -> contexts name: loginInfo)
      */
     public String renderTemplate(String templateName, Object... contexts) {
         try {
