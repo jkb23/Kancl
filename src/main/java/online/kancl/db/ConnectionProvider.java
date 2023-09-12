@@ -28,16 +28,22 @@ public class ConnectionProvider {
         try {
             return dataSource.getConnection();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseConnectionException("Failed to get database connection.", e);
         }
     }
 
     private DataSource createDataSource(String dbLocation) {
-        BasicDataSource dataSource = new BasicDataSource();
+        BasicDataSource basicDataSource = new BasicDataSource();
 
-        dataSource.setUrl("jdbc:h2:" + dbLocation);
-        dataSource.setMaxOpenPreparedStatements(100);
+        basicDataSource.setUrl("jdbc:h2:" + dbLocation);
+        basicDataSource.setMaxOpenPreparedStatements(100);
 
-        return dataSource;
+        return basicDataSource;
+    }
+
+    public static class DatabaseConnectionException extends RuntimeException {
+        public DatabaseConnectionException(String message, Throwable cause) {
+            super(message, cause);
+        }
     }
 }

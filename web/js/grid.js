@@ -3,11 +3,11 @@ import {
     addWall,
     createSquare,
     iterateOverGrid,
-    meetingSetUp,
     refreshGridSquares,
     sendLogoutRequestOnClose,
     sendRequestWithUpdatedObject
 } from "./common.js";
+import {USER_DETAILS_URL} from "./constants.js";
 
 const grid = [];
 const container = document.getElementById("container");
@@ -26,13 +26,17 @@ window.addEventListener("unload", function (e) {
     sendLogoutRequestOnClose();
 });
 
+fetchDetails();
 createGrid();
 
 function createGrid() {
     iterateOverGrid((x, y) => {
         let square = createSquare(x, y)
         container.appendChild(square);
-        if (y === 0) grid.push([]);
+
+        if (y === 0) {
+            grid.push([]);
+        }
 
         grid[x].push(square);
     });
@@ -109,9 +113,32 @@ function addMeeting(meeting, container) {
 
     let meetingLink = meetingSetUp(meeting, container)
 
-    meetingLink.addEventListener("click", function () {
-        sendRequestWithUpdatedObject(xCoordinate, yCoordinate, "user", "move", "", "/api/office", me.username);
-    });
+    if (meetingLink) {
+        meetingLink.addEventListener("click", function () {
+            sendRequestWithUpdatedObject(xCoordinate, yCoordinate, "user", "move", "", "/api/office", me.username, "");
+        });
+    }
+}
+
+function meetingSetUp(meeting, container) {
+    container.classList.add("meeting");
+
+    let meetingLink;
+
+    if (!container.hasChildNodes()) {
+        const meetingElement = document.createElement("div");
+        meetingElement.classList.add("meeting-state");
+        meetingElement.textContent = meeting.name;
+        container.appendChild(meetingElement);
+
+        meetingLink = document.createElement("a");
+        meetingLink.textContent = "Join a meeting";
+        meetingLink.setAttribute("href", meeting.link);
+        meetingLink.setAttribute("target", "_blank");
+        meetingElement.appendChild(meetingLink);
+    }
+
+    return meetingLink;
 }
 
 document.addEventListener("keydown", handleUserMove);
@@ -155,7 +182,7 @@ function handleUserMove(e) {
         if (lastData) {
             refreshOfficeState(lastData);
         }
-        sendRequestWithUpdatedObject(me.x, me.y, "user", "move", "", "/api/office", me.username)
+        sendRequestWithUpdatedObject(me.x, me.y, "user", "move", "", "/api/office", me.username, "", "");
     }
 }
 
@@ -205,4 +232,45 @@ function canMoveDown() {
     }
 
     return true;
+}
+
+async function fetchDetails() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let accessToken = urlParams.get('accessToken');
+    let refreshToken = urlParams.get('refreshToken')
+
+    if (accessToken && refreshToken) {
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+    }
+
+    if (!localStorage.getItem('accountId')) {
+        let userDetails = await getUserDetails(accessToken);
+        localStorage.setItem('accountId', userDetails.account_id);
+    }
+}
+
+async function getUserDetails(accessToken) {
+    const headers = {
+        "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "application/json"
+    };
+
+    try {
+        const response = await fetch(USER_DETAILS_URL, {
+            method: "GET",
+            headers: headers
+        });
+
+        if (response.ok) {
+            return await response.json();
+        } else {
+            const errorData = await response.json();
+            console.error("Error fetching user details:", errorData);
+        }
+    } catch (error) {
+        console.error("Network error:", error);
+
+        return null;
+    }
 }

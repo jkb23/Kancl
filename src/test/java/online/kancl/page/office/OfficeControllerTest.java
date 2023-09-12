@@ -41,7 +41,7 @@ class OfficeControllerTest {
 
         User user1 = new User("correct", new UserStorage(dbRunner));
         Wall wall = new Wall(1,1);
-        MeetingObject meetingObject = new MeetingObject(5, 5, "zoom.com");
+        MeetingObject meetingObject = new MeetingObject(5, 5, "zoom.com", "name", "id");
 
         gridData.addUser(user1);
         gridData.addWall(wall);

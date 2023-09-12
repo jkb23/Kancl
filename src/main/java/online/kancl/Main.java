@@ -20,6 +20,7 @@ import online.kancl.page.recreatedb.RecreateDbController;
 import online.kancl.page.registration.RegistrationController;
 import online.kancl.page.registration.RegistrationInfo;
 import online.kancl.page.userpage.UserPageController;
+import online.kancl.page.zoom.callback.ZoomCallbackController;
 import online.kancl.server.ExceptionHandler;
 import online.kancl.server.WebServer;
 import online.kancl.server.template.PebbleExtension;
@@ -57,6 +58,7 @@ public class Main {
         webServer.addRoute("/api/office", () -> new OfficeController(gridData));
         webServer.addRoute("/api/edit", () -> new EditOfficeController(gridData));
         webServer.addRoute("/edit", () -> new EditController(pebbleTemplateRenderer));
+        webServer.addRoute("/zoom-callback", ZoomCallbackController::new);
         webServer.addPublicPaths("/login", "/register", "/recreateDb");
         webServer.start();
 

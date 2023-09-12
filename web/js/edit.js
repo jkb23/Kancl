@@ -3,17 +3,19 @@ import {
     addWall,
     createSquare,
     iterateOverGrid,
-    meetingSetUp,
     refreshGridSquares,
     sendLogoutRequestOnClose,
     sendRequestWithUpdatedObject
 } from "./common.js";
+import {createZoomMeeting, deleteZoomMeeting} from "./zoom.js";
 
+const EDIT_URL = "/api/edit";
 const grid = [];
-const container = document.getElementById("container");
 
+const container = document.getElementById("container");
 let lastData = [];
 let canAddWalls = false;
+
 let canAddMeetings = false;
 
 window.addEventListener("load", () => {
@@ -33,18 +35,19 @@ function createGrid() {
     iterateOverGrid((x, y) => {
         let square = createSquare(x, y)
         square.addEventListener("click", () => handleEdit(x, y));
-        container.appendChild(square);
 
+        container.appendChild(square);
         if (y === 0) grid.push([]);
 
         grid[x].push(square);
-    });
 
+    });
     fetchOfficeState();
+
 }
 
 function fetchOfficeState() {
-    fetch("/api/edit")
+    fetch(EDIT_URL)
         .then(function (response) {
             return response.json();
         })
@@ -80,17 +83,54 @@ function refreshOfficeState(data) {
     }
 }
 
-function handleEdit(x, y) {
+function meetingSetUp(meeting, container) {
+    container.classList.add("meeting");
+
+    let meetingLink = meeting.link;
+    let meetingName = document.getElementById("editMeetingName").value;
+    let square = document.getElementById(meeting.x + "-" + meeting.y);
+
+    square.setAttribute('data-meeting-id', meeting.id);
+    square.setAttribute('data-meeting-link', meetingLink);
+    square.setAttribute('data-meeting-name', meetingName);
+}
+
+function meetingExists(square) {
+    return square.className === "item meeting";
+}
+
+async function handleEdit(x, y) {
     if (canAddWalls && !canAddMeetings) {
-        sendRequestWithUpdatedObject(x, y, "wall", "add", "", "/api/edit", "");
-
+        sendRequestWithUpdatedObject(x, y, "wall", "add", "", EDIT_URL, "", "", "");
     }
+
     if (canAddMeetings && !canAddWalls) {
-        let linkElement = document.getElementById("editMeetingLink");
-        let linkValue = linkElement.value;
-        sendRequestWithUpdatedObject(x, y, "meeting", "add", linkValue, "/api/edit", "");
-    }
+        let square = document.getElementById(x + "-" + y);
 
+        if (meetingExists(square)) {
+            let meetingId = square.getAttribute('data-meeting-id');
+            let meetingLink = square.getAttribute('data-meeting-link');
+            let meetingName = square.getAttribute('data-meeting-name');
+
+            if (meetingId) {
+                await deleteZoomMeeting(meetingId)
+
+                sendRequestWithUpdatedObject(x, y, "meeting", "delete", meetingLink, EDIT_URL, "", meetingName, meetingId);
+            }
+        } else {
+            let meetingName = document.getElementById("editMeetingName").value;
+            let meeting = await createZoomMeeting(meetingName);
+
+            if (meeting) {
+                let meetingLink = meeting.join_url;
+                square.setAttribute('data-meeting-id', meeting.id);
+                square.setAttribute('data-meeting-link', meetingLink);
+                square.setAttribute('data-meeting-name', meetingName);
+
+                sendRequestWithUpdatedObject(x, y, "meeting", "add", meetingLink, EDIT_URL, "", meetingName, meeting.id.toString());
+            }
+        }
+    }
 }
 
 function handleEnableAddWalls() {
@@ -120,7 +160,7 @@ const editMeetingsButton = document.getElementById("editMeetingsButton");
 editMeetingsButton.addEventListener("click", handleEnableAddMeetings);
 
 function handleSaveButton() {
-    sendRequestWithUpdatedObject(0, 0, "none", "rewrite", "", "/api/edit", "")
+    sendRequestWithUpdatedObject(0, 0, "none", "rewrite", "", EDIT_URL, "", "", "")
     window.location.href = "/";
 }
 

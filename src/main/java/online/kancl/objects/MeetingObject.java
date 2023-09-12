@@ -4,15 +4,27 @@ import java.util.Objects;
 
 public class MeetingObject extends OfficeObject {
 
-    private final String meetingLink;
+    private final String link;
+    private final String name;
+    private final String id;
 
-    public MeetingObject(int x, int y, String meetingLink) {
+    public MeetingObject(int x, int y, String meetingLink, String meetingName, String id) {
         super(x, y);
-        this.meetingLink = meetingLink;
+        this.link = meetingLink;
+        this.name = meetingName;
+        this.id = id;
     }
 
-    public String getMeetingLink() {
-        return meetingLink;
+    public String getLink() {
+        return link;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getId() {
+        return id;
     }
 
     @Override
@@ -21,11 +33,11 @@ public class MeetingObject extends OfficeObject {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         MeetingObject that = (MeetingObject) o;
-        return Objects.equals(meetingLink, that.meetingLink);
+        return Objects.equals(link, that.link) && Objects.equals(name, that.name) && Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), meetingLink);
+        return Objects.hash(super.hashCode(), link, name, id);
     }
 }

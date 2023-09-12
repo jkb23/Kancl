@@ -14,23 +14,6 @@ export function addCoffeeMachine(coffeeMachine, container) {
     container.classList.add("coffeeMachine");
 }
 
-export function meetingSetUp(meeting, container) {
-    container.classList.add("meeting");
-
-    const meetingElement = document.createElement("div");
-    meetingElement.classList.add("meeting-state");
-    meetingElement.textContent = "Meeting";
-    container.appendChild(meetingElement);
-
-    const meetingLink = document.createElement("a");
-    meetingLink.textContent = "Join a meeting";
-    meetingLink.setAttribute("href", meeting.link);
-    meetingLink.setAttribute("target", "_blank");
-    meetingElement.appendChild(meetingLink);
-
-    return meetingLink
-}
-
 export function sendLogoutRequestOnClose() {
     const httpRequest = new XMLHttpRequest();
     httpRequest.open("GET", "/logout");
@@ -55,7 +38,7 @@ export function refreshGridSquares() {
     }
 }
 
-export function sendRequestWithUpdatedObject(xCoordinates, yCoordinates, type, action, link, url, username) {
+export function sendRequestWithUpdatedObject(xCoordinates, yCoordinates, type, action, link, url, username, meetingName, meetingId) {
     const httpRequest = new XMLHttpRequest();
     httpRequest.open("POST", url);
     httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -66,7 +49,9 @@ export function sendRequestWithUpdatedObject(xCoordinates, yCoordinates, type, a
             username: username,
             x: xCoordinates,
             y: yCoordinates,
-            link: link
+            link: link,
+            name: meetingName,
+            meetingId: meetingId
         })
     );
 }

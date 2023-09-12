@@ -1,14 +1,16 @@
 {% extends "../BaseHtml.peb" %}
 
 {% block style %}
-<link href='css/board.css' rel='stylesheet'/>
+    <link href='css/board.css' rel='stylesheet'/>
 {% endblock %}
 
-{% block title %}Office{% endblock %}
+{% block title %}
+    Office
+{% endblock %}
 
 {% block javascript %}
-<script src='js/grid.js' type="module"></script>
-<script src='js/common.js' type="module"></script>
+    <script src='js/grid.js' type="module"></script>
+    <script src='js/constants.js' type="module"></script>
 {% endblock %}
 
 {% block body %}

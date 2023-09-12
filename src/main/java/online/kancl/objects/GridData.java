@@ -51,11 +51,9 @@ public class GridData {
 
     public void updateStatus(String username, String newStatus) {
         users.stream()
-                .filter(user -> user.getUsername()
-                        .equals(username))
+                .filter(user -> user.getUsername().equals(username))
                 .findFirst()
-                .ifPresent(user -> user
-                        .setStatus(newStatus));
+                .ifPresent(user -> user.setStatus(newStatus));
     }
 
     public List<User> getUsers() {
@@ -87,6 +85,7 @@ public class GridData {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -96,6 +95,7 @@ public class GridData {
                 return false;
             }
         }
+
         return true;
     }
 }

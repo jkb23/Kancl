@@ -1,17 +1,20 @@
-    {% extends "../BaseHtml.peb" %}
+{% extends "../BaseHtml.peb" %}
 
-        {% block style %}
-<link href='css/board.css' rel='stylesheet'/>
+{% block style %}
+    <link href='css/board.css' rel='stylesheet'/>
 {% endblock %}
 
-        {% block title %}Office editor{% endblock %}
-
-        {% block javascript %}
-<script src='js/edit.js' type="module"></script>
-<script src='js/common.js' type="module"></script>
+{% block title %}
+    Office editor
 {% endblock %}
 
-    {% block body %}
+{% block javascript %}
+    <script src='js/edit.js' type="module"></script>
+    <script src='js/constants.js' type="module"></script>
+    <script src='js/zoom.js' type="module"></script>
+{% endblock %}
+
+{% block body %}
     <div class"board-and-header">
         <div class="header">
             <h2 class="editLabel" id="editLabel"> Edit Mode Active </h2>
@@ -21,8 +24,8 @@
                 <button class="editButton" id="saveButton"> Save changes </button>
             </div>
             <div class="link-input">
-                <label class="meeting-label" for="editMeetingLink">Meeting link:</label>
-                <input type="text" class="meetingLink" id="editMeetingLink" value="https://www.google.com/">
+                <label class="meeting-label" for="editMeetingName">Meeting name:</label>
+                <input type="text" class="meetingLink" id="editMeetingName" value="My Meeting">
             </div>
         </div>
 

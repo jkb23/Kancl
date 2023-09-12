@@ -39,14 +39,11 @@ public class EditOfficeController extends Controller {
                 .build()
                 .toString();
 
-        PrintWriter printWriter;
-        try {
-            printWriter = new PrintWriter(OFFICE_STATE_FILE_PATH_EDIT);
+        try (PrintWriter printWriter = new PrintWriter(OFFICE_STATE_FILE_PATH_EDIT)) {
+            printWriter.println(jsonObjects);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new EditFileException("Failed to write to the office layout edit file.", e);
         }
-        printWriter.println(jsonObjects);
-        printWriter.close();
 
         return jsonObjects;
     }
@@ -61,6 +58,7 @@ public class EditOfficeController extends Controller {
         String type = jsonObject.getString("objectType");
         String action = jsonObject.getString("action");
         String link = jsonObject.getString("link");
+        String name = jsonObject.getString("name");
 
         int x = jsonObject.getInt("x");
         int y = jsonObject.getInt("y");
@@ -76,7 +74,8 @@ public class EditOfficeController extends Controller {
         }
 
         if (type.equals("meeting")) {
-            MeetingObject meetingObject = new MeetingObject(x, y, link);
+            String id = jsonObject.getString("meetingId");
+            MeetingObject meetingObject = new MeetingObject(x, y, link, name, id);
 
             if (gridData.meetingCanBeAdded(meetingObject)) {
                 gridData.addMeeting(meetingObject);
@@ -92,12 +91,16 @@ public class EditOfficeController extends Controller {
 
                 return "Update successful!";
             } catch (IOException e) {
-                e.printStackTrace();
-
-                return "Update failed due to an error.";
+                throw new EditFileException("Failed to rewrite the office layout file.", e);
             }
         }
 
         return "";
+    }
+
+    public static class EditFileException extends RuntimeException {
+        public EditFileException(String message, Throwable cause) {
+            super(message, cause);
+        }
     }
 }

@@ -15,7 +15,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class JsonFileUtil {
-
     public static String readFileContents(String filePath) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
 
@@ -51,7 +50,9 @@ public class JsonFileUtil {
         for (MeetingObject meetingObject : gridData.getMeetingObjects()) {
             JsonObjectBuilder meetingObjectBuilder = Json.createObjectBuilder();
             meetingObjectBuilder.add("type", "meeting");
-            meetingObjectBuilder.add("link", meetingObject.getMeetingLink());
+            meetingObjectBuilder.add("link", meetingObject.getLink());
+            meetingObjectBuilder.add("name", meetingObject.getName());
+            meetingObjectBuilder.add("id", meetingObject.getId());
             meetingObjectBuilder.add("x", meetingObject.getX());
             meetingObjectBuilder.add("y", meetingObject.getY());
             objects.add(meetingObjectBuilder);
@@ -66,5 +67,9 @@ public class JsonFileUtil {
         }
 
         return objects;
+    }
+
+    private JsonFileUtil() {
+        throw new UnsupportedOperationException("JsonFileUtil is a utility class and should not be instantiated");
     }
 }

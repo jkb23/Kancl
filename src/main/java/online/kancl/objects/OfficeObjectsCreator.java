@@ -5,15 +5,12 @@ import online.kancl.db.UserStorage;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.json.JsonValue;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 import static javax.json.Json.createObjectBuilder;
 import static online.kancl.util.JsonFileUtil.createObjectsJsonArray;
@@ -36,7 +33,12 @@ public class OfficeObjectsCreator {
 
     private boolean loadOfficeObjectsFromFile(GridData gridData) {
         try (FileInputStream fis = new FileInputStream(INITIAL_OFFICE_STATE_FILE_PATH)) {
-            JsonObject jsonObject = Json.createReader(fis).readObject();
+
+            JsonObject jsonObject;
+            try (JsonReader jsonReader = Json.createReader(fis)) {
+                jsonObject = jsonReader.readObject();
+            }
+
             JsonArray objectsArray = jsonObject.getJsonArray("objects");
 
             for (JsonValue objectValue : objectsArray) {
@@ -53,7 +55,9 @@ public class OfficeObjectsCreator {
                     case "wall" -> gridData.addWall(new Wall(x, y));
                     case "meeting" -> {
                         String link = object.getString("link");
-                        gridData.addMeeting(new MeetingObject(x, y, link));
+                        String name = object.getString("name");
+                        String id = object.getString("id");
+                        gridData.addMeeting(new MeetingObject(x, y, link, name, id));
                     }
                     case "coffeeMachine" -> gridData.addCoffeeMachine(new CoffeeMachine(x, y));
                     default -> {
@@ -71,12 +75,7 @@ public class OfficeObjectsCreator {
     }
 
     private static void createInitialGridTemplate(GridData gridData) {
-        List<String> meetingsLinks = addMeetingLinksIfExistent();
         gridData.addWallsList(getWallList());
-        gridData.addMeeting(new MeetingObject(25, 0, meetingsLinks.get(0)));
-        gridData.addMeeting(new MeetingObject(0, 0, meetingsLinks.get(1)));
-        gridData.addMeeting(new MeetingObject(0, 17, meetingsLinks.get(2)));
-        gridData.addMeeting(new MeetingObject(25, 17, meetingsLinks.get(3)));
         gridData.addCoffeeMachine(new CoffeeMachine(12, 0));
         gridData.addCoffeeMachine(new CoffeeMachine(13, 0));
 
@@ -138,25 +137,5 @@ public class OfficeObjectsCreator {
                 new Wall(24, 13),
                 new Wall(25, 13)
         );
-    }
-
-    private static List<String> addMeetingLinksIfExistent() {
-        List<String> meetingsLinks = new ArrayList<>();
-        try {
-            File linksFile = new File("meetinglinks.txt");
-            Scanner scanner = new Scanner(linksFile);
-            while (scanner.hasNextLine()) {
-                String data = scanner.nextLine();
-                meetingsLinks.add(data);
-            }
-            scanner.close();
-        } catch (FileNotFoundException e) {
-            meetingsLinks.add("https://www.google.com/");
-            meetingsLinks.add("https://www.google.com/");
-            meetingsLinks.add("https://www.google.com/");
-            meetingsLinks.add("https://www.google.com/");
-        }
-
-        return meetingsLinks;
     }
 }
