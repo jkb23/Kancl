@@ -7,7 +7,6 @@ import java.util.function.Function;
 public class TransactionJobRunner {
 
 
-
     private final ConnectionProvider connectionProvider;
 
     public TransactionJobRunner(ConnectionProvider connectionProvider) {
@@ -18,7 +17,7 @@ public class TransactionJobRunner {
         try (Connection connection = connectionProvider.getConnection()) {
             return disableAutocommitAndRunTransaction(job, connection);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseOperationException("Failed to execute transactional job", e);
         }
     }
 
@@ -30,8 +29,9 @@ public class TransactionJobRunner {
 
             return runJobAndCommitOrRollback(job, connection);
         } finally {
-            if (originalAutoCommit != null)
+            if (originalAutoCommit != null) {
                 connection.setAutoCommit(originalAutoCommit);
+            }
         }
     }
 
@@ -39,13 +39,18 @@ public class TransactionJobRunner {
         try {
             DatabaseRunner databaseRunner = new DatabaseRunner(connection);
             T result = job.apply(databaseRunner);
-
             connection.commit();
 
             return result;
         } catch (Exception e) {
             connection.rollback();
-            throw e;
+            throw new DatabaseOperationException("Error occurred during transaction execution. Transaction was rolled back.", e);
+        }
+    }
+
+    public static class DatabaseOperationException extends RuntimeException {
+        public DatabaseOperationException(String message, Throwable cause) {
+            super(message, cause);
         }
     }
 }

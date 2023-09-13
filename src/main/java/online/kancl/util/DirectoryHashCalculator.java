@@ -16,15 +16,17 @@ public class DirectoryHashCalculator {
     public String calculateEncodedHash(Path directory) {
         try {
             byte[] hash = calculateHashBytes(directory);
+
             return encodeIntoBase64(hash);
         } catch (NoSuchAlgorithmException | IOException e) {
-            throw new RuntimeException(e);
+            throw new HashingException("Failed to calculate directory hash", e);
         }
     }
 
     private byte[] calculateHashBytes(Path directory) throws NoSuchAlgorithmException, IOException {
         MessageDigest hashCalculator = MessageDigest.getInstance("SHA-256");
         Files.walkFileTree(directory, new HashFileVisitor(directory, hashCalculator));
+
         return hashCalculator.digest();
     }
 

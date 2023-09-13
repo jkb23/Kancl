@@ -6,13 +6,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public final class HashUtils {
-
     public static String sha256Hash(String original) {
         try {
             MessageDigest hashCalculator = MessageDigest.getInstance("SHA-256");
+
             return toHexString(hashCalculator.digest(original.getBytes(StandardCharsets.UTF_8)));
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            throw new HashingException("SHA-256 algorithm not found", e);
         }
     }
 
@@ -25,5 +25,9 @@ public final class HashUtils {
         }
 
         return hexString.toString();
+    }
+
+    private HashUtils() {
+        throw new UnsupportedOperationException("JsonFileUtil is a utility class and should not be instantiated");
     }
 }

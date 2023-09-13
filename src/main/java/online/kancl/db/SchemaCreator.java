@@ -17,7 +17,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class SchemaCreator {
 
@@ -81,7 +80,7 @@ public class SchemaCreator {
         if (tableCount == 0)
             return Optional.empty();
 
-        return dbRunner.select("SELECT hash FROM DatabaseSchemaHash", (row) -> row.getString(1));
+        return dbRunner.select("SELECT hash FROM DatabaseSchemaHash", row -> row.getString(1));
     }
 
     private void runSqlFile(Connection connection, Path sqlFile) {
@@ -112,9 +111,9 @@ public class SchemaCreator {
             return files.stream()
                     .filter(file -> file.toString().endsWith(".sql"))
                     .sorted()
-                    .collect(Collectors.toList());
+                    .toList();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException("Error accessing SQL files in directory: " + scratchDirectory, e);
         }
     }
 

@@ -20,6 +20,7 @@ public class PebbleTemplateRenderer {
 
     public String renderDefaultControllerTemplate(Controller controller, Object... contexts) {
         String templateName = getDefaultControllerTemplateName(controller);
+
         return renderTemplate(templateName, contexts);
     }
 
@@ -35,7 +36,7 @@ public class PebbleTemplateRenderer {
 
             return stringWriter.toString();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new TemplateRenderingException("Failed to render the template: " + templateName, e);
         }
     }
 
@@ -69,5 +70,11 @@ public class PebbleTemplateRenderer {
         }
         String firstLowercaseLetter = className.substring(0, 1).toLowerCase(Locale.ROOT);
         return firstLowercaseLetter + className.substring(1);
+    }
+
+    public static class TemplateRenderingException extends RuntimeException {
+        public TemplateRenderingException(String message, Throwable cause) {
+            super(message, cause);
+        }
     }
 }
