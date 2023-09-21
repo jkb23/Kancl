@@ -16,39 +16,17 @@
     <div class="user-page">
         <h1>{{pageContext.getUsername()}} User Page</h1>
         <form method="post">
-        <div class="profile-picture">
-        <div class="profile-picture__frame-with-label">
-            <b> Current profile picture: </b>
-            <div id="js-profile-pic" class="profile-pic__container">
-              <div class="profile-picture__current">
-                <img src="https://www.meme-arsenal.com/memes/81358c5efee30adb3f43bba022aa9b76.jpg">
-              </div>
-            </div>
-        </div>
-
-        <div class="profile-picture__frame-with-label">
-            <b>Upload profile picture:</b>
-
-            <input id="js-file-uploader" class="image-upload" name="profile-picture" type="file" accept="image/png, image/jpeg" />
-
-            <div id="js-profile-pic" class="profile-pic__container">
-                <div id="js-profile-trigger" class="profile-pic__foreground">
-                    <b> Click here </b>
-                </div>
-            </div>
-          </div>
-        </div>
 
         <div class="input-box">
             <div class="current-status">
-                <b> Current status: </b>
+                <label> <b> Current status: </b> </label>
                 <p> {{pageContext.getStatus()}} </p>
             </div>
 
             <div class="input__container">
                 <div class="input__container__single">
                     <label for="status"><b>Enter updated status:</b></label>
-                    <input type="text" id="status" name="status" class="text-input" autocomplete="off"
+                    <input type="text" id="status" name="status" class="form-control form-control-lg" autocomplete="off"
                     placeholder="&#128172; Updated status"/>
                 </div>
             </div>
@@ -58,7 +36,7 @@
             <div class="input__container">
                 <div class="input__container__single">
                     <label for="password-current"><b>Enter current password:</b></label>
-                    <input type="password" id="password-current" name="password-current" class="text-input autocomplete="off"
+                    <input type="password" id="password-current" name="password-current" class="form-control form-control-lg"
                     placeholder="&#128274; Current password"/>
                 </div>
             </div>
@@ -66,7 +44,7 @@
             <div class="input__container">
                 <div class="input__container__single">
                     <label for="password-new"><b>Enter new password:</b></label>
-                    <input type="password" id="password-new" name="password-new" class="text-input autocomplete="new-password"
+                    <input type="password" id="password-new" name="password-new" class="form-control form-control-lg"
                     placeholder="&#128274; New password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![\n])(?=.*[A-Z])(?=.*[a-z]).*$"
                       title="Password must be at least 8 characters long and must contain:
                       Number or Special Character

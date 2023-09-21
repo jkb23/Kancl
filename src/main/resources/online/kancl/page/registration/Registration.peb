@@ -24,13 +24,15 @@
 
       <div class="field">
         <input type="text" id="username" name="username" class="form-control form-control-lg"
-          placeholder="&#128100; Username"/>
+          placeholder="&#128100; Username"
+        />
       </div>
 
 
       <div class="field">
         <input type="email" id="email" name="email" class="form-control form-control-lg"
-          placeholder="&#128231; Email address"/>
+          placeholder="&#128231; Email address"
+        />
       </div>
 
       <div class="field">
@@ -39,12 +41,14 @@
           title="Password must be at least 8 characters long and must contain:
           Number or Special Character
           Uppercase Letter
-          Lowercase Letter" required/>
+          Lowercase Letter" required
+        />
       </div>
 
       <div class="field">
         <input type="password" id="passwordCheck" name="passwordCheck" class="form-control form-control-lg" onkeyup="isEqual()" oncheck="isLongEnough()" autocomplete="new-password"
-          placeholder="&#128274; Repeat password" required title="Passwords have to match"/>
+          placeholder="&#128274; Repeat password" required title="Passwords have to match"
+        />
       </div>
 
       <div class="text-center text-lg-start mt-4 pt-2">
