@@ -31,20 +31,20 @@ class UserStorageTest {
     @Test
     public void findUser_whenNonExistingUser_thenFalse() {
         assertThat(userStorage.findUser("bhjawbd@dabd.cy", "hgdhgawvd"))
-                .isEqualTo(false);
+                .isFalse();
     }
 
     @Test
     public void findUser_whenExistingUser_thenTrue() {
         assertThat(userStorage.findUser("john", "12345"))
-                .isEqualTo(true);
+                .isTrue();
     }
 
     @Test
     public void createUser_whenNonExistingUser_thenUserIsCreated() {
         userStorage.createUser("daniel", "11111", "danie@gmail.com");
         assertThat(userStorage.findUser("daniel", "11111"))
-                .isEqualTo(true);
+                .isTrue();
     }
 
     @Test
@@ -90,7 +90,7 @@ class UserStorageTest {
     @Test
     public void usernameIDIsNotNull() {
         userStorage.getUserIdFromUsername("john");
-        assertThat(userStorage.getUserIdFromUsername("john")).isNotEqualTo(null);
+        assertThat(userStorage.getUserIdFromUsername("john")).isNotNull();
     }
 
     @Test

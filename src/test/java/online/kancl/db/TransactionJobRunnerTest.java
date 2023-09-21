@@ -34,7 +34,7 @@ class TransactionJobRunnerTest {
             insertRow(runnerInTransaction);
 
             Assertions.assertThat(runnerOutsideTransaction.selectInt("SELECT count(1) FROM TestTable"))
-                    .isEqualTo(0);
+                    .isZero();
 
             return null;
         });
@@ -58,11 +58,11 @@ class TransactionJobRunnerTest {
                 insertRow(runnerInTransaction);
                 throw new ExpectedException();
             });
-        } catch (ExpectedException expected) {
+        } catch (Exception expected) {
         }
 
         Assertions.assertThat(runnerOutsideTransaction.selectInt("SELECT count(1) FROM TestTable"))
-                .isEqualTo(0);
+                .isZero();
     }
 
     private void insertRow(DatabaseRunner dbRunner) {

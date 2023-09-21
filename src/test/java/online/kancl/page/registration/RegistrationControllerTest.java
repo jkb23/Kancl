@@ -2,9 +2,14 @@ package online.kancl.page.registration;
 
 import mockit.Expectations;
 import mockit.Injectable;
+import mockit.Mocked;
 import mockit.Tested;
 import mockit.Verifications;
+import online.kancl.auth.Authenticator;
+import online.kancl.db.DatabaseRunner;
+import online.kancl.db.TransactionJobRunner;
 import online.kancl.db.UserStorage;
+import online.kancl.objects.GridData;
 import online.kancl.server.template.PebbleTemplateRenderer;
 import org.junit.jupiter.api.Test;
 import spark.Request;
@@ -19,6 +24,12 @@ class RegistrationControllerTest {
 
     @Injectable
     PebbleTemplateRenderer pebbleTemplateRenderer;
+
+    @Injectable
+    TransactionJobRunner transactionJobRunner;
+
+    @Injectable
+    GridData gridData;
 
     @Injectable
     UserStorage userStorage;
