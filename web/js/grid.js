@@ -274,3 +274,25 @@ async function getUserDetails(accessToken) {
         return null;
     }
 }
+
+function handleEditReroute() {
+    window.location.href = "/edit";
+}
+
+const editButton = document.getElementById("editButton");
+editButton.addEventListener("click", handleEditReroute);
+
+function handleUserPageReroute() {
+    window.location.href = "/user";
+
+}
+
+const userPageButton = document.getElementById("userPageButton");
+userPageButton.addEventListener("click", handleUserPageReroute);
+
+function handleLogoutButton() {
+    window.location.href = "/logout";
+}
+
+const logoutButton = document.getElementById("logoutButton");
+logoutButton.addEventListener("click", handleLogoutButton);

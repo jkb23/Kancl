@@ -15,20 +15,20 @@
 {% endblock %}
 
 {% block body %}
-    <div class"board-and-header">
-        <div class="header">
+    <div class"board-layout">
+        <div class="board-layout__header">
             <h2 class="editLabel" id="editLabel"> Edit Mode Active </h2>
-            <div class="href-buttons">
-                <button class="editButton" id="editWallsButton"> Edit walls </button>
-                <button class="editButton" id="editMeetingsButton"> Edit meetings </button>
-                <button class="editButton" id="saveButton"> Save changes </button>
-            </div>
             <div class="link-input">
                 <label class="meeting-label" for="editMeetingName">Meeting name:</label>
                 <input type="text" class="meetingLink" id="editMeetingName" value="My Meeting">
             </div>
+            <div class="board-layout__buttons">
+                <button class="board-layout__button" id="editWallsButton"> Edit walls </button>
+                <button class="board-layout__button" id="editMeetingsButton"> Edit meetings </button>
+                <button class="board-layout__button" id="saveButton"> Save changes </button>
+            </div>
         </div>
 
-        <div class="container" id="container"></div>
+        <div class="board-layout__container" id="container"></div>
     </div>
 {% endblock %}

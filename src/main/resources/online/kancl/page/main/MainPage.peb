@@ -1,30 +1,29 @@
-{% extends "../BaseHtml.peb" %}
+    {% extends "../BaseHtml.peb" %}
 
-{% block style %}
+        {% block style %}
     <link href='css/board.css' rel='stylesheet'/>
 {% endblock %}
 
-{% block title %}
+        {% block title %}
     Office
 {% endblock %}
 
-{% block javascript %}
+        {% block javascript %}
     <script src='js/grid.js' type="module"></script>
     <script src='js/constants.js' type="module"></script>
 {% endblock %}
 
-{% block body %}
-    <div class"board-and-header">
-        <div class="header">
-            <h1 class="mainpage-title">Kancl Online</h1>
-            <h2 class="editLabel" id="editLabel"> Edit Mode Active </h2>
-            <div class="href-buttons">
-                <a href="/edit" class="href-button">Edit Kancl</a>
-                <a href="/user" class="href-button">{{pageContext.getUsername()}} Home Page</a>
-                <a href="/logout" class="href-button">{{pageContext.showLogoutWhenLoggedIn()}}</a>
+    {% block body %}
+    <div class="board-layout">
+        <div class="board-layout__header">
+            <h1 class="board-layout__title">Kancl Online</h1>
+            <div class="board-layout__buttons">
+                <button class="board-layout__button" id="editButton">Edit Kancl</button>
+                <button class="board-layout__button" id="userPageButton">{{pageContext.getUsername()}} Home Page</button>
+                <button class="board-layout__button" id="logoutButton">{{pageContext.showLogoutWhenLoggedIn()}}</button>
             </div>
         </div>
 
-        <div class="container" id="container"></div>
+        <div class="board-layout__container" id="container"></div>
     </div>
 {% endblock %}
