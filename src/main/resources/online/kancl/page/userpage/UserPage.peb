@@ -1,58 +1,68 @@
-{% extends "../BaseHtml.peb" %}
+    {% extends "../BaseHtml.peb" %}
 
-{% block title %}
+        {% block title %}
     User profile
 {% endblock %}
 
-{% block style %}
+        {% block style %}
     <link href='css/user-page.css' rel='stylesheet'/>
 {% endblock %}
 
-{% block javascript %}
+        {% block javascript %}
     <script src='js/userpage.js' type="text/javascript"></script>
 {% endblock %}
 
-{% block body %}
+    {% block body %}
     <div class="user-page">
         <h1>{{pageContext.getUsername()}} User Page</h1>
+
+        {% if pageContext.getErrorMessage() %}
+            <div class="error-message">
+                <b> {{ pageContext.getErrorMessage() }} </b>
+            </div>
+        {% endif %}
+
+
         <form method="post">
 
-        <div class="input-box">
             <div class="current-status">
                 <label> <b> Current status: </b> </label>
                 <p> {{pageContext.getStatus()}} </p>
             </div>
 
-            <div class="input__container">
-                <div class="input__container__single">
+                <div class="input__container">
                     <label for="status"><b>Enter updated status:</b></label>
                     <input type="text" id="status" name="status" class="form-control form-control-lg" autocomplete="off"
                     placeholder="&#128172; Updated status"/>
                 </div>
-            </div>
-        </div>
 
-        <div class="input-box">
-            <div class="input__container">
-                <div class="input__container__single">
+                <div class="divider"></div>
+
+                <div class="input__container">
                     <label for="password-current"><b>Enter current password:</b></label>
                     <input type="password" id="password-current" name="password-current" class="form-control form-control-lg"
+                    onkeyup="checkPasswords()"
                     placeholder="&#128274; Current password"/>
                 </div>
-            </div>
 
-            <div class="input__container">
-                <div class="input__container__single">
+                <div class="input__container">
+                    <label for="password-current"><b>Enter current password again:</b></label>
+                    <input type="password" id="password-current-repeat" name="password-current-repeat" class="form-control form-control-lg"
+                    onkeyup="checkPasswords()"
+                        placeholder="&#128274; Current password again"/>
+                </div>
+
+                <div class="input__container">
                     <label for="password-new"><b>Enter new password:</b></label>
                     <input type="password" id="password-new" name="password-new" class="form-control form-control-lg"
+                    onkeyup="checkPasswords()"
                     placeholder="&#128274; New password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![\n])(?=.*[A-Z])(?=.*[a-z]).*$"
                       title="Password must be at least 8 characters long and must contain:
                       Number or Special Character
                       Uppercase Letter
-                      Lowercase Letter"/>
+                      Lowercase Letter"
+                    />
                 </div>
-            </div>
-        </div>
 
         <button type="submit" id="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Save</button>
         <div class="reroute">

@@ -1,33 +1,84 @@
-const fileUpload = document.querySelector('#js-file-uploader');
-const profileTrigger = document.querySelector('#js-profile-trigger');
-const profileBackground = document.querySelector('#js-profile-pic');
+const passwordCurrent = document.getElementById('password-current');
+const passwordCurrentRepeat = document.getElementById('password-current-repeat');
+const passwordNew = document.getElementById('password-new');
+const submitBtn = document.getElementById('submit');
 
-profileTrigger.addEventListener('click', function (event) {
-    event.preventDefault();
-    fileUpload.click();
-});
+const isCorrectOldPassword = function (pwd) {
+    // For simplicity, let's assume the old password is 'oldPass123'.
+    // In a real-world scenario, this should be checked asynchronously with a server.
+    return pwd === 'oldPass123';
+};
 
-const input = document.getElementById('js-file-uploader')
-
-input.addEventListener('change', (event) => {
-    const target = event.target
-    if (target.files && target.files[0]) {
-
-        const maxAllowedSize = 2 * 1024 * 1024;
-        if (target.files[0].size > maxAllowedSize) {
-            target.value = ''
-            alert('File cannot exceed 2MB in size')
-        }
+const checkPasswords = function () {
+    if (enableSubmitIfAllPasswordFieldsAreEmpty()) {
+        return
     }
-})
 
-fileUpload.addEventListener("change", function () {
-    if (fileUpload.files && fileUpload.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function (event) {
-            profileBackground.childNodes[0].nodeValue = "";
-            profileBackground.style.backgroundImage = "url('" + event.target.result + "')";
-        }
-        reader.readAsDataURL(fileUpload.files[0]);
+    disableSubmitIfAnyPasswordFieldIsNotEmpty()
+
+    /*if (!isCorrectOldPassword(passwordCurrent.value)) {
+        console.log("Incorrect current password");
+        return;
+    }*/
+
+    submitBtn.disabled = !(newPasswordMatchesPattern() && oldPasswordsAreEqual() && newPasswordIsLongEnough())
+};
+
+const newPasswordMatchesPattern = function () {
+    const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\d@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (pattern.test(passwordNew.value)) {
+        return true
     }
-});
+    passwordNew.style.color = "red";
+    passwordNew.style.outlineColor = "red";
+
+    return false
+};
+
+const oldPasswordsAreEqual = function () {
+    if (passwordCurrent.value === passwordCurrentRepeat.value) {
+        passwordCurrentRepeat.style.color = "black";
+        passwordCurrentRepeat.style.outlineColor = "#080891";
+
+        return true
+    }
+    passwordCurrentRepeat.style.color = "red";
+    passwordCurrentRepeat.style.outlineColor = "red";
+
+    return false
+};
+
+const newPasswordIsLongEnough = function () {
+    if (passwordNew.value.length >= 8) {
+        passwordNew.style.color = "black";
+        passwordNew.style.outlineColor = "#080891";
+
+        return true
+    }
+    passwordNew.style.color = "red";
+    passwordNew.style.outlineColor = "red";
+
+    return false
+};
+
+const enableSubmitIfAllPasswordFieldsAreEmpty = function () {
+    if (passwordCurrent.value === "" && passwordNew.value === "" && passwordCurrentRepeat.value === "") {
+        submitBtn.disabled = false;
+        passwordCurrentRepeat.style.color = "black";
+        passwordCurrentRepeat.style.outlineColor = "#080891";
+        passwordNew.style.color = "black";
+        passwordNew.style.outlineColor = "#080891";
+        passwordCurrent.style.color = "black";
+        passwordCurrent.style.outlineColor = "#080891";
+
+        return true
+    }
+
+    return false
+}
+
+const disableSubmitIfAnyPasswordFieldIsNotEmpty = function () {
+    if (passwordCurrent.value !== "" || passwordNew.value !== "" || passwordCurrentRepeat.value !== "") {
+        submitBtn.disabled = true;
+    }
+}

@@ -5,6 +5,7 @@ import spark.Request;
 
 public class PageContext {
     private String username = "";
+    private String errorMessage = "";
 
     private UserStorage userStorage;
 
@@ -21,6 +22,14 @@ public class PageContext {
         if (user != null) {
             this.username = user;
         }
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
     public String getUsername() {

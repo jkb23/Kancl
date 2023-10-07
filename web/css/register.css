@@ -6,6 +6,7 @@
     -webkit-box-shadow: 2px 1px 21px -9px rgba(0, 0, 0, 0.38);
     -moz-box-shadow: 2px 1px 21px -9px rgba(0, 0, 0, 0.38);
     box-shadow: 2px 1px 21px -9px rgba(0, 0, 0, 0.38);
+    border-radius: 10px;
 }
 
 input[type=email]:not(:placeholder-shown):invalid, input[type=password]:not(:placeholder-shown):invalid {
@@ -43,4 +44,8 @@ html {
 
 .reroute {
     padding-bottom: 1rem;
+}
+
+.btn.btn-primary.btn-lg:hover {
+    background-color: #0056b3;
 }

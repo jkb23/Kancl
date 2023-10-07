@@ -22,6 +22,7 @@ html {
 .px-4.py-5 {
     margin-top: 2rem;
     background: white;
+    border-radius: 10px;
 }
 
 .forgot-password-link {
@@ -36,4 +37,8 @@ html {
     flex-direction: column;
     padding: 0;
     margin: 0;
+}
+
+.btn.btn-primary.btn-lg:hover {
+    background-color: #0056b3;
 }

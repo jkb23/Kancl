@@ -34,9 +34,14 @@ public class UserPageController extends Controller {
             response.redirect("/login");
             return "";
         } else {
-            return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, new PageContext(request, userStorage));
+            if ("passwordMismatch".equals(request.queryParams("error"))) {
+                pageContext.setErrorMessage("Your password did not match the old password.");
+            }
+
+            return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, pageContext);
         }
     }
+
 
     @Override
     public String post(Request request, Response response) {
@@ -60,6 +65,9 @@ public class UserPageController extends Controller {
             if (!Objects.equals(newPassword, HashUtils.sha256Hash(""))) {
                 if (Objects.equals(currentPasswordEntered, currentPasswordFromDatabase)) {
                     userStorage.setPassword(username, newPassword);
+                } else {
+                    response.redirect("/user?error=passwordMismatch");
+                    return "";
                 }
             }
 

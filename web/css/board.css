@@ -9,6 +9,7 @@
 .board-layout {
     display: flex;
     flex-direction: column;
+    border-radius: 10px;
 }
 
 .board-layout__header {
