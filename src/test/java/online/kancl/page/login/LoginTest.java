@@ -1,6 +1,5 @@
 package online.kancl.page.login;
 
-import mockit.Capturing;
 import mockit.Delegate;
 import mockit.Expectations;
 import mockit.Injectable;
@@ -9,7 +8,6 @@ import mockit.Mocked;
 import mockit.Tested;
 import mockit.Verifications;
 import online.kancl.auth.Authenticator;
-import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
 import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
@@ -18,9 +16,6 @@ import org.junit.jupiter.api.Test;
 import spark.Request;
 import spark.Response;
 
-import javax.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +27,6 @@ import static online.kancl.loginTestEnum.correct_password;
 import static online.kancl.loginTestEnum.correct_username;
 import static online.kancl.loginTestEnum.wrong_password;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LoginTest {
 
@@ -84,7 +78,6 @@ class LoginTest {
     }
 
 
-
     @Test
     void checkIfInCorrectCredentialsRedirect() {
         new Expectations() {{
@@ -120,8 +113,8 @@ class LoginTest {
     private record Matches(String regex) implements Delegate<String> {
 
         @Mock
-            public boolean matches(String arg) {
-                return arg.matches(regex);
-            }
+        public boolean matches(String arg) {
+            return arg.matches(regex);
         }
+    }
 }

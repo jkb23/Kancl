@@ -6,6 +6,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public final class HashUtils {
+    private HashUtils() {
+        throw new UnsupportedOperationException("JsonFileUtil is a utility class and should not be instantiated");
+    }
+
     public static String sha256Hash(String original) {
         try {
             MessageDigest hashCalculator = MessageDigest.getInstance("SHA-256");
@@ -25,9 +29,5 @@ public final class HashUtils {
         }
 
         return hexString.toString();
-    }
-
-    private HashUtils() {
-        throw new UnsupportedOperationException("JsonFileUtil is a utility class and should not be instantiated");
     }
 }

@@ -6,9 +6,9 @@ import mockit.Mocked;
 import online.kancl.db.DatabaseRunner;
 import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
+import online.kancl.objects.MeetingObject;
 import online.kancl.objects.User;
 import online.kancl.objects.Wall;
-import online.kancl.objects.MeetingObject;
 import online.kancl.test.ProductionDatabase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,7 +40,7 @@ class OfficeControllerTest {
         GridData gridData = new GridData();
 
         User user1 = new User("correct", new UserStorage(dbRunner));
-        Wall wall = new Wall(1,1);
+        Wall wall = new Wall(1, 1);
         MeetingObject meetingObject = new MeetingObject(5, 5, "zoom.com", "name", "id");
 
         gridData.addUser(user1);

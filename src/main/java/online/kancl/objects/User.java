@@ -25,12 +25,12 @@ public class User extends OfficeObject {
         return status;
     }
 
-    public String getAvatarBackgroundColor() {
-        return avatarBackgroundColor;
-    }
-
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getAvatarBackgroundColor() {
+        return avatarBackgroundColor;
     }
 
     @Override

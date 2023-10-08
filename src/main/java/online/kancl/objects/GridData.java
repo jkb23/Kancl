@@ -5,9 +5,9 @@ import java.util.List;
 
 public class GridData {
     private final List<User> users;
-    private List<Wall> walls;
     private final List<MeetingObject> meetingObjects;
     private final List<CoffeeMachine> coffeeMachines;
+    private List<Wall> walls;
 
     public GridData() {
         this.walls = new ArrayList<>();

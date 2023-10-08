@@ -24,7 +24,7 @@ class UserStorageTest {
     @BeforeEach
     public void initialize(DatabaseRunner dbRunner) {
         dbRunner.insert("INSERT INTO AppUser (username, password, email, user_status)" +
-                " VALUES('john', ?, 'john@gmail.com','Mam se dobre!')",
+                        " VALUES('john', ?, 'john@gmail.com','Mam se dobre!')",
                 HashUtils.sha256Hash("12345"));
     }
 
@@ -50,7 +50,7 @@ class UserStorageTest {
     @Test
     public void createUser_whenExistingUser_thenExceptionThrown() {
         Assertions.assertThatExceptionOfType(DuplicateUserException.class)
-                .isThrownBy(() -> userStorage.createUser( "john", "12345", "john@gmail.com"));
+                .isThrownBy(() -> userStorage.createUser("john", "12345", "john@gmail.com"));
 
     }
 
@@ -74,7 +74,7 @@ class UserStorageTest {
     }
 
     @Test
-    public void  incrementBadLoginCount_to_five() {
+    public void incrementBadLoginCount_to_five() {
         for (int i = 0; i < 5; i++) {
             userStorage.incrementBadLoginCount("john");
         }

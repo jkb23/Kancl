@@ -44,9 +44,11 @@ public class LoginController extends Controller {
         PageContext pageContext = new PageContext(request, userStorage);
         if ("".equals(pageContext.getUsername())) {
             loginInfo = new LoginInfo();
+
             return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, loginInfo);
         } else {
             response.redirect("/");
+
             return "";
         }
     }

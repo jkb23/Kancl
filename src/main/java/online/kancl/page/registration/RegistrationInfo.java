@@ -7,16 +7,16 @@ public class RegistrationInfo {
         this.errorMessage = "";
     }
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-
     public void addTextToErrorMessage(String errorMessage) {
         this.errorMessage += errorMessage;
     }
 
     public String getErrorMessage() {
         return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }
 

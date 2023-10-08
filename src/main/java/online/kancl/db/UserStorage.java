@@ -77,7 +77,7 @@ public class UserStorage {
 
     public Optional<Timestamp> getBadLoginTimestamp(String username) {
         return dbRunner.select("SELECT bad_login_timestamp FROM AppUser WHERE username= ?",
-                (r) -> r.getTimestamp(1), username);
+                r -> r.getTimestamp(1), username);
     }
 
     public int getUserIdFromUsername(String username) {
@@ -94,10 +94,6 @@ public class UserStorage {
 
     public String getAvatarBackgroundColor(String username) {
         return dbRunner.selectString("SELECT bg_color FROM AppUser WHERE username = ?", username);
-    }
-
-    public String getProfilePicture(String username) {
-        return dbRunner.selectString("SELECT profile_picture FROM AppUser WHERE username = ?", username);
     }
 
     public void setProfilePicture(String username, String profilePicture) {

@@ -11,6 +11,10 @@ public class ConnectionProvider {
 
     private final DataSource dataSource;
 
+    private ConnectionProvider(String dbLocation) {
+        this.dataSource = createDataSource(dbLocation);
+    }
+
     public static ConnectionProvider forInMemoryDatabase(String dbName) {
         return new ConnectionProvider("mem:" + dbName);
     }
@@ -18,10 +22,6 @@ public class ConnectionProvider {
     public static ConnectionProvider forDatabaseInFile(Path path, String dbName) {
         String dbLocation = path.resolve(dbName).toAbsolutePath().toString();
         return new ConnectionProvider(dbLocation);
-    }
-
-    private ConnectionProvider(String dbLocation) {
-        this.dataSource = createDataSource(dbLocation);
     }
 
     public Connection getConnection() {

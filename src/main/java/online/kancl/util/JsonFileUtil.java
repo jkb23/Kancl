@@ -15,6 +15,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class JsonFileUtil {
+    private JsonFileUtil() {
+        throw new UnsupportedOperationException("JsonFileUtil is a utility class and should not be instantiated");
+    }
+
     public static String readFileContents(String filePath) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
 
@@ -67,9 +71,5 @@ public class JsonFileUtil {
         }
 
         return objects;
-    }
-
-    private JsonFileUtil() {
-        throw new UnsupportedOperationException("JsonFileUtil is a utility class and should not be instantiated");
     }
 }

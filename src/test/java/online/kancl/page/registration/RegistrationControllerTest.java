@@ -2,11 +2,8 @@ package online.kancl.page.registration;
 
 import mockit.Expectations;
 import mockit.Injectable;
-import mockit.Mocked;
 import mockit.Tested;
 import mockit.Verifications;
-import online.kancl.auth.Authenticator;
-import online.kancl.db.DatabaseRunner;
 import online.kancl.db.TransactionJobRunner;
 import online.kancl.db.UserStorage;
 import online.kancl.objects.GridData;
@@ -15,7 +12,10 @@ import org.junit.jupiter.api.Test;
 import spark.Request;
 import spark.Response;
 
-import static online.kancl.loginTestEnum.*;
+import static online.kancl.loginTestEnum.correct_password;
+import static online.kancl.loginTestEnum.correct_username;
+import static online.kancl.loginTestEnum.email;
+import static online.kancl.loginTestEnum.wrong_password;
 
 class RegistrationControllerTest {
 

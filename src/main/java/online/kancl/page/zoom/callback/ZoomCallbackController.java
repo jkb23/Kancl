@@ -24,6 +24,22 @@ import static online.kancl.page.ZoomConstants.ZOOM_CALLBACK_URL;
 
 public class ZoomCallbackController extends Controller {
 
+    public static String[] extractTokens(String jsonResponse) {
+        JsonObject jsonObject;
+        try (JsonReader jsonReader = Json.createReader(new StringReader(jsonResponse))) {
+            jsonObject = jsonReader.readObject();
+        }
+
+        String accessToken = jsonObject.getString("access_token");
+        String refreshToken = jsonObject.getString("refresh_token");
+
+        return new String[]{accessToken, refreshToken};
+    }
+
+    private static String getOfficeURL(String[] tokens) {
+        return "%s?accessToken=%s&refreshToken=%s".formatted(OFFICE_URL, tokens[0], tokens[1]);
+    }
+
     @Override
     public String get(Request request, Response response) {
         String authCode = request.queryParams("code");
@@ -77,21 +93,5 @@ public class ZoomCallbackController extends Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static String[] extractTokens(String jsonResponse) {
-        JsonObject jsonObject;
-        try (JsonReader jsonReader = Json.createReader(new StringReader(jsonResponse))) {
-            jsonObject = jsonReader.readObject();
-        }
-
-        String accessToken = jsonObject.getString("access_token");
-        String refreshToken = jsonObject.getString("refresh_token");
-
-        return new String[]{accessToken, refreshToken};
-    }
-
-    private static String getOfficeURL(String[] tokens) {
-        return "%s?accessToken=%s&refreshToken=%s".formatted(OFFICE_URL, tokens[0], tokens[1]);
     }
 }

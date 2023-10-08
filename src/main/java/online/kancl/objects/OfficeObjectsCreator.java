@@ -25,55 +25,6 @@ public class OfficeObjectsCreator {
         this.userStorage = userStorage;
     }
 
-    public void create(GridData gridData) {
-        if (!loadOfficeObjectsFromFile(gridData)) {
-            createInitialGridTemplate(gridData);
-        }
-    }
-
-    private boolean loadOfficeObjectsFromFile(GridData gridData) {
-        try (FileInputStream fis = new FileInputStream(INITIAL_OFFICE_STATE_FILE_PATH)) {
-
-            JsonObject jsonObject;
-            try (JsonReader jsonReader = Json.createReader(fis)) {
-                jsonObject = jsonReader.readObject();
-            }
-
-            JsonArray objectsArray = jsonObject.getJsonArray("objects");
-
-            for (JsonValue objectValue : objectsArray) {
-                JsonObject object = (JsonObject) objectValue;
-                String objectType = object.getString("type");
-                int x = object.getInt("x");
-                int y = object.getInt("y");
-
-                switch (objectType) {
-                    case "user" -> {
-                        String username = object.getString("username");
-                        gridData.addUser(new User(username, userStorage));
-                    }
-                    case "wall" -> gridData.addWall(new Wall(x, y));
-                    case "meeting" -> {
-                        String link = object.getString("link");
-                        String name = object.getString("name");
-                        String id = object.getString("id");
-                        gridData.addMeeting(new MeetingObject(x, y, link, name, id));
-                    }
-                    case "coffeeMachine" -> gridData.addCoffeeMachine(new CoffeeMachine(x, y));
-                    default -> {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     private static void createInitialGridTemplate(GridData gridData) {
         gridData.addWallsList(getWallList());
         gridData.addCoffeeMachine(new CoffeeMachine(12, 0));
@@ -137,5 +88,54 @@ public class OfficeObjectsCreator {
                 new Wall(24, 13),
                 new Wall(25, 13)
         );
+    }
+
+    public void create(GridData gridData) {
+        if (!loadOfficeObjectsFromFile(gridData)) {
+            createInitialGridTemplate(gridData);
+        }
+    }
+
+    private boolean loadOfficeObjectsFromFile(GridData gridData) {
+        try (FileInputStream fis = new FileInputStream(INITIAL_OFFICE_STATE_FILE_PATH)) {
+
+            JsonObject jsonObject;
+            try (JsonReader jsonReader = Json.createReader(fis)) {
+                jsonObject = jsonReader.readObject();
+            }
+
+            JsonArray objectsArray = jsonObject.getJsonArray("objects");
+
+            for (JsonValue objectValue : objectsArray) {
+                JsonObject object = (JsonObject) objectValue;
+                String objectType = object.getString("type");
+                int x = object.getInt("x");
+                int y = object.getInt("y");
+
+                switch (objectType) {
+                    case "user" -> {
+                        String username = object.getString("username");
+                        gridData.addUser(new User(username, userStorage));
+                    }
+                    case "wall" -> gridData.addWall(new Wall(x, y));
+                    case "meeting" -> {
+                        String link = object.getString("link");
+                        String name = object.getString("name");
+                        String id = object.getString("id");
+                        gridData.addMeeting(new MeetingObject(x, y, link, name, id));
+                    }
+                    case "coffeeMachine" -> gridData.addCoffeeMachine(new CoffeeMachine(x, y));
+                    default -> {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
