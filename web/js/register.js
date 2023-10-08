@@ -3,9 +3,9 @@ const elements = document.querySelectorAll("input");
 const passwordInput = document.getElementById("password");
 const passwordCheck = document.getElementById("passwordCheck");
 
-for (let i = 0; i < elements.length; i++) {
-    elements[i].oninput = () => {
-        if (!(elements[0].value === "") && !(elements[1].value === "") && !(elements[2].value === "") && !(elements[3].value === "")) {
+for (const element of elements) {
+    element.oninput = () => {
+        if (elements[0].value !== "" && elements[1].value !== "" && elements[2].value !== "" && elements[3].value !== "") {
             registerButton.removeAttribute("disabled")
         } else {
             registerButton.setAttribute("disabled", "")

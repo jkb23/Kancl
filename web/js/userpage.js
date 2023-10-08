@@ -3,23 +3,12 @@ const passwordCurrentRepeat = document.getElementById('password-current-repeat')
 const passwordNew = document.getElementById('password-new');
 const submitBtn = document.getElementById('submit');
 
-const isCorrectOldPassword = function (pwd) {
-    // For simplicity, let's assume the old password is 'oldPass123'.
-    // In a real-world scenario, this should be checked asynchronously with a server.
-    return pwd === 'oldPass123';
-};
-
 const checkPasswords = function () {
     if (enableSubmitIfAllPasswordFieldsAreEmpty()) {
         return
     }
 
     disableSubmitIfAnyPasswordFieldIsNotEmpty()
-
-    /*if (!isCorrectOldPassword(passwordCurrent.value)) {
-        console.log("Incorrect current password");
-        return;
-    }*/
 
     submitBtn.disabled = !(newPasswordMatchesPattern() && oldPasswordsAreEqual() && newPasswordIsLongEnough())
 };

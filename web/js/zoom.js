@@ -1,33 +1,4 @@
-import {CLIENT_ID, CLIENT_SECRET, CREATE_MEETING_URL, DELETE_MEETING_URL, TOKEN_URL} from "./constants.js";
-
-async function refreshAccessToken() {
-    const btoa = window.btoa;
-    const authString = `${CLIENT_ID}:${CLIENT_SECRET}`;
-    const headers = {
-        Authorization: 'Basic ' + btoa(authString),
-        'Content-Type': 'application/x-www-form-urlencoded'
-    };
-
-    let refreshToken = localStorage.getItem('refreshToken');
-    const response = await fetch(TOKEN_URL, {
-        method: 'POST',
-        headers: headers,
-        body: `grant_type=refresh_token&refresh_token=${refreshToken}`
-    });
-
-    if (response.ok) {
-        const data = await response.json();
-
-        return {
-            accessToken: data.access_token,
-            refreshToken: data.refresh_token
-        };
-    } else {
-        console.error("Error refreshing access token:", await response.text());
-
-        return null;
-    }
-}
+import {CREATE_MEETING_URL, DELETE_MEETING_URL} from "./constants.js";
 
 export async function createZoomMeeting(meetingName) {
     let accessToken = localStorage.getItem('accessToken');
@@ -52,20 +23,7 @@ export async function createZoomMeeting(meetingName) {
 
         if (response.ok) {
             return await response.json();
-        } /*else if (response.status === 401) {
-            const newTokens = await refreshAccessToken();
-
-            if (newTokens) {
-                localStorage.setItem('accessToken', newTokens.accessToken);
-                localStorage.setItem('refreshToken', newTokens.refreshToken);
-
-                return createZoomMeeting(meetingName);
-            } else {
-                console.error("Failed to refresh access token.");
-
-                return null;
-            }
-        }*/ else {
+        } else {
             console.error("Error creating Zoom meeting:", await response.text());
 
             return null;
@@ -97,19 +55,7 @@ export async function deleteZoomMeeting(meetingId) {
 
         if (response.ok) {
             return true;
-        }/* else if (response.status === 401) {
-            const newTokens = await refreshAccessToken();
-
-            if (newTokens) {
-                localStorage.setItem('accessToken', newTokens.accessToken);
-                localStorage.setItem('refreshToken', newTokens.refreshToken);
-
-                return deleteZoomMeeting(meetingId);
-            } else {
-                console.error("Failed to refresh access token.");
-                return null;
-            }
-        }*/ else {
+        } else {
             console.error("Error deleting Zoom meeting:", await response.text());
             return null;
         }
