@@ -57,7 +57,7 @@ public class UserStorage {
 
     public Optional<Integer> getBadLoginCount(String username) {
         return dbRunner.select("SELECT bad_login_count FROM AppUser WHERE username= ?",
-                (r) -> r.getInt(1),
+                r -> r.getInt(1),
                 username);
     }
 
@@ -96,9 +96,6 @@ public class UserStorage {
         return dbRunner.selectString("SELECT bg_color FROM AppUser WHERE username = ?", username);
     }
 
-    public void setProfilePicture(String username, String profilePicture) {
-        dbRunner.update("UPDATE AppUser SET profile_picture = ? WHERE username = ?", profilePicture, username);
-    }
 
     public String getPassword(String username) {
         return dbRunner.selectString("SELECT password FROM AppUser WHERE username = ?", username);

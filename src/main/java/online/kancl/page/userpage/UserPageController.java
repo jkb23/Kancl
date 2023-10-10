@@ -35,7 +35,7 @@ public class UserPageController extends Controller {
             return "";
         } else {
             if ("passwordMismatch".equals(request.queryParams("error"))) {
-                pageContext.setErrorMessage("Your password did not match the old password.");
+                pageContext.setErrorMessage("Entered new password did not match the current password.");
             }
 
             return pebbleTemplateRenderer.renderDefaultControllerTemplate(this, pageContext);
@@ -45,9 +45,8 @@ public class UserPageController extends Controller {
 
     @Override
     public String post(Request request, Response response) {
-        return transactionJobRunner.runInTransaction((dbRunner) -> {
+        return transactionJobRunner.runInTransaction(dbRunner -> {
             String newStatus = request.queryParams("status");
-            String newProfilePicture = request.queryParams("profile-picture");
             String username = request.session().attribute("user");
             String newPassword = HashUtils.sha256Hash(request.queryParams("password-new"));
             String currentPasswordEntered = HashUtils.sha256Hash(request.queryParams("password-current"));
@@ -56,10 +55,6 @@ public class UserPageController extends Controller {
             if (!Objects.equals(newStatus, "")) {
                 userStorage.setStatusToDb(username, newStatus);
                 gridData.updateStatus(username, newStatus);
-            }
-
-            if (!Objects.equals(newProfilePicture, "")) {
-                userStorage.setProfilePicture(username, newProfilePicture);
             }
 
             if (!Objects.equals(newPassword, HashUtils.sha256Hash(""))) {
