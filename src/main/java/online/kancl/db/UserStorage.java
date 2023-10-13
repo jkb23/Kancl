@@ -12,7 +12,11 @@ public class UserStorage {
             "#ffff33", "#ffff1a", "#ffff00", "#e6ffe6", "#ccffcc", "#b3ffb3", "#99ff99", "#80ff80", "#66ff66", "#4dff4d",
             "#33ff33", "#1aff1a", "#00ff00", "#e6ffff", "#ccffff", "#b3ffff", "#99ffff", "#80ffff", "#66ffff", "#4dffff",
             "#33ffff", "#1affff", "#00ffff", "#e6e6ff", "#ccccff", "#b3b3ff", "#9999ff", "#8080ff", "#6666ff", "#4d4dff",
-            "#3333ff", "#1a1aff", "#0000ff"};
+            "#3333ff", "#1a1aff", "#0000ff", "#ffe6ff", "#ffccff", "#ffb3ff", "#ff99ff", "#ff80ff", "#f2e0ff", "#e6ccff",
+            "#d9b3ff", "#ccaaff", "#bf80ff", "#b366ff", "#a64dff", "#fae6e6", "#f5d9d9", "#f0cccc", "#ebbfbf", "#e6b2b2",
+            "#f0e6ff", "#ebccff", "#e6b3ff", "#e0a6ff", "#dba8ff", "#e6ffe0", "#d9ffcc", "#ccffba", "#bfffb2", "#b2ffb2",
+            "#ffe6f2", "#ffd9eb", "#ffccdb", "#ffc1ca", "#ffb8bf"
+    };
 
     private final DatabaseRunner dbRunner;
 
