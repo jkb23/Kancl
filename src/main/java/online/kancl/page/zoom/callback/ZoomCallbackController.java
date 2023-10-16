@@ -16,28 +16,24 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+import static online.kancl.page.ZoomConstants.ACCESS_TOKEN;
 import static online.kancl.page.ZoomConstants.CLIENT_ID;
 import static online.kancl.page.ZoomConstants.CLIENT_SECRET;
 import static online.kancl.page.ZoomConstants.OFFICE_URL;
+import static online.kancl.page.ZoomConstants.REFRESH_TOKEN;
 import static online.kancl.page.ZoomConstants.TOKEN_URL;
 import static online.kancl.page.ZoomConstants.ZOOM_CALLBACK_URL;
 
 public class ZoomCallbackController extends Controller {
 
-    public static String[] extractTokens(String jsonResponse) {
+    public static void extractTokens(String jsonResponse) {
         JsonObject jsonObject;
         try (JsonReader jsonReader = Json.createReader(new StringReader(jsonResponse))) {
             jsonObject = jsonReader.readObject();
         }
 
-        String accessToken = jsonObject.getString("access_token");
-        String refreshToken = jsonObject.getString("refresh_token");
-
-        return new String[]{accessToken, refreshToken};
-    }
-
-    private static String getOfficeURL(String[] tokens) {
-        return "%s?accessToken=%s&refreshToken=%s".formatted(OFFICE_URL, tokens[0], tokens[1]);
+        ACCESS_TOKEN = jsonObject.getString("access_token");
+        REFRESH_TOKEN = jsonObject.getString("refresh_token");
     }
 
     @Override
@@ -86,9 +82,8 @@ public class ZoomCallbackController extends Controller {
     private void handleResponse(HttpURLConnection connection, Response response) {
         try {
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                String[] tokens = extractTokens(new String(connection.getInputStream().readAllBytes(), StandardCharsets.UTF_8));
-
-                response.redirect(getOfficeURL(tokens));
+                extractTokens(new String(connection.getInputStream().readAllBytes(), StandardCharsets.UTF_8));
+                response.redirect(OFFICE_URL);
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,9 +1,5 @@
-let fetch;
-let serverInstance;
-
 async function startProxyServer() {
-    fetch = await import('node-fetch').then(module => module.default);
-
+    let fetch = await import('node-fetch').then(module => module.default);
     const express = require('express');
     const app = express();
     const PORT = 8082;
@@ -27,7 +23,7 @@ async function startProxyServer() {
             const fetchResponse = await fetch(url, {
                 method: request.method,
                 headers: forwardedHeaders,
-                body: request.method !== 'GET' && request.method !== 'HEAD' ? JSON.stringify(request.body) : undefined,
+                body: request.method !== 'GET' ? JSON.stringify(request.body) : undefined,
             });
 
             const contentType = fetchResponse.headers.get("content-type");
@@ -47,20 +43,9 @@ async function startProxyServer() {
         }
     });
 
-    serverInstance = app.listen(PORT, () => {
+    app.listen(PORT, () => {
         console.log(`Proxy server is running on port ${PORT}`);
     });
 }
 
-function stopProxyServer() {
-    if (serverInstance) {
-        serverInstance.close(() => {
-            console.log(`Proxy server stopped.`);
-        });
-    }
-}
-
 startProxyServer();
-
-process.on('SIGINT', stopProxyServer);
-process.on('SIGTERM', stopProxyServer);

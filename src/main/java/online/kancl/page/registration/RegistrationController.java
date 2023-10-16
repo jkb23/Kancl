@@ -69,7 +69,7 @@ public class RegistrationController extends Controller {
         gridData.addUser(userObject);
         request.session(true);
         request.session().attribute("user", user.username());
-        response.redirect("/");
+        response.redirect("/login");
         return "";
     }
 }

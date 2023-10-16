@@ -113,24 +113,28 @@ async function handleEdit(x, y) {
             let meetingName = square.getAttribute('data-meeting-name');
 
             if (meetingId) {
-                await deleteZoomMeeting(meetingId)
-
-                sendRequestWithUpdatedObject(x, y, "meeting", "delete", meetingLink, EDIT_URL, "", meetingName, meetingId);
+                await callZoomMeetingEndpoint(x, y, 'delete', '', meetingId);
             }
         } else {
             let meetingName = document.getElementById("editMeetingName").value;
-            let meeting = await createZoomMeeting(meetingName);
-
-            if (meeting) {
-                let meetingLink = meeting.join_url;
-                square.setAttribute('data-meeting-id', meeting.id);
-                square.setAttribute('data-meeting-link', meetingLink);
-                square.setAttribute('data-meeting-name', meetingName);
-
-                sendRequestWithUpdatedObject(x, y, "meeting", "add", meetingLink, EDIT_URL, "", meetingName, meeting.id.toString());
-            }
+            await callZoomMeetingEndpoint(x, y,'create', meetingName, '');
         }
     }
+}
+
+async function callZoomMeetingEndpoint(x, y, action, meetingName, meetingId) {
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("POST", '/api/zoom-meeting');
+    httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    httpRequest.send(
+        JSON.stringify({
+            xCoordinate: x,
+            yCoordinate: y,
+            action: action,
+            meetingName: meetingName,
+            meetingId: meetingId
+        })
+    );
 }
 
 function handleEnableAddWalls() {
