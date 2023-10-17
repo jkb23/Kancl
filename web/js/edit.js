@@ -7,7 +7,6 @@ import {
     sendLogoutRequestOnClose,
     sendRequestWithUpdatedObject
 } from "./common.js";
-import {createZoomMeeting, deleteZoomMeeting} from "./zoom.js";
 
 const EDIT_URL = "/api/edit";
 const grid = [];
@@ -113,16 +112,16 @@ async function handleEdit(x, y) {
             let meetingName = square.getAttribute('data-meeting-name');
 
             if (meetingId) {
-                await callZoomMeetingEndpoint(x, y, 'delete', '', meetingId);
+                await callZoomMeetingEndpoint(x, y, 'delete', meetingName, meetingId, meetingLink);
             }
         } else {
             let meetingName = document.getElementById("editMeetingName").value;
-            await callZoomMeetingEndpoint(x, y,'create', meetingName, '');
+            await callZoomMeetingEndpoint(x, y,'create', meetingName, '', '');
         }
     }
 }
 
-async function callZoomMeetingEndpoint(x, y, action, meetingName, meetingId) {
+async function callZoomMeetingEndpoint(x, y, action, meetingName, meetingId, meetingLink) {
     const httpRequest = new XMLHttpRequest();
     httpRequest.open("POST", '/api/zoom-meeting');
     httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -132,7 +131,8 @@ async function callZoomMeetingEndpoint(x, y, action, meetingName, meetingId) {
             yCoordinate: y,
             action: action,
             meetingName: meetingName,
-            meetingId: meetingId
+            meetingId: meetingId,
+            meetingLink: meetingLink
         })
     );
 }

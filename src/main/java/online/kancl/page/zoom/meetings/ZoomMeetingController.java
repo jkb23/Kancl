@@ -11,11 +11,11 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.io.OutputStream;
 
 import static online.kancl.page.ZoomConstants.ACCESS_TOKEN;
 import static online.kancl.page.ZoomConstants.CREATE_MEETING_URL;
@@ -25,8 +25,6 @@ public class ZoomMeetingController extends Controller {
     private final GridData gridData;
 
     StringBuilder responseContent = new StringBuilder();
-    int xCoordinate;
-    int yCoordinate;
 
     public ZoomMeetingController(GridData gridData) {
         this.gridData = gridData;
@@ -40,23 +38,22 @@ public class ZoomMeetingController extends Controller {
         }
 
         String action = jsonObject.getString("action");
-        xCoordinate = jsonObject.getInt("xCoordinate");
-        yCoordinate = jsonObject.getInt("yCoordinate");
+        String meetingName = jsonObject.getString("meetingName");
+        String meetingId = jsonObject.getString("meetingId");
+        String meetingLink = jsonObject.getString("meetingLink");
+        int xCoordinate = jsonObject.getInt("xCoordinate");
+        int yCoordinate = jsonObject.getInt("yCoordinate");
 
         if (action.equals("create")) {
-            String meetingName = jsonObject.getString("meetingName");
-
-            return createZoomMeeting(meetingName);
+            return createZoomMeeting(meetingName, xCoordinate, yCoordinate);
         } else if (action.equals("delete")) {
-            String meetingId = jsonObject.getString("meetingId");
-
-            return deleteZoomMeeting(meetingId);
+            return deleteZoomMeeting(meetingName, meetingLink, meetingId, xCoordinate, yCoordinate);
         }
 
         return "Invalid action";
     }
 
-    private String createZoomMeeting(String meetingName) {
+    private String createZoomMeeting(String meetingName, int xCoordinate, int yCoordinate) {
         try {
             URL url = new URL(CREATE_MEETING_URL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -86,7 +83,12 @@ public class ZoomMeetingController extends Controller {
                     jsonObject = jsonReader.readObject();
                 }
 
-                sendToEditEndpoint(meetingName, jsonObject.getString("join_url"), jsonObject.getJsonNumber("id").toString());
+                createMeetingObject(meetingName,
+                        jsonObject.getString("join_url"),
+                        jsonObject.getJsonNumber("id").toString(),
+                        xCoordinate,
+                        yCoordinate
+                );
 
                 return "Meeting created and data sent to /api/edit";
             } else {
@@ -97,12 +99,12 @@ public class ZoomMeetingController extends Controller {
         }
     }
 
-    private void sendToEditEndpoint(String meetingName, String meetingLink, String meetingId) {
+    private void createMeetingObject(String meetingName, String meetingLink, String meetingId, int xCoordinate, int yCoordinate) {
         MeetingObject meetingObject = new MeetingObject(xCoordinate, yCoordinate, meetingLink, meetingName, meetingId);
         gridData.addMeeting(meetingObject);
     }
 
-    private String deleteZoomMeeting(String meetingId) {
+    private String deleteZoomMeeting(String meetingName, String meetingLink, String meetingId, int xCoordinate, int yCoordinate) {
         try {
             URL url = new URL(DELETE_MEETING_URL + meetingId);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -111,7 +113,8 @@ public class ZoomMeetingController extends Controller {
             connection.setRequestProperty("Content-Type", "application/json");
 
             int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
+            if (responseCode == HttpURLConnection.HTTP_NO_CONTENT || responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+                deleteMeetingObject(meetingName, meetingLink, meetingId, xCoordinate, yCoordinate);
                 return "Meeting deleted";
             } else {
                 return "Error deleting Zoom meeting";
@@ -119,5 +122,10 @@ public class ZoomMeetingController extends Controller {
         } catch (Exception e) {
             return "Network error: " + e.getMessage();
         }
+    }
+
+    private void deleteMeetingObject(String meetingName, String meetingLink, String meetingId, int xCoordinate, int yCoordinate) {
+        MeetingObject meetingObject = new MeetingObject(xCoordinate, yCoordinate, meetingLink, meetingName, meetingId);
+        gridData.deleteMeeting(meetingObject);
     }
 }
