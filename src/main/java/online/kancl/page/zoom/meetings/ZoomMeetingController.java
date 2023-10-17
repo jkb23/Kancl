@@ -10,6 +10,7 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringReader;
@@ -38,30 +39,32 @@ public class ZoomMeetingController extends Controller {
         }
 
         String action = jsonObject.getString("action");
+        MeetingObject meetingObject = getMeetingObject(jsonObject);
+
+        if (action.equals("create")) {
+            return createZoomMeeting(meetingObject);
+        } else if (action.equals("delete")) {
+            return deleteZoomMeeting(meetingObject);
+        }
+
+        return "Invalid action";
+    }
+
+    private static MeetingObject getMeetingObject(JsonObject jsonObject) {
         String meetingName = jsonObject.getString("meetingName");
         String meetingId = jsonObject.getString("meetingId");
         String meetingLink = jsonObject.getString("meetingLink");
         int xCoordinate = jsonObject.getInt("xCoordinate");
         int yCoordinate = jsonObject.getInt("yCoordinate");
 
-        if (action.equals("create")) {
-            return createZoomMeeting(meetingName, xCoordinate, yCoordinate);
-        } else if (action.equals("delete")) {
-            return deleteZoomMeeting(meetingName, meetingLink, meetingId, xCoordinate, yCoordinate);
-        }
-
-        return "Invalid action";
+        return new MeetingObject(xCoordinate, yCoordinate, meetingLink, meetingName, meetingId);
     }
 
-    private String createZoomMeeting(String meetingName, int xCoordinate, int yCoordinate) {
+    private String createZoomMeeting(MeetingObject meetingObject) {
         try {
-            URL url = new URL(CREATE_MEETING_URL);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Authorization", "Bearer " + ACCESS_TOKEN);
-            connection.setRequestProperty("Content-Type", "application/json");
+            HttpURLConnection connection = getHttpURLConnection(CREATE_MEETING_URL, "POST");
 
-            String payload = "{ \"agenda\": \"" + meetingName + "\", \"topic\": \"" + meetingName + "\", \"type\": 1 }";
+            String payload = "{ \"agenda\": \"" + meetingObject.getName() + "\", \"topic\": \"" + meetingObject.getName() + "\", \"type\": 1 }";
 
             connection.setDoOutput(true);
             try (OutputStream os = connection.getOutputStream()) {
@@ -71,24 +74,12 @@ public class ZoomMeetingController extends Controller {
 
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_CREATED) {
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        responseContent.append(line);
-                    }
-                }
+                JsonObject jsonObject = getJsonObject(connection);
 
-                JsonObject jsonObject;
-                try (JsonReader jsonReader = Json.createReader(new StringReader(responseContent.toString()))) {
-                    jsonObject = jsonReader.readObject();
-                }
+                meetingObject.setId(jsonObject.getJsonNumber("id").toString());
+                meetingObject.setLink(jsonObject.getString("join_url"));
 
-                createMeetingObject(meetingName,
-                        jsonObject.getString("join_url"),
-                        jsonObject.getJsonNumber("id").toString(),
-                        xCoordinate,
-                        yCoordinate
-                );
+                gridData.addMeeting(meetingObject);
 
                 return "Meeting created and data sent to /api/edit";
             } else {
@@ -99,22 +90,13 @@ public class ZoomMeetingController extends Controller {
         }
     }
 
-    private void createMeetingObject(String meetingName, String meetingLink, String meetingId, int xCoordinate, int yCoordinate) {
-        MeetingObject meetingObject = new MeetingObject(xCoordinate, yCoordinate, meetingLink, meetingName, meetingId);
-        gridData.addMeeting(meetingObject);
-    }
-
-    private String deleteZoomMeeting(String meetingName, String meetingLink, String meetingId, int xCoordinate, int yCoordinate) {
+    private String deleteZoomMeeting(MeetingObject meetingObject) {
         try {
-            URL url = new URL(DELETE_MEETING_URL + meetingId);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("DELETE");
-            connection.setRequestProperty("Authorization", "Bearer " + ACCESS_TOKEN);
-            connection.setRequestProperty("Content-Type", "application/json");
+            HttpURLConnection connection = getHttpURLConnection(DELETE_MEETING_URL + meetingObject.getId(), "DELETE");
 
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_NO_CONTENT || responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
-                deleteMeetingObject(meetingName, meetingLink, meetingId, xCoordinate, yCoordinate);
+                gridData.deleteMeeting(meetingObject);
                 return "Meeting deleted";
             } else {
                 return "Error deleting Zoom meeting";
@@ -124,8 +106,28 @@ public class ZoomMeetingController extends Controller {
         }
     }
 
-    private void deleteMeetingObject(String meetingName, String meetingLink, String meetingId, int xCoordinate, int yCoordinate) {
-        MeetingObject meetingObject = new MeetingObject(xCoordinate, yCoordinate, meetingLink, meetingName, meetingId);
-        gridData.deleteMeeting(meetingObject);
+    private static HttpURLConnection getHttpURLConnection(String url2, String requestMethod) throws IOException {
+        URL url = new URL(url2);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod(requestMethod);
+        connection.setRequestProperty("Authorization", "Bearer " + ACCESS_TOKEN);
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        return connection;
+    }
+
+    private JsonObject getJsonObject(HttpURLConnection connection) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                responseContent.append(line);
+            }
+        }
+
+        JsonObject jsonObject;
+        try (JsonReader jsonReader = Json.createReader(new StringReader(responseContent.toString()))) {
+            jsonObject = jsonReader.readObject();
+        }
+        return jsonObject;
     }
 }

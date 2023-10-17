@@ -4,9 +4,10 @@ import java.util.Objects;
 
 public class MeetingObject extends OfficeObject {
 
-    private final String link;
     private final String name;
-    private final String id;
+
+    private String link;
+    private String id;
 
     public MeetingObject(int x, int y, String meetingLink, String meetingName, String id) {
         super(x, y);
@@ -25,6 +26,14 @@ public class MeetingObject extends OfficeObject {
 
     public String getId() {
         return id;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
