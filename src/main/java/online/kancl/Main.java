@@ -31,6 +31,18 @@ import online.kancl.util.DirectoryHashCalculator;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static online.kancl.server.WebServerPath.API_EDIT;
+import static online.kancl.server.WebServerPath.API_OFFICE;
+import static online.kancl.server.WebServerPath.API_ZOOM_MEETING;
+import static online.kancl.server.WebServerPath.EDIT;
+import static online.kancl.server.WebServerPath.LOGIN;
+import static online.kancl.server.WebServerPath.LOGOUT;
+import static online.kancl.server.WebServerPath.RECREATE_DB;
+import static online.kancl.server.WebServerPath.REGISTER;
+import static online.kancl.server.WebServerPath.ROOT;
+import static online.kancl.server.WebServerPath.USER;
+import static online.kancl.server.WebServerPath.ZOOM_CALLBACK;
+
 public class Main {
 
     public static final Path TEMPLATE_DIRECTORY = Paths.get("src", "main", "resources");
@@ -49,19 +61,19 @@ public class Main {
         OfficeObjectsCreator officeObjectsCreator = new OfficeObjectsCreator(new UserStorage(new DatabaseRunner(connectionProvider.getConnection())));
         officeObjectsCreator.create(gridData);
 
-        WebServer webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner, "/login");
-        webServer.addRoute("/", () -> new MainPageController(pebbleTemplateRenderer));
-        webServer.addRoute("/recreateDb", () -> new RecreateDbController(schemaCreator));
-        webServer.addRoute("/user", dbRunner -> new UserPageController(pebbleTemplateRenderer, new UserStorage(dbRunner), gridData, transactionJobRunner));
-        webServer.addRoute("/register", dbRunner -> new RegistrationController(pebbleTemplateRenderer, transactionJobRunner, new RegistrationInfo(), new UserStorage(dbRunner), gridData));
-        webServer.addRoute("/login", dbRunner -> new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData, new UserStorage(dbRunner)));
-        webServer.addRoute("/logout", () -> new LogoutController(gridData));
-        webServer.addRoute("/api/office", () -> new OfficeController(gridData));
-        webServer.addRoute("/api/edit", () -> new EditOfficeController(gridData));
-        webServer.addRoute("/edit", () -> new EditController(pebbleTemplateRenderer));
-        webServer.addRoute("/zoom-callback", ZoomCallbackController::new);
-        webServer.addRoute("/api/zoom-meeting", () -> new ZoomMeetingController(gridData));
-        webServer.addPublicPaths("/login", "/register", "/recreateDb");
+        WebServer webServer = new WebServer(8081, new ExceptionHandler(), transactionJobRunner, LOGIN.getPath());
+        webServer.addRoute(ROOT.getPath(), () -> new MainPageController(pebbleTemplateRenderer));
+        webServer.addRoute(RECREATE_DB.getPath(), () -> new RecreateDbController(schemaCreator));
+        webServer.addRoute(USER.getPath(), dbRunner -> new UserPageController(pebbleTemplateRenderer, new UserStorage(dbRunner), gridData, transactionJobRunner));
+        webServer.addRoute(REGISTER.getPath(), dbRunner -> new RegistrationController(pebbleTemplateRenderer, transactionJobRunner, new RegistrationInfo(), new UserStorage(dbRunner), gridData));
+        webServer.addRoute(LOGIN.getPath(), dbRunner -> new LoginController(pebbleTemplateRenderer, transactionJobRunner, new LoginInfo(), gridData, new UserStorage(dbRunner)));
+        webServer.addRoute(LOGOUT.getPath(), () -> new LogoutController(gridData));
+        webServer.addRoute(API_OFFICE.getPath(), () -> new OfficeController(gridData));
+        webServer.addRoute(API_EDIT.getPath(), () -> new EditOfficeController(gridData));
+        webServer.addRoute(EDIT.getPath(), () -> new EditController(pebbleTemplateRenderer));
+        webServer.addRoute(ZOOM_CALLBACK.getPath(), ZoomCallbackController::new);
+        webServer.addRoute(API_ZOOM_MEETING.getPath(), () -> new ZoomMeetingController(gridData));
+        webServer.addPublicPaths(LOGIN.getPath(), REGISTER.getPath(), RECREATE_DB.getPath());
         webServer.start();
 
         System.out.println("Server running");

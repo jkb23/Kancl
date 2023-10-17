@@ -123,7 +123,7 @@ async function handleEdit(x, y) {
 
 async function callZoomMeetingEndpoint(x, y, action, meetingName, meetingId, meetingLink) {
     const httpRequest = new XMLHttpRequest();
-    httpRequest.open("POST", '/api/zoom-meeting');
+    httpRequest.open("POST", '/zoom-meeting');
     httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     httpRequest.send(
         JSON.stringify({
