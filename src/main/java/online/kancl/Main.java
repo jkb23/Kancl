@@ -21,7 +21,6 @@ import online.kancl.page.registration.RegistrationController;
 import online.kancl.page.registration.RegistrationInfo;
 import online.kancl.page.userpage.UserPageController;
 import online.kancl.page.zoom.callback.ZoomCallbackController;
-import online.kancl.page.zoom.meetings.ZoomController;
 import online.kancl.page.zoom.meetings.ZoomMeetingController;
 import online.kancl.server.ExceptionHandler;
 import online.kancl.server.WebServer;
@@ -61,7 +60,6 @@ public class Main {
         webServer.addRoute("/api/edit", () -> new EditOfficeController(gridData));
         webServer.addRoute("/edit", () -> new EditController(pebbleTemplateRenderer));
         webServer.addRoute("/zoom-callback", ZoomCallbackController::new);
-        webServer.addRoute("/zoom-meeting", () -> new ZoomController(pebbleTemplateRenderer));
         webServer.addRoute("/api/zoom-meeting", () -> new ZoomMeetingController(gridData));
         webServer.addPublicPaths("/login", "/register", "/recreateDb");
         webServer.start();
