@@ -7,7 +7,6 @@ import {
     sendLogoutRequestOnClose,
     sendRequestWithUpdatedObject
 } from "./common.js";
-import {USER_DETAILS_URL} from "./constants.js";
 
 const grid = [];
 const container = document.getElementById("container");
@@ -26,7 +25,6 @@ window.addEventListener("unload", function (e) {
     sendLogoutRequestOnClose();
 });
 
-fetchDetails();
 createGrid();
 
 function createGrid() {
@@ -115,7 +113,7 @@ function addMeeting(meeting, container) {
 
     if (meetingLink) {
         meetingLink.addEventListener("click", function () {
-            sendRequestWithUpdatedObject(xCoordinate, yCoordinate, "user", "move", "", "/api/office", me.username, "");
+            sendRequestWithUpdatedObject(xCoordinate, yCoordinate, "user", "move", "/api/office", me.username);
         });
     }
 }
@@ -182,7 +180,7 @@ function handleUserMove(e) {
         if (lastData) {
             refreshOfficeState(lastData);
         }
-        sendRequestWithUpdatedObject(me.x, me.y, "user", "move", "", "/api/office", me.username, "", "");
+        sendRequestWithUpdatedObject(me.x, me.y, "user", "move", "/api/office", me.username);
     }
 }
 
@@ -232,47 +230,6 @@ function canMoveDown() {
     }
 
     return true;
-}
-
-async function fetchDetails() {
-    const urlParams = new URLSearchParams(window.location.search);
-    let accessToken = urlParams.get('accessToken');
-    let refreshToken = urlParams.get('refreshToken')
-
-    if (accessToken && refreshToken) {
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-    }
-
-    if (!localStorage.getItem('accountId')) {
-        let userDetails = await getUserDetails(accessToken);
-        localStorage.setItem('accountId', userDetails.account_id);
-    }
-}
-
-async function getUserDetails(accessToken) {
-    const headers = {
-        "Authorization": `Bearer ${accessToken}`,
-        "Content-Type": "application/json"
-    };
-
-    try {
-        const response = await fetch(USER_DETAILS_URL, {
-            method: "GET",
-            headers: headers
-        });
-
-        if (response.ok) {
-            return await response.json();
-        } else {
-            const errorData = await response.json();
-            console.error("Error fetching user details:", errorData);
-        }
-    } catch (error) {
-        console.error("Network error:", error);
-
-        return null;
-    }
 }
 
 function handleEditReroute() {

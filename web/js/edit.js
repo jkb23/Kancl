@@ -100,7 +100,7 @@ function meetingExists(square) {
 
 async function handleEdit(x, y) {
     if (canAddWalls && !canAddMeetings) {
-        sendRequestWithUpdatedObject(x, y, "wall", "add", "", EDIT_URL, "", "", "");
+        sendRequestWithUpdatedObject(x, y, "wall", "add", EDIT_URL, "");
     }
 
     if (canAddMeetings && !canAddWalls) {
@@ -164,7 +164,7 @@ const editMeetingsButton = document.getElementById("editMeetingsButton");
 editMeetingsButton.addEventListener("click", handleEnableAddMeetings);
 
 function handleSaveButton() {
-    sendRequestWithUpdatedObject(0, 0, "none", "rewrite", "", EDIT_URL, "", "", "")
+    sendRequestWithUpdatedObject(0, 0, "none", "rewrite", EDIT_URL, "")
     window.location.href = "/";
 }
 

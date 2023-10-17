@@ -38,7 +38,7 @@ export function refreshGridSquares() {
     }
 }
 
-export function sendRequestWithUpdatedObject(xCoordinates, yCoordinates, type, action, link, url, username, meetingName, meetingId) {
+export function sendRequestWithUpdatedObject(xCoordinates, yCoordinates, type, action, url, username) {
     const httpRequest = new XMLHttpRequest();
     httpRequest.open("POST", url);
     httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -48,10 +48,7 @@ export function sendRequestWithUpdatedObject(xCoordinates, yCoordinates, type, a
             action: action,
             username: username,
             x: xCoordinates,
-            y: yCoordinates,
-            link: link,
-            name: meetingName,
-            meetingId: meetingId
+            y: yCoordinates
         })
     );
 }

@@ -10,8 +10,6 @@
 
 {% block javascript %}
     <script src='js/edit.js' type="module"></script>
-    <script src='js/constants.js' type="module"></script>
-    <script src='js/zoom.js' type="module"></script>
 {% endblock %}
 
 {% block body %}

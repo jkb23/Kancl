@@ -1,7 +1,6 @@
 package online.kancl.page.edit;
 
 import online.kancl.objects.GridData;
-import online.kancl.objects.MeetingObject;
 import online.kancl.objects.Wall;
 import online.kancl.server.Controller;
 import spark.Request;
@@ -57,8 +56,6 @@ public class EditOfficeController extends Controller {
         }
         String type = jsonObject.getString("objectType");
         String action = jsonObject.getString("action");
-        String link = jsonObject.getString("link");
-        String name = jsonObject.getString("name");
 
         int x = jsonObject.getInt("x");
         int y = jsonObject.getInt("y");
@@ -70,17 +67,6 @@ public class EditOfficeController extends Controller {
                 gridData.addWall(wall);
             } else {
                 gridData.deleteWall(wall);
-            }
-        }
-
-        if (type.equals("meeting")) {
-            String id = jsonObject.getString("meetingId");
-            MeetingObject meetingObject = new MeetingObject(x, y, link, name, id);
-
-            if (gridData.meetingCanBeAdded(meetingObject)) {
-                gridData.addMeeting(meetingObject);
-            } else {
-                gridData.deleteMeeting(meetingObject);
             }
         }
 

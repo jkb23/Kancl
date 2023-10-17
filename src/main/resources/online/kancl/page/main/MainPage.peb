@@ -10,7 +10,6 @@
 
         {% block javascript %}
     <script src='js/grid.js' type="module"></script>
-    <script src='js/constants.js' type="module"></script>
 {% endblock %}
 
     {% block body %}

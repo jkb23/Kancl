@@ -88,14 +88,4 @@ public class GridData {
 
         return true;
     }
-
-    public boolean meetingCanBeAdded(MeetingObject newMeetingObject) {
-        for (MeetingObject oldMeeting : meetingObjects) {
-            if (oldMeeting.equals(newMeetingObject)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 }
